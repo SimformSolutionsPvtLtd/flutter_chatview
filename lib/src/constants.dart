@@ -1,0 +1,10 @@
+const String en_us = "en_US";
+const String dateFormat = "yyyy-MM-dd";
+const String today = "Today";
+const String yesterday = "Yesterday";
+const String jpg = ".jpg";
+const String png = ".png";
+const String jpeg = ".jpeg";
+const String couldNotLunch = "Could not lunch";
+const String profileImage =
+    "https://akm-img-a-in.tosshub.com/indiatoday/images/story/202103/photo-1511367461989-f85a21fda1_0_1200x768.jpeg?YVCV8xj2CmtZldc_tJAkykymqxE3fxNf&size=770:433";
