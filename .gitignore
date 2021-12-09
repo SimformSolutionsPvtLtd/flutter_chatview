@@ -19,3 +19,7 @@ doc/api/
 *.js_
 *.js.deps
 *.js.map
+.idea/
+.flutter-plugins
+/.flutter-plugins-dependencies
+chat_ui.iml
