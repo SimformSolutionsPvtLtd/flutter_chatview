@@ -1,13 +1,13 @@
 ![Banner](https://raw.githubusercontent.com/SimformSolutionsPvtLtd/flutter_chat_ui/main/preview/banner.png)
 
 # ChatView
- [![chat_view](https://img.shields.io/pub/v/chat_view?label=chat_view)](https://pub.dev/packages/chat_view)
+ [![chatview](https://img.shields.io/pub/v/chatview?label=chatview)](https://pub.dev/packages/chatview)
 
 A Flutter package that allows you to integrate Chat View with highly customization options.
 
 ## Preview
 
-![The example app running in iOS](https://raw.githubusercontent.com/SimformSolutionsPvtLtd/flutter_chat_ui/main/preview/chat_view.gif)
+![The example app running in iOS](https://raw.githubusercontent.com/SimformSolutionsPvtLtd/flutter_chat_ui/main/preview/chatview.gif)
 
 
 
@@ -17,13 +17,13 @@ A Flutter package that allows you to integrate Chat View with highly customizati
 
 ```dart
 dependencies:
-  chat_view: <latest-version>
+  chatview: <latest-version>
 ```
-*Get the latest version in the 'Installing' tab on [pub.dev](https://pub.dev/packages/chat_view)*
+*Get the latest version in the 'Installing' tab on [pub.dev](https://pub.dev/packages/chatview)*
 
 2.  Import the package
 ```dart
-import 'package:chat_view/chat_view.dart';
+import 'package:chatview/chatview.dart';
 ```
 3. Adding a chat controller.
 ```dart
