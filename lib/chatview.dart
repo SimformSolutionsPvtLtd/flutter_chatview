@@ -19,27 +19,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'package:flutter/material.dart';
 
-import '../values/typedefs.dart';
-import 'models.dart';
+library chatview;
 
-class ChatBubbleConfiguration {
-  final EdgeInsetsGeometry? padding;
-  final EdgeInsetsGeometry? margin;
-  final double? maxWidth;
-  final Duration? longPressAnimationDuration;
-  final ChatBubble? inComingChatBubbleConfig;
-  final ChatBubble? outgoingChatBubbleConfig;
-  final MessageCallBack? onDoubleTap;
-
-  ChatBubbleConfiguration({
-    this.padding,
-    this.margin,
-    this.maxWidth,
-    this.longPressAnimationDuration,
-    this.inComingChatBubbleConfig,
-    this.outgoingChatBubbleConfig,
-    this.onDoubleTap,
-  });
-}
+export 'src/widgets/chat_view.dart';
+export 'src/models/models.dart';
+export 'src/widgets/chat_view_appbar.dart';
+export 'src/values/enumaration.dart';
+export 'src/controller/chat_controller.dart';
+export 'src/values/typedefs.dart';
