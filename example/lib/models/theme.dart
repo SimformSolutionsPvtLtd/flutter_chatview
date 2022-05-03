@@ -21,6 +21,8 @@ class AppTheme {
   final Color? shareIconBackgroundColor;
 
   final Color? sendButtonColor;
+  final Color? cameraIconColor;
+  final Color? galleryIconColor;
   final Color? swipeToReplyIconColor;
   final Color? replyMessageColor;
   final Color? appBarTitleTextStyle;
@@ -52,6 +54,8 @@ class AppTheme {
   final TextStyle? incomingChatLinkBodyStyle;
 
   AppTheme({
+    this.cameraIconColor,
+    this.galleryIconColor,
     this.flashingCircleDarkColor,
     this.flashingCircleBrightColor,
     this.outgoingChatLinkBodyStyle,
@@ -131,6 +135,8 @@ class DarkTheme extends AppTheme {
     Color closeIconColor = Colors.white,
     Color shareIconBackgroundColor = const Color(0xff383152),
     Color sendButtonColor = Colors.white,
+    Color cameraIconColor = const Color(0xff757575),
+    Color galleryIconColor = const Color(0xff757575),
     Color replyMessageColor = Colors.grey,
     Color appBarTitleTextStyle = Colors.white,
     Color messageReactionBackGroundColor = const Color(0xff383152),
@@ -184,6 +190,8 @@ class DarkTheme extends AppTheme {
           outgoingChatLinkTitleStyle: outgoingChatLinkTitleStyle,
           flashingCircleDarkColor: flashingCircleDarkColor,
           flashingCircleBrightColor: flashingCircleBrightColor,
+          galleryIconColor: galleryIconColor,
+          cameraIconColor: cameraIconColor,
         );
 }
 
@@ -221,6 +229,8 @@ class LightTheme extends AppTheme {
     Color closeIconColor = Colors.black,
     Color shareIconBackgroundColor = const Color(0xFFE0E0E0),
     Color sendButtonColor = const Color(0xffEE5366),
+    Color cameraIconColor = Colors.black,
+    Color galleryIconColor = Colors.black,
     Color replyMessageColor = Colors.black,
     Color appBarTitleTextStyle = Colors.black,
     Color messageReactionBackGroundColor = const Color(0xFFEEEEEE),
@@ -274,5 +284,7 @@ class LightTheme extends AppTheme {
           outgoingChatLinkTitleStyle: outgoingChatLinkTitleStyle,
           flashingCircleDarkColor: flashingCircleDarkColor,
           flashingCircleBrightColor: flashingCircleBrightColor,
+          galleryIconColor: galleryIconColor,
+          cameraIconColor: cameraIconColor,
         );
 }

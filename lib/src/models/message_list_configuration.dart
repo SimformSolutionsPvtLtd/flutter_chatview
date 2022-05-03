@@ -39,8 +39,9 @@ class ChatBackgroundConfiguration {
   final Color? messageTimeIconColor;
   final DefaultGroupSeparatorConfiguration? defaultGroupSeparatorConfig;
   final Widget? loadingWidget;
+  final Curve messageTimeAnimationCurve;
 
-  const ChatBackgroundConfiguration({
+  const ChatBackgroundConfiguration( {
     this.defaultGroupSeparatorConfig,
     this.backgroundColor,
     this.backgroundImage,
@@ -55,6 +56,7 @@ class ChatBackgroundConfiguration {
     this.messageTimeTextStyle,
     this.messageTimeIconColor,
     this.loadingWidget,
+    this.messageTimeAnimationCurve = Curves.decelerate,
   });
 }
 

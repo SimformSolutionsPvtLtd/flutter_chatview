@@ -87,6 +87,17 @@ void onSendTap(String message, ReplyMessage replyMessage){
   chatController.addMessage(message);
 }
 ```
+
+## Platform specific configuration for image picker
+
+### iOS
+Add the following keys to your _Info.plist_ file, located in `<project root>/ios/Runner/Info.plist`:
+
+* `NSPhotoLibraryUsageDescription` - describe why your app needs permission for the photo library. This is called _Privacy - Photo Library Usage Description_ in the visual editor.
+* `NSCameraUsageDescription` - describe why your app needs access to the camera. This is called _Privacy - Camera Usage Description_ in the visual editor.
+* `NSMicrophoneUsageDescription` - describe why your app needs access to the microphone, if you intend to record videos. This is called _Privacy - Microphone Usage Description_ in the visual editor.
+
+
 ## Some more optional parameters
 
 1. Adding an appbar with `ChatViewAppBar`.
@@ -305,6 +316,22 @@ ChatView(
 )
 ```
 
+14. Get imagepath from image picker and add imagepicker icon configuration.
+```dart
+ChatView(
+   ...
+   sendMessageConfig: SendMessageConfiguration(
+     imagePickerIconsConfig: ImagePickerIconsConfiguration(
+       onImageSelected: (imagePath, error){
+
+       },
+       cameraIconColor: Colors.black,
+       galleryIconColor: Colors.black,
+     )
+   )
+   ...
+)
+```
 ## How to use
 
 Check out the **example** app in the [example](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/tree/main/example) directory or the 'Example' tab on pub.dartlang.org for a more complete example.
