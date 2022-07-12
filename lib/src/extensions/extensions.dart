@@ -23,6 +23,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:chatview/src/values/enumaration.dart';
 import '../utils/constants.dart';
+import '../utils/emoji_parser.dart';
 import '../utils/package_strings.dart';
 
 extension TimeDifference on DateTime {
@@ -55,9 +56,13 @@ extension ValidateString on String {
 
   bool get fromMemory => startsWith('data:image');
 
-  bool get isEmoji {
-    final emojiRegExp = RegExp(emojiRegExpression);
-    return emojiRegExp.hasMatch(this);
+  bool get isAllEmoji {
+    for (String s in EmojiParser().unemojify(this).split(" ")) {
+      if (!s.startsWith(":") || !s.endsWith(":")) {
+        return false;
+      }
+    }
+    return true;
   }
 
   bool get isUrl => Uri.tryParse(this)?.isAbsolute ?? false;
