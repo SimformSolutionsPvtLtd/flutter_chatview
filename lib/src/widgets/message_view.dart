@@ -97,7 +97,7 @@ class _MessageViewState extends State<MessageView>
             child: Padding(
               padding: EdgeInsets.only(
                   bottom: widget.message.reaction.isNotEmpty ? 6 : 0),
-              child: message.isEmoji
+              child: message.isAllEmoji
                   ? Stack(
                       children: [
                         Padding(
