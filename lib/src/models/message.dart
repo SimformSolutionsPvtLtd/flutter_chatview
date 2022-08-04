@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'package:chatview/chatview.dart';
 import 'package:chatview/src/models/reply_message.dart';
 import 'package:chatview/src/values/enumaration.dart';
 
@@ -26,7 +27,8 @@ class Message {
   final String id;
   final String message;
   final DateTime createdAt;
-  final String sendBy;
+  //final String sendBy;
+  final ChatUser sendBy;
   final ReplyMessage replyMessage;
   final String reaction;
   final MessageType messageType;
@@ -45,7 +47,8 @@ class Message {
         id: json["id"],
         message: json["message"],
         createdAt: json["createdAt"],
-        sendBy: json["sendBy"],
+        sendBy: ChatUser.fromJson(json["sendBy"]),
+        //json["sendBy"],//Message.fromJson(json["sendBy"]), //ReplyMessage.fromJson(json["reply_message"]),
         replyMessage: ReplyMessage.fromJson(json["reply_message"]),
         reaction: json["reaction"] ?? '',
         messageType: json["message_type"],

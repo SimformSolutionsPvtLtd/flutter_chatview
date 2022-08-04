@@ -33,22 +33,24 @@ class ReplyMessageWidget extends StatelessWidget {
     Key? key,
     required this.message,
     this.repliedMessageConfig,
-    required this.sender,
-    required this.receiver,
+    required this.currentUser,
+    // required this.sender,
+    // required this.receiver,
   }) : super(key: key);
 
   final Message message;
   final RepliedMessageConfiguration? repliedMessageConfig;
-  final ChatUser sender;
-  final ChatUser receiver;
+  final ChatUser currentUser;
+  // final ChatUser sender;
+  // final ChatUser receiver;
 
-  bool get _replyBySender => message.replyMessage.replyBy == sender.id;
+  bool get _replyBySender => message.replyMessage.replyBy == currentUser.id;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final replyMessage = message.replyMessage.message;
-    final replyBy = _replyBySender ? PackageStrings.you : receiver.name;
+    final replyBy = _replyBySender ? PackageStrings.you : currentUser.name;
     return Container(
       margin: repliedMessageConfig?.margin ??
           const EdgeInsets.only(

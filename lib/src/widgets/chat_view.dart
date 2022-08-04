@@ -38,8 +38,9 @@ import 'type_indicator_widget.dart';
 class ChatView extends StatefulWidget {
   const ChatView({
     Key? key,
-    required this.sender,
-    required this.receiver,
+    required this.currentUser,
+    // required this.sender,
+    // required this.receiver,
     required this.chatController,
     this.onSendTap,
     this.showReceiverProfileCircle = true,
@@ -77,8 +78,9 @@ class ChatView extends StatefulWidget {
   final bool enablePagination;
   final Widget? loadingWidget;
   final bool? isLastPage;
-  final ChatUser sender;
-  final ChatUser receiver;
+  final ChatUser currentUser;
+  // final ChatUser sender;
+  // final ChatUser receiver;
   final StringMessageCallBack? onSendTap;
   final ReplyMessageWithReturnWidget? sendMessageBuilder;
   final bool showTypingIndicator;
@@ -308,10 +310,10 @@ class _ChatViewState extends State<ChatView>
                                                             _showReplyPopup(
                                                               message: message,
                                                               sendByCurrentUser:
-                                                                  message.sendBy ==
-                                                                      widget
-                                                                          .sender
-                                                                          .id,
+                                                                  message.sendBy.id == widget.currentUser.id
+                                                                      // widget
+                                                                      //     .sender
+                                                                      //     .id,
                                                             );
                                                           },
                                                           onSwipe: (message) =>
@@ -319,9 +321,9 @@ class _ChatViewState extends State<ChatView>
                                                                   .currentState
                                                                   ?.assignReplyMessage(
                                                                       message),
-                                                          receiver:
-                                                              widget.receiver,
-                                                          sender: widget.sender,
+                                                          currentUser: widget.currentUser
+                                                          // receiver:widget.receiver,
+                                                          // sender: widget.sender,
                                                         ),
                                                       )
                                                     : Center(
@@ -367,8 +369,9 @@ class _ChatViewState extends State<ChatView>
                   sendMessageConfig: widget.sendMessageConfig,
                   backgroundColor: chatBackgroundConfig.backgroundColor,
                   onSendTap: _onSendTap,
-                  receiver: widget.receiver,
-                  sender: widget.sender,
+                  currentUser: widget.currentUser,
+                  // receiver: widget.receiver,
+                  // sender: widget.sender,
                   onReplyCallback: (reply) =>
                       setState(() => replyMessage = reply),
                   onReplyCloseCallback: () =>
