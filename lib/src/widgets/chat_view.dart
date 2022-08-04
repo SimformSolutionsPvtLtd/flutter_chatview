@@ -343,8 +343,9 @@ class _ChatViewState extends State<ChatView>
                                             .chatBubbleConfig
                                             ?.inComingChatBubbleConfig,
                                         showIndicator: showTypingIndicator,
-                                        profilePic: widget.profileCircleConfig
-                                            ?.profileImageUrl,
+                                        profilePic: widget.currentUser.profilePhoto,
+                                        // profilePic: widget.profileCircleConfig
+                                        //     ?.profileImageUrl,
                                       ),
                                       SizedBox(
                                         height:

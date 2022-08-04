@@ -112,7 +112,8 @@ class ChatBubbleWidget extends StatelessWidget {
                         ? profileCircleConfig?.bottomPadding ?? 15
                         : profileCircleConfig?.bottomPadding ?? 2,
                     profileCirclePadding: profileCircleConfig?.padding,
-                    imageUrl: profileCircleConfig?.profileImageUrl,
+                    //imageUrl: profileCircleConfig?.profileImageUrl,
+                    imageUrl: message.sendBy.profilePhoto,
                     circleRadius: profileCircleConfig?.circleRadius,
                   ),
                 Expanded(
