@@ -36,16 +36,12 @@ class SendMessageWidget extends StatefulWidget {
     required this.onSendTap,
     this.sendMessageConfig,
     required this.currentUser,
-    // required this.sender,
-    // required this.receiver,
     this.backgroundColor,
     this.sendMessageBuilder,
     this.onReplyCallback,
     this.onReplyCloseCallback,
   }) : super(key: key);
   final StringMessageCallBack onSendTap;
-  // final ChatUser sender;
-  // final ChatUser receiver;
   final ChatUser currentUser;
   final SendMessageConfiguration? sendMessageConfig;
   final Color? backgroundColor;

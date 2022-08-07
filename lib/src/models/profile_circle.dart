@@ -29,7 +29,6 @@ class ProfileCircleConfiguration {
 
   ProfileCircleConfiguration({
     this.padding,
-    //this.profileImageUrl,
     this.bottomPadding,
     this.circleRadius,
   });

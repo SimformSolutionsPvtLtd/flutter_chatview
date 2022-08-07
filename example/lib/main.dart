@@ -35,8 +35,6 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   AppTheme theme = LightTheme();
   bool isDarkTheme = false;
-  // final sender = ChatUser(id: '1', name: 'Flutter');
-  // final receiver = ChatUser(id: '2', name: 'Simform');
 
   final currentUser = ChatUser(id: '2', name: 'Simform', profilePhoto: Data.profileImage);
 
@@ -49,8 +47,6 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ChatView(
-        // sender: sender,
-        // receiver: receiver,
         currentUser: currentUser,
         chatController: _chatController,
         onSendTap: _onSendTap,
@@ -63,7 +59,7 @@ class _ChatScreenState extends State<ChatScreen> {
           backGroundColor: theme.appBarColor,
           profilePicture: Data.profileImage,
           backArrowColor: theme.backArrowColor,
-          //title: receiver.name,
+          title: "Chat view",
           titleTextStyle: TextStyle(
             color: theme.appBarTitleTextStyle,
             fontWeight: FontWeight.bold,

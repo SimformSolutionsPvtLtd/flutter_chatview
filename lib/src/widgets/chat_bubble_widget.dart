@@ -40,8 +40,6 @@ class ChatBubbleWidget extends StatelessWidget {
     required this.slideAnimation,
     required this.onSwipe,
     required this.currentUser,
-    // required this.sender,
-    // required this.receiver,
     this.profileCircleConfig,
     this.chatBubbleConfig,
     this.repliedMessageConfig,
@@ -65,8 +63,6 @@ class ChatBubbleWidget extends StatelessWidget {
   final MessageConfiguration? messageConfig;
   final MessageCallBack onSwipe;
   final ChatUser currentUser;
-  // final ChatUser sender;
-  // final ChatUser receiver;
   final ChatController chatController;
 
   String get replyMessage => message.replyMessage.message;
@@ -112,7 +108,6 @@ class ChatBubbleWidget extends StatelessWidget {
                         ? profileCircleConfig?.bottomPadding ?? 15
                         : profileCircleConfig?.bottomPadding ?? 2,
                     profileCirclePadding: profileCircleConfig?.padding,
-                    //imageUrl: profileCircleConfig?.profileImageUrl,
                     imageUrl: message.sendBy.profilePhoto,
                     circleRadius: profileCircleConfig?.circleRadius,
                   ),
@@ -166,8 +161,6 @@ class ChatBubbleWidget extends StatelessWidget {
                   message: message,
                   repliedMessageConfig: repliedMessageConfig,
                   currentUser: currentUser,
-                  // receiver: receiver,
-                  // sender: sender,
                 ),
         MessageView(
           outgoingChatBubbleConfig: chatBubbleConfig?.outgoingChatBubbleConfig,

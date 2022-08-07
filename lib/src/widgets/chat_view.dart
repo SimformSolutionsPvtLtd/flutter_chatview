@@ -39,8 +39,6 @@ class ChatView extends StatefulWidget {
   const ChatView({
     Key? key,
     required this.currentUser,
-    // required this.sender,
-    // required this.receiver,
     required this.chatController,
     this.onSendTap,
     this.showReceiverProfileCircle = true,
@@ -79,8 +77,6 @@ class ChatView extends StatefulWidget {
   final Widget? loadingWidget;
   final bool? isLastPage;
   final ChatUser currentUser;
-  // final ChatUser sender;
-  // final ChatUser receiver;
   final StringMessageCallBack? onSendTap;
   final ReplyMessageWithReturnWidget? sendMessageBuilder;
   final bool showTypingIndicator;
@@ -311,9 +307,6 @@ class _ChatViewState extends State<ChatView>
                                                               message: message,
                                                               sendByCurrentUser:
                                                                   message.sendBy.id == widget.currentUser.id
-                                                                      // widget
-                                                                      //     .sender
-                                                                      //     .id,
                                                             );
                                                           },
                                                           onSwipe: (message) =>
@@ -322,8 +315,6 @@ class _ChatViewState extends State<ChatView>
                                                                   ?.assignReplyMessage(
                                                                       message),
                                                           currentUser: widget.currentUser
-                                                          // receiver:widget.receiver,
-                                                          // sender: widget.sender,
                                                         ),
                                                       )
                                                     : Center(
@@ -344,8 +335,6 @@ class _ChatViewState extends State<ChatView>
                                             ?.inComingChatBubbleConfig,
                                         showIndicator: showTypingIndicator,
                                         profilePic: widget.currentUser.profilePhoto,
-                                        // profilePic: widget.profileCircleConfig
-                                        //     ?.profileImageUrl,
                                       ),
                                       SizedBox(
                                         height:
@@ -371,8 +360,6 @@ class _ChatViewState extends State<ChatView>
                   backgroundColor: chatBackgroundConfig.backgroundColor,
                   onSendTap: _onSendTap,
                   currentUser: widget.currentUser,
-                  // receiver: widget.receiver,
-                  // sender: widget.sender,
                   onReplyCallback: (reply) =>
                       setState(() => replyMessage = reply),
                   onReplyCloseCallback: () =>

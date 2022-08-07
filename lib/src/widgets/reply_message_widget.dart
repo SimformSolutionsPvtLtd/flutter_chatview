@@ -34,15 +34,11 @@ class ReplyMessageWidget extends StatelessWidget {
     required this.message,
     this.repliedMessageConfig,
     required this.currentUser,
-    // required this.sender,
-    // required this.receiver,
   }) : super(key: key);
 
   final Message message;
   final RepliedMessageConfiguration? repliedMessageConfig;
   final ChatUser currentUser;
-  // final ChatUser sender;
-  // final ChatUser receiver;
 
   bool get _replyBySender => message.replyMessage.replyBy == currentUser.id;
 
