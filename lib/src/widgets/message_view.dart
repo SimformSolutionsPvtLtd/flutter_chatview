@@ -59,7 +59,7 @@ class MessageView extends StatefulWidget {
   final MessageCallBack? onDoubleTap;
 
   @override
-  _MessageViewState createState() => _MessageViewState();
+  State<MessageView> createState() => _MessageViewState();
 }
 
 class _MessageViewState extends State<MessageView>

@@ -99,8 +99,8 @@ class ReactionPopupState extends State<ReactionPopup>
                   scale: _scaleAnimation.value,
                   child: reactionPopupConfig?.showGlassMorphismEffect ?? false
                       ? GlassMorphismReactionPopup(
-                          child: _reactionPopupRow,
                           reactionPopupConfig: reactionPopupConfig,
+                          child: _reactionPopupRow,
                         )
                       : Container(
                           constraints: BoxConstraints(

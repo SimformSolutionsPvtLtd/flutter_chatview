@@ -49,7 +49,7 @@ class TextMessageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final _textMessage = message.message;
+    final textMessage = message.message;
     return Stack(
       children: [
         Container(
@@ -66,15 +66,15 @@ class TextMessageView extends StatelessWidget {
                   5, 0, 6, message.reaction.isNotEmpty ? 15 : 2),
           decoration: BoxDecoration(
             color: _color,
-            borderRadius: _borderRadius(_textMessage),
+            borderRadius: _borderRadius(textMessage),
           ),
-          child: _textMessage.isUrl
+          child: textMessage.isUrl
               ? LinkPreview(
                   linkPreviewConfig: _linkPreviewConfig,
-                  url: _textMessage,
+                  url: textMessage,
                 )
               : Text(
-                  _textMessage,
+                  textMessage,
                   style: _textStyle ??
                       textTheme.bodyText2!.copyWith(
                         color: Colors.white,
