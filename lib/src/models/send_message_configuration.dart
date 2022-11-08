@@ -19,30 +19,70 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'package:chatview/src/values/typedefs.dart';
 import 'package:flutter/material.dart';
 
 class SendMessageConfiguration {
   final Color? textFieldBackgroundColor;
-  final String? hintText;
-  final TextStyle? hintStyle;
-  final TextStyle? textStyle;
+
   final Color? defaultSendButtonColor;
   final Widget? sendButtonIcon;
   final Color? replyDialogColor;
   final Color? replyTitleColor;
   final Color? replyMessageColor;
   final Color? closeIconColor;
+  final ImagePickerIconsConfiguration? imagePickerIconsConfig;
+  final TextFieldConfiguration? textFieldConfig;
 
   SendMessageConfiguration({
+    this.textFieldConfig,
     this.textFieldBackgroundColor,
-    this.hintText,
-    this.hintStyle,
+    this.imagePickerIconsConfig,
     this.defaultSendButtonColor,
     this.sendButtonIcon,
     this.replyDialogColor,
     this.replyTitleColor,
     this.replyMessageColor,
     this.closeIconColor,
+  });
+}
+
+class ImagePickerIconsConfiguration {
+  final StringsCallBack? onImageSelected;
+  final Widget? galleryImagePickerIcon;
+  final Widget? cameraImagePickerIcon;
+  final Color? cameraIconColor;
+  final Color? galleryIconColor;
+
+  ImagePickerIconsConfiguration({
+    this.onImageSelected,
+    this.cameraIconColor,
+    this.galleryIconColor,
+    this.galleryImagePickerIcon,
+    this.cameraImagePickerIcon,
+  });
+}
+
+class TextFieldConfiguration {
+  final int? maxLines;
+  final int? minLines;
+  final EdgeInsetsGeometry? padding;
+  final EdgeInsetsGeometry? margin;
+  final String? hintText;
+  final TextStyle? hintStyle;
+  final TextStyle? textStyle;
+  final BorderRadius? borderRadius;
+  final EdgeInsetsGeometry? contentPadding;
+
+  TextFieldConfiguration({
+    this.contentPadding,
+    this.maxLines,
+    this.borderRadius,
+    this.hintText,
+    this.hintStyle,
     this.textStyle,
+    this.padding,
+    this.margin,
+    this.minLines,
   });
 }
