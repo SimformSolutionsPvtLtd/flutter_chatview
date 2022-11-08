@@ -41,7 +41,7 @@ class ChatBackgroundConfiguration {
   final Widget? loadingWidget;
   final Curve messageTimeAnimationCurve;
 
-  const ChatBackgroundConfiguration( {
+  const ChatBackgroundConfiguration({
     this.defaultGroupSeparatorConfig,
     this.backgroundColor,
     this.backgroundImage,

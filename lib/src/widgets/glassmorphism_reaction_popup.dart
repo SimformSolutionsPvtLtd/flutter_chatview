@@ -145,28 +145,28 @@ class _GradientPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final RRect _innerRect2 = RRect.fromRectAndRadius(
+    final RRect innerRect2 = RRect.fromRectAndRadius(
       Rect.fromLTRB(strokeWidth, strokeWidth, size.width - strokeWidth,
           size.height - strokeWidth),
       Radius.circular(radius - strokeWidth),
     );
 
-    final RRect _outerRect = RRect.fromRectAndRadius(
+    final RRect outerRect = RRect.fromRectAndRadius(
       Rect.fromLTRB(0, 0, size.width, size.height),
       Radius.circular(radius),
     );
     _paintObject.shader = _gradient.createShader(Offset.zero & size);
 
-    final Path _outerRectPath = Path()..addRRect(_outerRect);
-    final Path _innerRectPath2 = Path()..addRRect(_innerRect2);
+    final Path outerRectPath = Path()..addRRect(outerRect);
+    final Path innerRectPath2 = Path()..addRRect(innerRect2);
     canvas.drawPath(
       Path.combine(
         PathOperation.difference,
-        _outerRectPath,
+        outerRectPath,
         Path.combine(
           PathOperation.intersect,
-          _outerRectPath,
-          _innerRectPath2,
+          outerRectPath,
+          innerRectPath2,
         ),
       ),
       _paintObject,

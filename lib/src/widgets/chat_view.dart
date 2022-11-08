@@ -80,7 +80,7 @@ class ChatView extends StatefulWidget {
   final Widget? appBar;
 
   @override
-  _ChatViewState createState() => _ChatViewState();
+  State<ChatView> createState() => _ChatViewState();
 }
 
 class _ChatViewState extends State<ChatView>

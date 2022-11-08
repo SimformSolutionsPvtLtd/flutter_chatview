@@ -150,8 +150,8 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
     final onImageSelected = imagePickerIconsConfig?.onImageSelected;
     try {
       if (onImageSelected != null) {
-        final XFile? _image = await _imagePicker.pickImage(source: imageSource);
-        onImageSelected(_image?.path ?? '', '');
+        final XFile? image = await _imagePicker.pickImage(source: imageSource);
+        onImageSelected(image?.path ?? '', '');
       }
     } catch (e) {
       if (onImageSelected != null) {

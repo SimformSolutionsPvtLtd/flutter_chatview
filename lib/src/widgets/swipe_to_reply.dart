@@ -39,7 +39,7 @@ class SwipeToReply extends StatefulWidget {
   final Duration? swipeToReplyAnimationDuration;
 
   @override
-  _SwipeToReplyState createState() => _SwipeToReplyState();
+  State<SwipeToReply> createState() => _SwipeToReplyState();
 }
 
 class _SwipeToReplyState extends State<SwipeToReply>
