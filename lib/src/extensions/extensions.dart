@@ -79,3 +79,18 @@ extension ConnectionStates on ConnectionState {
 
   bool get isActive => this == ConnectionState.active;
 }
+
+extension ChatViewStateTitleExtension on String? {
+  String getChatViewStateTitle(ChatViewState state) {
+    switch (state) {
+      case ChatViewState.hasMessages:
+        return this ?? '';
+      case ChatViewState.noData:
+        return this ?? 'No Messages';
+      case ChatViewState.loading:
+        return this ?? '';
+      case ChatViewState.error:
+        return this ?? 'Something went wrong !!';
+    }
+  }
+}

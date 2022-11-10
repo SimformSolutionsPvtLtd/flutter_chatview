@@ -81,7 +81,7 @@ class _TypingIndicatorState extends State<TypingIndicator>
   @override
   void initState() {
     super.initState();
-    _initializeAnimationController();
+    if (mounted) _initializeAnimationController();
   }
 
   void _initializeAnimationController() {
@@ -157,6 +157,9 @@ class _TypingIndicatorState extends State<TypingIndicator>
   void dispose() {
     _appearanceController.dispose();
     _repeatingController.dispose();
+    for (var element in _jumpControllers) {
+      element.dispose();
+    }
     super.dispose();
   }
 

@@ -21,6 +21,7 @@
  */
 import 'package:chatview/chatview.dart';
 import 'package:chatview/src/widgets/chat_list_widget.dart';
+import 'package:chatview/src/widgets/chatview_state_widget.dart';
 
 import 'package:flutter/material.dart';
 
@@ -51,8 +52,12 @@ class ChatView extends StatefulWidget {
     this.sendMessageBuilder,
     this.showTypingIndicator = false,
     this.sendMessageConfig,
+    required this.chatViewState,
+    ChatViewStateConfiguration? chatViewStateConfig,
   })  : chatBackgroundConfig =
             chatBackgroundConfig ?? const ChatBackgroundConfiguration(),
+        chatViewStateConfig =
+            chatViewStateConfig ?? const ChatViewStateConfiguration(),
         super(key: key);
 
   final ProfileCircleConfiguration? profileCircleConfig;
@@ -76,7 +81,8 @@ class ChatView extends StatefulWidget {
   final TypeIndicatorConfiguration? typeIndicatorConfig;
   final ChatController chatController;
   final SendMessageConfiguration? sendMessageConfig;
-
+  final ChatViewState chatViewState;
+  final ChatViewStateConfiguration? chatViewStateConfig;
   final Widget? appBar;
 
   @override
@@ -95,9 +101,16 @@ class _ChatViewState extends State<ChatView>
   ChatBackgroundConfiguration get chatBackgroundConfig =>
       widget.chatBackgroundConfig;
 
+  ChatViewState get chatViewState => widget.chatViewState;
+
+  ChatViewStateConfiguration? get chatViewStateConfig =>
+      widget.chatViewStateConfig;
+
   @override
   Widget build(BuildContext context) {
-    if (showTypingIndicator) chatController.scrollToLastMessage();
+    if (showTypingIndicator && chatViewState.hasMessages) {
+      chatController.scrollToLastMessage();
+    }
     return Container(
       height: chatBackgroundConfig.height ?? MediaQuery.of(context).size.height,
       width: chatBackgroundConfig.width ?? MediaQuery.of(context).size.width,
@@ -118,29 +131,51 @@ class _ChatViewState extends State<ChatView>
           Expanded(
             child: Stack(
               children: [
-                ChatListWidget(
-                  sender: widget.sender,
-                  showTypingIndicator: widget.showTypingIndicator,
-                  receiver: widget.receiver,
-                  enablePagination: widget.enablePagination,
-                  showReceiverProfileCircle: widget.showReceiverProfileCircle,
-                  replyMessage: replyMessage,
-                  chatController: widget.chatController,
-                  chatBackgroundConfig: widget.chatBackgroundConfig,
-                  reactionPopupConfig: widget.reactionPopupConfig,
-                  typeIndicatorConfig: widget.typeIndicatorConfig,
-                  chatBubbleConfig: widget.chatBubbleConfig,
-                  loadMoreData: widget.loadMoreData,
-                  isLastPage: widget.isLastPage,
-                  replyPopupConfig: widget.replyPopupConfig,
-                  loadingWidget: widget.loadingWidget,
-                  messageConfig: widget.messageConfig,
-                  profileCircleConfig: widget.profileCircleConfig,
-                  repliedMessageConfig: widget.repliedMessageConfig,
-                  swipeToReplyConfig: widget.swipeToReplyConfig,
-                  assignReplyMessage: (message) =>
-                      _sendMessageKey.currentState?.assignReplyMessage(message),
-                ),
+                if (chatViewState.isLoading)
+                  ChatViewStateWidget(
+                    chatViewStateWidgetConfig:
+                        chatViewStateConfig?.loadingWidgetConfig,
+                    chatViewState: chatViewState,
+                  )
+                else if (chatViewState.noMessages)
+                  ChatViewStateWidget(
+                    chatViewStateWidgetConfig:
+                        chatViewStateConfig?.noMessageWidgetConfig,
+                    chatViewState: chatViewState,
+                    onReloadButtonTap: chatViewStateConfig?.onReloadButtonTap,
+                  )
+                else if (chatViewState.isError)
+                  ChatViewStateWidget(
+                    chatViewStateWidgetConfig:
+                        chatViewStateConfig?.errorWidgetConfig,
+                    chatViewState: chatViewState,
+                    onReloadButtonTap: chatViewStateConfig?.onReloadButtonTap,
+                  )
+                else if (chatViewState.hasMessages)
+                  ChatListWidget(
+                    sender: widget.sender,
+                    showTypingIndicator: widget.showTypingIndicator,
+                    receiver: widget.receiver,
+                    enablePagination: widget.enablePagination,
+                    showReceiverProfileCircle: widget.showReceiverProfileCircle,
+                    replyMessage: replyMessage,
+                    chatController: widget.chatController,
+                    chatBackgroundConfig: widget.chatBackgroundConfig,
+                    reactionPopupConfig: widget.reactionPopupConfig,
+                    typeIndicatorConfig: widget.typeIndicatorConfig,
+                    chatBubbleConfig: widget.chatBubbleConfig,
+                    loadMoreData: widget.loadMoreData,
+                    isLastPage: widget.isLastPage,
+                    replyPopupConfig: widget.replyPopupConfig,
+                    loadingWidget: widget.loadingWidget,
+                    messageConfig: widget.messageConfig,
+                    profileCircleConfig: widget.profileCircleConfig,
+                    repliedMessageConfig: widget.repliedMessageConfig,
+                    swipeToReplyConfig: widget.swipeToReplyConfig,
+                    assignReplyMessage: (message) => _sendMessageKey
+                        .currentState
+                        ?.assignReplyMessage(message),
+                  ),
                 SendMessageWidget(
                   key: _sendMessageKey,
                   sendMessageBuilder: widget.sendMessageBuilder,
