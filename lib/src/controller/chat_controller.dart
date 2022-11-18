@@ -28,10 +28,12 @@ import '../models/models.dart';
 class ChatController {
   List<Message> initialMessageList;
   ScrollController scrollController;
+  List<ChatUser> chatUsers;
 
   ChatController({
     required this.initialMessageList,
     required this.scrollController,
+    required this.chatUsers,
   });
 
   StreamController<List<Message>> messageStreamController = StreamController();
@@ -72,4 +74,7 @@ class ChatController {
     initialMessageList.addAll(messageList);
     messageStreamController.sink.add(initialMessageList);
   }
+
+  ChatUser getUserFromId(String userId) =>
+      chatUsers.firstWhere((element) => element.id == userId);
 }

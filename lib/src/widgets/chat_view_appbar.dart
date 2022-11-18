@@ -29,11 +29,11 @@ import '../values/typedefs.dart';
 class ChatViewAppBar extends StatelessWidget {
   const ChatViewAppBar({
     Key? key,
+    required this.chatTitle,
     this.backGroundColor,
-    this.title,
     this.userStatus,
     this.profilePicture,
-    this.titleTextStyle,
+    this.chatTitleTextStyle,
     this.userStatusTextStyle,
     this.backArrowColor,
     this.actions,
@@ -41,10 +41,10 @@ class ChatViewAppBar extends StatelessWidget {
     this.onBackPress,
   }) : super(key: key);
   final Color? backGroundColor;
-  final String? title;
+  final String chatTitle;
   final String? userStatus;
   final String? profilePicture;
-  final TextStyle? titleTextStyle;
+  final TextStyle? chatTitleTextStyle;
   final TextStyle? userStatusTextStyle;
   final Color? backArrowColor;
   final List<Widget>? actions;
@@ -82,16 +82,15 @@ class ChatViewAppBar extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (title != null)
-                        Text(
-                          title!,
-                          style: titleTextStyle ??
-                              const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 0.25,
-                              ),
-                        ),
+                      Text(
+                        chatTitle,
+                        style: chatTitleTextStyle ??
+                            const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 0.25,
+                            ),
+                      ),
                       if (userStatus != null)
                         Text(
                           userStatus!,

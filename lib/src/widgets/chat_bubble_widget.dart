@@ -39,8 +39,7 @@ class ChatBubbleWidget extends StatelessWidget {
     required this.chatController,
     required this.slideAnimation,
     required this.onSwipe,
-    required this.sender,
-    required this.receiver,
+    required this.currentUser,
     this.profileCircleConfig,
     this.chatBubbleConfig,
     this.repliedMessageConfig,
@@ -63,13 +62,14 @@ class ChatBubbleWidget extends StatelessWidget {
   final Animation<Offset> slideAnimation;
   final MessageConfiguration? messageConfig;
   final MessageCallBack onSwipe;
-  final ChatUser sender;
-  final ChatUser receiver;
   final ChatController chatController;
+  final ChatUser currentUser;
 
   String get replyMessage => message.replyMessage.message;
 
-  bool get isMessageBySender => message.sendBy == sender.id;
+  bool get isMessageBySender => message.sendBy == currentUser.id;
+
+  ChatUser get messagedUser => chatController.getUserFromId(message.sendBy);
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +110,7 @@ class ChatBubbleWidget extends StatelessWidget {
                         ? profileCircleConfig?.bottomPadding ?? 15
                         : profileCircleConfig?.bottomPadding ?? 2,
                     profileCirclePadding: profileCircleConfig?.padding,
-                    imageUrl: profileCircleConfig?.profileImageUrl,
+                    imageUrl: messagedUser.profilePhoto,
                     circleRadius: profileCircleConfig?.circleRadius,
                   ),
                 Expanded(
@@ -155,15 +155,25 @@ class ChatBubbleWidget extends StatelessWidget {
       crossAxisAlignment:
           isMessageBySender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       children: [
+        if (chatController.chatUsers.length > 1 && !isMessageBySender)
+          Padding(
+            padding: chatBubbleConfig?.inComingChatBubbleConfig?.padding ??
+                const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            child: Text(
+              messagedUser.name,
+              style: chatBubbleConfig
+                  ?.inComingChatBubbleConfig?.senderNameTextStyle,
+            ),
+          ),
         if (replyMessage.isNotEmpty)
           repliedMessageConfig?.repliedMessageWidgetBuilder != null
               ? repliedMessageConfig!
                   .repliedMessageWidgetBuilder!(message.replyMessage)
               : ReplyMessageWidget(
                   message: message,
+                  chatController: chatController,
                   repliedMessageConfig: repliedMessageConfig,
-                  receiver: receiver,
-                  sender: sender,
+                  currentUser: currentUser,
                 ),
         MessageView(
           outgoingChatBubbleConfig: chatBubbleConfig?.outgoingChatBubbleConfig,

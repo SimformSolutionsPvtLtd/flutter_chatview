@@ -30,6 +30,7 @@ class ChatBubble {
   final EdgeInsetsGeometry? padding;
   final EdgeInsetsGeometry? margin;
   final LinkPreviewConfiguration? linkPreviewConfig;
+  final TextStyle? senderNameTextStyle;
 
   ChatBubble({
     this.color,
@@ -38,5 +39,6 @@ class ChatBubble {
     this.padding,
     this.margin,
     this.linkPreviewConfig,
+    this.senderNameTextStyle,
   });
 }

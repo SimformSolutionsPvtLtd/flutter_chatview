@@ -35,19 +35,28 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   AppTheme theme = LightTheme();
   bool isDarkTheme = false;
-  final sender = ChatUser(id: '1', name: 'Flutter');
-  final receiver = ChatUser(id: '2', name: 'Simform');
+  final currentUser = ChatUser(
+    id: '1',
+    name: 'Flutter',
+    profilePhoto: Data.profileImage,
+  );
   final _chatController = ChatController(
     initialMessageList: Data.messageList,
     scrollController: ScrollController(),
+    chatUsers: [
+      ChatUser(
+        id: '2',
+        name: 'Simform',
+        profilePhoto: Data.profileImage,
+      ),
+    ],
   );
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ChatView(
-        sender: sender,
-        receiver: receiver,
+        currentUser: currentUser,
         chatController: _chatController,
         onSendTap: _onSendTap,
         chatViewState: ChatViewState.hasMessages,
@@ -66,8 +75,8 @@ class _ChatScreenState extends State<ChatScreen> {
           backGroundColor: theme.appBarColor,
           profilePicture: Data.profileImage,
           backArrowColor: theme.backArrowColor,
-          title: receiver.name,
-          titleTextStyle: TextStyle(
+          chatTitle: "Chat view",
+          chatTitleTextStyle: TextStyle(
             color: theme.appBarTitleTextStyle,
             fontWeight: FontWeight.bold,
             fontSize: 18,
@@ -187,7 +196,7 @@ class _ChatScreenState extends State<ChatScreen> {
         id: id.toString(),
         createdAt: DateTime.now(),
         message: message,
-        sendBy: sender.id,
+        sendBy: currentUser.id,
         replyMessage: replyMessage,
       ),
     );

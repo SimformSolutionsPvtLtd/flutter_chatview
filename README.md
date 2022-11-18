@@ -30,14 +30,14 @@ import 'package:chatview/chatview.dart';
 final chatController = ChatController(
   initialMessageList: messageList,
   scrollController: ScrollController(),
+  chatUsers: [ChatUser(id: '2', name: 'Simform')],
 );
 ```
 
 4. Adding a `ChatView` widget.
 ```dart
 ChatView(
-  sender: ChatUser(id: '1', name: 'Flutter'),
-  receiver:ChatUser(id: '2', name: 'Simform'),
+  currentUser: ChatUser(id: '1', name: 'Flutter'),
   chatController: chatController,
   onSendTap: onSendTap,
   chatViewState: ChatViewState.hasMessages, // Add this state once data is available.
@@ -69,7 +69,7 @@ void onSendTap(String message, ReplyMessage replyMessage){
     id: '3',
     message: "How are you",
     createdAt: DateTime.now(),
-    sendBy: sender.id,
+    sendBy: currentUser.id,
   );
   chatController.addMessage(message);
 }
@@ -82,7 +82,7 @@ void onSendTap(String message, ReplyMessage replyMessage){
     id: '3',
     message: imageLink,    
     createdAt: DateTime.now(),
-    sendBy: sender.id,
+    sendBy: currentUser.id,
     messageType: MessageType.image,
   );
   chatController.addMessage(message);
@@ -106,7 +106,7 @@ Add the following keys to your _Info.plist_ file, located in `<project root>/ios
 ChatView(
   appBar: ChatViewAppBar(
     profilePicture: profileImage,
-    title: "Simform",
+    chatTitle: "Simform",
     userStatus: "online",
     actions: [
       Icon(Icons.more_vert),
@@ -118,219 +118,219 @@ ChatView(
 2. Adding a message list configuration with `ChatBackgroundConfiguration` class.
 ```dart
 ChatView(
-   ...
-   chatBackgroundConfig: ChatBackgroundConfiguration(
-     backgroundColor: Colors.white,
-     backgroundImage: backgroundImage,
-   ),
-   ...
+  ...
+  chatBackgroundConfig: ChatBackgroundConfiguration(
+    backgroundColor: Colors.white,
+    backgroundImage: backgroundImage,
+  ),
+  ...
 )
 ```
 
 3. Adding a send message configuration with `SendMessageConfiguration` class.
 ```dart
 ChatView(
-   ...
-   sendMessageConfig: SendMessageConfiguration(
-     replyMessageColor: Colors.grey,
-     replyDialogColor:Colors.blue,
-     replyTitleColor: Colors.black,
-     closeIconColor: Colors.black,
-     horizontalDragToShowMessageTime: true, // to show message created time
-   ),
-   ...
+  ...
+  sendMessageConfig: SendMessageConfiguration(
+    replyMessageColor: Colors.grey,
+    replyDialogColor:Colors.blue,
+    replyTitleColor: Colors.black,
+    closeIconColor: Colors.black,
+    horizontalDragToShowMessageTime: true, // to show message created time
+  ),
+  ...
 )
 ```
 
 4. Adding a receiver's profile image.
 ```dart
 ChatView(
-   ...
-   showReceiverProfileCircle: true,
-   profileCircleConfig: ProfileCircleConfiguration(profileImageUrl: profileImage),
-   /// Add profileImage url of recevier
-   ...
+  ...
+  showReceiverProfileCircle: true,
+  profileCircleConfig: ProfileCircleConfiguration(profileImageUrl: profileImage),
+  /// Add profileImage url of recevier
+  ...
 )
 ``` 
 
 5. Adding a chat bubble configuration with `ChatBubbleConfiguration` class.
 ```dart
 ChatView(
-   ...
-   chatBubbleConfig: ChatBubbleConfiguration(
-     onDoubleTap: (){
+  ...
+  chatBubbleConfig: ChatBubbleConfiguration(
+    onDoubleTap: (){
        // Your code goes here
-     },
-     outgoingChatBubbleConfig: ChatBubble(      // Sender's message chat bubble 
-       color: Colors.blue,
-       borderRadius: const BorderRadius.only(  
-         topRight: Radius.circular(12),
-         topLeft: Radius.circular(12),
-         bottomLeft: Radius.circular(12),
-       ),
-     ),
-     inComingChatBubbleConfig: ChatBubble(      // Receiver's message chat bubble
-       color: Colors.grey.shade200,
-       borderRadius: const BorderRadius.only(
-         topLeft: Radius.circular(12),
-         topRight: Radius.circular(12),
-         bottomRight: Radius.circular(12),
-       ),
-     ),
-   )
-   ...
+    },
+    outgoingChatBubbleConfig: ChatBubble(      // Sender's message chat bubble 
+      color: Colors.blue,
+      borderRadius: const BorderRadius.only(  
+        topRight: Radius.circular(12),
+        topLeft: Radius.circular(12),
+        bottomLeft: Radius.circular(12),
+      ),
+    ),
+    inComingChatBubbleConfig: ChatBubble(      // Receiver's message chat bubble
+      color: Colors.grey.shade200,
+      borderRadius: const BorderRadius.only(
+        topLeft: Radius.circular(12),
+        topRight: Radius.circular(12),
+        bottomRight: Radius.circular(12),
+      ),
+    ),
+  )
+  ...
 )
 ```
 
 6. Adding swipe to reply configuration with `SwipeToReplyConfiguration` class.
 ```dart
 ChatView(
-   ...
-   swipeToReplyConfig: SwipeToReplyConfiguration(
-     onLeftSwipe: (message, sendBy){
+  ...
+  swipeToReplyConfig: SwipeToReplyConfiguration(
+    onLeftSwipe: (message, sendBy){
         // Your code goes here
-     },
-     onRightSwipe: (message, sendBy){
+    },
+    onRightSwipe: (message, sendBy){
         // Your code goes here
-     },              
-   ),
-   ...
+    },              
+  ),
+  ...
 )
 ```
 
 7. Adding messages configuration with `MessageConfiguration` class.
 ```dart
 ChatView(
-   ...
-   messageConfig: MessageConfiguration(
-     messageReactionConfig: MessageReactionConfiguration(),      // Emoji reaction configuration for single message 
-     imageMessageConfig: ImageMessageConfiguration(
-       onTap: (){
+  ...
+  messageConfig: MessageConfiguration(
+    messageReactionConfig: MessageReactionConfiguration(),      // Emoji reaction configuration for single message 
+    imageMessageConfig: ImageMessageConfiguration(
+      onTap: (){
           // Your code goes here
-       },                          
-       shareIconConfig: ShareIconConfiguration(
-         onPressed: (){
+      },                          
+      shareIconConfig: ShareIconConfiguration(
+        onPressed: (){
            // Your code goes here
-         },
-       ),
-     ),
-   ),
-   ...
+        },
+      ),
+    ),
+  ),
+  ...
 )
 ```
 
 8. Adding reaction pop-up configuration with `ReactionPopupConfiguration` class.
 ```dart
 ChatView(
-   ...
-   reactionPopupConfig: ReactionPopupConfiguration(
-     backgroundColor: Colors.white,
-     onEmojiTap: (emoji, messageId){
-       chatController.setReaction(emoji,messageId);
-     },
-   ),
-   ...
+  ...
+  reactionPopupConfig: ReactionPopupConfiguration(
+    backgroundColor: Colors.white,
+    onEmojiTap: (emoji, messageId){
+      chatController.setReaction(emoji,messageId);
+    },
+  ),
+  ...
 )
 ```
 
 9. Adding reply pop-up configuration with `ReplyPopupConfiguration` class.
 ```dart
 ChatView(
-   ...
-   replyPopupConfig: ReplyPopupConfiguration(
-     backgroundColor: Colors.white,
-     onUnsendTap:(message){                   // message is 'Message' class instance
+  ...
+  replyPopupConfig: ReplyPopupConfiguration(
+    backgroundColor: Colors.white,
+    onUnsendTap:(message){                   // message is 'Message' class instance
        // Your code goes here
-     },
-     onReplyTap:(message){                    // message is 'Message' class instance
+    },
+    onReplyTap:(message){                    // message is 'Message' class instance
        // Your code goes here
-     },
-     onReportTap:(){
+    },
+    onReportTap:(){
        // Your code goes here
-     },
-     onMoreTap:(){
+    },
+    onMoreTap:(){
        // Your code goes here
-     },
-   ),
-   ...
+    },
+  ),
+  ...
 )
 ```
 
 10. Adding replied message configuration with `RepliedMessageConfiguration` class.
 ```dart
 ChatView(
-   ...
-   repliedMessageConfig: RepliedMessageConfiguration(
-     backgroundColor: Colors.blue,
-     verticalBarColor: Colors.black,
-   ),
-   ...
+  ...
+  repliedMessageConfig: RepliedMessageConfiguration(
+    backgroundColor: Colors.blue,
+    verticalBarColor: Colors.black,
+  ),
+  ...
 )
 ```
 
 11. Show typing indicator and adding configuration.
 ```dart
 ChatView(
-   ...
-   showTypingIndicator: true, // To show idicator when receiver satrted typing
-   typeIndicatorConfig: TypeIndicatorConfiguration(
-     flashingCircleBrightColor: Colors.grey,
-     flashingCircleDarkColor: Colors.black,
-   ),
-   ...
+  ...
+  showTypingIndicator: true, // To show idicator when receiver satrted typing
+  typeIndicatorConfig: TypeIndicatorConfiguration(
+    flashingCircleBrightColor: Colors.grey,
+    flashingCircleDarkColor: Colors.black,
+  ),
+  ...
 )
 ```
 
 12. Adding linkpreview configuration with `LinkPreviewConfiguration` class.
 ```dart
 ChatView(
-   ...
-   chatBubbleConfig: ChatBubbleConfiguration(
-     linkPreviewConfig: LinkPreviewConfiguration(
-       linkStyle: const TextStyle(
-         color: Colors.white,
-         decoration: TextDecoration.underline,
-       ),
-       backgroundColor: Colors.grey,
-       bodyStyle: const TextStyle(
-         color: Colors.grey.shade200,
-         fontSize:16,
-       ),
-       titleStyle: const TextStyle(
-         color: Colors.black,
-         fontSize:20,
-       ),
-     ),
-   )
-   ...
+  ...
+  chatBubbleConfig: ChatBubbleConfiguration(
+    linkPreviewConfig: LinkPreviewConfiguration(
+      linkStyle: const TextStyle(
+        color: Colors.white,
+        decoration: TextDecoration.underline,
+      ),
+      backgroundColor: Colors.grey,
+      bodyStyle: const TextStyle(
+        color: Colors.grey.shade200,
+        fontSize:16,
+      ),
+      titleStyle: const TextStyle(
+        color: Colors.black,
+        fontSize:20,
+      ),
+    ),
+  )
+  ...
 )
 ```
 
 13. Adding pagination.
 ```dart
 ChatView(
-   ...
-   isLastPage: false,
-   enablePagination: true,
-   loadMoreData: chatController.loadMoreData,
-   ...
+  ...
+  isLastPage: false,
+  enablePagination: true,
+  loadMoreData: chatController.loadMoreData,
+  ...
 )
 ```
 
 14. Get imagepath from image picker and add imagepicker icon configuration.
 ```dart
 ChatView(
-   ...
-   sendMessageConfig: SendMessageConfiguration(
-     imagePickerIconsConfig: ImagePickerIconsConfiguration(
-       onImageSelected: (imagePath, error){
+  ...
+  sendMessageConfig: SendMessageConfiguration(
+    imagePickerIconsConfig: ImagePickerIconsConfiguration(
+      onImageSelected: (imagePath, error){
 
-       },
-       cameraIconColor: Colors.black,
-       galleryIconColor: Colors.black,
-     )
-   )
-   ...
+      },
+      cameraIconColor: Colors.black,
+      galleryIconColor: Colors.black,
+    )
+  )
+  ...
 )
 ```
 
