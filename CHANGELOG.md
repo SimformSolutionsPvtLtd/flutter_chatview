@@ -8,12 +8,11 @@
 * **Breaking**: Add `chatViewState` in `ChatView`.
 * [#8](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/8) Implement loading, error and no message UIs.
 * [#13](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/13) Implement group chat.
+* **FEAT**: Auto scroll to replied message.
 
 ## [0.0.3] 
 
-* [#7](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/7) Add image-picker. 
-
-## [0.0.2] 
+* [#7](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/7) Add image-picker.## [0.0.2]
 
 - Fixed [#10](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/10) - emoji and text.
 

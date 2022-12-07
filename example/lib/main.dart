@@ -175,6 +175,11 @@ class _ChatScreenState extends State<ChatScreen> {
         repliedMessageConfig: RepliedMessageConfiguration(
           backgroundColor: theme.repliedMessageColor,
           verticalBarColor: theme.verticalBarColor,
+          repliedMsgAutoScrollConfig: RepliedMsgAutoScrollConfig(
+            enableHighlightRepliedMsg: true,
+            highlightColor: Colors.pinkAccent.shade100,
+            highlightScale: 1.1,
+          ),
           textStyle: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,

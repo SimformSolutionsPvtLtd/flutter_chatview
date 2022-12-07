@@ -234,6 +234,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
         replyBy: widget.currentUser.id,
         replyTo: message.sendBy,
         messageType: message.messageType,
+        messageId: message.id,
       );
     });
     FocusScope.of(context).requestFocus(_focusNode);

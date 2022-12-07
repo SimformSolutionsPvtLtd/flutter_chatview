@@ -44,6 +44,9 @@ class MessageView extends StatefulWidget {
     this.longPressAnimationDuration,
     this.emojiMessageConfig,
     this.onDoubleTap,
+    this.highlightColor = Colors.grey,
+    this.shouldHighlight = false,
+    this.highlightScale = 1.2,
   }) : super(key: key);
 
   final Message message;
@@ -57,6 +60,9 @@ class MessageView extends StatefulWidget {
   final Duration? longPressAnimationDuration;
   final EmojiMessageConfiguration? emojiMessageConfig;
   final MessageCallBack? onDoubleTap;
+  final Color highlightColor;
+  final bool shouldHighlight;
+  final double highlightScale;
 
   @override
   State<MessageView> createState() => _MessageViewState();
@@ -104,10 +110,15 @@ class _MessageViewState extends State<MessageView>
                           padding: emojiMessageConfiguration?.padding ??
                               EdgeInsets.fromLTRB(leftPadding2, 4, leftPadding2,
                                   widget.message.reaction.isNotEmpty ? 14 : 0),
-                          child: Text(
-                            message,
-                            style: emojiMessageConfiguration?.textStyle ??
-                                const TextStyle(fontSize: 30),
+                          child: Transform.scale(
+                            scale: widget.shouldHighlight
+                                ? widget.highlightScale
+                                : 1.0,
+                            child: Text(
+                              message,
+                              style: emojiMessageConfiguration?.textStyle ??
+                                  const TextStyle(fontSize: 30),
+                            ),
                           ),
                         ),
                         if (widget.message.reaction.isNotEmpty)
@@ -124,6 +135,8 @@ class _MessageViewState extends State<MessageView>
                           isMessageBySender: widget.isMessageBySender,
                           imageMessageConfig: widget.imageMessageConfig,
                           messageReactionConfig: widget.messageReactionConfig,
+                          highlightImage: widget.shouldHighlight,
+                          highlightScale: widget.highlightScale,
                         )
                       : TextMessageView(
                           inComingChatBubbleConfig:
@@ -134,6 +147,8 @@ class _MessageViewState extends State<MessageView>
                           message: widget.message,
                           chatBubbleMaxWidth: widget.chatBubbleMaxWidth,
                           messageReactionConfig: widget.messageReactionConfig,
+                          highlightColor: widget.highlightColor,
+                          highlightMessage: widget.shouldHighlight,
                         ),
             ),
           );
