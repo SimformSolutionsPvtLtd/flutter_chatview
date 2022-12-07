@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'package:chatview/src/models/replied_msg_auto_scroll_config.dart';
 import 'package:flutter/material.dart';
 import '../values/typedefs.dart';
 
@@ -38,6 +39,10 @@ class RepliedMessageConfiguration {
   final double? opacity;
   final ReplyMessageWithReturnWidget? repliedMessageWidgetBuilder;
 
+  /// Configuration for auto scrolling and highlighting a message when
+  /// tapping on the original message above the replied message.
+  final RepliedMsgAutoScrollConfig repliedMsgAutoScrollConfig;
+
   RepliedMessageConfiguration({
     this.verticalBarColor,
     this.backgroundColor,
@@ -53,5 +58,6 @@ class RepliedMessageConfiguration {
     this.repliedImageMessageBorderRadius,
     this.repliedMessageWidgetBuilder,
     this.opacity,
+    this.repliedMsgAutoScrollConfig = const RepliedMsgAutoScrollConfig(),
   });
 }

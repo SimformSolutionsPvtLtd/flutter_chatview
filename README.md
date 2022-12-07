@@ -259,12 +259,13 @@ ChatView(
 10. Adding replied message configuration with `RepliedMessageConfiguration` class.
 ```dart
 ChatView(
-  ...
-  repliedMessageConfig: RepliedMessageConfiguration(
-    backgroundColor: Colors.blue,
-    verticalBarColor: Colors.black,
-  ),
-  ...
+   ...
+   repliedMessageConfig: RepliedMessageConfiguration(
+     backgroundColor: Colors.blue,
+     verticalBarColor: Colors.black,
+     repliedMsgAutoScrollConfig: RepliedMsgAutoScrollConfig(),
+   ),
+   ...
 )
 ```
 
@@ -347,6 +348,19 @@ ChatView(
   ...
 )
 ```
+
+16. Setting auto scroll and highlight config with `RepliedMsgAutoScrollConfig` class.
+```dart
+ChatView(
+    ...
+    repliedMsgAutoScrollConfig: RepliedMsgAutoScrollConfig(
+      enableHighlightRepliedMsg: true,
+      highlightColor: Colors.grey,
+      highlightScale: 1.1,
+    )
+    ...
+)
+```
 ## How to use
 
 Check out the **example** app in the [example](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/tree/main/example) directory or the 'Example' tab on pub.dartlang.org for a more complete example.
@@ -358,6 +372,7 @@ Check out the **example** app in the [example](https://github.com/SimformSolutio
   <tr>
     <td align="center"><a href="https://github.com/vatsaltanna"><img src="https://avatars.githubusercontent.com/u/25323183?s=100" width="100px;" alt=""/><br /><sub><b>Vatsal Tanna</b></sub></a></td>
     <td align="center"><a href="https://github.com/DhvanitVaghani"><img src="https://avatars.githubusercontent.com/u/64645989?v=4" width="100px;" alt=""/><br /><sub><b>Dhvanit Vaghani</b></sub></a></td>
+    <td align="center"><a href="https://github.com/Ujas-Majithiya"><img src="https://avatars.githubusercontent.com/u/56400956?v=4" width="100px;" alt=""/><br /><sub><b>Ujas Majithiya</b></sub></a></td>
   </tr>
 </table>
 <br/>

@@ -37,6 +37,8 @@ class TextMessageView extends StatelessWidget {
     this.inComingChatBubbleConfig,
     this.outgoingChatBubbleConfig,
     this.messageReactionConfig,
+    this.highlightMessage = false,
+    this.highlightColor,
   }) : super(key: key);
 
   final bool isMessageBySender;
@@ -45,6 +47,8 @@ class TextMessageView extends StatelessWidget {
   final ChatBubble? inComingChatBubbleConfig;
   final ChatBubble? outgoingChatBubbleConfig;
   final MessageReactionConfiguration? messageReactionConfig;
+  final bool highlightMessage;
+  final Color? highlightColor;
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +69,7 @@ class TextMessageView extends StatelessWidget {
               EdgeInsets.fromLTRB(
                   5, 0, 6, message.reaction.isNotEmpty ? 15 : 2),
           decoration: BoxDecoration(
-            color: _color,
+            color: highlightMessage ? highlightColor : _color,
             borderRadius: _borderRadius(textMessage),
           ),
           child: textMessage.isUrl

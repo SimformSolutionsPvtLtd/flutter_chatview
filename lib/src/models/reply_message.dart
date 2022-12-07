@@ -27,7 +27,11 @@ class ReplyMessage {
   final String replyTo;
   final MessageType messageType;
 
+  /// Id of message, it replies to.
+  final String messageId;
+
   ReplyMessage({
+    this.messageId = '',
     this.message = '',
     this.replyTo = '',
     this.replyBy = '',
@@ -39,6 +43,7 @@ class ReplyMessage {
         replyBy: json['replyBy'],
         replyTo: json['replyTo'],
         messageType: json["message_type"],
+        messageId: json["id"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -46,5 +51,6 @@ class ReplyMessage {
         'replyBy': replyBy,
         'replyTo': replyTo,
         'message_type': messageType,
+        'id': messageId,
       };
 }

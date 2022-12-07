@@ -106,6 +106,9 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
 
   bool get showTypingIndicator => widget.showTypingIndicator;
 
+  bool highlightMessage = false;
+  String? _replyId;
+
   ChatBubbleConfiguration? get chatBubbleConfig => widget.chatBubbleConfig;
 
   ProfileCircleConfiguration? get profileCircleConfig =>
@@ -185,6 +188,7 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
                             ),
                             indexedItemBuilder: (context, message, index) {
                               return ChatBubbleWidget(
+                                key: message.key,
                                 chatController: chatController,
                                 messageTimeTextStyle:
                                     chatBackgroundConfig.messageTimeTextStyle,
@@ -210,6 +214,15 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
                                 ),
                                 onSwipe: widget.assignReplyMessage,
                                 currentUser: widget.currentUser,
+                                shouldHighlight: _replyId == message.id,
+                                onReplyTap: widget
+                                            .repliedMessageConfig
+                                            ?.repliedMsgAutoScrollConfig
+                                            .enableScrollToRepliedMsg ??
+                                        false
+                                    ? (replyId) =>
+                                        _onReplyTap(replyId, snapshot.data)
+                                    : null,
                               );
                             },
                           )
@@ -235,6 +248,42 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
         ],
       ),
     );
+  }
+
+  Future<void> _onReplyTap(String id, List<Message>? messages) async {
+    // Finds the replied message if exists
+    final repliedMessages = messages?.firstWhere((message) => id == message.id);
+
+    // Scrolls to replied message and highlights
+    if (repliedMessages != null && repliedMessages.key.currentState != null) {
+      await Scrollable.ensureVisible(
+        repliedMessages.key.currentState!.context,
+        // This value will make widget to be in center when auto scrolled.
+        alignment: 0.5,
+        curve: widget.repliedMessageConfig?.repliedMsgAutoScrollConfig
+                .highlightScrollCurve ??
+            Curves.easeIn,
+        duration: widget.repliedMessageConfig?.repliedMsgAutoScrollConfig
+                .highlightDuration ??
+            const Duration(milliseconds: 300),
+      );
+      if (widget.repliedMessageConfig?.repliedMsgAutoScrollConfig
+              .enableHighlightRepliedMsg ??
+          false) {
+        _replyId = id;
+        if (mounted) setState(() {});
+
+        Future.delayed(
+          widget.repliedMessageConfig?.repliedMsgAutoScrollConfig
+                  .highlightDuration ??
+              const Duration(milliseconds: 300),
+          () {
+            _replyId = null;
+            if (mounted) setState(() {});
+          },
+        );
+      }
+    }
   }
 
   void _onHorizontalDrag(DragUpdateDetails details) {

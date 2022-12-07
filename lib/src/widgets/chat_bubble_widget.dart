@@ -29,9 +29,9 @@ import 'profile_circle.dart';
 import 'reply_message_widget.dart';
 import 'swipe_to_reply.dart';
 
-class ChatBubbleWidget extends StatelessWidget {
+class ChatBubbleWidget extends StatefulWidget {
   const ChatBubbleWidget({
-    Key? key,
+    required GlobalKey key,
     required this.message,
     required this.onLongPress,
     required this.showReceiverProfileCircle,
@@ -47,6 +47,8 @@ class ChatBubbleWidget extends StatelessWidget {
     this.messageTimeTextStyle,
     this.messageTimeIconColor,
     this.messageConfig,
+    this.onReplyTap,
+    this.shouldHighlight = false,
   }) : super(key: key);
 
   final Message message;
@@ -64,39 +66,47 @@ class ChatBubbleWidget extends StatelessWidget {
   final MessageCallBack onSwipe;
   final ChatController chatController;
   final ChatUser currentUser;
+  final Function(String)? onReplyTap;
+  final bool shouldHighlight;
 
-  String get replyMessage => message.replyMessage.message;
+  @override
+  State<ChatBubbleWidget> createState() => _ChatBubbleWidgetState();
+}
 
-  bool get isMessageBySender => message.sendBy == currentUser.id;
+class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
+  String get replyMessage => widget.message.replyMessage.message;
 
-  ChatUser get messagedUser => chatController.getUserFromId(message.sendBy);
+  bool get isMessageBySender => widget.message.sendBy == widget.currentUser.id;
+
+  ChatUser get messagedUser =>
+      widget.chatController.getUserFromId(widget.message.sendBy);
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        if (horizontalDragToShowTime)
+        if (widget.horizontalDragToShowTime)
           Visibility(
-            visible: slideAnimation.value.dx == 0.0 ? false : true,
+            visible: widget.slideAnimation.value.dx == 0.0 ? false : true,
             child: Positioned.fill(
               child: Align(
                 alignment: Alignment.centerRight,
                 child: MessageTimeWidget(
-                  messageTime: message.createdAt,
+                  messageTime: widget.message.createdAt,
                   isCurrentUser: isMessageBySender,
-                  messageTimeIconColor: messageTimeIconColor,
-                  messageTimeTextStyle: messageTimeTextStyle,
+                  messageTimeIconColor: widget.messageTimeIconColor,
+                  messageTimeTextStyle: widget.messageTimeTextStyle,
                 ),
               ),
             ),
           ),
         SlideTransition(
-          position: slideAnimation,
+          position: widget.slideAnimation,
           child: Container(
-            padding:
-                chatBubbleConfig?.padding ?? const EdgeInsets.only(left: 5.0),
-            margin:
-                chatBubbleConfig?.margin ?? const EdgeInsets.only(bottom: 10),
+            padding: widget.chatBubbleConfig?.padding ??
+                const EdgeInsets.only(left: 5.0),
+            margin: widget.chatBubbleConfig?.margin ??
+                const EdgeInsets.only(bottom: 10),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: isMessageBySender
@@ -104,41 +114,47 @@ class ChatBubbleWidget extends StatelessWidget {
                   : MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                if (!isMessageBySender && showReceiverProfileCircle)
+                if (!isMessageBySender && widget.showReceiverProfileCircle)
                   ProfileCircle(
-                    bottomPadding: message.reaction.isNotEmpty
-                        ? profileCircleConfig?.bottomPadding ?? 15
-                        : profileCircleConfig?.bottomPadding ?? 2,
-                    profileCirclePadding: profileCircleConfig?.padding,
+                    bottomPadding: widget.message.reaction.isNotEmpty
+                        ? widget.profileCircleConfig?.bottomPadding ?? 15
+                        : widget.profileCircleConfig?.bottomPadding ?? 2,
+                    profileCirclePadding: widget.profileCircleConfig?.padding,
                     imageUrl: messagedUser.profilePhoto,
-                    circleRadius: profileCircleConfig?.circleRadius,
+                    circleRadius: widget.profileCircleConfig?.circleRadius,
                   ),
                 Expanded(
                   child: isMessageBySender
                       ? SwipeToReply(
                           onLeftSwipe: () {
-                            if (swipeToReplyConfig?.onLeftSwipe != null) {
-                              swipeToReplyConfig?.onLeftSwipe!(
-                                  message.message, message.sendBy);
+                            if (widget.swipeToReplyConfig?.onLeftSwipe !=
+                                null) {
+                              widget.swipeToReplyConfig?.onLeftSwipe!(
+                                  widget.message.message,
+                                  widget.message.sendBy);
                             }
-                            onSwipe(message);
+                            widget.onSwipe(widget.message);
                           },
-                          replyIconColor: swipeToReplyConfig?.replyIconColor,
+                          replyIconColor:
+                              widget.swipeToReplyConfig?.replyIconColor,
                           swipeToReplyAnimationDuration:
-                              swipeToReplyConfig?.animationDuration,
+                              widget.swipeToReplyConfig?.animationDuration,
                           child: _messagesWidgetColumn,
                         )
                       : SwipeToReply(
                           onRightSwipe: () {
-                            if (swipeToReplyConfig?.onRightSwipe != null) {
-                              swipeToReplyConfig?.onRightSwipe!(
-                                  message.message, message.sendBy);
+                            if (widget.swipeToReplyConfig?.onRightSwipe !=
+                                null) {
+                              widget.swipeToReplyConfig?.onRightSwipe!(
+                                  widget.message.message,
+                                  widget.message.sendBy);
                             }
-                            onSwipe(message);
+                            widget.onSwipe(widget.message);
                           },
-                          replyIconColor: swipeToReplyConfig?.replyIconColor,
+                          replyIconColor:
+                              widget.swipeToReplyConfig?.replyIconColor,
                           swipeToReplyAnimationDuration:
-                              swipeToReplyConfig?.animationDuration,
+                              widget.swipeToReplyConfig?.animationDuration,
                           child: _messagesWidgetColumn,
                         ),
                 ),
@@ -155,40 +171,52 @@ class ChatBubbleWidget extends StatelessWidget {
       crossAxisAlignment:
           isMessageBySender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       children: [
-        if (chatController.chatUsers.length > 1 && !isMessageBySender)
+        if (widget.chatController.chatUsers.length > 1 && !isMessageBySender)
           Padding(
-            padding: chatBubbleConfig?.inComingChatBubbleConfig?.padding ??
-                const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            padding:
+                widget.chatBubbleConfig?.inComingChatBubbleConfig?.padding ??
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             child: Text(
               messagedUser.name,
-              style: chatBubbleConfig
-                  ?.inComingChatBubbleConfig?.senderNameTextStyle,
+              style: widget.chatBubbleConfig?.inComingChatBubbleConfig
+                  ?.senderNameTextStyle,
             ),
           ),
         if (replyMessage.isNotEmpty)
-          repliedMessageConfig?.repliedMessageWidgetBuilder != null
-              ? repliedMessageConfig!
-                  .repliedMessageWidgetBuilder!(message.replyMessage)
+          widget.repliedMessageConfig?.repliedMessageWidgetBuilder != null
+              ? widget.repliedMessageConfig!
+                  .repliedMessageWidgetBuilder!(widget.message.replyMessage)
               : ReplyMessageWidget(
-                  message: message,
-                  chatController: chatController,
-                  repliedMessageConfig: repliedMessageConfig,
-                  currentUser: currentUser,
+                  message: widget.message,
+                  chatController: widget.chatController,
+                  repliedMessageConfig: widget.repliedMessageConfig,
+                  currentUser: widget.currentUser,
+                  onTap: () => widget.onReplyTap
+                      ?.call(widget.message.replyMessage.messageId),
                 ),
         MessageView(
-          outgoingChatBubbleConfig: chatBubbleConfig?.outgoingChatBubbleConfig,
-          inComingChatBubbleConfig: chatBubbleConfig?.inComingChatBubbleConfig,
-          message: message,
+          outgoingChatBubbleConfig:
+              widget.chatBubbleConfig?.outgoingChatBubbleConfig,
+          inComingChatBubbleConfig:
+              widget.chatBubbleConfig?.inComingChatBubbleConfig,
+          message: widget.message,
           isMessageBySender: isMessageBySender,
-          emojiMessageConfig: messageConfig?.emojiMessageConfig,
-          onLongPress: onLongPress,
-          chatBubbleMaxWidth: chatBubbleConfig?.maxWidth,
-          messageReactionConfig: messageConfig?.messageReactionConfig,
-          imageMessageConfig: messageConfig?.imageMessageConfig,
+          emojiMessageConfig: widget.messageConfig?.emojiMessageConfig,
+          onLongPress: widget.onLongPress,
+          chatBubbleMaxWidth: widget.chatBubbleConfig?.maxWidth,
+          messageReactionConfig: widget.messageConfig?.messageReactionConfig,
+          imageMessageConfig: widget.messageConfig?.imageMessageConfig,
           longPressAnimationDuration:
-              chatBubbleConfig?.longPressAnimationDuration,
-          onDoubleTap: chatBubbleConfig?.onDoubleTap ??
-              (message) => chatController.setReaction(heart, message.id),
+              widget.chatBubbleConfig?.longPressAnimationDuration,
+          onDoubleTap: widget.chatBubbleConfig?.onDoubleTap ??
+              (message) => widget.chatController.setReaction(heart, message.id),
+          shouldHighlight: widget.shouldHighlight,
+          highlightColor: widget.repliedMessageConfig
+                  ?.repliedMsgAutoScrollConfig.highlightColor ??
+              Colors.grey,
+          highlightScale: widget.repliedMessageConfig
+                  ?.repliedMsgAutoScrollConfig.highlightScale ??
+              1.1,
         ),
       ],
     );

@@ -21,9 +21,11 @@
  */
 import 'package:chatview/src/models/reply_message.dart';
 import 'package:chatview/src/values/enumaration.dart';
+import 'package:flutter/cupertino.dart';
 
 class Message {
   final String id;
+  final GlobalKey key;
   final String message;
   final DateTime createdAt;
   final String sendBy;
@@ -39,7 +41,8 @@ class Message {
     ReplyMessage? replyMessage,
     this.reaction = '',
     this.messageType = MessageType.text,
-  }) : replyMessage = replyMessage ?? ReplyMessage();
+  })  : replyMessage = replyMessage ?? ReplyMessage(),
+        key = GlobalKey();
 
   factory Message.fromJson(Map<String, dynamic> json) => Message(
         id: json["id"],
