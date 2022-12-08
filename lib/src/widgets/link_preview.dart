@@ -58,6 +58,7 @@ class LinkPreview extends StatelessWidget {
                   )
                 : AnyLinkPreview(
                     link: url,
+                    proxyUrl: linkPreviewConfig?.proxyUrl,
                     removeElevation: true,
                     placeholderWidget: SizedBox(
                       height: MediaQuery.of(context).size.height * 0.25,

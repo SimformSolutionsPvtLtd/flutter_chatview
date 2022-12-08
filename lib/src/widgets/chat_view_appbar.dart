@@ -39,6 +39,9 @@ class ChatViewAppBar extends StatelessWidget {
     this.actions,
     this.elevation,
     this.onBackPress,
+    this.padding,
+    this.leading,
+    this.showLeading = true,
   }) : super(key: key);
   final Color? backGroundColor;
   final String chatTitle;
@@ -50,26 +53,31 @@ class ChatViewAppBar extends StatelessWidget {
   final List<Widget>? actions;
   final double? elevation;
   final VoidCallBack? onBackPress;
+  final EdgeInsets? padding;
+  final Widget? leading;
+  final bool showLeading;
 
   @override
   Widget build(BuildContext context) {
     return Material(
       elevation: elevation ?? 1,
       child: Container(
-        padding:
+        padding: padding ??
             EdgeInsets.only(top: MediaQuery.of(context).padding.top, bottom: 4),
         color: backGroundColor ?? Colors.white,
         child: Row(
           children: [
-            IconButton(
-              onPressed: onBackPress ?? () => Navigator.pop(context),
-              icon: Icon(
-                (!kIsWeb && Platform.isIOS)
-                    ? Icons.arrow_back_ios
-                    : Icons.arrow_back,
-                color: backArrowColor,
-              ),
-            ),
+            if (showLeading)
+              leading ??
+                  IconButton(
+                    onPressed: onBackPress ?? () => Navigator.pop(context),
+                    icon: Icon(
+                      (!kIsWeb && Platform.isIOS)
+                          ? Icons.arrow_back_ios
+                          : Icons.arrow_back,
+                      color: backArrowColor,
+                    ),
+                  ),
             Expanded(
               child: Row(
                 children: [
