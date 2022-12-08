@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'dart:async';
 import 'dart:io' if (kIsWeb) 'dart:html';
 
 import 'package:chatview/src/widgets/chat_groupedlist_widget.dart';
@@ -105,7 +106,10 @@ class _ChatListWidgetState extends State<ChatListWidget>
   }
 
   void _initialize() {
-    chatController.messageStreamController.sink.add(messageList);
+    chatController.messageStreamController = StreamController();
+    if (!chatController.messageStreamController.isClosed) {
+      chatController.messageStreamController.sink.add(messageList);
+    }
     if (widget.enablePagination) {
       scrollController.addListener(_pagination);
     }
@@ -120,61 +124,55 @@ class _ChatListWidgetState extends State<ChatListWidget>
       onTap: _onChatListTap,
       showPopUp: showPopUp,
     );
-    return messageList.isNotEmpty
-        ? Column(
+    return Column(
+      children: [
+        if (_isNextPageLoading && widget.enablePagination)
+          SizedBox(
+            height: Scaffold.of(context).appBarMaxHeight,
+            child: Center(
+              child: widget.loadingWidget ?? const CircularProgressIndicator(),
+            ),
+          ),
+        Expanded(
+          child: Stack(
             children: [
-              if (_isNextPageLoading && widget.enablePagination)
-                SizedBox(
-                  height: Scaffold.of(context).appBarMaxHeight,
-                  child: Center(
-                    child: widget.loadingWidget ??
-                        const CircularProgressIndicator(),
-                  ),
-                ),
-              Expanded(
-                child: Stack(
-                  children: [
-                    ChatGroupedListWidget(
-                      showPopUp: showPopUp,
-                      showTypingIndicator: showTypingIndicator,
-                      scrollController: scrollController,
-                      chatController: chatController,
-                      sender: widget.sender,
-                      chatBackgroundConfig: widget.chatBackgroundConfig,
-                      assignReplyMessage: widget.assignReplyMessage,
-                      showReceiverProfileCircle:
-                          widget.showReceiverProfileCircle,
-                      replyMessage: widget.replyMessage,
-                      receiver: widget.receiver,
-                      swipeToReplyConfig: widget.swipeToReplyConfig,
-                      repliedMessageConfig: widget.repliedMessageConfig,
-                      profileCircleConfig: widget.profileCircleConfig,
-                      messageConfig: widget.messageConfig,
-                      chatBubbleConfig: widget.chatBubbleConfig,
-                      typeIndicatorConfig: widget.typeIndicatorConfig,
-                      onChatBubbleLongPress:
-                          (yCoordinate, xCoordinate, message) {
-                        _reactionPopupKey.currentState?.refreshWidget(
-                          messageId: message.id,
-                          xCoordinate: xCoordinate,
-                          yCoordinate: yCoordinate < 0
-                              ? -(yCoordinate) - 5
-                              : yCoordinate,
-                        );
-                        _showReplyPopup(
-                          message: message,
-                          sendByCurrentUser: message.sendBy == widget.sender.id,
-                        );
-                      },
-                      onChatListTap: _onChatListTap,
-                    ),
-                    reactionPopup,
-                  ],
-                ),
+              ChatGroupedListWidget(
+                showPopUp: showPopUp,
+                showTypingIndicator: showTypingIndicator,
+                scrollController: scrollController,
+                chatController: chatController,
+                sender: widget.sender,
+                chatBackgroundConfig: widget.chatBackgroundConfig,
+                assignReplyMessage: widget.assignReplyMessage,
+                showReceiverProfileCircle: widget.showReceiverProfileCircle,
+                replyMessage: widget.replyMessage,
+                receiver: widget.receiver,
+                swipeToReplyConfig: widget.swipeToReplyConfig,
+                repliedMessageConfig: widget.repliedMessageConfig,
+                profileCircleConfig: widget.profileCircleConfig,
+                messageConfig: widget.messageConfig,
+                chatBubbleConfig: widget.chatBubbleConfig,
+                typeIndicatorConfig: widget.typeIndicatorConfig,
+                onChatBubbleLongPress: (yCoordinate, xCoordinate, message) {
+                  _reactionPopupKey.currentState?.refreshWidget(
+                    messageId: message.id,
+                    xCoordinate: xCoordinate,
+                    yCoordinate:
+                        yCoordinate < 0 ? -(yCoordinate) - 5 : yCoordinate,
+                  );
+                  _showReplyPopup(
+                    message: message,
+                    sendByCurrentUser: message.sendBy == widget.sender.id,
+                  );
+                },
+                onChatListTap: _onChatListTap,
               ),
+              reactionPopup,
             ],
-          )
-        : const SizedBox();
+          ),
+        ),
+      ],
+    );
   }
 
   void _pagination() {

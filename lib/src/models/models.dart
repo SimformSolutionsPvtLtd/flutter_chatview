@@ -37,3 +37,4 @@ export 'send_message_configuration.dart';
 export 'chat_user.dart';
 export 'link_preview_configuration.dart';
 export 'type_indicator_configuration.dart';
+export 'chat_view_states_configuration.dart';

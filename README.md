@@ -40,6 +40,7 @@ ChatView(
   receiver:ChatUser(id: '2', name: 'Simform'),
   chatController: chatController,
   onSendTap: onSendTap,
+  chatViewState: ChatViewState.hasMessages, // Add this state once data is available.
 )
 ```
 
@@ -330,6 +331,20 @@ ChatView(
      )
    )
    ...
+)
+```
+
+15. Add `ChatViewState` customisations.
+```dart
+ChatView(
+  ...
+  chatViewStateConfig: ChatViewStateConfiguration(
+    loadingWidgetConfig: ChatViewStateWidgetConfiguration(
+      loadingIndicatorColor: Colors.pink,
+    ),
+    onReloadButtonTap: () {},
+  ),
+  ...
 )
 ```
 ## How to use

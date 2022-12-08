@@ -50,6 +50,13 @@ class _ChatScreenState extends State<ChatScreen> {
         receiver: receiver,
         chatController: _chatController,
         onSendTap: _onSendTap,
+        chatViewState: ChatViewState.hasMessages,
+        chatViewStateConfig: ChatViewStateConfiguration(
+          loadingWidgetConfig: ChatViewStateWidgetConfiguration(
+            loadingIndicatorColor: theme.outgoingChatBubbleColor,
+          ),
+          onReloadButtonTap: () {},
+        ),
         typeIndicatorConfig: TypeIndicatorConfiguration(
           flashingCircleBrightColor: theme.flashingCircleBrightColor,
           flashingCircleDarkColor: theme.flashingCircleDarkColor,
