@@ -34,22 +34,22 @@ class SendMessageWidget extends StatefulWidget {
   const SendMessageWidget({
     Key? key,
     required this.onSendTap,
+    required this.currentUser,
+    required this.chatController,
     this.sendMessageConfig,
-    required this.sender,
-    required this.receiver,
     this.backgroundColor,
     this.sendMessageBuilder,
     this.onReplyCallback,
     this.onReplyCloseCallback,
   }) : super(key: key);
   final StringMessageCallBack onSendTap;
-  final ChatUser sender;
-  final ChatUser receiver;
   final SendMessageConfiguration? sendMessageConfig;
   final Color? backgroundColor;
   final ReplyMessageWithReturnWidget? sendMessageBuilder;
   final ReplyMessageCallBack? onReplyCallback;
   final VoidCallBack? onReplyCloseCallback;
+  final ChatUser currentUser;
+  final ChatController chatController;
 
   @override
   State<SendMessageWidget> createState() => SendMessageWidgetState();
@@ -60,9 +60,12 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
   ReplyMessage _replyMessage = ReplyMessage();
   final _focusNode = FocusNode();
 
-  String get _replyTo => _replyMessage.replyTo == widget.sender.id
+  ChatUser get repliedUser =>
+      widget.chatController.getUserFromId(_replyMessage.replyTo);
+
+  String get _replyTo => _replyMessage.replyTo == widget.currentUser.id
       ? PackageStrings.you
-      : widget.receiver.name;
+      : repliedUser.name;
 
   @override
   Widget build(BuildContext context) {
@@ -228,7 +231,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
     setState(() {
       _replyMessage = ReplyMessage(
         message: message.message,
-        replyBy: widget.sender.id,
+        replyBy: widget.currentUser.id,
         replyTo: message.sendBy,
         messageType: message.messageType,
       );

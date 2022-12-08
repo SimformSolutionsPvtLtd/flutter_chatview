@@ -36,12 +36,11 @@ class ChatListWidget extends StatefulWidget {
     required this.chatController,
     required this.chatBackgroundConfig,
     required this.enablePagination,
-    required this.sender,
-    required this.receiver,
     required this.showTypingIndicator,
     required this.showReceiverProfileCircle,
     required this.assignReplyMessage,
     required this.replyMessage,
+    required this.currentUser,
     this.loadingWidget,
     this.reactionPopupConfig,
     this.messageConfig,
@@ -66,14 +65,13 @@ class ChatListWidget extends StatefulWidget {
   final ProfileCircleConfiguration? profileCircleConfig;
   final SwipeToReplyConfiguration? swipeToReplyConfig;
   final RepliedMessageConfiguration? repliedMessageConfig;
-  final ChatUser sender;
-  final ChatUser receiver;
   final TypeIndicatorConfiguration? typeIndicatorConfig;
   final ReplyMessage replyMessage;
   final ReplyPopupConfiguration? replyPopupConfig;
   final VoidCallBackWithFuture? loadMoreData;
   final bool? isLastPage;
   final MessageCallBack assignReplyMessage;
+  final ChatUser currentUser;
 
   @override
   State<ChatListWidget> createState() => _ChatListWidgetState();
@@ -141,12 +139,11 @@ class _ChatListWidgetState extends State<ChatListWidget>
                 showTypingIndicator: showTypingIndicator,
                 scrollController: scrollController,
                 chatController: chatController,
-                sender: widget.sender,
+                currentUser: widget.currentUser,
                 chatBackgroundConfig: widget.chatBackgroundConfig,
                 assignReplyMessage: widget.assignReplyMessage,
                 showReceiverProfileCircle: widget.showReceiverProfileCircle,
                 replyMessage: widget.replyMessage,
-                receiver: widget.receiver,
                 swipeToReplyConfig: widget.swipeToReplyConfig,
                 repliedMessageConfig: widget.repliedMessageConfig,
                 profileCircleConfig: widget.profileCircleConfig,
@@ -162,7 +159,7 @@ class _ChatListWidgetState extends State<ChatListWidget>
                   );
                   _showReplyPopup(
                     message: message,
-                    sendByCurrentUser: message.sendBy == widget.sender.id,
+                    sendByCurrentUser: message.sendBy == widget.currentUser.id,
                   );
                 },
                 onChatListTap: _onChatListTap,

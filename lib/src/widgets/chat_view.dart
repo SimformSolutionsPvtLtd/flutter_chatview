@@ -30,9 +30,8 @@ import 'send_message_widget.dart';
 class ChatView extends StatefulWidget {
   const ChatView({
     Key? key,
-    required this.sender,
-    required this.receiver,
     required this.chatController,
+    required this.currentUser,
     this.onSendTap,
     this.showReceiverProfileCircle = true,
     this.enablePagination = false,
@@ -73,8 +72,6 @@ class ChatView extends StatefulWidget {
   final bool enablePagination;
   final Widget? loadingWidget;
   final bool? isLastPage;
-  final ChatUser sender;
-  final ChatUser receiver;
   final StringMessageCallBack? onSendTap;
   final ReplyMessageWithReturnWidget? sendMessageBuilder;
   final bool showTypingIndicator;
@@ -83,6 +80,8 @@ class ChatView extends StatefulWidget {
   final SendMessageConfiguration? sendMessageConfig;
   final ChatViewState chatViewState;
   final ChatViewStateConfiguration? chatViewStateConfig;
+  final ChatUser currentUser;
+
   final Widget? appBar;
 
   @override
@@ -153,9 +152,8 @@ class _ChatViewState extends State<ChatView>
                   )
                 else if (chatViewState.hasMessages)
                   ChatListWidget(
-                    sender: widget.sender,
+                    currentUser: widget.currentUser,
                     showTypingIndicator: widget.showTypingIndicator,
-                    receiver: widget.receiver,
                     enablePagination: widget.enablePagination,
                     showReceiverProfileCircle: widget.showReceiverProfileCircle,
                     replyMessage: replyMessage,
@@ -178,12 +176,12 @@ class _ChatViewState extends State<ChatView>
                   ),
                 SendMessageWidget(
                   key: _sendMessageKey,
+                  chatController: chatController,
                   sendMessageBuilder: widget.sendMessageBuilder,
                   sendMessageConfig: widget.sendMessageConfig,
                   backgroundColor: chatBackgroundConfig.backgroundColor,
                   onSendTap: _onSendTap,
-                  receiver: widget.receiver,
-                  sender: widget.sender,
+                  currentUser: widget.currentUser,
                   onReplyCallback: (reply) =>
                       setState(() => replyMessage = reply),
                   onReplyCloseCallback: () =>

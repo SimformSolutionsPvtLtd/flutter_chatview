@@ -37,12 +37,11 @@ class ChatGroupedListWidget extends StatefulWidget {
     required this.chatController,
     required this.chatBackgroundConfig,
     required this.showReceiverProfileCircle,
-    required this.receiver,
-    required this.sender,
     required this.replyMessage,
     required this.assignReplyMessage,
     required this.onChatListTap,
     required this.onChatBubbleLongPress,
+    required this.currentUser,
     this.messageConfig,
     this.chatBubbleConfig,
     this.profileCircleConfig,
@@ -51,38 +50,43 @@ class ChatGroupedListWidget extends StatefulWidget {
     this.typeIndicatorConfig,
   }) : super(key: key);
 
-  // Below parameter being used for when reaction pop is open that time user
-  // can not swipe to see time
+  // Allow user to swipe to see time while reaction pop is not open.
   final bool showPopUp;
-  // Below parameter being used for showing typing indicator widget
+
+  // Allow user to show typing indicator.
   final bool showTypingIndicator;
   final ScrollController scrollController;
-  // Below parameter being used for predefined functions.
+
+  // Allow user to use predefine methods.
   final ChatController chatController;
-  // Below parameter being used for give customisation to background of chat
+
+  // Allow user to give customisation to background of chat
   final ChatBackgroundConfiguration chatBackgroundConfig;
-  // Below parameter being used for showing user profile picture in message.
+
+  // Allow user to showing user profile picture in message.
   final bool showReceiverProfileCircle;
-  // Below parameter being used for giving customisation different types
+
+  // Allow user to giving customisation different types
   // messages
   final MessageConfiguration? messageConfig;
-  // Below parameter being used for giving customisation to chat bubble
+
+  // Allow user to giving customisation to chat bubble
   final ChatBubbleConfiguration? chatBubbleConfig;
-  // Below parameter being used for giving customisation to profile circle
+
+  // Allow user to giving customisation to profile circle
   final ProfileCircleConfiguration? profileCircleConfig;
-  // Below parameter being used for giving customisation to swipe to reply
+
+  // Allow user to giving customisation to swipe to reply
   final SwipeToReplyConfiguration? swipeToReplyConfig;
   final RepliedMessageConfiguration? repliedMessageConfig;
-  // Below parameter contains sender details
-  final ChatUser sender;
-  // Below parameter contains receiver details
-  final ChatUser receiver;
-  // Below parameter being used for giving customisation typing indicator
+
+  // Allow user to giving customisation typing indicator
   final TypeIndicatorConfiguration? typeIndicatorConfig;
   final ReplyMessage replyMessage;
   final MessageCallBack assignReplyMessage;
   final VoidCallBack onChatListTap;
   final void Function(double, double, Message) onChatBubbleLongPress;
+  final ChatUser currentUser;
 
   @override
   State<ChatGroupedListWidget> createState() => _ChatGroupedListWidgetState();
@@ -205,8 +209,7 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
                                   message,
                                 ),
                                 onSwipe: widget.assignReplyMessage,
-                                receiver: widget.receiver,
-                                sender: widget.sender,
+                                currentUser: widget.currentUser,
                               );
                             },
                           )

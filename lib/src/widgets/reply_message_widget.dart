@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'package:chatview/src/controller/chat_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:chatview/src/extensions/extensions.dart';
@@ -32,23 +33,26 @@ class ReplyMessageWidget extends StatelessWidget {
   const ReplyMessageWidget({
     Key? key,
     required this.message,
+    required this.currentUser,
+    required this.chatController,
     this.repliedMessageConfig,
-    required this.sender,
-    required this.receiver,
   }) : super(key: key);
 
   final Message message;
   final RepliedMessageConfiguration? repliedMessageConfig;
-  final ChatUser sender;
-  final ChatUser receiver;
+  final ChatUser currentUser;
+  final ChatController chatController;
 
-  bool get _replyBySender => message.replyMessage.replyBy == sender.id;
+  bool get _replyBySender => message.replyMessage.replyBy == currentUser.id;
+
+  ChatUser get messagedUser =>
+      chatController.getUserFromId(message.replyMessage.replyBy);
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final replyMessage = message.replyMessage.message;
-    final replyBy = _replyBySender ? PackageStrings.you : receiver.name;
+    final replyBy = _replyBySender ? PackageStrings.you : messagedUser.name;
     return Container(
       margin: repliedMessageConfig?.margin ??
           const EdgeInsets.only(
