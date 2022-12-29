@@ -49,6 +49,21 @@ class _ChatScreenState extends State<ChatScreen> {
         name: 'Simform',
         profilePhoto: Data.profileImage,
       ),
+      ChatUser(
+        id: '3',
+        name: 'Jhon',
+        profilePhoto: Data.profileImage,
+      ),
+      ChatUser(
+        id: '4',
+        name: 'Mike',
+        profilePhoto: Data.profileImage,
+      ),
+      ChatUser(
+        id: '5',
+        name: 'Rich',
+        profilePhoto: Data.profileImage,
+      ),
     ],
   );
 
@@ -142,6 +157,8 @@ class _ChatScreenState extends State<ChatScreen> {
               titleStyle: theme.incomingChatLinkTitleStyle,
             ),
             textStyle: TextStyle(color: theme.inComingChatBubbleTextColor),
+            senderNameTextStyle:
+                TextStyle(color: theme.inComingChatBubbleTextColor),
             color: theme.inComingChatBubbleColor,
           ),
         ),
@@ -156,12 +173,37 @@ class _ChatScreenState extends State<ChatScreen> {
             blurRadius: 20,
           ),
           backgroundColor: theme.reactionPopupColor,
-          onEmojiTap: _chatController.setReaction,
+          onEmojiTap: (emoji, messageId) => _chatController.setReaction(
+            emoji: emoji,
+            messageId: messageId,
+            userId: currentUser.id,
+          ),
         ),
         messageConfig: MessageConfiguration(
           messageReactionConfig: MessageReactionConfiguration(
             backgroundColor: theme.messageReactionBackGroundColor,
             borderColor: theme.messageReactionBackGroundColor,
+            reactedUserCountTextStyle:
+                TextStyle(color: theme.inComingChatBubbleTextColor),
+            reactionCountTextStyle:
+                TextStyle(color: theme.inComingChatBubbleTextColor),
+            reactionsBottomSheetConfig: ReactionsBottomSheetConfiguration(
+              backgroundColor: theme.backgroundColor,
+              reactedUserTextStyle: TextStyle(
+                color: theme.inComingChatBubbleTextColor,
+              ),
+              reactionWidgetDecoration: BoxDecoration(
+                color: theme.inComingChatBubbleColor,
+                boxShadow: [
+                  BoxShadow(
+                    color: isDarkTheme ? Colors.black12 : Colors.grey.shade200,
+                    offset: const Offset(0, 20),
+                    blurRadius: 40,
+                  )
+                ],
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
           ),
           imageMessageConfig: ImageMessageConfiguration(
             shareIconConfig: ShareIconConfiguration(

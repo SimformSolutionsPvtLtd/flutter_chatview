@@ -91,7 +91,7 @@ class ChatView extends StatefulWidget {
 class _ChatViewState extends State<ChatView>
     with SingleTickerProviderStateMixin {
   final GlobalKey<SendMessageWidgetState> _sendMessageKey = GlobalKey();
-  ReplyMessage replyMessage = ReplyMessage();
+  ReplyMessage replyMessage = const ReplyMessage();
 
   ChatController get chatController => widget.chatController;
 
@@ -104,6 +104,11 @@ class _ChatViewState extends State<ChatView>
 
   ChatViewStateConfiguration? get chatViewStateConfig =>
       widget.chatViewStateConfig;
+  @override
+  void initState() {
+    super.initState();
+    chatController.chatUsers.add(widget.currentUser);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -185,7 +190,7 @@ class _ChatViewState extends State<ChatView>
                   onReplyCallback: (reply) =>
                       setState(() => replyMessage = reply),
                   onReplyCloseCallback: () =>
-                      setState(() => replyMessage = ReplyMessage()),
+                      setState(() => replyMessage = const ReplyMessage()),
                 ),
               ],
             ),
@@ -207,7 +212,7 @@ class _ChatViewState extends State<ChatView>
 
   void _assignReplyMessage() {
     if (replyMessage.message.isNotEmpty) {
-      setState(() => replyMessage = ReplyMessage());
+      setState(() => replyMessage = const ReplyMessage());
     }
   }
 }

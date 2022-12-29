@@ -57,7 +57,7 @@ class SendMessageWidget extends StatefulWidget {
 
 class SendMessageWidgetState extends State<SendMessageWidget> {
   final _textEditingController = TextEditingController();
-  ReplyMessage _replyMessage = ReplyMessage();
+  ReplyMessage _replyMessage = const ReplyMessage();
   final _focusNode = FocusNode();
 
   ChatUser get repliedUser =>
@@ -221,7 +221,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
         !_textEditingController.text.startsWith('\n')) {
       widget.onSendTap(_textEditingController.text, _replyMessage);
       if (_replyMessage.message.isNotEmpty) {
-        setState(() => _replyMessage = ReplyMessage());
+        setState(() => _replyMessage = const ReplyMessage());
       }
       _textEditingController.clear();
     }
@@ -242,7 +242,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
   }
 
   void _onCloseTap() {
-    setState(() => _replyMessage = ReplyMessage());
+    setState(() => _replyMessage = const ReplyMessage());
     if (widget.onReplyCloseCallback != null) widget.onReplyCloseCallback!();
   }
 

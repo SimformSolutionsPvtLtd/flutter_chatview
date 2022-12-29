@@ -30,7 +30,7 @@ class ReplyMessage {
   /// Id of message, it replies to.
   final String messageId;
 
-  ReplyMessage({
+  const ReplyMessage({
     this.messageId = '',
     this.message = '',
     this.replyTo = '',
