@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'package:chatview/src/controller/chat_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:chatview/src/extensions/extensions.dart';
@@ -33,6 +34,7 @@ class TextMessageView extends StatelessWidget {
     Key? key,
     required this.isMessageBySender,
     required this.message,
+    required this.chatController,
     this.chatBubbleMaxWidth,
     this.inComingChatBubbleConfig,
     this.outgoingChatBubbleConfig,
@@ -49,12 +51,14 @@ class TextMessageView extends StatelessWidget {
   final MessageReactionConfiguration? messageReactionConfig;
   final bool highlightMessage;
   final Color? highlightColor;
+  final ChatController chatController;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final textMessage = message.message;
     return Stack(
+      clipBehavior: Clip.none,
       children: [
         Container(
           constraints: BoxConstraints(
@@ -67,7 +71,7 @@ class TextMessageView extends StatelessWidget {
               ),
           margin: _margin ??
               EdgeInsets.fromLTRB(
-                  5, 0, 6, message.reaction.isNotEmpty ? 15 : 2),
+                  5, 0, 6, message.reaction.reactions.isNotEmpty ? 15 : 2),
           decoration: BoxDecoration(
             color: highlightMessage ? highlightColor : _color,
             borderRadius: _borderRadius(textMessage),
@@ -86,10 +90,12 @@ class TextMessageView extends StatelessWidget {
                       ),
                 ),
         ),
-        if (message.reaction.isNotEmpty)
+        if (message.reaction.reactions.isNotEmpty)
           ReactionWidget(
+            key: key,
             isMessageBySender: isMessageBySender,
-            reaction: message.reaction.toString(),
+            reaction: message.reaction,
+            chatController: chatController,
             messageReactionConfig: messageReactionConfig,
           ),
       ],

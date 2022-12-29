@@ -45,17 +45,29 @@ class ChatController {
     messageStreamController.sink.add(initialMessageList);
   }
 
-  void setReaction(String emoji, String messageId) {
+  void setReaction({
+    required String emoji,
+    required String messageId,
+    required String userId,
+  }) {
     final message =
         initialMessageList.firstWhere((element) => element.id == messageId);
+    final reactedUserIds = message.reaction.reactedUserIds;
     final index = initialMessageList.indexOf(message);
+    final userIndex = reactedUserIds.indexOf(userId);
+    if (userIndex != -1) {
+      message.reaction.reactions[userIndex] = emoji;
+    } else {
+      message.reaction.reactions.add(emoji);
+      message.reaction.reactedUserIds.add(userId);
+    }
     initialMessageList[index] = Message(
       id: messageId,
       message: message.message,
       createdAt: message.createdAt,
       sendBy: message.sendBy,
       replyMessage: message.replyMessage,
-      reaction: emoji,
+      reaction: message.reaction,
       messageType: message.messageType,
     );
     messageStreamController.sink.add(initialMessageList);

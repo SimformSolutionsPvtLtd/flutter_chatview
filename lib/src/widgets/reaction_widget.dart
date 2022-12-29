@@ -19,41 +19,120 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'package:chatview/src/extensions/extensions.dart';
+import 'package:chatview/src/utils/measure_size.dart';
+import 'package:chatview/src/widgets/reactions_bottomsheet.dart';
 import 'package:flutter/material.dart';
-import 'package:chatview/src/models/message_reaction_configuration.dart';
 
-class ReactionWidget extends StatelessWidget {
+import '../../chatview.dart';
+
+class ReactionWidget extends StatefulWidget {
   const ReactionWidget({
     Key? key,
     required this.reaction,
     this.messageReactionConfig,
     required this.isMessageBySender,
+    required this.chatController,
   }) : super(key: key);
-  final String reaction;
+
+  final Reaction reaction;
   final MessageReactionConfiguration? messageReactionConfig;
   final bool isMessageBySender;
+  final ChatController chatController;
+
+  @override
+  State<ReactionWidget> createState() => _ReactionWidgetState();
+}
+
+class _ReactionWidgetState extends State<ReactionWidget> {
+  bool needToExtend = false;
+
+  MessageReactionConfiguration? get messageReactionConfig =>
+      widget.messageReactionConfig;
+  final _reactionTextStyle = const TextStyle(fontSize: 13);
 
   @override
   Widget build(BuildContext context) {
+    /// Convert into set to remove reduntant values
+    final reactionsSet = widget.reaction.reactions.toSet();
     return Positioned(
       bottom: 0,
-      child: Container(
-        padding: messageReactionConfig?.padding ??
-            const EdgeInsets.symmetric(vertical: 1.7, horizontal: 6),
-        margin: messageReactionConfig?.margin ??
-            EdgeInsets.only(left: isMessageBySender ? 10 : 16),
-        decoration: BoxDecoration(
-          color: messageReactionConfig?.backgroundColor ?? Colors.grey.shade200,
-          borderRadius:
-              messageReactionConfig?.borderRadius ?? BorderRadius.circular(16),
-          border: Border.all(
-            color: messageReactionConfig?.borderColor ?? Colors.white,
-            width: messageReactionConfig?.borderWidth ?? 1,
-          ),
+      right: widget.isMessageBySender && needToExtend ? 0 : null,
+      child: InkWell(
+        onTap: () => ReactionsBottomSheet().show(
+          context: context,
+          reaction: widget.reaction,
+          chatController: widget.chatController,
+          reactionsBottomSheetConfig:
+              messageReactionConfig?.reactionsBottomSheetConfig,
         ),
-        child: Text(
-          reaction,
-          style: TextStyle(fontSize: messageReactionConfig?.reactionSize ?? 13),
+        child: MeasureSize(
+          onSizeChange: (extend) => setState(() => needToExtend = extend),
+          child: Container(
+            padding: messageReactionConfig?.padding ??
+                const EdgeInsets.symmetric(vertical: 1.7, horizontal: 6),
+            margin: messageReactionConfig?.margin ??
+                EdgeInsets.only(
+                  left: widget.isMessageBySender ? 10 : 16,
+                  right: 10,
+                ),
+            decoration: BoxDecoration(
+              color: messageReactionConfig?.backgroundColor ??
+                  Colors.grey.shade200,
+              borderRadius: messageReactionConfig?.borderRadius ??
+                  BorderRadius.circular(16),
+              border: Border.all(
+                color: messageReactionConfig?.borderColor ?? Colors.white,
+                width: messageReactionConfig?.borderWidth ?? 1,
+              ),
+            ),
+            child: Row(
+              children: [
+                Text(
+                  reactionsSet.join(' '),
+                  style: TextStyle(
+                    fontSize: messageReactionConfig?.reactionSize ?? 13,
+                  ),
+                ),
+                if (widget.chatController.chatUsers.length > 1) ...[
+                  if (!(widget.reaction.reactedUserIds.length > 3) &&
+                      !(reactionsSet.length > 1))
+                    ...List.generate(
+                      widget.reaction.reactedUserIds.length,
+                      (reactedUserIndex) => widget
+                          .reaction.reactedUserIds[reactedUserIndex]
+                          .getUserProfilePicture(
+                        getChatUser: widget.chatController.getUserFromId,
+                        profileCirclePadding:
+                            messageReactionConfig?.profileCirclePadding,
+                        profileCircleRadius:
+                            messageReactionConfig?.profileCircleRadius,
+                      ),
+                    ),
+                  if (widget.reaction.reactedUserIds.length > 3 &&
+                      !(reactionsSet.length > 1))
+                    Padding(
+                      padding: const EdgeInsets.only(left: 2),
+                      child: Text(
+                        '+${widget.reaction.reactedUserIds.length}',
+                        style:
+                            messageReactionConfig?.reactedUserCountTextStyle ??
+                                _reactionTextStyle,
+                      ),
+                    ),
+                  if (reactionsSet.length > 1)
+                    Padding(
+                      padding: const EdgeInsets.only(left: 2),
+                      child: Text(
+                        widget.reaction.reactedUserIds.length.toString(),
+                        style: messageReactionConfig?.reactionCountTextStyle ??
+                            _reactionTextStyle,
+                      ),
+                    ),
+                ],
+              ],
+            ),
+          ),
         ),
       ),
     );

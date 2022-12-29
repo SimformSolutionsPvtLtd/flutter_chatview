@@ -21,6 +21,7 @@
  */
 import 'dart:convert';
 
+import 'package:chatview/src/controller/chat_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:chatview/src/extensions/extensions.dart';
@@ -36,6 +37,7 @@ class ImageMessageView extends StatelessWidget {
     required this.isMessageBySender,
     this.imageMessageConfig,
     this.messageReactionConfig,
+    required this.chatController,
     this.highlightImage = false,
     this.highlightScale = 1.2,
   }) : super(key: key);
@@ -46,6 +48,7 @@ class ImageMessageView extends StatelessWidget {
   final MessageReactionConfiguration? messageReactionConfig;
   final bool highlightImage;
   final double highlightScale;
+  final ChatController chatController;
 
   String get imageUrl => message.message;
 
@@ -80,7 +83,7 @@ class ImageMessageView extends StatelessWidget {
                         top: 6,
                         right: isMessageBySender ? 6 : 0,
                         left: isMessageBySender ? 0 : 6,
-                        bottom: message.reaction.isNotEmpty ? 15 : 0,
+                        bottom: message.reaction.reactions.isNotEmpty ? 15 : 0,
                       ),
                   height: imageMessageConfig?.height ?? 200,
                   width: imageMessageConfig?.width ?? 150,
@@ -113,11 +116,12 @@ class ImageMessageView extends StatelessWidget {
                 ),
               ),
             ),
-            if (message.reaction.isNotEmpty)
+            if (message.reaction.reactions.isNotEmpty)
               ReactionWidget(
                 isMessageBySender: isMessageBySender,
-                reaction: message.reaction.toString(),
+                reaction: message.reaction,
                 messageReactionConfig: messageReactionConfig,
+                chatController: chatController,
               ),
           ],
         ),

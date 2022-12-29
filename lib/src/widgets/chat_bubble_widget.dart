@@ -116,7 +116,7 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
               children: [
                 if (!isMessageBySender && widget.showReceiverProfileCircle)
                   ProfileCircle(
-                    bottomPadding: widget.message.reaction.isNotEmpty
+                    bottomPadding: widget.message.reaction.reactions.isNotEmpty
                         ? widget.profileCircleConfig?.bottomPadding ?? 15
                         : widget.profileCircleConfig?.bottomPadding ?? 2,
                     profileCirclePadding: widget.profileCircleConfig?.padding,
@@ -195,6 +195,7 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
                       ?.call(widget.message.replyMessage.messageId),
                 ),
         MessageView(
+          chatController: widget.chatController,
           outgoingChatBubbleConfig:
               widget.chatBubbleConfig?.outgoingChatBubbleConfig,
           inComingChatBubbleConfig:
@@ -209,7 +210,11 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
           longPressAnimationDuration:
               widget.chatBubbleConfig?.longPressAnimationDuration,
           onDoubleTap: widget.chatBubbleConfig?.onDoubleTap ??
-              (message) => widget.chatController.setReaction(heart, message.id),
+              (message) => widget.chatController.setReaction(
+                    emoji: heart,
+                    messageId: message.id,
+                    userId: widget.currentUser.id,
+                  ),
           shouldHighlight: widget.shouldHighlight,
           highlightColor: widget.repliedMessageConfig
                   ?.repliedMsgAutoScrollConfig.highlightColor ??

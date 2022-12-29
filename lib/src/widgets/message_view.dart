@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'package:chatview/src/controller/chat_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:chatview/src/extensions/extensions.dart';
@@ -36,6 +37,7 @@ class MessageView extends StatefulWidget {
     required this.message,
     required this.isMessageBySender,
     required this.onLongPress,
+    required this.chatController,
     this.chatBubbleMaxWidth,
     this.inComingChatBubbleConfig,
     this.outgoingChatBubbleConfig,
@@ -63,6 +65,7 @@ class MessageView extends StatefulWidget {
   final Color highlightColor;
   final bool shouldHighlight;
   final double highlightScale;
+  final ChatController chatController;
 
   @override
   State<MessageView> createState() => _MessageViewState();
@@ -102,14 +105,21 @@ class _MessageViewState extends State<MessageView>
             scale: 1 - _animationController.value,
             child: Padding(
               padding: EdgeInsets.only(
-                  bottom: widget.message.reaction.isNotEmpty ? 6 : 0),
+                  bottom: widget.message.reaction.reactions.isNotEmpty ? 6 : 0),
               child: message.isAllEmoji
                   ? Stack(
+                      clipBehavior: Clip.none,
                       children: [
                         Padding(
                           padding: emojiMessageConfiguration?.padding ??
-                              EdgeInsets.fromLTRB(leftPadding2, 4, leftPadding2,
-                                  widget.message.reaction.isNotEmpty ? 14 : 0),
+                              EdgeInsets.fromLTRB(
+                                leftPadding2,
+                                4,
+                                leftPadding2,
+                                widget.message.reaction.reactions.isNotEmpty
+                                    ? 14
+                                    : 0,
+                              ),
                           child: Transform.scale(
                             scale: widget.shouldHighlight
                                 ? widget.highlightScale
@@ -121,9 +131,10 @@ class _MessageViewState extends State<MessageView>
                             ),
                           ),
                         ),
-                        if (widget.message.reaction.isNotEmpty)
+                        if (widget.message.reaction.reactions.isNotEmpty)
                           ReactionWidget(
-                            reaction: widget.message.reaction.toString(),
+                            chatController: widget.chatController,
+                            reaction: widget.message.reaction,
                             messageReactionConfig: widget.messageReactionConfig,
                             isMessageBySender: widget.isMessageBySender,
                           ),
@@ -132,6 +143,7 @@ class _MessageViewState extends State<MessageView>
                   : widget.message.messageType.isImage
                       ? ImageMessageView(
                           message: widget.message,
+                          chatController: widget.chatController,
                           isMessageBySender: widget.isMessageBySender,
                           imageMessageConfig: widget.imageMessageConfig,
                           messageReactionConfig: widget.messageReactionConfig,
@@ -147,6 +159,7 @@ class _MessageViewState extends State<MessageView>
                           message: widget.message,
                           chatBubbleMaxWidth: widget.chatBubbleMaxWidth,
                           messageReactionConfig: widget.messageReactionConfig,
+                          chatController: widget.chatController,
                           highlightColor: widget.highlightColor,
                           highlightMessage: widget.shouldHighlight,
                         ),
