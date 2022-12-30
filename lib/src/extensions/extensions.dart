@@ -87,6 +87,8 @@ extension MessageTypes on MessageType {
   bool get isImage => this == MessageType.image;
 
   bool get isText => this == MessageType.text;
+
+  bool get isCustom => this == MessageType.custom;
 }
 
 extension ConnectionStates on ConnectionState {

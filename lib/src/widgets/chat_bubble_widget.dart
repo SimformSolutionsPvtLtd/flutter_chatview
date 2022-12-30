@@ -202,11 +202,9 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
               widget.chatBubbleConfig?.inComingChatBubbleConfig,
           message: widget.message,
           isMessageBySender: isMessageBySender,
-          emojiMessageConfig: widget.messageConfig?.emojiMessageConfig,
+          messageConfig: widget.messageConfig,
           onLongPress: widget.onLongPress,
           chatBubbleMaxWidth: widget.chatBubbleConfig?.maxWidth,
-          messageReactionConfig: widget.messageConfig?.messageReactionConfig,
-          imageMessageConfig: widget.messageConfig?.imageMessageConfig,
           longPressAnimationDuration:
               widget.chatBubbleConfig?.longPressAnimationDuration,
           onDoubleTap: widget.chatBubbleConfig?.onDoubleTap ??

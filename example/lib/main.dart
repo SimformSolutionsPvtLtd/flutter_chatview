@@ -139,7 +139,7 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         chatBubbleConfig: ChatBubbleConfiguration(
           outgoingChatBubbleConfig: ChatBubble(
-            linkPreviewConfig: LinkPreviewConfiguration(
+            linkPreviewConfig: LinkPreviewConfiguration(// Need for web
               backgroundColor: theme.linkPreviewOutgoingChatColor,
               bodyStyle: theme.outgoingChatLinkBodyStyle,
               titleStyle: theme.outgoingChatLinkTitleStyle,
@@ -206,6 +206,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ),
           imageMessageConfig: ImageMessageConfiguration(
+            margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
             shareIconConfig: ShareIconConfiguration(
               defaultIconBackgroundColor: theme.shareIconBackgroundColor,
               defaultIconColor: theme.shareIconColor,
