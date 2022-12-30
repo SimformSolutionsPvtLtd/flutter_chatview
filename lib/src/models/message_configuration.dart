@@ -20,15 +20,18 @@
  * SOFTWARE.
  */
 import 'package:chatview/src/models/models.dart';
+import 'package:flutter/material.dart';
 
 class MessageConfiguration {
   final ImageMessageConfiguration? imageMessageConfig;
   final MessageReactionConfiguration? messageReactionConfig;
   final EmojiMessageConfiguration? emojiMessageConfig;
+  final Widget Function(Message)? customMessageBuilder;
 
   MessageConfiguration({
     this.imageMessageConfig,
     this.messageReactionConfig,
     this.emojiMessageConfig,
+    this.customMessageBuilder,
   });
 }

@@ -41,14 +41,12 @@ class MessageView extends StatefulWidget {
     this.chatBubbleMaxWidth,
     this.inComingChatBubbleConfig,
     this.outgoingChatBubbleConfig,
-    this.messageReactionConfig,
-    this.imageMessageConfig,
     this.longPressAnimationDuration,
-    this.emojiMessageConfig,
     this.onDoubleTap,
     this.highlightColor = Colors.grey,
     this.shouldHighlight = false,
     this.highlightScale = 1.2,
+    this.messageConfig,
   }) : super(key: key);
 
   final Message message;
@@ -57,15 +55,13 @@ class MessageView extends StatefulWidget {
   final double? chatBubbleMaxWidth;
   final ChatBubble? inComingChatBubbleConfig;
   final ChatBubble? outgoingChatBubbleConfig;
-  final MessageReactionConfiguration? messageReactionConfig;
-  final ImageMessageConfiguration? imageMessageConfig;
   final Duration? longPressAnimationDuration;
-  final EmojiMessageConfiguration? emojiMessageConfig;
   final MessageCallBack? onDoubleTap;
   final Color highlightColor;
   final bool shouldHighlight;
   final double highlightScale;
   final ChatController chatController;
+  final MessageConfiguration? messageConfig;
 
   @override
   State<MessageView> createState() => _MessageViewState();
@@ -74,6 +70,8 @@ class MessageView extends StatefulWidget {
 class _MessageViewState extends State<MessageView>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
+
+  MessageConfiguration? get messageConfig => widget.messageConfig;
 
   @override
   void initState() {
@@ -93,7 +91,7 @@ class _MessageViewState extends State<MessageView>
   @override
   Widget build(BuildContext context) {
     final message = widget.message.message;
-    final emojiMessageConfiguration = widget.emojiMessageConfig;
+    final emojiMessageConfiguration = messageConfig?.emojiMessageConfig;
     return GestureDetector(
       onLongPressStart: _onLongPressStart,
       onDoubleTap: () {
@@ -106,63 +104,69 @@ class _MessageViewState extends State<MessageView>
             child: Padding(
               padding: EdgeInsets.only(
                   bottom: widget.message.reaction.reactions.isNotEmpty ? 6 : 0),
-              child: message.isAllEmoji
-                  ? Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        Padding(
-                          padding: emojiMessageConfiguration?.padding ??
-                              EdgeInsets.fromLTRB(
-                                leftPadding2,
-                                4,
-                                leftPadding2,
-                                widget.message.reaction.reactions.isNotEmpty
-                                    ? 14
-                                    : 0,
-                              ),
-                          child: Transform.scale(
-                            scale: widget.shouldHighlight
-                                ? widget.highlightScale
-                                : 1.0,
-                            child: Text(
-                              message,
-                              style: emojiMessageConfiguration?.textStyle ??
-                                  const TextStyle(fontSize: 30),
+              child: (() {
+                if (message.isAllEmoji) {
+                  return Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Padding(
+                        padding: emojiMessageConfiguration?.padding ??
+                            EdgeInsets.fromLTRB(
+                              leftPadding2,
+                              4,
+                              leftPadding2,
+                              widget.message.reaction.reactions.isNotEmpty
+                                  ? 14
+                                  : 0,
                             ),
+                        child: Transform.scale(
+                          scale: widget.shouldHighlight
+                              ? widget.highlightScale
+                              : 1.0,
+                          child: Text(
+                            message,
+                            style: emojiMessageConfiguration?.textStyle ??
+                                const TextStyle(fontSize: 30),
                           ),
                         ),
-                        if (widget.message.reaction.reactions.isNotEmpty)
-                          ReactionWidget(
-                            chatController: widget.chatController,
-                            reaction: widget.message.reaction,
-                            messageReactionConfig: widget.messageReactionConfig,
-                            isMessageBySender: widget.isMessageBySender,
-                          ),
-                      ],
-                    )
-                  : widget.message.messageType.isImage
-                      ? ImageMessageView(
-                          message: widget.message,
+                      ),
+                      if (widget.message.reaction.reactions.isNotEmpty)
+                        ReactionWidget(
                           chatController: widget.chatController,
+                          reaction: widget.message.reaction,
+                          messageReactionConfig:
+                              messageConfig?.messageReactionConfig,
                           isMessageBySender: widget.isMessageBySender,
-                          imageMessageConfig: widget.imageMessageConfig,
-                          messageReactionConfig: widget.messageReactionConfig,
-                          highlightImage: widget.shouldHighlight,
-                          highlightScale: widget.highlightScale,
-                        )
-                      : TextMessageView(
-                          inComingChatBubbleConfig:
-                              widget.inComingChatBubbleConfig,
-                          outgoingChatBubbleConfig:
-                              widget.outgoingChatBubbleConfig,
-                          isMessageBySender: widget.isMessageBySender,
-                          message: widget.message,
-                          chatBubbleMaxWidth: widget.chatBubbleMaxWidth,
-                          messageReactionConfig: widget.messageReactionConfig,
-                          chatController: widget.chatController,
-                          highlightColor: widget.highlightColor,
-                          highlightMessage: widget.shouldHighlight,
                         ),
+                    ],
+                  );
+                } else if (widget.message.messageType.isImage) {
+                  return ImageMessageView(
+                    message: widget.message,
+                    chatController: widget.chatController,
+                    isMessageBySender: widget.isMessageBySender,
+                    imageMessageConfig: messageConfig?.imageMessageConfig,
+                    messageReactionConfig: messageConfig?.messageReactionConfig,
+                    highlightImage: widget.shouldHighlight,
+                    highlightScale: widget.highlightScale,
+                  );
+                } else if (widget.message.messageType.isText) {
+                  return TextMessageView(
+                    inComingChatBubbleConfig: widget.inComingChatBubbleConfig,
+                    outgoingChatBubbleConfig: widget.outgoingChatBubbleConfig,
+                    isMessageBySender: widget.isMessageBySender,
+                    message: widget.message,
+                    chatBubbleMaxWidth: widget.chatBubbleMaxWidth,
+                    messageReactionConfig: messageConfig?.messageReactionConfig,
+                    chatController: widget.chatController,
+                    highlightColor: widget.highlightColor,
+                    highlightMessage: widget.shouldHighlight,
+                  );
+                } else if (widget.message.messageType.isCustom &&
+                    messageConfig?.customMessageBuilder != null) {
+                  return messageConfig?.customMessageBuilder!(widget.message);
+                }
+              }()),
             ),
           );
         },

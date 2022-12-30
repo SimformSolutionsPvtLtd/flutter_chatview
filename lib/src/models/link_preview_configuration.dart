@@ -29,6 +29,7 @@ class LinkPreviewConfiguration {
   final TextStyle? linkStyle;
   final Color? loadingColor;
   final EdgeInsetsGeometry? padding;
+  final String? proxyUrl;
 
   LinkPreviewConfiguration({
     this.loadingColor,
@@ -38,5 +39,6 @@ class LinkPreviewConfiguration {
     this.titleStyle,
     this.linkStyle,
     this.padding,
+    this.proxyUrl,
   });
 }

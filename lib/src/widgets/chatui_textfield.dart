@@ -82,8 +82,11 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                   const TextStyle(color: Colors.white),
               maxLines: textFieldConfig?.maxLines ?? 5,
               minLines: textFieldConfig?.minLines ?? 1,
+              keyboardType: textFieldConfig?.textInputType,
+              inputFormatters: textFieldConfig?.inputFormatters,
               onChanged: _onChanged,
-              textCapitalization: TextCapitalization.sentences,
+              textCapitalization: textFieldConfig?.textCapitalization ??
+                  TextCapitalization.sentences,
               decoration: InputDecoration(
                 hintText: textFieldConfig?.hintText ?? PackageStrings.message,
                 fillColor:

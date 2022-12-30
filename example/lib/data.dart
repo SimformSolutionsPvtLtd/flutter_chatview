@@ -89,8 +89,7 @@ class Data {
     ),
     Message(
       id: '11',
-      message:
-          "https://bs-uploads.toptal.io/blackfish-uploads/components/seo/content/og_image_file/og_image/777695/0408-FlutterMessangerDemo-Luke_Social-e8a0e8ddab86b503a125ebcad823c583.png",
+      message: "https://miro.medium.com/max/1000/0*s7of7kWnf9fDg4XM.jpeg",
       createdAt: DateTime.now(),
       messageType: MessageType.image,
       sendBy: '1',

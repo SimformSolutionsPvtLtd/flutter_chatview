@@ -21,6 +21,7 @@
  */
 import 'package:chatview/src/values/typedefs.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class SendMessageConfiguration {
   final Color? textFieldBackgroundColor;
@@ -73,6 +74,9 @@ class TextFieldConfiguration {
   final TextStyle? textStyle;
   final BorderRadius? borderRadius;
   final EdgeInsetsGeometry? contentPadding;
+  final TextInputType? textInputType;
+  final List<TextInputFormatter>? inputFormatters;
+  TextCapitalization? textCapitalization;
 
   TextFieldConfiguration({
     this.contentPadding,
@@ -84,5 +88,8 @@ class TextFieldConfiguration {
     this.padding,
     this.margin,
     this.minLines,
+    this.textInputType,
+    this.inputFormatters,
+    this.textCapitalization,
   });
 }
