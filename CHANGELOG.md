@@ -1,4 +1,4 @@
-## [1.0.0]
+## [1.0.0+1]
 
 * **Breaking**: Remove `sender` and `receiver` from `ChatView`.
 * **Breaking**: Add `currentUser` to chat view, which represent the sender.
@@ -28,7 +28,7 @@
 * Fixed [#10](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/10) - emoji and
   text.
 
-## [0.0.1](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/tree/0.0.1)
+## [0.0.1]
 
 * Initial release.
 
