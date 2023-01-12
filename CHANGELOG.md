@@ -1,3 +1,8 @@
+## [1.0.1]
+
+* **Fix**: [32](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/32) Fix issue of 
+  while replying to image it highlights the link instead of the image.
+
 ## [1.0.0+1]
 
 * **Breaking**: Remove `sender` and `receiver` from `ChatView`.

@@ -93,7 +93,7 @@ class ReplyMessageWidget extends StatelessWidget {
                   Flexible(
                     child: Opacity(
                       opacity: repliedMessageConfig?.opacity ?? 0.8,
-                      child: replyMessage.isImageUrl
+                      child: message.replyMessage.messageType.isImage
                           ? Container(
                               height: repliedMessageConfig
                                       ?.repliedImageMessageHeight ??
