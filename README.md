@@ -3,7 +3,8 @@
 # ChatView
  [![chatview](https://img.shields.io/pub/v/chatview?label=chatview)](https://pub.dev/packages/chatview)
 
-A Flutter package that allows you to integrate Chat View with highly customization options.
+A Flutter package that allows you to integrate Chat View with highly customization options such as one on one
+chat, group chat, message reactions, reply messages, link preview and configurations for overall view.
 
 For web demo
 visit [Chat View Example](https://chat-view-8f1b5.web.app/#/).

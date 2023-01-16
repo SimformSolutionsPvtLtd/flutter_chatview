@@ -2,6 +2,8 @@
 
 * **Fix**: [32](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/32) Fix issue of 
   while replying to image it highlights the link instead of the image.
+* **Fix**: [35](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/35) Fix issue of 
+  removing reaction which is reacted accidentally.
 
 ## [1.0.0+1]
 
