@@ -20,6 +20,7 @@
  * SOFTWARE.
  */
 import 'package:chatview/chatview.dart';
+import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../utils/constants.dart';
@@ -68,7 +69,7 @@ extension ValidateString on String {
   bool get isUrl => Uri.tryParse(this)?.isAbsolute ?? false;
 
   Widget getUserProfilePicture({
-    required ChatUser Function(String) getChatUser,
+    required ChatUser? Function(String) getChatUser,
     double? profileCircleRadius,
     EdgeInsets? profileCirclePadding,
   }) {
@@ -77,7 +78,7 @@ extension ValidateString on String {
       child: CircleAvatar(
         radius: profileCircleRadius ?? 8,
         backgroundImage:
-            NetworkImage(getChatUser(this).profilePhoto ?? profileImage),
+            NetworkImage(getChatUser(this)?.profilePhoto ?? profileImage),
       ),
     );
   }
@@ -110,4 +111,8 @@ extension ChatViewStateTitleExtension on String? {
         return this ?? 'Something went wrong !!';
     }
   }
+}
+
+extension StatefulWidgetExtension on State {
+  ChatViewInheritedWidget? get provide => ChatViewInheritedWidget.of(context);
 }

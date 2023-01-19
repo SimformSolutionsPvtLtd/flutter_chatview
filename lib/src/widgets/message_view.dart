@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'package:chatview/src/controller/chat_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:chatview/src/extensions/extensions.dart';
@@ -37,7 +36,7 @@ class MessageView extends StatefulWidget {
     required this.message,
     required this.isMessageBySender,
     required this.onLongPress,
-    required this.chatController,
+    required this.isLongPressEnable,
     this.chatBubbleMaxWidth,
     this.inComingChatBubbleConfig,
     this.outgoingChatBubbleConfig,
@@ -60,8 +59,8 @@ class MessageView extends StatefulWidget {
   final Color highlightColor;
   final bool shouldHighlight;
   final double highlightScale;
-  final ChatController chatController;
   final MessageConfiguration? messageConfig;
+  final bool isLongPressEnable;
 
   @override
   State<MessageView> createState() => _MessageViewState();
@@ -69,114 +68,123 @@ class MessageView extends StatefulWidget {
 
 class _MessageViewState extends State<MessageView>
     with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
+  AnimationController? _animationController;
 
   MessageConfiguration? get messageConfig => widget.messageConfig;
+
+  bool get isLongPressEnable => widget.isLongPressEnable;
 
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(
-      vsync: this,
-      duration: widget.longPressAnimationDuration ??
-          const Duration(milliseconds: 250),
-      upperBound: 0.1,
-      lowerBound: 0.0,
-    );
-    _animationController.addStatusListener((status) {
-      if (status == AnimationStatus.completed) _animationController.reverse();
-    });
+    if (isLongPressEnable) {
+      _animationController = AnimationController(
+        vsync: this,
+        duration: widget.longPressAnimationDuration ??
+            const Duration(milliseconds: 250),
+        upperBound: 0.1,
+        lowerBound: 0.0,
+      );
+      _animationController?.addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          _animationController?.reverse();
+        }
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final message = widget.message.message;
-    final emojiMessageConfiguration = messageConfig?.emojiMessageConfig;
     return GestureDetector(
-      onLongPressStart: _onLongPressStart,
+      onLongPressStart: isLongPressEnable ? _onLongPressStart : null,
       onDoubleTap: () {
         if (widget.onDoubleTap != null) widget.onDoubleTap!(widget.message);
       },
-      child: AnimatedBuilder(
-        builder: (BuildContext context, Widget? child) {
-          return Transform.scale(
-            scale: 1 - _animationController.value,
-            child: Padding(
-              padding: EdgeInsets.only(
-                  bottom: widget.message.reaction.reactions.isNotEmpty ? 6 : 0),
-              child: (() {
-                if (message.isAllEmoji) {
-                  return Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      Padding(
-                        padding: emojiMessageConfiguration?.padding ??
-                            EdgeInsets.fromLTRB(
-                              leftPadding2,
-                              4,
-                              leftPadding2,
-                              widget.message.reaction.reactions.isNotEmpty
-                                  ? 14
-                                  : 0,
-                            ),
-                        child: Transform.scale(
-                          scale: widget.shouldHighlight
-                              ? widget.highlightScale
-                              : 1.0,
-                          child: Text(
-                            message,
-                            style: emojiMessageConfiguration?.textStyle ??
-                                const TextStyle(fontSize: 30),
-                          ),
-                        ),
-                      ),
-                      if (widget.message.reaction.reactions.isNotEmpty)
-                        ReactionWidget(
-                          chatController: widget.chatController,
-                          reaction: widget.message.reaction,
-                          messageReactionConfig:
-                              messageConfig?.messageReactionConfig,
-                          isMessageBySender: widget.isMessageBySender,
-                        ),
-                    ],
-                  );
-                } else if (widget.message.messageType.isImage) {
-                  return ImageMessageView(
-                    message: widget.message,
-                    chatController: widget.chatController,
-                    isMessageBySender: widget.isMessageBySender,
-                    imageMessageConfig: messageConfig?.imageMessageConfig,
-                    messageReactionConfig: messageConfig?.messageReactionConfig,
-                    highlightImage: widget.shouldHighlight,
-                    highlightScale: widget.highlightScale,
-                  );
-                } else if (widget.message.messageType.isText) {
-                  return TextMessageView(
-                    inComingChatBubbleConfig: widget.inComingChatBubbleConfig,
-                    outgoingChatBubbleConfig: widget.outgoingChatBubbleConfig,
-                    isMessageBySender: widget.isMessageBySender,
-                    message: widget.message,
-                    chatBubbleMaxWidth: widget.chatBubbleMaxWidth,
-                    messageReactionConfig: messageConfig?.messageReactionConfig,
-                    chatController: widget.chatController,
-                    highlightColor: widget.highlightColor,
-                    highlightMessage: widget.shouldHighlight,
-                  );
-                } else if (widget.message.messageType.isCustom &&
-                    messageConfig?.customMessageBuilder != null) {
-                  return messageConfig?.customMessageBuilder!(widget.message);
-                }
-              }()),
-            ),
+      child: (() {
+        if (isLongPressEnable) {
+          return AnimatedBuilder(
+            builder: (_, __) {
+              return Transform.scale(
+                scale: 1 - _animationController!.value,
+                child: _messageView,
+              );
+            },
+            animation: _animationController!,
           );
-        },
-        animation: _animationController,
+        } else {
+          return _messageView;
+        }
+      }()),
+    );
+  }
+
+  Widget get _messageView {
+    final message = widget.message.message;
+    final emojiMessageConfiguration = messageConfig?.emojiMessageConfig;
+    return Padding(
+      padding: EdgeInsets.only(
+        bottom: widget.message.reaction.reactions.isNotEmpty ? 6 : 0,
       ),
+      child: (() {
+        if (message.isAllEmoji) {
+          return Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Padding(
+                padding: emojiMessageConfiguration?.padding ??
+                    EdgeInsets.fromLTRB(
+                      leftPadding2,
+                      4,
+                      leftPadding2,
+                      widget.message.reaction.reactions.isNotEmpty ? 14 : 0,
+                    ),
+                child: Transform.scale(
+                  scale: widget.shouldHighlight ? widget.highlightScale : 1.0,
+                  child: Text(
+                    message,
+                    style: emojiMessageConfiguration?.textStyle ??
+                        const TextStyle(fontSize: 30),
+                  ),
+                ),
+              ),
+              if (widget.message.reaction.reactions.isNotEmpty)
+                ReactionWidget(
+                  reaction: widget.message.reaction,
+                  messageReactionConfig: messageConfig?.messageReactionConfig,
+                  isMessageBySender: widget.isMessageBySender,
+                ),
+            ],
+          );
+        } else if (widget.message.messageType.isImage) {
+          return ImageMessageView(
+            message: widget.message,
+            isMessageBySender: widget.isMessageBySender,
+            imageMessageConfig: messageConfig?.imageMessageConfig,
+            messageReactionConfig: messageConfig?.messageReactionConfig,
+            highlightImage: widget.shouldHighlight,
+            highlightScale: widget.highlightScale,
+          );
+        } else if (widget.message.messageType.isText) {
+          return TextMessageView(
+            inComingChatBubbleConfig: widget.inComingChatBubbleConfig,
+            outgoingChatBubbleConfig: widget.outgoingChatBubbleConfig,
+            isMessageBySender: widget.isMessageBySender,
+            message: widget.message,
+            chatBubbleMaxWidth: widget.chatBubbleMaxWidth,
+            messageReactionConfig: messageConfig?.messageReactionConfig,
+            highlightColor: widget.highlightColor,
+            highlightMessage: widget.shouldHighlight,
+          );
+        } else if (widget.message.messageType.isCustom &&
+            messageConfig?.customMessageBuilder != null) {
+          return messageConfig?.customMessageBuilder!(widget.message);
+        }
+      }()),
     );
   }
 
   void _onLongPressStart(LongPressStartDetails details) async {
-    await _animationController.forward();
+    await _animationController?.forward();
     widget.onLongPress(
       details.globalPosition.dy - 120 - 64,
       details.globalPosition.dx,
@@ -185,7 +193,7 @@ class _MessageViewState extends State<MessageView>
 
   @override
   void dispose() {
-    _animationController.dispose();
+    _animationController?.dispose();
     super.dispose();
   }
 }
