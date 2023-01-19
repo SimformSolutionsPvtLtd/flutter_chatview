@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'package:chatview/src/controller/chat_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:chatview/src/extensions/extensions.dart';
@@ -27,6 +26,7 @@ import 'package:chatview/src/models/models.dart';
 import 'package:chatview/src/utils/package_strings.dart';
 
 import '../utils/constants.dart';
+import 'chat_view_inherited_widget.dart';
 import 'vertical_line.dart';
 
 class ReplyMessageWidget extends StatelessWidget {
@@ -34,7 +34,6 @@ class ReplyMessageWidget extends StatelessWidget {
     Key? key,
     required this.message,
     required this.currentUser,
-    required this.chatController,
     this.repliedMessageConfig,
     this.onTap,
   }) : super(key: key);
@@ -42,19 +41,18 @@ class ReplyMessageWidget extends StatelessWidget {
   final Message message;
   final RepliedMessageConfiguration? repliedMessageConfig;
   final ChatUser currentUser;
-  final ChatController chatController;
   final VoidCallback? onTap;
 
   bool get _replyBySender => message.replyMessage.replyBy == currentUser.id;
-
-  ChatUser get messagedUser =>
-      chatController.getUserFromId(message.replyMessage.replyBy);
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final replyMessage = message.replyMessage.message;
-    final replyBy = _replyBySender ? PackageStrings.you : messagedUser.name;
+    final chatController = ChatViewInheritedWidget.of(context)?.chatController;
+    final messagedUser =
+        chatController?.getUserFromId(message.replyMessage.replyBy);
+    final replyBy = _replyBySender ? PackageStrings.you : messagedUser?.name;
     return GestureDetector(
       onTap: onTap,
       child: Container(

@@ -34,7 +34,6 @@ class ChatBackgroundConfiguration {
   final StringWithReturnWidget? groupSeparatorBuilder;
   final GroupedListOrder groupedListOrder;
   final bool sortEnable;
-  final bool horizontalDragToShowMessageTime;
   final TextStyle? messageTimeTextStyle;
   final Color? messageTimeIconColor;
   final DefaultGroupSeparatorConfiguration? defaultGroupSeparatorConfig;
@@ -50,7 +49,6 @@ class ChatBackgroundConfiguration {
     this.groupSeparatorBuilder,
     this.groupedListOrder = GroupedListOrder.ASC,
     this.sortEnable = false,
-    this.horizontalDragToShowMessageTime = true,
     this.padding,
     this.margin,
     this.messageTimeTextStyle,

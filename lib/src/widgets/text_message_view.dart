@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'package:chatview/src/controller/chat_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:chatview/src/extensions/extensions.dart';
@@ -34,7 +33,6 @@ class TextMessageView extends StatelessWidget {
     Key? key,
     required this.isMessageBySender,
     required this.message,
-    required this.chatController,
     this.chatBubbleMaxWidth,
     this.inComingChatBubbleConfig,
     this.outgoingChatBubbleConfig,
@@ -51,7 +49,6 @@ class TextMessageView extends StatelessWidget {
   final MessageReactionConfiguration? messageReactionConfig;
   final bool highlightMessage;
   final Color? highlightColor;
-  final ChatController chatController;
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +92,6 @@ class TextMessageView extends StatelessWidget {
             key: key,
             isMessageBySender: isMessageBySender,
             reaction: message.reaction,
-            chatController: chatController,
             messageReactionConfig: messageReactionConfig,
           ),
       ],

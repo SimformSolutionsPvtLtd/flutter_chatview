@@ -32,13 +32,11 @@ class ReactionWidget extends StatefulWidget {
     required this.reaction,
     this.messageReactionConfig,
     required this.isMessageBySender,
-    required this.chatController,
   }) : super(key: key);
 
   final Reaction reaction;
   final MessageReactionConfiguration? messageReactionConfig;
   final bool isMessageBySender;
-  final ChatController chatController;
 
   @override
   State<ReactionWidget> createState() => _ReactionWidgetState();
@@ -50,6 +48,15 @@ class _ReactionWidgetState extends State<ReactionWidget> {
   MessageReactionConfiguration? get messageReactionConfig =>
       widget.messageReactionConfig;
   final _reactionTextStyle = const TextStyle(fontSize: 13);
+  ChatController? chatController;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (provide != null) {
+      chatController = provide!.chatController;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,13 +66,15 @@ class _ReactionWidgetState extends State<ReactionWidget> {
       bottom: 0,
       right: widget.isMessageBySender && needToExtend ? 0 : null,
       child: InkWell(
-        onTap: () => ReactionsBottomSheet().show(
-          context: context,
-          reaction: widget.reaction,
-          chatController: widget.chatController,
-          reactionsBottomSheetConfig:
-              messageReactionConfig?.reactionsBottomSheetConfig,
-        ),
+        onTap: () => chatController != null
+            ? ReactionsBottomSheet().show(
+                context: context,
+                reaction: widget.reaction,
+                chatController: chatController!,
+                reactionsBottomSheetConfig:
+                    messageReactionConfig?.reactionsBottomSheetConfig,
+              )
+            : null,
         child: MeasureSize(
           onSizeChange: (extend) => setState(() => needToExtend = extend),
           child: Container(
@@ -94,7 +103,7 @@ class _ReactionWidgetState extends State<ReactionWidget> {
                     fontSize: messageReactionConfig?.reactionSize ?? 13,
                   ),
                 ),
-                if (widget.chatController.chatUsers.length > 1) ...[
+                if ((chatController?.chatUsers.length ?? 0) > 1) ...[
                   if (!(widget.reaction.reactedUserIds.length > 3) &&
                       !(reactionsSet.length > 1))
                     ...List.generate(
@@ -102,7 +111,8 @@ class _ReactionWidgetState extends State<ReactionWidget> {
                       (reactedUserIndex) => widget
                           .reaction.reactedUserIds[reactedUserIndex]
                           .getUserProfilePicture(
-                        getChatUser: widget.chatController.getUserFromId,
+                        getChatUser: (userId) =>
+                            chatController?.getUserFromId(userId),
                         profileCirclePadding:
                             messageReactionConfig?.profileCirclePadding,
                         profileCircleRadius:
