@@ -19,7 +19,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-enum MessageType { image, text, custom }
+enum MessageType {
+  image,
+  text,
+
+  /// Only supported on android and ios
+  voice,
+  custom
+}
 
 enum ChatViewState { hasMessages, noData, loading, error }
 

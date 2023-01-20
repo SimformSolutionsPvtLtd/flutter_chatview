@@ -43,6 +43,9 @@ class RepliedMessageConfiguration {
   /// tapping on the original message above the replied message.
   final RepliedMsgAutoScrollConfig repliedMsgAutoScrollConfig;
 
+  /// Color for microphone icon.
+  final Color? micIconColor;
+
   RepliedMessageConfiguration({
     this.verticalBarColor,
     this.backgroundColor,
@@ -59,5 +62,6 @@ class RepliedMessageConfiguration {
     this.repliedMessageWidgetBuilder,
     this.opacity,
     this.repliedMsgAutoScrollConfig = const RepliedMsgAutoScrollConfig(),
+    this.micIconColor,
   });
 }

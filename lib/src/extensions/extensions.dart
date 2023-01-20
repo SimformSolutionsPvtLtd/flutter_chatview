@@ -89,6 +89,8 @@ extension MessageTypes on MessageType {
 
   bool get isText => this == MessageType.text;
 
+  bool get isVoice => this == MessageType.voice;
+
   bool get isCustom => this == MessageType.custom;
 }
 

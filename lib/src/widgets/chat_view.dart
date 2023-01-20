@@ -51,6 +51,7 @@ class ChatView extends StatefulWidget {
     this.sendMessageBuilder,
     this.showTypingIndicator = false,
     this.sendMessageConfig,
+    this.onRecordingComplete,
     required this.chatViewState,
     ChatViewStateConfiguration? chatViewStateConfig,
     this.featureActiveConfig = const FeatureActiveConfig(),
@@ -73,6 +74,7 @@ class ChatView extends StatefulWidget {
   final Widget? loadingWidget;
   final bool? isLastPage;
   final StringMessageCallBack? onSendTap;
+  final StringMessageCallBack? onRecordingComplete;
   final ReplyMessageWithReturnWidget? sendMessageBuilder;
   final bool showTypingIndicator;
   final TypeIndicatorConfiguration? typeIndicatorConfig;
@@ -106,8 +108,7 @@ class _ChatViewState extends State<ChatView>
   ChatViewStateConfiguration? get chatViewStateConfig =>
       widget.chatViewStateConfig;
 
-  FeatureActiveConfig get featureActiveConfig =>
-      widget.featureActiveConfig;
+  FeatureActiveConfig get featureActiveConfig => widget.featureActiveConfig;
 
   @override
   void initState() {
@@ -201,6 +202,7 @@ class _ChatViewState extends State<ChatView>
                           setState(() => replyMessage = reply),
                       onReplyCloseCallback: () =>
                           setState(() => replyMessage = const ReplyMessage()),
+                      onRecordingComplete: _onRecordingComplete,
                     ),
                 ],
               ),
@@ -209,6 +211,16 @@ class _ChatViewState extends State<ChatView>
         ),
       ),
     );
+  }
+
+  void _onRecordingComplete(String path, ReplyMessage replyMessage) {
+    if (widget.sendMessageBuilder == null) {
+      if (widget.onRecordingComplete != null) {
+        widget.onRecordingComplete!(path, replyMessage);
+      }
+      _assignReplyMessage();
+    }
+    chatController.scrollToLastMessage();
   }
 
   void _onSendTap(String message, ReplyMessage replyMessage) {

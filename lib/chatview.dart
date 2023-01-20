@@ -28,3 +28,5 @@ export 'src/widgets/chat_view_appbar.dart';
 export 'src/values/enumaration.dart';
 export 'src/controller/chat_controller.dart';
 export 'src/values/typedefs.dart';
+export 'package:audio_waveforms/audio_waveforms.dart'
+    show WaveStyle, PlayerWaveStyle;
