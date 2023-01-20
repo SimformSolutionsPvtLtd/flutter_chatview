@@ -20,7 +20,9 @@
  * SOFTWARE.
  */
 import 'package:chatview/chatview.dart';
+import 'package:chatview/src/extensions/extensions.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 
 class Message {
   final String id;
@@ -32,6 +34,9 @@ class Message {
   final Reaction reaction;
   final MessageType messageType;
 
+  /// Provides max duration for recorded voice message.
+  Duration? voiceMessageDuration;
+
   Message({
     this.id = '',
     required this.message,
@@ -40,8 +45,16 @@ class Message {
     this.replyMessage = const ReplyMessage(),
     Reaction? reaction,
     this.messageType = MessageType.text,
+    this.voiceMessageDuration,
   })  : reaction = reaction ?? Reaction(reactions: [], reactedUserIds: []),
-        key = GlobalKey();
+        key = GlobalKey(),
+        assert(
+          (messageType.isVoice
+              ? ((defaultTargetPlatform == TargetPlatform.iOS ||
+                  defaultTargetPlatform == TargetPlatform.android))
+              : true),
+          "Voice messages are only supported with android and ios platform",
+        );
 
   factory Message.fromJson(Map<String, dynamic> json) => Message(
         id: json["id"],
@@ -51,6 +64,7 @@ class Message {
         replyMessage: ReplyMessage.fromJson(json["reply_message"]),
         reaction: Reaction.fromJson(json["reaction"]),
         messageType: json["message_type"],
+        voiceMessageDuration: json["voice_message_duration"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -61,5 +75,6 @@ class Message {
         'reply_message': replyMessage.toJson(),
         'reaction': reaction.toJson(),
         'message_type': messageType,
+        'voice_message_duration': voiceMessageDuration,
       };
 }

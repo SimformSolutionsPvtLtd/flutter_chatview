@@ -20,6 +20,7 @@
  * SOFTWARE.
  */
 import 'package:chatview/src/models/models.dart';
+import 'package:chatview/src/models/voice_message_configuration.dart';
 import 'package:flutter/material.dart';
 
 class MessageConfiguration {
@@ -28,10 +29,14 @@ class MessageConfiguration {
   final EmojiMessageConfiguration? emojiMessageConfig;
   final Widget Function(Message)? customMessageBuilder;
 
+  /// Configurations for voice message bubble
+  final VoiceMessageConfiguration? voiceMessageConfig;
+
   MessageConfiguration({
     this.imageMessageConfig,
     this.messageReactionConfig,
     this.emojiMessageConfig,
     this.customMessageBuilder,
+    this.voiceMessageConfig,
   });
 }

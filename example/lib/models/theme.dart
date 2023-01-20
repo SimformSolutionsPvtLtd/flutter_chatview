@@ -23,6 +23,8 @@ class AppTheme {
   final Color? sendButtonColor;
   final Color? cameraIconColor;
   final Color? galleryIconColor;
+  final Color? recordIconColor;
+  final Color? stopIconColor;
   final Color? swipeToReplyIconColor;
   final Color? replyMessageColor;
   final Color? appBarTitleTextStyle;
@@ -36,7 +38,9 @@ class AppTheme {
   final Color? reactionPopupTitleColor;
   final Color? flashingCircleDarkColor;
   final Color? flashingCircleBrightColor;
-
+  final Color? waveformBackgroundColor;
+  final Color? waveColor;
+  final Color? replyMicIconColor;
   final Color? messageReactionBorderColor;
 
   final Color? verticalBarColor;
@@ -98,6 +102,11 @@ class AppTheme {
     this.messageTimeIconColor,
     this.messageTimeTextColor,
     this.replyPopupColor,
+    this.recordIconColor,
+    this.stopIconColor,
+    this.waveformBackgroundColor,
+    this.waveColor,
+    this.replyMicIconColor,
   });
 }
 
@@ -137,6 +146,8 @@ class DarkTheme extends AppTheme {
     Color sendButtonColor = Colors.white,
     Color cameraIconColor = const Color(0xff757575),
     Color galleryIconColor = const Color(0xff757575),
+    Color recorderIconColor = const Color(0xff757575),
+    Color stopIconColor = const Color(0xff757575),
     Color replyMessageColor = Colors.grey,
     Color appBarTitleTextStyle = Colors.white,
     Color messageReactionBackGroundColor = const Color(0xff383152),
@@ -147,6 +158,9 @@ class DarkTheme extends AppTheme {
     Color shareIconColor = Colors.white,
     Color messageTimeIconColor = Colors.white,
     Color messageTimeTextColor = Colors.white,
+    Color waveformBackgroundColor = const Color(0xff383152),
+    Color waveColor = Colors.white,
+    Color replyMicIconColor = Colors.white,
   }) : super(
           closeIconColor: closeIconColor,
           verticalBarColor: verticalBarColor,
@@ -192,6 +206,11 @@ class DarkTheme extends AppTheme {
           flashingCircleBrightColor: flashingCircleBrightColor,
           galleryIconColor: galleryIconColor,
           cameraIconColor: cameraIconColor,
+          recordIconColor: recorderIconColor,
+          stopIconColor: stopIconColor,
+          waveformBackgroundColor: waveformBackgroundColor,
+          waveColor: waveColor,
+          replyMicIconColor: replyMicIconColor,
         );
 }
 
@@ -241,6 +260,11 @@ class LightTheme extends AppTheme {
     Color shareIconColor = Colors.black,
     Color messageTimeIconColor = Colors.black,
     Color messageTimeTextColor = Colors.black,
+    Color recorderIconColor = Colors.black,
+    Color stopIconColor = Colors.black,
+    Color waveformBackgroundColor = Colors.white,
+    Color waveColor = Colors.black,
+    Color replyMicIconColor = Colors.black,
   }) : super(
           reactionPopupColor: reactionPopupColor,
           closeIconColor: closeIconColor,
@@ -286,5 +310,10 @@ class LightTheme extends AppTheme {
           flashingCircleBrightColor: flashingCircleBrightColor,
           galleryIconColor: galleryIconColor,
           cameraIconColor: cameraIconColor,
+          stopIconColor: stopIconColor,
+          recordIconColor: recorderIconColor,
+          waveformBackgroundColor: waveformBackgroundColor,
+          waveColor: waveColor,
+          replyMicIconColor: replyMicIconColor,
         );
 }

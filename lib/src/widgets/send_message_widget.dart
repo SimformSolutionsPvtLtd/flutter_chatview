@@ -21,6 +21,7 @@
  */
 import 'dart:io' if (kIsWeb) 'dart:html';
 import 'dart:ui';
+import 'package:audio_waveforms/audio_waveforms.dart' show DurationExtension;
 import 'package:chatview/src/widgets/chatui_textfield.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -41,8 +42,10 @@ class SendMessageWidget extends StatefulWidget {
     this.sendMessageBuilder,
     this.onReplyCallback,
     this.onReplyCloseCallback,
+    this.onRecordingComplete,
   }) : super(key: key);
   final StringMessageCallBack onSendTap;
+  final StringMessageCallBack? onRecordingComplete;
   final SendMessageConfiguration? sendMessageConfig;
   final Color? backgroundColor;
   final ReplyMessageWithReturnWidget? sendMessageBuilder;
@@ -166,37 +169,65 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                                       ),
                                     ],
                                   ),
-                                  _replyMessage.messageType.isImage
+                                  _replyMessage.messageType.isVoice
                                       ? Row(
                                           children: [
                                             Icon(
-                                              Icons.photo,
-                                              size: 20,
+                                              Icons.mic,
                                               color: widget.sendMessageConfig
-                                                      ?.replyMessageColor ??
-                                                  Colors.grey.shade700,
+                                                  ?.micIconColor,
                                             ),
-                                            Text(
-                                              PackageStrings.photo,
+                                            const SizedBox(width: 4),
+                                            if (_replyMessage
+                                                    .voiceMessageDuration !=
+                                                null)
+                                              Text(
+                                                _replyMessage
+                                                    .voiceMessageDuration!
+                                                    .toHHMMSS(),
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: widget
+                                                          .sendMessageConfig
+                                                          ?.replyMessageColor ??
+                                                      Colors.black,
+                                                ),
+                                              ),
+                                          ],
+                                        )
+                                      : _replyMessage.messageType.isImage
+                                          ? Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.photo,
+                                                  size: 20,
+                                                  color: widget
+                                                          .sendMessageConfig
+                                                          ?.replyMessageColor ??
+                                                      Colors.grey.shade700,
+                                                ),
+                                                Text(
+                                                  PackageStrings.photo,
+                                                  style: TextStyle(
+                                                    color: widget
+                                                            .sendMessageConfig
+                                                            ?.replyMessageColor ??
+                                                        Colors.black,
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          : Text(
+                                              _replyMessage.message,
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
+                                                fontSize: 12,
                                                 color: widget.sendMessageConfig
                                                         ?.replyMessageColor ??
                                                     Colors.black,
                                               ),
                                             ),
-                                          ],
-                                        )
-                                      : Text(
-                                          _replyMessage.message,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: widget.sendMessageConfig
-                                                    ?.replyMessageColor ??
-                                                Colors.black,
-                                          ),
-                                        ),
                                 ],
                               ),
                             ),
@@ -206,6 +237,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                           textEditingController: _textEditingController,
                           onPressed: _onPressed,
                           sendMessageConfig: widget.sendMessageConfig,
+                          onRecordingComplete: _onRecordingComplete,
                         )
                       ],
                     ),
@@ -214,6 +246,15 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
               ),
             ),
           );
+  }
+
+  void _onRecordingComplete(String? path) {
+    if (path != null) {
+      widget.onRecordingComplete?.call(path, _replyMessage);
+      if (_replyMessage.message.isNotEmpty) {
+        setState(() => _replyMessage = const ReplyMessage());
+      }
+    }
   }
 
   void _onPressed() {
@@ -235,6 +276,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
         replyTo: message.sendBy,
         messageType: message.messageType,
         messageId: message.id,
+        voiceMessageDuration: message.voiceMessageDuration,
       );
     });
     FocusScope.of(context).requestFocus(_focusNode);
@@ -257,6 +299,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
   @override
   void dispose() {
     _textEditingController.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 }

@@ -74,6 +74,7 @@ class _ChatScreenState extends State<ChatScreen> {
         currentUser: currentUser,
         chatController: _chatController,
         onSendTap: _onSendTap,
+        onRecordingComplete: _onRecordingComplete,
         chatViewState: ChatViewState.hasMessages,
         chatViewStateConfig: ChatViewStateConfiguration(
           loadingWidgetConfig: ChatViewStateWidgetConfiguration(
@@ -123,20 +124,29 @@ class _ChatScreenState extends State<ChatScreen> {
           backgroundColor: theme.backgroundColor,
         ),
         sendMessageConfig: SendMessageConfiguration(
-          imagePickerIconsConfig: ImagePickerIconsConfiguration(
-            cameraIconColor: theme.cameraIconColor,
-            galleryIconColor: theme.galleryIconColor,
-          ),
-          replyMessageColor: theme.replyMessageColor,
-          defaultSendButtonColor: theme.sendButtonColor,
-          replyDialogColor: theme.replyDialogColor,
-          replyTitleColor: theme.replyTitleColor,
-          textFieldBackgroundColor: theme.textFieldBackgroundColor,
-          closeIconColor: theme.closeIconColor,
-          textFieldConfig: TextFieldConfiguration(
-            textStyle: TextStyle(color: theme.textFieldTextColor),
-          ),
-        ),
+            imagePickerIconsConfig: ImagePickerIconsConfiguration(
+              cameraIconColor: theme.cameraIconColor,
+              galleryIconColor: theme.galleryIconColor,
+            ),
+            replyMessageColor: theme.replyMessageColor,
+            defaultSendButtonColor: theme.sendButtonColor,
+            replyDialogColor: theme.replyDialogColor,
+            replyTitleColor: theme.replyTitleColor,
+            textFieldBackgroundColor: theme.textFieldBackgroundColor,
+            closeIconColor: theme.closeIconColor,
+            textFieldConfig: TextFieldConfiguration(
+              textStyle: TextStyle(color: theme.textFieldTextColor),
+            ),
+            micIconColor: theme.replyMicIconColor,
+            voiceRecordingConfiguration: VoiceRecordingConfiguration(
+              backgroundColor: theme.waveformBackgroundColor,
+              recorderIconColor: theme.recordIconColor,
+              waveStyle: WaveStyle(
+                showMiddleLine: false,
+                waveColor: theme.waveColor ?? Colors.white,
+                extendWaveform: true,
+              ),
+            )),
         chatBubbleConfig: ChatBubbleConfiguration(
           outgoingChatBubbleConfig: ChatBubble(
             linkPreviewConfig: LinkPreviewConfiguration(
@@ -233,6 +243,20 @@ class _ChatScreenState extends State<ChatScreen> {
         swipeToReplyConfig: SwipeToReplyConfiguration(
           replyIconColor: theme.swipeToReplyIconColor,
         ),
+      ),
+    );
+  }
+
+  void _onRecordingComplete(String path, ReplyMessage replyMessage) {
+    final id = int.parse(Data.messageList.last.id) + 1;
+    _chatController.addMessage(
+      Message(
+        id: id.toString(),
+        createdAt: DateTime.now(),
+        message: path,
+        sendBy: currentUser.id,
+        replyMessage: replyMessage,
+        messageType: MessageType.voice,
       ),
     );
   }

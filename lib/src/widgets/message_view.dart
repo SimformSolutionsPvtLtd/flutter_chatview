@@ -29,6 +29,7 @@ import '../values/typedefs.dart';
 import 'image_message_view.dart';
 import 'text_message_view.dart';
 import 'reaction_widget.dart';
+import 'voice_message_view.dart';
 
 class MessageView extends StatefulWidget {
   const MessageView({
@@ -46,6 +47,7 @@ class MessageView extends StatefulWidget {
     this.shouldHighlight = false,
     this.highlightScale = 1.2,
     this.messageConfig,
+    this.onMaxDuration,
   }) : super(key: key);
 
   final Message message;
@@ -61,6 +63,7 @@ class MessageView extends StatefulWidget {
   final double highlightScale;
   final MessageConfiguration? messageConfig;
   final bool isLongPressEnable;
+  final Function(int)? onMaxDuration;
 
   @override
   State<MessageView> createState() => _MessageViewState();
@@ -174,6 +177,17 @@ class _MessageViewState extends State<MessageView>
             messageReactionConfig: messageConfig?.messageReactionConfig,
             highlightColor: widget.highlightColor,
             highlightMessage: widget.shouldHighlight,
+          );
+        } else if (widget.message.messageType.isVoice) {
+          return VoiceMessageView(
+            screenWidth: MediaQuery.of(context).size.width,
+            message: widget.message,
+            config: messageConfig?.voiceMessageConfig,
+            onMaxDuration: widget.onMaxDuration,
+            isMessageBySender: widget.isMessageBySender,
+            messageReactionConfig: messageConfig?.messageReactionConfig,
+            inComingChatBubbleConfig: widget.inComingChatBubbleConfig,
+            outgoingChatBubbleConfig: widget.outgoingChatBubbleConfig,
           );
         } else if (widget.message.messageType.isCustom &&
             messageConfig?.customMessageBuilder != null) {
