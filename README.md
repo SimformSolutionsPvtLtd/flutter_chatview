@@ -72,6 +72,7 @@ void onSendTap(String message, ReplyMessage replyMessage){
     message: "How are you",
     createdAt: DateTime.now(),
     sendBy: currentUser.id,
+    replyMessage: replyMessage,
   );
   chatController.addMessage(message);
 }
@@ -86,10 +87,27 @@ void onSendTap(String message, ReplyMessage replyMessage){
     createdAt: DateTime.now(),
     sendBy: currentUser.id,
     messageType: MessageType.image,
+    replyMessage: replyMessage,
   );
   chatController.addMessage(message);
 }
 ```
+
+7. Sending voice message.
+```dart
+void onRecordingComplete(String audioPath, ReplyMessage replyMessage){
+  final message = Message(
+    id: '3',
+    message: audioPath,    
+    createdAt: DateTime.now(),
+    sendBy: currentUser.id,
+    messageType: MessageType.voice,
+    replyMessage: replyMessage,
+  );
+  chatController.addMessage(message);
+}
+```
+Note: This function needs to pass in `onRecordingComplete` parameter in `ChatView` class.
 
 ## Platform specific configuration for image picker
 
@@ -103,9 +121,22 @@ Add the following keys to your _Info.plist_ file, located in `<project root>/ios
 
 ## Some more optional parameters
 
-1. Adding an appbar with `ChatViewAppBar`.
+1. Enable and disable specific features with `FeatureActiveConfig`.
 ```dart
 ChatView(
+  ...
+  featureActiveConfig: FeatureActiveConfig(
+    enableSwipeToReply: true,
+    enableSwipeToSeeTime: false,
+  ),
+  ...
+)
+```
+
+2. Adding an appbar with `ChatViewAppBar`.
+```dart
+ChatView(
+  ...
   appBar: ChatViewAppBar(
     profilePicture: profileImage,
     chatTitle: "Simform",
@@ -114,10 +145,11 @@ ChatView(
       Icon(Icons.more_vert),
     ],
   ),
+  ...
 )
 ```
 
-2. Adding a message list configuration with `ChatBackgroundConfiguration` class.
+3. Adding a message list configuration with `ChatBackgroundConfiguration` class.
 ```dart
 ChatView(
   ...
@@ -129,7 +161,7 @@ ChatView(
 )
 ```
 
-3. Adding a send message configuration with `SendMessageConfiguration` class.
+4. Adding a send message configuration with `SendMessageConfiguration` class.
 ```dart
 ChatView(
   ...
@@ -138,22 +170,10 @@ ChatView(
     replyDialogColor:Colors.blue,
     replyTitleColor: Colors.black,
     closeIconColor: Colors.black,
-    horizontalDragToShowMessageTime: true, // to show message created time
   ),
   ...
 )
 ```
-
-4. Adding a receiver's profile image.
-```dart
-ChatView(
-  ...
-  showReceiverProfileCircle: true,
-  profileCircleConfig: ProfileCircleConfiguration(profileImageUrl: profileImage),
-  /// Add profileImage url of recevier
-  ...
-)
-``` 
 
 5. Adding a chat bubble configuration with `ChatBubbleConfiguration` class.
 ```dart
@@ -227,9 +247,11 @@ ChatView(
   ...
   reactionPopupConfig: ReactionPopupConfiguration(
     backgroundColor: Colors.white,
-    onEmojiTap: (emoji, messageId){
-      chatController.setReaction(emoji,messageId);
-    },
+    padding: EdgeInsets.all(12),
+    shadow: BoxShadow(
+      color: Colors.black54,
+      blurRadius: 20,
+    ),
   ),
   ...
 )
@@ -314,7 +336,9 @@ ChatView(
 ChatView(
   ...
   isLastPage: false,
-  enablePagination: true,
+  featureActiveConfig: FeatureActiveConfig(
+    enablePagination: true,
+  ),
   loadMoreData: chatController.loadMoreData,
   ...
 )
@@ -352,6 +376,19 @@ ChatView(
 ```
 
 16. Setting auto scroll and highlight config with `RepliedMsgAutoScrollConfig` class.
+```dart
+ChatView(
+    ...
+    repliedMsgAutoScrollConfig: RepliedMsgAutoScrollConfig(
+      enableHighlightRepliedMsg: true,
+      highlightColor: Colors.grey,
+      highlightScale: 1.1,
+    )
+    ...
+)
+```
+
+17. Setting auto scroll and highlight config with `RepliedMsgAutoScrollConfig` class.
 ```dart
 ChatView(
     ...

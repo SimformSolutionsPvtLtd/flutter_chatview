@@ -19,11 +19,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'package:chatview/chatview.dart';
+import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/widgets/glassmorphism_reaction_popup.dart';
 import 'package:flutter/material.dart';
-import 'package:chatview/src/models/reaction_popup_configuration.dart';
 
-import '../values/typedefs.dart';
 import 'emoji_row.dart';
 
 class ReactionPopup extends StatefulWidget {
@@ -55,6 +55,9 @@ class ReactionPopupState extends State<ReactionPopup>
   double _xCoordinate = 0.0;
   String _messageId = '';
 
+  ChatController? chatController;
+  ChatUser? currentUser;
+
   @override
   void initState() {
     super.initState();
@@ -72,6 +75,15 @@ class ReactionPopupState extends State<ReactionPopup>
       curve: Curves.easeIn,
       reverseCurve: Curves.easeInOutSine,
     );
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (provide != null) {
+      chatController = provide!.chatController;
+      currentUser = provide!.currentUser;
+    }
   }
 
   @override
@@ -109,7 +121,9 @@ class ReactionPopupState extends State<ReactionPopup>
                               const EdgeInsets.symmetric(horizontal: 25),
                           padding: reactionPopupConfig?.padding ??
                               const EdgeInsets.symmetric(
-                                  vertical: 6, horizontal: 14),
+                                vertical: 6,
+                                horizontal: 14,
+                              ),
                           decoration: BoxDecoration(
                             color: reactionPopupConfig?.backgroundColor ??
                                 Colors.white,
@@ -136,8 +150,12 @@ class ReactionPopupState extends State<ReactionPopup>
   Widget get _reactionPopupRow => EmojiRow(
         onEmojiTap: (emoji) {
           widget.onTap();
-          if (reactionPopupConfig?.onEmojiTap != null) {
-            reactionPopupConfig?.onEmojiTap!(emoji, _messageId);
+          if (currentUser != null) {
+            chatController?.setReaction(
+              emoji: emoji,
+              messageId: _messageId,
+              userId: currentUser!.id,
+            );
           }
         },
         emojiConfiguration: reactionPopupConfig?.emojiConfig,

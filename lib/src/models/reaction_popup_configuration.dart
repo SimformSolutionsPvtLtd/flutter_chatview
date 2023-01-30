@@ -21,8 +21,6 @@
  */
 import 'package:flutter/material.dart';
 
-import '../values/typedefs.dart';
-
 class ReactionPopupConfiguration {
   final Color? backgroundColor;
   final BoxShadow? shadow;
@@ -32,7 +30,6 @@ class ReactionPopupConfiguration {
   final EdgeInsetsGeometry? padding;
   final EmojiConfiguration? emojiConfig;
   final bool showGlassMorphismEffect;
-  final StringsCallBack? onEmojiTap;
   final GlassMorphismConfiguration? glassMorphismConfig;
 
   ReactionPopupConfiguration({
@@ -43,7 +40,6 @@ class ReactionPopupConfiguration {
     this.maxWidth,
     this.margin,
     this.padding,
-    this.onEmojiTap,
     this.emojiConfig,
     this.glassMorphismConfig,
   });

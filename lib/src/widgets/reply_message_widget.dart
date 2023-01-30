@@ -34,26 +34,24 @@ class ReplyMessageWidget extends StatelessWidget {
   const ReplyMessageWidget({
     Key? key,
     required this.message,
-    required this.currentUser,
     this.repliedMessageConfig,
     this.onTap,
   }) : super(key: key);
 
   final Message message;
   final RepliedMessageConfiguration? repliedMessageConfig;
-  final ChatUser currentUser;
   final VoidCallback? onTap;
-
-  bool get _replyBySender => message.replyMessage.replyBy == currentUser.id;
 
   @override
   Widget build(BuildContext context) {
+    final currentUser = ChatViewInheritedWidget.of(context)?.currentUser;
+    final replyBySender = message.replyMessage.replyBy == currentUser?.id;
     final textTheme = Theme.of(context).textTheme;
     final replyMessage = message.replyMessage.message;
     final chatController = ChatViewInheritedWidget.of(context)?.chatController;
     final messagedUser =
         chatController?.getUserFromId(message.replyMessage.replyBy);
-    final replyBy = _replyBySender ? PackageStrings.you : messagedUser?.name;
+    final replyBy = replyBySender ? PackageStrings.you : messagedUser?.name;
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -66,9 +64,8 @@ class ReplyMessageWidget extends StatelessWidget {
         constraints:
             BoxConstraints(maxWidth: repliedMessageConfig?.maxWidth ?? 280),
         child: Column(
-          crossAxisAlignment: _replyBySender
-              ? CrossAxisAlignment.end
-              : CrossAxisAlignment.start,
+          crossAxisAlignment:
+              replyBySender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           children: [
             Text(
               "${PackageStrings.repliedBy} $replyBy",
@@ -79,11 +76,11 @@ class ReplyMessageWidget extends StatelessWidget {
             const SizedBox(height: 6),
             IntrinsicHeight(
               child: Row(
-                mainAxisAlignment: _replyBySender
+                mainAxisAlignment: replyBySender
                     ? MainAxisAlignment.end
                     : MainAxisAlignment.start,
                 children: [
-                  if (!_replyBySender)
+                  if (!replyBySender)
                     VerticalLine(
                       verticalBarWidth: repliedMessageConfig?.verticalBarWidth,
                       verticalBarColor: repliedMessageConfig?.verticalBarColor,
@@ -120,7 +117,10 @@ class ReplyMessageWidget extends StatelessWidget {
                                     horizontal: 12,
                                   ),
                               decoration: BoxDecoration(
-                                borderRadius: _borderRadius(replyMessage),
+                                borderRadius: _borderRadius(
+                                  replyMessage: replyMessage,
+                                  replyBySender: replyBySender,
+                                ),
                                 color: repliedMessageConfig?.backgroundColor ??
                                     Colors.grey.shade500,
                               ),
@@ -156,7 +156,7 @@ class ReplyMessageWidget extends StatelessWidget {
                             ),
                     ),
                   ),
-                  if (_replyBySender)
+                  if (replyBySender)
                     VerticalLine(
                       verticalBarWidth: repliedMessageConfig?.verticalBarWidth,
                       verticalBarColor: repliedMessageConfig?.verticalBarColor,
@@ -171,13 +171,17 @@ class ReplyMessageWidget extends StatelessWidget {
     );
   }
 
-  BorderRadiusGeometry _borderRadius(String replyMessage) => _replyBySender
-      ? repliedMessageConfig?.borderRadius ??
-          (replyMessage.length < 37
-              ? BorderRadius.circular(replyBorderRadius1)
-              : BorderRadius.circular(replyBorderRadius2))
-      : repliedMessageConfig?.borderRadius ??
-          (replyMessage.length < 29
-              ? BorderRadius.circular(replyBorderRadius1)
-              : BorderRadius.circular(replyBorderRadius2));
+  BorderRadiusGeometry _borderRadius({
+    required String replyMessage,
+    required bool replyBySender,
+  }) =>
+      replyBySender
+          ? repliedMessageConfig?.borderRadius ??
+              (replyMessage.length < 37
+                  ? BorderRadius.circular(replyBorderRadius1)
+                  : BorderRadius.circular(replyBorderRadius2))
+          : repliedMessageConfig?.borderRadius ??
+              (replyMessage.length < 29
+                  ? BorderRadius.circular(replyBorderRadius1)
+                  : BorderRadius.circular(replyBorderRadius2));
 }

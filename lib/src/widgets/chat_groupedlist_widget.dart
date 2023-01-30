@@ -40,7 +40,6 @@ class ChatGroupedListWidget extends StatefulWidget {
     required this.assignReplyMessage,
     required this.onChatListTap,
     required this.onChatBubbleLongPress,
-    required this.currentUser,
     required this.isEnableSwipeToSeeTime,
     this.messageConfig,
     this.chatBubbleConfig,
@@ -83,7 +82,6 @@ class ChatGroupedListWidget extends StatefulWidget {
   final MessageCallBack assignReplyMessage;
   final VoidCallBack onChatListTap;
   final void Function(double, double, Message) onChatBubbleLongPress;
-  final ChatUser currentUser;
   final bool isEnableSwipeToSeeTime;
 
   @override
@@ -298,7 +296,6 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
                       message,
                     ),
                     onSwipe: widget.assignReplyMessage,
-                    currentUser: widget.currentUser,
                     shouldHighlight: _replyId == message.id,
                     onReplyTap: widget
                                 .repliedMessageConfig
