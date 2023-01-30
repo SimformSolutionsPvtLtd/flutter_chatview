@@ -124,6 +124,7 @@ class _ChatViewState extends State<ChatView>
     return ChatViewInheritedWidget(
       chatController: chatController,
       featureActiveConfig: featureActiveConfig,
+      currentUser: widget.currentUser,
       child: Container(
         height:
             chatBackgroundConfig.height ?? MediaQuery.of(context).size.height,
@@ -167,7 +168,6 @@ class _ChatViewState extends State<ChatView>
                     )
                   else if (chatViewState.hasMessages)
                     ChatListWidget(
-                      currentUser: widget.currentUser,
                       showTypingIndicator: widget.showTypingIndicator,
                       showReceiverProfileCircle:
                           widget.showReceiverProfileCircle,
@@ -197,7 +197,6 @@ class _ChatViewState extends State<ChatView>
                       sendMessageConfig: widget.sendMessageConfig,
                       backgroundColor: chatBackgroundConfig.backgroundColor,
                       onSendTap: _onSendTap,
-                      currentUser: widget.currentUser,
                       onReplyCallback: (reply) =>
                           setState(() => replyMessage = reply),
                       onReplyCloseCallback: () =>

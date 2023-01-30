@@ -1,3 +1,15 @@
+## [1.1.0]
+
+* **Feat**: [37](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/37) Ability to 
+  enable or disable specific features.
+* **Feat**: [34](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/34) Ability to
+  add voice message.
+* **Breaking**: Remove `onEmojiTap` from `ReactionPopupConfiguration`, it can be handled internally.
+* **Breaking**: Remove `horizontalDragToShowMessageTime` from `ChatBackgroundConfiguration` and 
+  add `enableSwipeToSeeTime` parameter with same feature in `FeatureActiveConfig`.
+* **Breaking**: Remove `showReceiverProfileCircle` and add `enableOtherUserProfileAvatar` parameter
+  with same feature in `FeatureActiveConfig`.
+
 ## [1.0.1]
 
 * **Fix**: [32](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/32) Fix issue of 

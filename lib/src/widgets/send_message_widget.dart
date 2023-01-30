@@ -35,7 +35,6 @@ class SendMessageWidget extends StatefulWidget {
   const SendMessageWidget({
     Key? key,
     required this.onSendTap,
-    required this.currentUser,
     required this.chatController,
     this.sendMessageConfig,
     this.backgroundColor,
@@ -51,7 +50,6 @@ class SendMessageWidget extends StatefulWidget {
   final ReplyMessageWithReturnWidget? sendMessageBuilder;
   final ReplyMessageCallBack? onReplyCallback;
   final VoidCallBack? onReplyCloseCallback;
-  final ChatUser currentUser;
   final ChatController chatController;
 
   @override
@@ -66,9 +64,19 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
   ChatUser get repliedUser =>
       widget.chatController.getUserFromId(_replyMessage.replyTo);
 
-  String get _replyTo => _replyMessage.replyTo == widget.currentUser.id
+  String get _replyTo => _replyMessage.replyTo == currentUser?.id
       ? PackageStrings.you
       : repliedUser.name;
+
+  ChatUser? currentUser;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (provide != null) {
+      currentUser = provide!.currentUser;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -269,16 +277,18 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
   }
 
   void assignReplyMessage(Message message) {
-    setState(() {
-      _replyMessage = ReplyMessage(
-        message: message.message,
-        replyBy: widget.currentUser.id,
-        replyTo: message.sendBy,
-        messageType: message.messageType,
-        messageId: message.id,
-        voiceMessageDuration: message.voiceMessageDuration,
-      );
-    });
+    if (currentUser != null) {
+      setState(() {
+        _replyMessage = ReplyMessage(
+          message: message.message,
+          replyBy: currentUser!.id,
+          replyTo: message.sendBy,
+          messageType: message.messageType,
+          messageId: message.id,
+          voiceMessageDuration: message.voiceMessageDuration,
+        );
+      });
+    }
     FocusScope.of(context).requestFocus(_focusNode);
     if (widget.onReplyCallback != null) widget.onReplyCallback!(_replyMessage);
   }

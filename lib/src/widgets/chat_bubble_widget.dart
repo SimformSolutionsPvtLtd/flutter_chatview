@@ -38,7 +38,6 @@ class ChatBubbleWidget extends StatefulWidget {
     required this.showReceiverProfileCircle,
     required this.slideAnimation,
     required this.onSwipe,
-    required this.currentUser,
     this.profileCircleConfig,
     this.chatBubbleConfig,
     this.repliedMessageConfig,
@@ -62,7 +61,6 @@ class ChatBubbleWidget extends StatefulWidget {
   final Animation<Offset>? slideAnimation;
   final MessageConfiguration? messageConfig;
   final MessageCallBack onSwipe;
-  final ChatUser currentUser;
   final Function(String)? onReplyTap;
   final bool shouldHighlight;
 
@@ -73,10 +71,11 @@ class ChatBubbleWidget extends StatefulWidget {
 class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
   String get replyMessage => widget.message.replyMessage.message;
 
-  bool get isMessageBySender => widget.message.sendBy == widget.currentUser.id;
+  bool get isMessageBySender => widget.message.sendBy == currentUser?.id;
 
   FeatureActiveConfig? featureActiveConfig;
   ChatController? chatController;
+  ChatUser? currentUser;
   int? maxDuration;
 
   @override
@@ -85,6 +84,7 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
     if (provide != null) {
       featureActiveConfig = provide!.featureActiveConfig;
       chatController = provide!.chatController;
+      currentUser = provide!.currentUser;
     }
   }
 
@@ -193,7 +193,7 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
                   ? widget.profileCircleConfig?.bottomPadding ?? 15
                   : widget.profileCircleConfig?.bottomPadding ?? 2,
               profileCirclePadding: widget.profileCircleConfig?.padding,
-              imageUrl: widget.currentUser.profilePhoto,
+              imageUrl: currentUser?.profilePhoto,
               circleRadius: widget.profileCircleConfig?.circleRadius,
             ),
         ],
@@ -224,7 +224,6 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
               : ReplyMessageWidget(
                   message: widget.message,
                   repliedMessageConfig: widget.repliedMessageConfig,
-                  currentUser: widget.currentUser,
                   onTap: () => widget.onReplyTap
                       ?.call(widget.message.replyMessage.messageId),
                 ),
@@ -245,11 +244,13 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
               widget.chatBubbleConfig?.longPressAnimationDuration,
           onDoubleTap: featureActiveConfig?.enableDoubleTapToLike ?? false
               ? widget.chatBubbleConfig?.onDoubleTap ??
-                  (message) => chatController?.setReaction(
-                        emoji: heart,
-                        messageId: message.id,
-                        userId: widget.currentUser.id,
-                      )
+                  (message) => currentUser != null
+                      ? chatController?.setReaction(
+                          emoji: heart,
+                          messageId: message.id,
+                          userId: currentUser!.id,
+                        )
+                      : null
               : null,
           shouldHighlight: widget.shouldHighlight,
           highlightColor: widget.repliedMessageConfig

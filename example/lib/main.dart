@@ -124,29 +124,30 @@ class _ChatScreenState extends State<ChatScreen> {
           backgroundColor: theme.backgroundColor,
         ),
         sendMessageConfig: SendMessageConfiguration(
-            imagePickerIconsConfig: ImagePickerIconsConfiguration(
-              cameraIconColor: theme.cameraIconColor,
-              galleryIconColor: theme.galleryIconColor,
+          imagePickerIconsConfig: ImagePickerIconsConfiguration(
+            cameraIconColor: theme.cameraIconColor,
+            galleryIconColor: theme.galleryIconColor,
+          ),
+          replyMessageColor: theme.replyMessageColor,
+          defaultSendButtonColor: theme.sendButtonColor,
+          replyDialogColor: theme.replyDialogColor,
+          replyTitleColor: theme.replyTitleColor,
+          textFieldBackgroundColor: theme.textFieldBackgroundColor,
+          closeIconColor: theme.closeIconColor,
+          textFieldConfig: TextFieldConfiguration(
+            textStyle: TextStyle(color: theme.textFieldTextColor),
+          ),
+          micIconColor: theme.replyMicIconColor,
+          voiceRecordingConfiguration: VoiceRecordingConfiguration(
+            backgroundColor: theme.waveformBackgroundColor,
+            recorderIconColor: theme.recordIconColor,
+            waveStyle: WaveStyle(
+              showMiddleLine: false,
+              waveColor: theme.waveColor ?? Colors.white,
+              extendWaveform: true,
             ),
-            replyMessageColor: theme.replyMessageColor,
-            defaultSendButtonColor: theme.sendButtonColor,
-            replyDialogColor: theme.replyDialogColor,
-            replyTitleColor: theme.replyTitleColor,
-            textFieldBackgroundColor: theme.textFieldBackgroundColor,
-            closeIconColor: theme.closeIconColor,
-            textFieldConfig: TextFieldConfiguration(
-              textStyle: TextStyle(color: theme.textFieldTextColor),
-            ),
-            micIconColor: theme.replyMicIconColor,
-            voiceRecordingConfiguration: VoiceRecordingConfiguration(
-              backgroundColor: theme.waveformBackgroundColor,
-              recorderIconColor: theme.recordIconColor,
-              waveStyle: WaveStyle(
-                showMiddleLine: false,
-                waveColor: theme.waveColor ?? Colors.white,
-                extendWaveform: true,
-              ),
-            )),
+          ),
+        ),
         chatBubbleConfig: ChatBubbleConfiguration(
           outgoingChatBubbleConfig: ChatBubble(
             linkPreviewConfig: LinkPreviewConfiguration(
@@ -183,11 +184,6 @@ class _ChatScreenState extends State<ChatScreen> {
             blurRadius: 20,
           ),
           backgroundColor: theme.reactionPopupColor,
-          onEmojiTap: (emoji, messageId) => _chatController.setReaction(
-            emoji: emoji,
-            messageId: messageId,
-            userId: currentUser.id,
-          ),
         ),
         messageConfig: MessageConfiguration(
           messageReactionConfig: MessageReactionConfiguration(

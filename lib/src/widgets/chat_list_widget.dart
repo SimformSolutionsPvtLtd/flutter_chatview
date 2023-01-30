@@ -40,7 +40,6 @@ class ChatListWidget extends StatefulWidget {
     required this.showReceiverProfileCircle,
     required this.assignReplyMessage,
     required this.replyMessage,
-    required this.currentUser,
     this.loadingWidget,
     this.reactionPopupConfig,
     this.messageConfig,
@@ -70,7 +69,6 @@ class ChatListWidget extends StatefulWidget {
   final VoidCallBackWithFuture? loadMoreData;
   final bool? isLastPage;
   final MessageCallBack assignReplyMessage;
-  final ChatUser currentUser;
 
   @override
   State<ChatListWidget> createState() => _ChatListWidgetState();
@@ -94,6 +92,7 @@ class _ChatListWidgetState extends State<ChatListWidget>
       widget.chatBackgroundConfig;
 
   FeatureActiveConfig? featureActiveConfig;
+  ChatUser? currentUser;
 
   @override
   void initState() {
@@ -106,6 +105,7 @@ class _ChatListWidgetState extends State<ChatListWidget>
     super.didChangeDependencies();
     if (provide != null) {
       featureActiveConfig = provide!.featureActiveConfig;
+      currentUser = provide!.currentUser;
     }
     if (featureActiveConfig?.enablePagination ?? false) {
       scrollController.addListener(_pagination);
@@ -141,7 +141,6 @@ class _ChatListWidgetState extends State<ChatListWidget>
                 scrollController: scrollController,
                 isEnableSwipeToSeeTime:
                     featureActiveConfig?.enableSwipeToSeeTime ?? true,
-                currentUser: widget.currentUser,
                 chatBackgroundConfig: widget.chatBackgroundConfig,
                 assignReplyMessage: widget.assignReplyMessage,
                 showReceiverProfileCircle: widget.showReceiverProfileCircle,
@@ -165,8 +164,7 @@ class _ChatListWidgetState extends State<ChatListWidget>
                   if (featureActiveConfig?.enableReplySnackBar ?? false) {
                     _showReplyPopup(
                       message: message,
-                      sendByCurrentUser:
-                          message.sendBy == widget.currentUser.id,
+                      sendByCurrentUser: message.sendBy == currentUser?.id,
                     );
                   }
                 },
