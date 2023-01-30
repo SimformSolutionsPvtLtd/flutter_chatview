@@ -93,7 +93,7 @@ void onSendTap(String message, ReplyMessage replyMessage){
 }
 ```
 
-7. Sending voice message.
+8. Sending voice message.
 ```dart
 void onRecordingComplete(String audioPath, ReplyMessage replyMessage){
   final message = Message(
@@ -108,6 +108,8 @@ void onRecordingComplete(String audioPath, ReplyMessage replyMessage){
 }
 ```
 Note: This function needs to pass in `onRecordingComplete` parameter in `ChatView` class.
+
+Note: Right now voice messages only supported for android and iOS. 
 
 ## Platform specific configuration for image picker
 

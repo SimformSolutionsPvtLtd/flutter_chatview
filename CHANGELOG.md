@@ -9,6 +9,7 @@
   add `enableSwipeToSeeTime` parameter with same feature in `FeatureActiveConfig`.
 * **Breaking**: Remove `showReceiverProfileCircle` and add `enableOtherUserProfileAvatar` parameter
   with same feature in `FeatureActiveConfig`.
+* * **Breaking**: Move `enablePagination` parameter from `ChatView` to `FeatureActiveConfig`.
 
 ## [1.0.1]
 
