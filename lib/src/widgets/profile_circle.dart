@@ -29,20 +29,25 @@ class ProfileCircle extends StatelessWidget {
     this.imageUrl,
     this.profileCirclePadding,
     this.circleRadius,
+    this.onTap,
   }) : super(key: key);
   final double bottomPadding;
   final String? imageUrl;
   final EdgeInsetsGeometry? profileCirclePadding;
   final double? circleRadius;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: profileCirclePadding ??
           EdgeInsets.only(left: 6.0, right: 4, bottom: bottomPadding),
-      child: CircleAvatar(
-        radius: circleRadius ?? 16,
-        backgroundImage: NetworkImage(imageUrl ?? profileImage),
+      child: InkWell(
+        onTap: onTap,
+        child: CircleAvatar(
+          radius: circleRadius ?? 16,
+          backgroundImage: NetworkImage(imageUrl ?? profileImage),
+        ),
       ),
     );
   }

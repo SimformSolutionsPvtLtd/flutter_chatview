@@ -19,13 +19,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'package:chatview/chatview.dart';
 import 'package:flutter/material.dart';
-
-import '../models/models.dart';
 
 typedef StringCallback = void Function(String);
 typedef StringMessageCallBack = void Function(
-    String message, ReplyMessage replyMessage);
+    String message, ReplyMessage replyMessage, MessageType messageType);
 typedef ReplyMessageWithReturnWidget = Widget Function(
     ReplyMessage? replyMessage);
 typedef ReplyMessageCallBack = void Function(ReplyMessage replyMessage);

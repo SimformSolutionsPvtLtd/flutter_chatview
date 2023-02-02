@@ -73,6 +73,8 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
 
   bool get isMessageBySender => widget.message.sendBy == currentUser?.id;
 
+  ProfileCircleConfiguration? get profileCircleConfig =>
+      widget.profileCircleConfig;
   FeatureActiveConfig? featureActiveConfig;
   ChatController? chatController;
   ChatUser? currentUser;
@@ -134,11 +136,12 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
               (featureActiveConfig?.enableOtherUserProfileAvatar ?? true))
             ProfileCircle(
               bottomPadding: widget.message.reaction.reactions.isNotEmpty
-                  ? widget.profileCircleConfig?.bottomPadding ?? 15
-                  : widget.profileCircleConfig?.bottomPadding ?? 2,
-              profileCirclePadding: widget.profileCircleConfig?.padding,
+                  ? profileCircleConfig?.bottomPadding ?? 15
+                  : profileCircleConfig?.bottomPadding ?? 2,
+              profileCirclePadding: profileCircleConfig?.padding,
               imageUrl: messagedUser?.profilePhoto,
-              circleRadius: widget.profileCircleConfig?.circleRadius,
+              circleRadius: profileCircleConfig?.circleRadius,
+              onTap: () => _onAvatarTap(messagedUser),
             ),
           Expanded(
             child: isMessageBySender
@@ -190,15 +193,22 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
               (featureActiveConfig?.enableCurrentUserProfileAvatar ?? true))
             ProfileCircle(
               bottomPadding: widget.message.reaction.reactions.isNotEmpty
-                  ? widget.profileCircleConfig?.bottomPadding ?? 15
-                  : widget.profileCircleConfig?.bottomPadding ?? 2,
-              profileCirclePadding: widget.profileCircleConfig?.padding,
+                  ? profileCircleConfig?.bottomPadding ?? 15
+                  : profileCircleConfig?.bottomPadding ?? 2,
+              profileCirclePadding: profileCircleConfig?.padding,
               imageUrl: currentUser?.profilePhoto,
-              circleRadius: widget.profileCircleConfig?.circleRadius,
+              circleRadius: profileCircleConfig?.circleRadius,
+              onTap: () => _onAvatarTap(messagedUser),
             ),
         ],
       ),
     );
+  }
+
+  void _onAvatarTap(ChatUser? user) {
+    if (profileCircleConfig?.onAvatarTap != null && user != null) {
+      profileCircleConfig?.onAvatarTap!(user);
+    }
   }
 
   Widget _messagesWidgetColumn(ChatUser? messagedUser) {

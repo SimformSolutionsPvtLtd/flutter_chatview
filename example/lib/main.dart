@@ -74,7 +74,6 @@ class _ChatScreenState extends State<ChatScreen> {
         currentUser: currentUser,
         chatController: _chatController,
         onSendTap: _onSendTap,
-        onRecordingComplete: _onRecordingComplete,
         chatViewState: ChatViewState.hasMessages,
         chatViewStateConfig: ChatViewStateConfiguration(
           loadingWidgetConfig: ChatViewStateWidgetConfiguration(
@@ -243,31 +242,24 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  void _onRecordingComplete(String path, ReplyMessage replyMessage) {
-    final id = int.parse(Data.messageList.last.id) + 1;
-    _chatController.addMessage(
-      Message(
-        id: id.toString(),
-        createdAt: DateTime.now(),
-        message: path,
-        sendBy: currentUser.id,
-        replyMessage: replyMessage,
-        messageType: MessageType.voice,
-      ),
-    );
-  }
-
-  void _onSendTap(String message, ReplyMessage replyMessage) {
-    final id = int.parse(Data.messageList.last.id) + 1;
-    _chatController.addMessage(
-      Message(
-        id: id.toString(),
-        createdAt: DateTime.now(),
-        message: message,
-        sendBy: currentUser.id,
-        replyMessage: replyMessage,
-      ),
-    );
+  void _onSendTap(
+    String message,
+    ReplyMessage replyMessage,
+    MessageType messageType,
+  ) {
+    if (messageType.isText) {
+      final id = int.parse(Data.messageList.last.id) + 1;
+      _chatController.addMessage(
+        Message(
+          id: id.toString(),
+          createdAt: DateTime.now(),
+          message: message,
+          sendBy: currentUser.id,
+          replyMessage: replyMessage,
+          messageType: messageType,
+        ),
+      );
+    }
   }
 
   void _onThemeIconTap() {

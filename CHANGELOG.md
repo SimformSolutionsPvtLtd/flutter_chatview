@@ -1,3 +1,13 @@
+## [1.2.0]
+
+* **Feat**: [42](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/42) Ability to 
+  get callback on tap of profile circle avatar.
+* **Breaking**: Add `messageType` in `onSendTap` callback for encountering messages.
+* **Breaking**: Remove `onRecordingComplete` and you can get Recorded audio in `onSendTap` callback
+  with `messageType`.
+* **Breaking**: Remove `onImageSelected` from `ImagePickerIconsConfiguration` and can get selected
+  image in `onSendTap` callback with `messageType`.
+
 ## [1.1.0]
 
 * **Feat**: [37](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/37) Ability to 

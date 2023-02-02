@@ -66,59 +66,68 @@ List<Message> messageList = [
 
 6. Adding a `onSendTap`.
 ```dart
-void onSendTap(String message, ReplyMessage replyMessage){
+void onSendTap(String message, ReplyMessage replyMessage, Message messageType){
   final message = Message(
     id: '3',
     message: "How are you",
     createdAt: DateTime.now(),
     sendBy: currentUser.id,
     replyMessage: replyMessage,
+    messageType: messageType,
   );
   chatController.addMessage(message);
 }
 ```
 
-7. Sending a image url.
-```dart
-void onSendTap(String message, ReplyMessage replyMessage){
-  final message = Message(
-    id: '3',
-    message: imageLink,    
-    createdAt: DateTime.now(),
-    sendBy: currentUser.id,
-    messageType: MessageType.image,
-    replyMessage: replyMessage,
-  );
-  chatController.addMessage(message);
-}
+Note: you can evaluate message type from `messageType` parameter, based on that you can perform operations.
+
+## Messages types compability
+
+|Message Types   | Android | iOS | MacOS | Web | Linux | Windows |
+| :-----:        | :-----: | :-: | :---: | :-: | :---: | :-----: |
+|Text messages   |   ✔️    | ✔️  |  ✔️   | ✔️  |  ✔️   |   ✔️    |
+|Image messages  |   ✔️    | ✔️  |  ✔️   | ✔️  |  ✔️   |   ✔️    |
+|Voice messages  |   ✔️    | ✔️  |  ❌   | ❌  |  ❌  |   ❌  |
+|Custom messages |   ✔️    | ✔️  |  ✔️   | ✔️  |  ✔️   |   ✔️    |
+
+
+## Platform specific configuration
+
+### For image Picker
+#### iOS
+* Add the following keys to your _Info.plist_ file, located in `<project root>/ios/Runner/Info.plist`:
+
+```
+    <key>NSCameraUsageDescription</key>
+    <string>Used to demonstrate image picker plugin</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Used to capture audio for image picker plugin</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Used to demonstrate image picker plugin</string>
 ```
 
-8. Sending voice message.
-```dart
-void onRecordingComplete(String audioPath, ReplyMessage replyMessage){
-  final message = Message(
-    id: '3',
-    message: audioPath,    
-    createdAt: DateTime.now(),
-    sendBy: currentUser.id,
-    messageType: MessageType.voice,
-    replyMessage: replyMessage,
-  );
-  chatController.addMessage(message);
-}
+### For voice messages
+#### iOS
+* Add this two rows in `ios/Runner/Info.plist`
 ```
-Note: This function needs to pass in `onRecordingComplete` parameter in `ChatView` class.
+    <key>NSMicrophoneUsageDescription</key>
+    <string>This app requires Mic permission.</string>
+```
+* This plugin requires ios 10.0 or higher. So add this line in `Podfile`
+```
+    platform :ios, '10.0'
+```
 
-Note: Right now voice messages only supported for android and iOS. 
+#### Android
+* Change the minimum Android sdk version to 21 (or higher) in your android/app/build.gradle file.
+```
+    minSdkVersion 21
+```
 
-## Platform specific configuration for image picker
-
-### iOS
-Add the following keys to your _Info.plist_ file, located in `<project root>/ios/Runner/Info.plist`:
-
-* `NSPhotoLibraryUsageDescription` - describe why your app needs permission for the photo library. This is called _Privacy - Photo Library Usage Description_ in the visual editor.
-* `NSCameraUsageDescription` - describe why your app needs access to the camera. This is called _Privacy - Camera Usage Description_ in the visual editor.
-* `NSMicrophoneUsageDescription` - describe why your app needs access to the microphone, if you intend to record videos. This is called _Privacy - Microphone Usage Description_ in the visual editor.
+* Add RECORD_AUDIO permission in `AndroidManifest.xml`
+```
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+```
 
 
 ## Some more optional parameters
@@ -404,7 +413,9 @@ ChatView(
 ```
 ## How to use
 
-Check out the **example** app in the [example](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/tree/main/example) directory or the 'Example' tab on pub.dartlang.org for a more complete example.
+Check out [blog](https://medium.com/simform-engineering/chatview-a-cutting-edge-chat-ui-solution-7367b1f9d772) for better understanding and basic implementation. 
+
+Also, for whole example, check out the **example** app in the [example](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/tree/main/example) directory or the 'Example' tab on pub.dartlang.org for a more complete example.
 
 
 ## Main Contributors
