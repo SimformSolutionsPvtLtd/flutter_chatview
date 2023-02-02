@@ -37,12 +37,14 @@ class ChatUITextField extends StatefulWidget {
     required this.textEditingController,
     required this.onPressed,
     required this.onRecordingComplete,
+    required this.onImageSelected,
   }) : super(key: key);
   final SendMessageConfiguration? sendMessageConfig;
   final FocusNode focusNode;
   final TextEditingController textEditingController;
   final VoidCallBack onPressed;
   final Function(String?) onRecordingComplete;
+  final StringsCallBack onImageSelected;
 
   @override
   State<ChatUITextField> createState() => _ChatUITextFieldState();
@@ -222,19 +224,11 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
   }
 
   void _onIconPressed(ImageSource imageSource) async {
-    final onImageSelected = imagePickerIconsConfig?.onImageSelected;
     try {
-      if (onImageSelected != null) {
-        final XFile? image = await _imagePicker.pickImage(source: imageSource);
-        onImageSelected(image?.path ?? '', '');
-      }
+      final XFile? image = await _imagePicker.pickImage(source: imageSource);
+      widget.onImageSelected(image?.path ?? '', '');
     } catch (e) {
-      if (onImageSelected != null) {
-        onImageSelected(
-          '',
-          e.toString(),
-        );
-      }
+      widget.onImageSelected('', e.toString());
     }
   }
 

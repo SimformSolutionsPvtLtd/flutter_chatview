@@ -21,13 +21,17 @@
  */
 import 'package:flutter/material.dart';
 
+import '../../chatview.dart';
+
 class ProfileCircleConfiguration {
   final EdgeInsetsGeometry? padding;
   final String? profileImageUrl;
   final double? bottomPadding;
   final double? circleRadius;
+  final void Function(ChatUser)? onAvatarTap;
 
   ProfileCircleConfiguration({
+    this.onAvatarTap,
     this.padding,
     this.profileImageUrl,
     this.bottomPadding,

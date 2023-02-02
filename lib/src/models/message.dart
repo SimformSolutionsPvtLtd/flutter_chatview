@@ -20,7 +20,6 @@
  * SOFTWARE.
  */
 import 'package:chatview/chatview.dart';
-import 'package:chatview/src/extensions/extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 

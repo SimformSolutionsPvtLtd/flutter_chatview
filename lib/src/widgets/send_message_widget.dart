@@ -41,10 +41,8 @@ class SendMessageWidget extends StatefulWidget {
     this.sendMessageBuilder,
     this.onReplyCallback,
     this.onReplyCloseCallback,
-    this.onRecordingComplete,
   }) : super(key: key);
   final StringMessageCallBack onSendTap;
-  final StringMessageCallBack? onRecordingComplete;
   final SendMessageConfiguration? sendMessageConfig;
   final Color? backgroundColor;
   final ReplyMessageWithReturnWidget? sendMessageBuilder;
@@ -246,6 +244,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                           onPressed: _onPressed,
                           sendMessageConfig: widget.sendMessageConfig,
                           onRecordingComplete: _onRecordingComplete,
+                          onImageSelected: _onImageSelected,
                         )
                       ],
                     ),
@@ -258,20 +257,34 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
 
   void _onRecordingComplete(String? path) {
     if (path != null) {
-      widget.onRecordingComplete?.call(path, _replyMessage);
-      if (_replyMessage.message.isNotEmpty) {
-        setState(() => _replyMessage = const ReplyMessage());
-      }
+      widget.onSendTap.call(path, _replyMessage, MessageType.voice);
+      _assignRepliedMessage();
+    }
+  }
+
+  void _onImageSelected(String imagePath, String error) {
+    debugPrint('Call in Send Message Widget');
+    if (imagePath.isNotEmpty) {
+      widget.onSendTap.call(imagePath, _replyMessage, MessageType.image);
+      _assignRepliedMessage();
+    }
+  }
+
+  void _assignRepliedMessage() {
+    if (_replyMessage.message.isNotEmpty) {
+      setState(() => _replyMessage = const ReplyMessage());
     }
   }
 
   void _onPressed() {
     if (_textEditingController.text.isNotEmpty &&
         !_textEditingController.text.startsWith('\n')) {
-      widget.onSendTap(_textEditingController.text, _replyMessage);
-      if (_replyMessage.message.isNotEmpty) {
-        setState(() => _replyMessage = const ReplyMessage());
-      }
+      widget.onSendTap.call(
+        _textEditingController.text.trim(),
+        _replyMessage,
+        MessageType.text,
+      );
+      _assignRepliedMessage();
       _textEditingController.clear();
     }
   }

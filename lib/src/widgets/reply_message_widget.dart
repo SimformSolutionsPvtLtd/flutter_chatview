@@ -70,7 +70,7 @@ class ReplyMessageWidget extends StatelessWidget {
             Text(
               "${PackageStrings.repliedBy} $replyBy",
               style: repliedMessageConfig?.replyTitleTextStyle ??
-                  textTheme.bodyText2!
+                  textTheme.bodyMedium!
                       .copyWith(fontSize: 14, letterSpacing: 0.3),
             ),
             const SizedBox(height: 6),
@@ -150,7 +150,7 @@ class ReplyMessageWidget extends StatelessWidget {
                                   : Text(
                                       replyMessage,
                                       style: repliedMessageConfig?.textStyle ??
-                                          textTheme.bodyText2!
+                                          textTheme.bodyMedium!
                                               .copyWith(color: Colors.black),
                                     ),
                             ),

@@ -20,7 +20,6 @@
  * SOFTWARE.
  */
 import 'package:audio_waveforms/audio_waveforms.dart';
-import 'package:chatview/src/values/typedefs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -62,14 +61,12 @@ class SendMessageConfiguration {
 }
 
 class ImagePickerIconsConfiguration {
-  final StringsCallBack? onImageSelected;
   final Widget? galleryImagePickerIcon;
   final Widget? cameraImagePickerIcon;
   final Color? cameraIconColor;
   final Color? galleryIconColor;
 
   ImagePickerIconsConfiguration({
-    this.onImageSelected,
     this.cameraIconColor,
     this.galleryIconColor,
     this.galleryImagePickerIcon,
