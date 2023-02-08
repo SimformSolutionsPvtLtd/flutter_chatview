@@ -42,12 +42,26 @@ class SendMessageWidget extends StatefulWidget {
     this.onReplyCallback,
     this.onReplyCloseCallback,
   }) : super(key: key);
+
+  // Provides call back when user tap on send button on text field.
   final StringMessageCallBack onSendTap;
+
+  // Provides configuration for text field appearance.
   final SendMessageConfiguration? sendMessageConfig;
+
+  // Allow user to set background colour.
   final Color? backgroundColor;
+
+  // Allow user to set custom text field.
   final ReplyMessageWithReturnWidget? sendMessageBuilder;
+
+  // Provides callback when user swipes chat bubble for reply.
   final ReplyMessageCallBack? onReplyCallback;
+
+  // Provides call when user tap on close button which is showed in reply pop-up.
   final VoidCallBack? onReplyCloseCallback;
+
+  // Provides controller for accessing few function for running chat.
   final ChatController chatController;
 
   @override

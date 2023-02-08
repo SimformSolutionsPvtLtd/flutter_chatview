@@ -35,7 +35,6 @@ class ChatGroupedListWidget extends StatefulWidget {
     required this.showTypingIndicator,
     required this.scrollController,
     required this.chatBackgroundConfig,
-    required this.showReceiverProfileCircle,
     required this.replyMessage,
     required this.assignReplyMessage,
     required this.onChatListTap,
@@ -59,9 +58,6 @@ class ChatGroupedListWidget extends StatefulWidget {
   // Allow user to give customisation to background of chat
   final ChatBackgroundConfiguration chatBackgroundConfig;
 
-  // Allow user to showing user profile picture in message.
-  final bool showReceiverProfileCircle;
-
   // Allow user to giving customisation different types
   // messages
   final MessageConfiguration? messageConfig;
@@ -78,10 +74,21 @@ class ChatGroupedListWidget extends StatefulWidget {
 
   // Allow user to giving customisation typing indicator
   final TypeIndicatorConfiguration? typeIndicatorConfig;
+
+  // Provides reply message if actual message is sent by replying any message.
   final ReplyMessage replyMessage;
+
+  // Provides callback for assigning reply message when user swipe on chat bubble.
   final MessageCallBack assignReplyMessage;
+
+  // Provides callback when user tap anywhere on whole chat.
   final VoidCallBack onChatListTap;
+
+  // Provides callback when user press chat bubble for certain time then usual.
   final void Function(double, double, Message) onChatBubbleLongPress;
+
+  // Provide flag for turn on/off to see message crated time view when user
+  // swipe whole chat.
   final bool isEnableSwipeToSeeTime;
 
   @override
@@ -120,6 +127,9 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
   }
 
   void _initializeAnimation() {
+
+    // When this flag is on at that time only animation controllers will be
+    // initialized.
     if (isEnableSwipeToSeeTime) {
       _animationController = AnimationController(
         vsync: this,
@@ -151,6 +161,7 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       reverse: true,
+      // When reaction popup is being appeared at that user should not scroll.
       physics: showPopUp ? const NeverScrollableScrollPhysics() : null,
       padding: EdgeInsets.only(bottom: showTypingIndicator ? 50 : 0),
       controller: widget.scrollController,
@@ -228,6 +239,8 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
     }
   }
 
+
+  // When user swipe at that time only animation is assigned with value.
   void _onHorizontalDrag(DragUpdateDetails details) {
     _slideAnimation = Tween<Offset>(
       begin: const Offset(0.0, 0.0),
@@ -282,7 +295,6 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
                     messageTimeIconColor:
                         chatBackgroundConfig.messageTimeIconColor,
                     message: message,
-                    showReceiverProfileCircle: widget.showReceiverProfileCircle,
                     messageConfig: widget.messageConfig,
                     chatBubbleConfig: chatBubbleConfig,
                     profileCircleConfig: profileCircleConfig,

@@ -38,8 +38,14 @@ class ReplyMessageWidget extends StatelessWidget {
     this.onTap,
   }) : super(key: key);
 
+  // Provides message instance of chat.
   final Message message;
+
+  // Provides configurations related to replied message such as textstyle
+  // padding, margin etc. Also, this widget is located upon chat bubble.
   final RepliedMessageConfiguration? repliedMessageConfig;
+
+  // Provides call back when user taps on replied message.
   final VoidCallback? onTap;
 
   @override

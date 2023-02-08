@@ -30,9 +30,18 @@ class MessageTimeWidget extends StatelessWidget {
     this.messageTimeTextStyle,
     this.messageTimeIconColor,
   }) : super(key: key);
+
+  // Provides message crated date time.
   final DateTime messageTime;
+
+  // Represents message is sending by current user.
   final bool isCurrentUser;
+
+  // Provides text style of message created time view.
   final TextStyle? messageTimeTextStyle;
+
+  // Provides color of icon which is showed when user swipe whole chat for
+  // seeing message sending time
   final Color? messageTimeIconColor;
 
   @override

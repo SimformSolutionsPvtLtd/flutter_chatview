@@ -34,7 +34,6 @@ class ChatView extends StatefulWidget {
     required this.chatController,
     required this.currentUser,
     this.onSendTap,
-    this.showReceiverProfileCircle = true,
     this.profileCircleConfig,
     this.chatBubbleConfig,
     this.repliedMessageConfig,
@@ -60,29 +59,76 @@ class ChatView extends StatefulWidget {
             chatViewStateConfig ?? const ChatViewStateConfiguration(),
         super(key: key);
 
+  // Provides configuration related to user profile circle avatar.
   final ProfileCircleConfiguration? profileCircleConfig;
-  final bool showReceiverProfileCircle;
+
+  // Provides configurations related to chat bubble such as padding, margin, max
+  // width etc.
   final ChatBubbleConfiguration? chatBubbleConfig;
+
+  // Allow user to giving customisation different types
+  // messages.
   final MessageConfiguration? messageConfig;
+
+  // Provides configuration for replied message view which is located upon chat
+  // bubble.
   final RepliedMessageConfiguration? repliedMessageConfig;
+
+  // Provides configurations related to swipe chat bubble which triggers
+  // when user swipe chat bubble.
   final SwipeToReplyConfiguration? swipeToReplyConfig;
+
+  // Provides configuration for reply snack bar's appearance and options.
   final ReplyPopupConfiguration? replyPopupConfig;
+
+  // Provides configuration for reaction pop up appearance.
   final ReactionPopupConfiguration? reactionPopupConfig;
+
+  // Allow user to give customisation to background of chat
   final ChatBackgroundConfiguration chatBackgroundConfig;
+
+  // Provides callback when user actions reaches to top and needs to load more
+  // chat
   final VoidCallBackWithFuture? loadMoreData;
+
+  // Provides widget for loading view while pagination is enabled.
   final Widget? loadingWidget;
+
+  // Provides flag if there is no more next data left in list.
   final bool? isLastPage;
+
+  // Provides call back when user tap on send button in text field. It returns
+  // message, reply message and message type.
   final StringMessageCallBack? onSendTap;
+
+  // Provides builder which helps you to make custom text field and functionality.
   final ReplyMessageWithReturnWidget? sendMessageBuilder;
+
+  // Allow user to show typing indicator.
   final bool showTypingIndicator;
+
+  // Allow user to giving customisation typing indicator.
   final TypeIndicatorConfiguration? typeIndicatorConfig;
+
+  // Provides controller for accessing few function for running chat.
   final ChatController chatController;
+
+  // Provides configuration of default text field in chat.
   final SendMessageConfiguration? sendMessageConfig;
+
+  // Provides current state of chat.
   final ChatViewState chatViewState;
+
+  // Provides configuration for chat view state appearance and functionality.
   final ChatViewStateConfiguration? chatViewStateConfig;
+
+  // Provides current user which is sending messages.
   final ChatUser currentUser;
+
+  // Provides configuration for turn on/off specific features.
   final FeatureActiveConfig featureActiveConfig;
 
+  // Provides parameter so user can assign ChatViewAppbar.
   final Widget? appBar;
 
   @override
@@ -111,11 +157,13 @@ class _ChatViewState extends State<ChatView>
   @override
   void initState() {
     super.initState();
+    // Adds current user in users list.
     chatController.chatUsers.add(widget.currentUser);
   }
 
   @override
   Widget build(BuildContext context) {
+    // Scroll to last message on in hasMessages state.
     if (showTypingIndicator && chatViewState.hasMessages) {
       chatController.scrollToLastMessage();
     }
@@ -167,8 +215,6 @@ class _ChatViewState extends State<ChatView>
                   else if (chatViewState.hasMessages)
                     ChatListWidget(
                       showTypingIndicator: widget.showTypingIndicator,
-                      showReceiverProfileCircle:
-                          widget.showReceiverProfileCircle,
                       replyMessage: replyMessage,
                       chatController: widget.chatController,
                       chatBackgroundConfig: widget.chatBackgroundConfig,

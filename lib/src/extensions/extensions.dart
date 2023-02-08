@@ -27,6 +27,8 @@ import '../utils/constants.dart';
 import '../utils/emoji_parser.dart';
 import '../utils/package_strings.dart';
 
+
+/// Extension for DateTime to get specific formats of dates and time.
 extension TimeDifference on DateTime {
   String get getDay {
     final DateTime formattedDate = DateFormat(dateFormat).parse(toString());
@@ -49,6 +51,8 @@ extension TimeDifference on DateTime {
   String get getTimeFromDateTime => DateFormat.Hm().format(this);
 }
 
+
+/// Extension on String which implements different types string validations.
 extension ValidateString on String {
   bool get isImageUrl {
     final imageUrlRegExp = RegExp(imageUrlRegExpression);
@@ -84,6 +88,7 @@ extension ValidateString on String {
   }
 }
 
+/// Extension on MessageType for checking specific message type
 extension MessageTypes on MessageType {
   bool get isImage => this == MessageType.image;
 
@@ -94,12 +99,14 @@ extension MessageTypes on MessageType {
   bool get isCustom => this == MessageType.custom;
 }
 
+/// Extension on ConnectionState for checking specific connection.
 extension ConnectionStates on ConnectionState {
   bool get isWaiting => this == ConnectionState.waiting;
 
   bool get isActive => this == ConnectionState.active;
 }
 
+/// Extension on nullable sting to return specific state string.
 extension ChatViewStateTitleExtension on String? {
   String getChatViewStateTitle(ChatViewState state) {
     switch (state) {
@@ -115,6 +122,7 @@ extension ChatViewStateTitleExtension on String? {
   }
 }
 
+/// Extension on State for accessing inherited widget.
 extension StatefulWidgetExtension on State {
   ChatViewInheritedWidget? get provide => ChatViewInheritedWidget.of(context);
 }
