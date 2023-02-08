@@ -30,7 +30,10 @@ class ChatGroupHeader extends StatelessWidget {
     this.groupSeparatorConfig,
   }) : super(key: key);
 
+  // Provides day of started chat.
   final DateTime day;
+
+  // Provides configuration for separator upon date wise chat.
   final DefaultGroupSeparatorConfiguration? groupSeparatorConfig;
 
   @override

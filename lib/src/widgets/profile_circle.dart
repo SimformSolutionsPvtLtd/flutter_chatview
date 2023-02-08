@@ -31,10 +31,20 @@ class ProfileCircle extends StatelessWidget {
     this.circleRadius,
     this.onTap,
   }) : super(key: key);
+
+  // Allow users to give  default bottom padding according to user case.
   final double bottomPadding;
+
+  // Allow user to pass image url of user's profile picture.
   final String? imageUrl;
+
+  // Allow user to set whole padding of profile circle view.
   final EdgeInsetsGeometry? profileCirclePadding;
+
+  // Allow user to set radius of circle avatar.
   final double? circleRadius;
+
+  // Allow user to do operation when user tap on profile circle.
   final VoidCallback? onTap;
 
   @override

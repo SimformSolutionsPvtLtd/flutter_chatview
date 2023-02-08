@@ -19,6 +19,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+// Different types Message of ChatView
 enum MessageType {
   image,
   text,
@@ -28,6 +30,7 @@ enum MessageType {
   custom
 }
 
+// Types of states
 enum ChatViewState { hasMessages, noData, loading, error }
 
 extension ChatViewStateExtension on ChatViewState {

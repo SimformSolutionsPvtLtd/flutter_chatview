@@ -28,8 +28,14 @@ class ReplyIcon extends StatelessWidget {
     required this.slideAnimation,
     this.replyIconColor,
   }) : super(key: key);
+
+  // Represents scale animation value of icon when user swipes for reply.
   final Animation<double> scaleAnimation;
+
+  // Represents slide animation value of chat bubble when user swipes for reply.
   final Animation<Offset> slideAnimation;
+
+  // Allow user to set color of icon which is appeared when user swipes for reply.
   final Color? replyIconColor;
 
   @override

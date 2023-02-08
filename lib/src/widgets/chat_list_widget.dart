@@ -37,7 +37,6 @@ class ChatListWidget extends StatefulWidget {
     required this.chatController,
     required this.chatBackgroundConfig,
     required this.showTypingIndicator,
-    required this.showReceiverProfileCircle,
     required this.assignReplyMessage,
     required this.replyMessage,
     this.loadingWidget,
@@ -52,22 +51,57 @@ class ChatListWidget extends StatefulWidget {
     this.loadMoreData,
     this.isLastPage,
   }) : super(key: key);
+
+  // Provides controller for accessing few function for running chat.
   final ChatController chatController;
+
+  // Provides configuration for background of chat.
   final ChatBackgroundConfiguration chatBackgroundConfig;
+
+  // Provides widget for loading view while pagination is enabled.
   final Widget? loadingWidget;
+
+  // Provides flag for turn on/off typing indicator.
   final bool showTypingIndicator;
+
+  // Provides configuration for reaction pop up appearance.
   final ReactionPopupConfiguration? reactionPopupConfig;
-  final bool showReceiverProfileCircle;
+
+  // Provides configuration for customisation of different types
+  // messages.
   final MessageConfiguration? messageConfig;
+
+  // Provides configuration of chat bubble's appearance.
   final ChatBubbleConfiguration? chatBubbleConfig;
+
+  // Provides configuration for profile circle avatar of user.
   final ProfileCircleConfiguration? profileCircleConfig;
+
+  // Provides configuration for when user swipe to chat bubble.
   final SwipeToReplyConfiguration? swipeToReplyConfig;
+
+  // Provides configuration for replied message view which is located upon chat
+  // bubble.
   final RepliedMessageConfiguration? repliedMessageConfig;
+
+  // Provides configuration of typing indicator's appearance.
   final TypeIndicatorConfiguration? typeIndicatorConfig;
+
+  // Provides reply message when user swipe to chat bubble.
   final ReplyMessage replyMessage;
+
+  // Provides configuration for reply snack bar's appearance and options.
   final ReplyPopupConfiguration? replyPopupConfig;
+
+  // Provides callback when user actions reaches to top and needs to load more
+  // chat
   final VoidCallBackWithFuture? loadMoreData;
+
+  // Provides flag if there is no more next data left in list.
   final bool? isLastPage;
+
+  // Provides callback for assigning reply message when user swipe to chat
+  // bubble.
   final MessageCallBack assignReplyMessage;
 
   @override
@@ -108,6 +142,8 @@ class _ChatListWidgetState extends State<ChatListWidget>
       currentUser = provide!.currentUser;
     }
     if (featureActiveConfig?.enablePagination ?? false) {
+      // When flag is on then it will include pagination logic to scroll
+      // controller.
       scrollController.addListener(_pagination);
     }
   }
@@ -143,7 +179,6 @@ class _ChatListWidgetState extends State<ChatListWidget>
                     featureActiveConfig?.enableSwipeToSeeTime ?? true,
                 chatBackgroundConfig: widget.chatBackgroundConfig,
                 assignReplyMessage: widget.assignReplyMessage,
-                showReceiverProfileCircle: widget.showReceiverProfileCircle,
                 replyMessage: widget.replyMessage,
                 swipeToReplyConfig: widget.swipeToReplyConfig,
                 repliedMessageConfig: widget.repliedMessageConfig,

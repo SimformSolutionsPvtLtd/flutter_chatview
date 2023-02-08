@@ -41,13 +41,28 @@ class TextMessageView extends StatelessWidget {
     this.highlightColor,
   }) : super(key: key);
 
+  // Represents current message is sent by current user.
   final bool isMessageBySender;
+
+  // Provides message instance of chat.
   final Message message;
+
+  // Allow users to give max width of chat bubble.
   final double? chatBubbleMaxWidth;
+
+  // Provides configuration of chat bubble appearance from other user of chat.
   final ChatBubble? inComingChatBubbleConfig;
+
+  // Provides configuration of chat bubble appearance from current user of chat.
   final ChatBubble? outgoingChatBubbleConfig;
+
+  // Provides configuration of reaction appearance in chat bubble.
   final MessageReactionConfiguration? messageReactionConfig;
+
+  // Represents message should highlight.
   final bool highlightMessage;
+
+  // Allow user to set color of highlighted message.
   final Color? highlightColor;
 
   @override

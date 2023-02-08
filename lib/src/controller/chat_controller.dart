@@ -26,8 +26,12 @@ import 'package:flutter/material.dart';
 import '../models/models.dart';
 
 class ChatController {
+
+  /// Represents initial message list in chat which can be add by user.
   List<Message> initialMessageList;
   ScrollController scrollController;
+
+  /// Represents list of chat users
   List<ChatUser> chatUsers;
 
   ChatController({
@@ -36,6 +40,7 @@ class ChatController {
     required this.chatUsers,
   });
 
+  /// Represents message stream of chat
   StreamController<List<Message>> messageStreamController = StreamController();
 
   void dispose() => messageStreamController.close();
@@ -45,6 +50,7 @@ class ChatController {
     messageStreamController.sink.add(initialMessageList);
   }
 
+  /// Function for setting reaction on specific chat bubble
   void setReaction({
     required String emoji,
     required String messageId,
@@ -78,6 +84,7 @@ class ChatController {
     messageStreamController.sink.add(initialMessageList);
   }
 
+  /// Function to scroll to last messages in chat view
   void scrollToLastMessage() => Timer(
         const Duration(milliseconds: 300),
         () => scrollController.animateTo(
@@ -87,11 +94,13 @@ class ChatController {
         ),
       );
 
+  /// Function for loading data while pagination.
   void loadMoreData(List<Message> messageList) {
     initialMessageList.addAll(messageList);
     messageStreamController.sink.add(initialMessageList);
   }
 
+  /// Function for getting ChatUser object from user id
   ChatUser getUserFromId(String userId) =>
       chatUsers.firstWhere((element) => element.id == userId);
 }
