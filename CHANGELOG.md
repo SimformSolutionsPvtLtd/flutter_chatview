@@ -7,6 +7,8 @@
   with `messageType`.
 * **Breaking**: Remove `onImageSelected` from `ImagePickerIconsConfiguration` and can get selected
   image in `onSendTap` callback with `messageType`.
+* **Feat**: [49](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/49) Add `onUrlDetect`
+  callback for opening urls.
 
 ## [1.1.0]
 

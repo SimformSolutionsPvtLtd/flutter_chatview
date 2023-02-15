@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'package:chatview/src/values/typedefs.dart';
 import 'package:flutter/material.dart';
 
 class LinkPreviewConfiguration {
@@ -30,8 +31,10 @@ class LinkPreviewConfiguration {
   final Color? loadingColor;
   final EdgeInsetsGeometry? padding;
   final String? proxyUrl;
+  final StringCallback? onUrlDetect;
 
   LinkPreviewConfiguration({
+    this.onUrlDetect,
     this.loadingColor,
     this.backgroundColor,
     this.borderRadius,
