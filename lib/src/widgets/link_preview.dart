@@ -53,7 +53,7 @@ class LinkPreview extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: verticalPadding),
             child: url.isImageUrl
                 ? InkWell(
-                    onTap: _launchURL,
+                    onTap: _onLinkTap,
                     child: Image.network(
                       url,
                       height: 120,
@@ -65,6 +65,7 @@ class LinkPreview extends StatelessWidget {
                     link: url,
                     removeElevation: true,
                     proxyUrl: linkPreviewConfig?.proxyUrl,
+                    onTap: _onLinkTap,
                     placeholderWidget: SizedBox(
                       height: MediaQuery.of(context).size.height * 0.25,
                       width: double.infinity,
@@ -85,7 +86,7 @@ class LinkPreview extends StatelessWidget {
           ),
           const SizedBox(height: verticalPadding),
           InkWell(
-            onTap: _launchURL,
+            onTap: _onLinkTap,
             child: Text(
               url,
               style: linkPreviewConfig?.linkStyle ??
@@ -98,6 +99,14 @@ class LinkPreview extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _onLinkTap() {
+    if (linkPreviewConfig?.onUrlDetect != null) {
+      linkPreviewConfig?.onUrlDetect!(url);
+    } else {
+      _launchURL();
+    }
   }
 
   void _launchURL() async {
