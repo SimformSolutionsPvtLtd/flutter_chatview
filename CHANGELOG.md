@@ -9,6 +9,8 @@
   image in `onSendTap` callback with `messageType`.
 * **Feat**: [49](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/49) Add `onUrlDetect`
   callback for opening urls.
+* **Feat**: [51](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/51) Ability to
+  get callback on long press of profile circle avatar.
 
 ## [1.1.0]
 
