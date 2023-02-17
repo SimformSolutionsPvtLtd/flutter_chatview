@@ -119,7 +119,6 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     // Get user from id.
     final messagedUser = chatController?.getUserFromId(widget.message.sendBy);
     return Stack(
@@ -171,6 +170,7 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
               imageUrl: messagedUser?.profilePhoto,
               circleRadius: profileCircleConfig?.circleRadius,
               onTap: () => _onAvatarTap(messagedUser),
+              onLongPress: () => _onAvatarLongPress(messagedUser),
             ),
           Expanded(
             child: isMessageBySender
@@ -228,6 +228,7 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
               imageUrl: currentUser?.profilePhoto,
               circleRadius: profileCircleConfig?.circleRadius,
               onTap: () => _onAvatarTap(messagedUser),
+              onLongPress: () => _onAvatarLongPress(messagedUser),
             ),
         ],
       ),
@@ -237,6 +238,12 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
   void _onAvatarTap(ChatUser? user) {
     if (profileCircleConfig?.onAvatarTap != null && user != null) {
       profileCircleConfig?.onAvatarTap!(user);
+    }
+  }
+
+  void _onAvatarLongPress(ChatUser? user) {
+    if (profileCircleConfig?.onAvatarLongPress != null && user != null) {
+      profileCircleConfig?.onAvatarLongPress!(user);
     }
   }
 

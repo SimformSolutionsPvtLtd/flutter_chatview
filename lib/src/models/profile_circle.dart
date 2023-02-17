@@ -29,6 +29,7 @@ class ProfileCircleConfiguration {
   final double? bottomPadding;
   final double? circleRadius;
   final void Function(ChatUser)? onAvatarTap;
+  final void Function(ChatUser)? onAvatarLongPress;
 
   ProfileCircleConfiguration({
     this.onAvatarTap,
@@ -36,5 +37,6 @@ class ProfileCircleConfiguration {
     this.profileImageUrl,
     this.bottomPadding,
     this.circleRadius,
+    this.onAvatarLongPress,
   });
 }
