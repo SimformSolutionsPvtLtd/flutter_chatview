@@ -19,8 +19,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'package:flutter/material.dart';
 import 'package:chatview/src/extensions/extensions.dart';
+import 'package:flutter/material.dart';
 
 class MessageTimeWidget extends StatelessWidget {
   const MessageTimeWidget({
@@ -31,17 +31,17 @@ class MessageTimeWidget extends StatelessWidget {
     this.messageTimeIconColor,
   }) : super(key: key);
 
-  // Provides message crated date time.
+  /// Provides message crated date time.
   final DateTime messageTime;
 
-  // Represents message is sending by current user.
+  /// Represents message is sending by current user.
   final bool isCurrentUser;
 
-  // Provides text style of message created time view.
+  /// Provides text style of message created time view.
   final TextStyle? messageTimeTextStyle;
 
-  // Provides color of icon which is showed when user swipe whole chat for
-  // seeing message sending time
+  /// Provides color of icon which is showed when user swipe whole chat for
+  /// seeing message sending time
   final Color? messageTimeIconColor;
 
   @override

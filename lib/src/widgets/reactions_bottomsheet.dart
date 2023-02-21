@@ -7,13 +7,13 @@ class ReactionsBottomSheet {
   Future<void> show({
     required BuildContext context,
 
-    // Provides reaction instance of message.
+    /// Provides reaction instance of message.
     required Reaction reaction,
 
-    // Provides controller for accessing few function for running chat.
+    /// Provides controller for accessing few function for running chat.
     required ChatController chatController,
 
-    // Provides configuration of reaction bottom sheet appearance.
+    /// Provides configuration of reaction bottom sheet appearance.
     required ReactionsBottomSheetConfiguration? reactionsBottomSheetConfig,
   }) {
     return showModalBottomSheet<void>(

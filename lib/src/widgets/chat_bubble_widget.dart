@@ -48,47 +48,47 @@ class ChatBubbleWidget extends StatefulWidget {
     this.shouldHighlight = false,
   }) : super(key: key);
 
-  // Represent current instance of message.
+  /// Represent current instance of message.
   final Message message;
 
-  // Give callback once user long press on chat bubble.
+  /// Give callback once user long press on chat bubble.
   final DoubleCallBack onLongPress;
 
-  // Provides configuration related to user profile circle avatar.
+  /// Provides configuration related to user profile circle avatar.
   final ProfileCircleConfiguration? profileCircleConfig;
 
-  // Provides configurations related to chat bubble such as padding, margin, max
-  // width etc.
+  /// Provides configurations related to chat bubble such as padding, margin, max
+  /// width etc.
   final ChatBubbleConfiguration? chatBubbleConfig;
 
-  // Provides configurations related to replied message such as textstyle
-  // padding, margin etc. Also, this widget is located upon chat bubble.
+  /// Provides configurations related to replied message such as textstyle
+  /// padding, margin etc. Also, this widget is located upon chat bubble.
   final RepliedMessageConfiguration? repliedMessageConfig;
 
-  // Provides configurations related to swipe chat bubble which triggers
-  // when user swipe chat bubble.
+  /// Provides configurations related to swipe chat bubble which triggers
+  /// when user swipe chat bubble.
   final SwipeToReplyConfiguration? swipeToReplyConfig;
 
-  // Provides textStyle of message created time when user swipe whole chat.
+  /// Provides textStyle of message created time when user swipe whole chat.
   final TextStyle? messageTimeTextStyle;
 
-  // Provides default icon color of message created time view when user swipe
-  // whole chat.
+  /// Provides default icon color of message created time view when user swipe
+  /// whole chat.
   final Color? messageTimeIconColor;
 
-  // Provides slide animation when user swipe whole chat.
+  /// Provides slide animation when user swipe whole chat.
   final Animation<Offset>? slideAnimation;
 
-  // Provides configuration of all types of messages.
+  /// Provides configuration of all types of messages.
   final MessageConfiguration? messageConfig;
 
-  // Provides callback of when user swipe chat bubble for reply.
+  /// Provides callback of when user swipe chat bubble for reply.
   final MessageCallBack onSwipe;
 
-  // Provides callback when user tap on replied message upon chat bubble.
+  /// Provides callback when user tap on replied message upon chat bubble.
   final Function(String)? onReplyTap;
 
-  // Flag for when user tap on replied message and highlight actual message.
+  /// Flag for when user tap on replied message and highlight actual message.
   final bool shouldHighlight;
 
   @override

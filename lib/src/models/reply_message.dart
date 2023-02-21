@@ -22,8 +22,14 @@
 import '../values/enumaration.dart';
 
 class ReplyMessage {
+
+  /// Provides reply message.
   final String message;
+
+  /// Provides user id of who replied message.
   final String replyBy;
+
+  /// Provides user id of whom to reply.
   final String replyTo;
   final MessageType messageType;
 

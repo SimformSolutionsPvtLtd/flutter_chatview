@@ -40,22 +40,22 @@ class ChatUITextField extends StatefulWidget {
     required this.onImageSelected,
   }) : super(key: key);
 
-  // Provides configuration of default text field in chat.
+  /// Provides configuration of default text field in chat.
   final SendMessageConfiguration? sendMessageConfig;
 
-  // Provides focusNode for focusing text field.
+  /// Provides focusNode for focusing text field.
   final FocusNode focusNode;
 
-  // Provides functions which handles text field.
+  /// Provides functions which handles text field.
   final TextEditingController textEditingController;
 
-  // Provides callback when user tap on text field.
+  /// Provides callback when user tap on text field.
   final VoidCallBack onPressed;
 
-  // Provides callback once voice is recorded.
+  /// Provides callback once voice is recorded.
   final Function(String?) onRecordingComplete;
 
-  // Provides callback when user select images from camera/gallery.
+  /// Provides callback when user select images from camera/gallery.
   final StringsCallBack onImageSelected;
 
   @override

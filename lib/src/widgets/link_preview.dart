@@ -34,11 +34,11 @@ class LinkPreview extends StatelessWidget {
     this.linkPreviewConfig,
   }) : super(key: key);
 
-  // Provides url which is passed in message.
+  /// Provides url which is passed in message.
   final String url;
 
-  // Provides configuration of chat bubble appearance when link/URL is passed
-  // in message.
+  /// Provides configuration of chat bubble appearance when link/URL is passed
+  /// in message.
   final LinkPreviewConfiguration? linkPreviewConfig;
 
   @override

@@ -24,13 +24,28 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
 class Message {
+  /// Provides id
   final String id;
+
+  /// Used for accessing widget's render box.
   final GlobalKey key;
+
+  /// Provides actual message it will be text or image/audio file path.
   final String message;
+
+  /// Provides message created date time.
   final DateTime createdAt;
+
+  /// Provides id of sender of message.
   final String sendBy;
+
+  /// Provides reply message if user triggers any reply on any message.
   final ReplyMessage replyMessage;
+
+  /// Represents reaction on message.
   final Reaction reaction;
+
+  /// Provides message type.
   final MessageType messageType;
 
   /// Provides max duration for recorded voice message.

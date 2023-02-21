@@ -33,13 +33,13 @@ class EmojiRow extends StatelessWidget {
     this.emojiConfiguration,
   }) : super(key: key);
 
-  // Provides callback when user taps on emoji in reaction pop-up.
+  /// Provides callback when user taps on emoji in reaction pop-up.
   final StringCallback onEmojiTap;
 
-  // Provides configuration of emoji's appearance in reaction pop-up.
+  /// Provides configuration of emoji's appearance in reaction pop-up.
   final EmojiConfiguration? emojiConfiguration;
 
-  // These are default emojis.
+  /// These are default emojis.
   final List<String> _emojiUnicodes = [
     heart,
     faceWithTears,

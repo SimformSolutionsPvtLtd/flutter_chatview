@@ -33,19 +33,19 @@ class SwipeToReply extends StatefulWidget {
     this.swipeToReplyAnimationDuration,
   }) : super(key: key);
 
-  // Provides callback when user swipes chat bubble from right side.
+  /// Provides callback when user swipes chat bubble from right side.
   final VoidCallback? onRightSwipe;
 
-  // Provides callback when user swipes chat bubble from left side.
+  /// Provides callback when user swipes chat bubble from left side.
   final VoidCallback? onLeftSwipe;
 
-  // Allow user to set widget which is showed while user swipes chat bubble.
+  /// Allow user to set widget which is showed while user swipes chat bubble.
   final Widget child;
 
-  // Allow user to change colour of reply icon which is showed while user swipes.
+  /// Allow user to change colour of reply icon which is showed while user swipes.
   final Color? replyIconColor;
 
-  // Allow user to set duration of animation of icon.
+  /// Allow user to set duration of animation of icon.
   final Duration? swipeToReplyAnimationDuration;
 
   @override

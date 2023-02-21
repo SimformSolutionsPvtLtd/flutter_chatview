@@ -33,22 +33,22 @@ class ProfileCircle extends StatelessWidget {
     this.onLongPress,
   }) : super(key: key);
 
-  // Allow users to give  default bottom padding according to user case.
+  /// Allow users to give  default bottom padding according to user case.
   final double bottomPadding;
 
-  // Allow user to pass image url of user's profile picture.
+  /// Allow user to pass image url of user's profile picture.
   final String? imageUrl;
 
-  // Allow user to set whole padding of profile circle view.
+  /// Allow user to set whole padding of profile circle view.
   final EdgeInsetsGeometry? profileCirclePadding;
 
-  // Allow user to set radius of circle avatar.
+  /// Allow user to set radius of circle avatar.
   final double? circleRadius;
 
-  // Allow user to do operation when user tap on profile circle.
+  /// Allow user to do operation when user tap on profile circle.
   final VoidCallback? onTap;
 
-  // Allow user to do operation when user long press on profile circle.
+  /// Allow user to do operation when user long press on profile circle.
   final VoidCallback? onLongPress;
 
   @override

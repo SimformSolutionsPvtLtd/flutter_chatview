@@ -29,10 +29,10 @@ class ShareIcon extends StatelessWidget {
     required this.imageUrl,
   }) : super(key: key);
 
-  // Provides configuration of share icon which is showed in image preview.
+  /// Provides configuration of share icon which is showed in image preview.
   final ShareIconConfiguration? shareIconConfig;
 
-  // Provides image url of image message.
+  /// Provides image url of image message.
   final String imageUrl;
 
   @override

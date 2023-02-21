@@ -33,11 +33,11 @@ class GlassMorphismReactionPopup extends StatelessWidget {
     this.reactionPopupConfig,
   }) : super(key: key);
 
-  // Allow user to assign custom widget which is appeared in glassmorphism
-  // effect.
+  /// Allow user to assign custom widget which is appeared in glassmorphism
+  /// effect.
   final Widget child;
 
-  // Provides configuration for reaction pop-up appearance.
+  /// Provides configuration for reaction pop-up appearance.
   final ReactionPopupConfiguration? reactionPopupConfig;
 
   Color get backgroundColor =>

@@ -30,7 +30,7 @@ enum MessageType {
   custom
 }
 
-// Types of states
+/// Types of states
 enum ChatViewState { hasMessages, noData, loading, error }
 
 extension ChatViewStateExtension on ChatViewState {

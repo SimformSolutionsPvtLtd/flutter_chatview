@@ -34,13 +34,13 @@ class ReactionWidget extends StatefulWidget {
     required this.isMessageBySender,
   }) : super(key: key);
 
-  // Provides reaction instance of message.
+  /// Provides reaction instance of message.
   final Reaction reaction;
 
-  // Provides configuration of reaction appearance in chat bubble.
+  /// Provides configuration of reaction appearance in chat bubble.
   final MessageReactionConfiguration? messageReactionConfig;
 
-  // Represents current message is sent by current user.
+  /// Represents current message is sent by current user.
   final bool isMessageBySender;
 
   @override
@@ -65,7 +65,7 @@ class _ReactionWidgetState extends State<ReactionWidget> {
 
   @override
   Widget build(BuildContext context) {
-    /// Convert into set to remove reduntant values
+    //// Convert into set to remove reduntant values
     final reactionsSet = widget.reaction.reactions.toSet();
     return Positioned(
       bottom: 0,

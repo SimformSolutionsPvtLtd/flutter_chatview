@@ -22,14 +22,31 @@
 import 'package:flutter/material.dart';
 
 class ReactionPopupConfiguration {
+  /// Used for background color in reaction pop-up.
   final Color? backgroundColor;
+
+  /// Used for shadow in reaction pop-up.
   final BoxShadow? shadow;
+
+  /// Used for animation duration while reaction pop-up opens.
   final Duration? animationDuration;
+
+  /// Used for max width in reaction pop-up.
   final double? maxWidth;
+
+  /// Used for give margin in reaction pop-up.
   final EdgeInsetsGeometry? margin;
+
+  /// Used for give padding in reaction pop-up.
   final EdgeInsetsGeometry? padding;
+
+  /// Provides emoji configuration in reaction pop-up.
   final EmojiConfiguration? emojiConfig;
+
+  /// Used for showing glass morphism effect on reaction pop-up.
   final bool showGlassMorphismEffect;
+
+  /// Provides glass morphism effect configuration.
   final GlassMorphismConfiguration? glassMorphismConfig;
 
   ReactionPopupConfiguration({
@@ -46,7 +63,10 @@ class ReactionPopupConfiguration {
 }
 
 class EmojiConfiguration {
+  /// Provides list of emojis.
   final List<String>? emojiList;
+
+  /// Used to give size of emoji.
   final double? size;
 
   EmojiConfiguration({
@@ -56,9 +76,16 @@ class EmojiConfiguration {
 }
 
 class GlassMorphismConfiguration {
+  /// Used to give border color of reaction pop-up.
   final Color? borderColor;
+
+  /// Used to give stroke width of reaction pop-up.
   final double? strokeWidth;
+
+  /// Used to give background color of reaction pop-up.
   final Color? backgroundColor;
+
+  /// Used to give border radius of reaction pop-up.
   final double? borderRadius;
 
   GlassMorphismConfiguration({

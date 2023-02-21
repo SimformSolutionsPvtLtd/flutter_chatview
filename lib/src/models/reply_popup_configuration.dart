@@ -25,14 +25,29 @@ import '../values/typedefs.dart';
 import 'message.dart';
 
 class ReplyPopupConfiguration {
+  /// Used for giving background color to reply snack-bar.
   final Color? backgroundColor;
+
+  /// Provides builder for creating reply pop-up widget.
   final Widget Function(Message message, bool sendByCurrentUser)?
       replyPopupBuilder;
+
+  /// Provides callback on unSend button.
   final MessageCallBack? onUnsendTap;
+
+  /// Provides callback on onReply button.
   final MessageCallBack? onReplyTap;
+
+  /// Provides callback on onReport button.
   final VoidCallBack? onReportTap;
+
+  /// Provides callback on onMore button.
   final VoidCallBack? onMoreTap;
+
+  /// Used to give text style of button text.
   final TextStyle? buttonTextStyle;
+
+  /// Used to give color to top side border of reply snack bar.
   final Color? topBorderColor;
 
   ReplyPopupConfiguration({

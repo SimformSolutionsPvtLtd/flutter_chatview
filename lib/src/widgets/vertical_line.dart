@@ -30,16 +30,16 @@ class VerticalLine extends StatelessWidget {
     this.verticalBarWidth,
   }) : super(key: key);
 
-  // Allow user to set color of bar
+  /// Allow user to set color of bar
   final Color? verticalBarColor;
 
-  // Allow user to set left padding.
+  /// Allow user to set left padding.
   final double leftPadding;
 
-  // Allow user to set left padding.
+  /// Allow user to set left padding.
   final double rightPadding;
 
-  // Allow user to set width of bar.
+  /// Allow user to set width of bar.
   final double? verticalBarWidth;
 
   @override

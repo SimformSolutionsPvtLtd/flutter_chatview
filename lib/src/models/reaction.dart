@@ -9,7 +9,10 @@ class Reaction {
         reactedUserIds: json['reactedUserIds'],
       );
 
+  /// Provides list of reaction in single message.
   final List<String> reactions;
+
+  /// Provides list of user who reacted on message.
   final List<String> reactedUserIds;
 
   Map<String, dynamic> toJson() => {
