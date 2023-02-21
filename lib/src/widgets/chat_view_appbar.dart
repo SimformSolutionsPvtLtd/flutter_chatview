@@ -45,43 +45,43 @@ class ChatViewAppBar extends StatelessWidget {
   }) : super(key: key);
 
 
-  // Allow user to change colour of appbar.
+  /// Allow user to change colour of appbar.
   final Color? backGroundColor;
 
-  // Allow user to change title of appbar.
+  /// Allow user to change title of appbar.
   final String chatTitle;
 
-  // Allow user to change whether user is available or offline.
+  /// Allow user to change whether user is available or offline.
   final String? userStatus;
 
-  // Allow user to change profile picture in appbar.
+  /// Allow user to change profile picture in appbar.
   final String? profilePicture;
 
-  // Allow user to change text style of chat title.
+  /// Allow user to change text style of chat title.
   final TextStyle? chatTitleTextStyle;
 
-  // Allow user to change text style of user status.
+  /// Allow user to change text style of user status.
   final TextStyle? userStatusTextStyle;
 
-  // Allow user to change back arrow colour.
+  /// Allow user to change back arrow colour.
   final Color? backArrowColor;
 
-  // Allow user to add actions widget in right side of appbar.
+  /// Allow user to add actions widget in right side of appbar.
   final List<Widget>? actions;
 
-  // Allow user to change elevation of appbar.
+  /// Allow user to change elevation of appbar.
   final double? elevation;
 
-  // Provides callback when user tap on back arrow.
+  /// Provides callback when user tap on back arrow.
   final VoidCallBack? onBackPress;
 
-  // Allow user to change padding in appbar.
+  /// Allow user to change padding in appbar.
   final EdgeInsets? padding;
 
-  // Allow user to change leading icon of appbar.
+  /// Allow user to change leading icon of appbar.
   final Widget? leading;
 
-  // Allow user to turn on/off leading icon.
+  /// Allow user to turn on/off leading icon.
   final bool showLeading;
 
   @override

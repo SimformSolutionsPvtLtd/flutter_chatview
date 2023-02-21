@@ -41,22 +41,22 @@ class ImageMessageView extends StatelessWidget {
   }) : super(key: key);
 
 
-  // Provides message instance of chat.
+  /// Provides message instance of chat.
   final Message message;
 
-  // Represents current message is sent by current user.
+  /// Represents current message is sent by current user.
   final bool isMessageBySender;
 
-  // Provides configuration for image message appearance.
+  /// Provides configuration for image message appearance.
   final ImageMessageConfiguration? imageMessageConfig;
 
-  // Provides configuration of reaction appearance in chat bubble.
+  /// Provides configuration of reaction appearance in chat bubble.
   final MessageReactionConfiguration? messageReactionConfig;
 
-  // Represents flag of highlighting image when user taps on replied image.
+  /// Represents flag of highlighting image when user taps on replied image.
   final bool highlightImage;
 
-  // Provides scale of highlighted image when user taps on replied image.
+  /// Provides scale of highlighted image when user taps on replied image.
   final double highlightScale;
 
   String get imageUrl => message.message;

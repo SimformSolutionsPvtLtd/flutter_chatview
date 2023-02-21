@@ -48,47 +48,47 @@ class ChatGroupedListWidget extends StatefulWidget {
     this.typeIndicatorConfig,
   }) : super(key: key);
 
-  // Allow user to swipe to see time while reaction pop is not open.
+  /// Allow user to swipe to see time while reaction pop is not open.
   final bool showPopUp;
 
-  // Allow user to show typing indicator.
+  /// Allow user to show typing indicator.
   final bool showTypingIndicator;
   final ScrollController scrollController;
 
-  // Allow user to give customisation to background of chat
+  /// Allow user to give customisation to background of chat
   final ChatBackgroundConfiguration chatBackgroundConfig;
 
-  // Allow user to giving customisation different types
-  // messages
+  /// Allow user to giving customisation different types
+  /// messages
   final MessageConfiguration? messageConfig;
 
-  // Allow user to giving customisation to chat bubble
+  /// Allow user to giving customisation to chat bubble
   final ChatBubbleConfiguration? chatBubbleConfig;
 
-  // Allow user to giving customisation to profile circle
+  /// Allow user to giving customisation to profile circle
   final ProfileCircleConfiguration? profileCircleConfig;
 
-  // Allow user to giving customisation to swipe to reply
+  /// Allow user to giving customisation to swipe to reply
   final SwipeToReplyConfiguration? swipeToReplyConfig;
   final RepliedMessageConfiguration? repliedMessageConfig;
 
-  // Allow user to giving customisation typing indicator
+  /// Allow user to giving customisation typing indicator
   final TypeIndicatorConfiguration? typeIndicatorConfig;
 
-  // Provides reply message if actual message is sent by replying any message.
+  /// Provides reply message if actual message is sent by replying any message.
   final ReplyMessage replyMessage;
 
-  // Provides callback for assigning reply message when user swipe on chat bubble.
+  /// Provides callback for assigning reply message when user swipe on chat bubble.
   final MessageCallBack assignReplyMessage;
 
-  // Provides callback when user tap anywhere on whole chat.
+  /// Provides callback when user tap anywhere on whole chat.
   final VoidCallBack onChatListTap;
 
-  // Provides callback when user press chat bubble for certain time then usual.
+  /// Provides callback when user press chat bubble for certain time then usual.
   final void Function(double, double, Message) onChatBubbleLongPress;
 
-  // Provide flag for turn on/off to see message crated time view when user
-  // swipe whole chat.
+  /// Provide flag for turn on/off to see message crated time view when user
+  /// swipe whole chat.
   final bool isEnableSwipeToSeeTime;
 
   @override
@@ -240,7 +240,7 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
   }
 
 
-  // When user swipe at that time only animation is assigned with value.
+  /// When user swipe at that time only animation is assigned with value.
   void _onHorizontalDrag(DragUpdateDetails details) {
     _slideAnimation = Tween<Offset>(
       begin: const Offset(0.0, 0.0),

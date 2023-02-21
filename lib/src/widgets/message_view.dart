@@ -50,44 +50,44 @@ class MessageView extends StatefulWidget {
     this.onMaxDuration,
   }) : super(key: key);
 
-  // Provides message instance of chat.
+  /// Provides message instance of chat.
   final Message message;
 
-  // Represents current message is sent by current user.
+  /// Represents current message is sent by current user.
   final bool isMessageBySender;
 
-  // Give callback once user long press on chat bubble.
+  /// Give callback once user long press on chat bubble.
   final DoubleCallBack onLongPress;
 
-  // Allow users to give max width of chat bubble.
+  /// Allow users to give max width of chat bubble.
   final double? chatBubbleMaxWidth;
 
-  // Provides configuration of chat bubble appearance from other user of chat.
+  /// Provides configuration of chat bubble appearance from other user of chat.
   final ChatBubble? inComingChatBubbleConfig;
 
-  // Provides configuration of chat bubble appearance from current user of chat.
+  /// Provides configuration of chat bubble appearance from current user of chat.
   final ChatBubble? outgoingChatBubbleConfig;
 
-  // Allow users to give duration of animation when user long press on chat bubble.
+  /// Allow users to give duration of animation when user long press on chat bubble.
   final Duration? longPressAnimationDuration;
 
-  // Allow user to set some action when user double tap on chat bubble.
+  /// Allow user to set some action when user double tap on chat bubble.
   final MessageCallBack? onDoubleTap;
 
-  // Allow users to pass colour of chat bubble when user taps on replied message.
+  /// Allow users to pass colour of chat bubble when user taps on replied message.
   final Color highlightColor;
 
-  // Allow users to turn on/off highlighting chat bubble when user tap on replied message.
+  /// Allow users to turn on/off highlighting chat bubble when user tap on replied message.
   final bool shouldHighlight;
 
-  // Provides scale of highlighted image when user taps on replied image.
+  /// Provides scale of highlighted image when user taps on replied image.
   final double highlightScale;
 
-  // Allow user to giving customisation different types
-  // messages.
+  /// Allow user to giving customisation different types
+  /// messages.
   final MessageConfiguration? messageConfig;
 
-  // Allow user to turn on/off long press tap on chat bubble.
+  /// Allow user to turn on/off long press tap on chat bubble.
   final bool isLongPressEnable;
   final Function(int)? onMaxDuration;
 

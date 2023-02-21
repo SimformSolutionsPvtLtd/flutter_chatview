@@ -32,7 +32,7 @@ class EmojiPickerWidget extends StatelessWidget {
   const EmojiPickerWidget({Key? key, required this.onSelected})
       : super(key: key);
 
-  // Provides callback when user selects emoji.
+  /// Provides callback when user selects emoji.
   final StringCallback onSelected;
 
   @override

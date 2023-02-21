@@ -20,26 +20,26 @@ class VoiceMessageView extends StatefulWidget {
     this.config,
   }) : super(key: key);
 
-  // Provides configuration related to voice message.
+  /// Provides configuration related to voice message.
   final VoiceMessageConfiguration? config;
 
-  // Allow user to set width of chat bubble.
+  /// Allow user to set width of chat bubble.
   final double screenWidth;
 
-  // Provides message instance of chat.
+  /// Provides message instance of chat.
   final Message message;
   final Function(int)? onMaxDuration;
 
-  // Represents current message is sent by current user.
+  /// Represents current message is sent by current user.
   final bool isMessageBySender;
 
-  // Provides configuration of reaction appearance in chat bubble.
+  /// Provides configuration of reaction appearance in chat bubble.
   final MessageReactionConfiguration? messageReactionConfig;
 
-  // Provides configuration of chat bubble appearance from other user of chat.
+  /// Provides configuration of chat bubble appearance from other user of chat.
   final ChatBubble? inComingChatBubbleConfig;
 
-  // Provides configuration of chat bubble appearance from current user of chat.
+  /// Provides configuration of chat bubble appearance from current user of chat.
   final ChatBubble? outgoingChatBubbleConfig;
 
   @override

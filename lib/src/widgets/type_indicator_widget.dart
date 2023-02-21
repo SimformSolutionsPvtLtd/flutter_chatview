@@ -36,17 +36,17 @@ class TypingIndicator extends StatefulWidget {
     this.typeIndicatorConfig,
   }) : super(key: key);
 
-  // Allow user to turn on/off typing indicator.
+  /// Allow user to turn on/off typing indicator.
   final bool showIndicator;
 
-  // Represents profile picture url of user.
+  /// Represents profile picture url of user.
   final String? profilePic;
 
-  // Provides configurations related to chat bubble such as padding, margin, max
-  // width etc.
+  /// Provides configurations related to chat bubble such as padding, margin, max
+  /// width etc.
   final ChatBubble? chatBubbleConfig;
 
-  // Provides configurations related to typing indicator appearance.
+  /// Provides configurations related to typing indicator appearance.
   final TypeIndicatorConfiguration? typeIndicatorConfig;
 
   @override

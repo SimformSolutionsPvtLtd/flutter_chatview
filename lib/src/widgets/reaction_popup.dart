@@ -34,13 +34,13 @@ class ReactionPopup extends StatefulWidget {
     required this.showPopUp,
   }) : super(key: key);
 
-  // Provides configuration of reaction pop-up appearance.
+  /// Provides configuration of reaction pop-up appearance.
   final ReactionPopupConfiguration? reactionPopupConfig;
 
-  // Provides call back when user taps on reaction pop-up.
+  /// Provides call back when user taps on reaction pop-up.
   final VoidCallBack onTap;
 
-  // Represents should pop-up show or not.
+  /// Represents should pop-up show or not.
   final bool showPopUp;
 
   @override

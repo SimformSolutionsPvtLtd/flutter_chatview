@@ -37,25 +37,25 @@ class ReplyPopupWidget extends StatelessWidget {
     this.topBorderColor,
   }) : super(key: key);
 
-  // Represents message is sent by current user or not.
+  /// Represents message is sent by current user or not.
   final bool sendByCurrentUser;
 
-  // Provides call back when user tap on unsend button.
+  /// Provides call back when user tap on unsend button.
   final VoidCallBack onUnsendTap;
 
-  // Provides call back when user tap on reply button.
+  /// Provides call back when user tap on reply button.
   final VoidCallBack onReplyTap;
 
-  // Provides call back when user tap on report button.
+  /// Provides call back when user tap on report button.
   final VoidCallBack onReportTap;
 
-  // Provides call back when user tap on more button.
+  /// Provides call back when user tap on more button.
   final VoidCallBack onMoreTap;
 
-  // Allow user to set text style of button are showed in reply snack bar.
+  /// Allow user to set text style of button are showed in reply snack bar.
   final TextStyle? buttonTextStyle;
 
-  // Allow user to set color of top border of reply snack bar.
+  /// Allow user to set color of top border of reply snack bar.
   final Color? topBorderColor;
 
   @override

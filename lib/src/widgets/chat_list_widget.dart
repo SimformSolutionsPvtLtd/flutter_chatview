@@ -52,56 +52,56 @@ class ChatListWidget extends StatefulWidget {
     this.isLastPage,
   }) : super(key: key);
 
-  // Provides controller for accessing few function for running chat.
+  /// Provides controller for accessing few function for running chat.
   final ChatController chatController;
 
-  // Provides configuration for background of chat.
+  /// Provides configuration for background of chat.
   final ChatBackgroundConfiguration chatBackgroundConfig;
 
-  // Provides widget for loading view while pagination is enabled.
+  /// Provides widget for loading view while pagination is enabled.
   final Widget? loadingWidget;
 
-  // Provides flag for turn on/off typing indicator.
+  /// Provides flag for turn on/off typing indicator.
   final bool showTypingIndicator;
 
-  // Provides configuration for reaction pop up appearance.
+  /// Provides configuration for reaction pop up appearance.
   final ReactionPopupConfiguration? reactionPopupConfig;
 
-  // Provides configuration for customisation of different types
-  // messages.
+  /// Provides configuration for customisation of different types
+  /// messages.
   final MessageConfiguration? messageConfig;
 
-  // Provides configuration of chat bubble's appearance.
+  /// Provides configuration of chat bubble's appearance.
   final ChatBubbleConfiguration? chatBubbleConfig;
 
-  // Provides configuration for profile circle avatar of user.
+  /// Provides configuration for profile circle avatar of user.
   final ProfileCircleConfiguration? profileCircleConfig;
 
-  // Provides configuration for when user swipe to chat bubble.
+  /// Provides configuration for when user swipe to chat bubble.
   final SwipeToReplyConfiguration? swipeToReplyConfig;
 
-  // Provides configuration for replied message view which is located upon chat
-  // bubble.
+  /// Provides configuration for replied message view which is located upon chat
+  /// bubble.
   final RepliedMessageConfiguration? repliedMessageConfig;
 
-  // Provides configuration of typing indicator's appearance.
+  /// Provides configuration of typing indicator's appearance.
   final TypeIndicatorConfiguration? typeIndicatorConfig;
 
-  // Provides reply message when user swipe to chat bubble.
+  /// Provides reply message when user swipe to chat bubble.
   final ReplyMessage replyMessage;
 
-  // Provides configuration for reply snack bar's appearance and options.
+  /// Provides configuration for reply snack bar's appearance and options.
   final ReplyPopupConfiguration? replyPopupConfig;
 
-  // Provides callback when user actions reaches to top and needs to load more
-  // chat
+  /// Provides callback when user actions reaches to top and needs to load more
+  /// chat
   final VoidCallBackWithFuture? loadMoreData;
 
-  // Provides flag if there is no more next data left in list.
+  /// Provides flag if there is no more next data left in list.
   final bool? isLastPage;
 
-  // Provides callback for assigning reply message when user swipe to chat
-  // bubble.
+  /// Provides callback for assigning reply message when user swipe to chat
+  /// bubble.
   final MessageCallBack assignReplyMessage;
 
   @override

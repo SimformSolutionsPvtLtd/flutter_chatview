@@ -20,8 +20,13 @@
  * SOFTWARE.
  */
 class ChatUser {
+  /// Provides id of user.
   final String id;
+
+  /// Provides name of user.
   final String name;
+
+  /// Provides profile picture URL of user.
   final String? profilePhoto;
 
   ChatUser({

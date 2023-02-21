@@ -10,15 +10,15 @@ class ChatViewStateWidget extends StatelessWidget {
     this.onReloadButtonTap,
   }) : super(key: key);
 
-  // Provides configuration of chat view's different states such as text styles,
-  // widgets and etc.
+  /// Provides configuration of chat view's different states such as text styles,
+  /// widgets and etc.
   final ChatViewStateWidgetConfiguration? chatViewStateWidgetConfig;
 
-  // Provides current state of chat view.
+  /// Provides current state of chat view.
   final ChatViewState chatViewState;
 
-  //m Provides callback when user taps on reload button in error and no messages
-  // state.
+  /// Provides callback when user taps on reload button in error and no messages
+  /// state.
   final VoidCallBack? onReloadButtonTap;
 
   @override
