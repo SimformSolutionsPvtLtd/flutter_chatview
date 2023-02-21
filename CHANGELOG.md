@@ -1,4 +1,4 @@
-## [1.2.0]
+## [1.2.0+1]
 
 * **Feat**: [42](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/42) Ability to 
   get callback on tap of profile circle avatar.

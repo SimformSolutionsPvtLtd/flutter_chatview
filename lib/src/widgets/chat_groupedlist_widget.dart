@@ -127,7 +127,6 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
   }
 
   void _initializeAnimation() {
-
     // When this flag is on at that time only animation controllers will be
     // initialized.
     if (isEnableSwipeToSeeTime) {
@@ -238,7 +237,6 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
       }
     }
   }
-
 
   /// When user swipe at that time only animation is assigned with value.
   void _onHorizontalDrag(DragUpdateDetails details) {

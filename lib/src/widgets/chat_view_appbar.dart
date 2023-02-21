@@ -44,7 +44,6 @@ class ChatViewAppBar extends StatelessWidget {
     this.showLeading = true,
   }) : super(key: key);
 
-
   /// Allow user to change colour of appbar.
   final Color? backGroundColor;
 

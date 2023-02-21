@@ -22,7 +22,6 @@
 import '../values/enumaration.dart';
 
 class ReplyMessage {
-
   /// Provides reply message.
   final String message;
 

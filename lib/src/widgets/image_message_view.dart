@@ -40,7 +40,6 @@ class ImageMessageView extends StatelessWidget {
     this.highlightScale = 1.2,
   }) : super(key: key);
 
-
   /// Provides message instance of chat.
   final Message message;
 

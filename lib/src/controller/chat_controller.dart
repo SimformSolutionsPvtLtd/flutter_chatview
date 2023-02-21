@@ -26,7 +26,6 @@ import 'package:flutter/material.dart';
 import '../models/models.dart';
 
 class ChatController {
-
   /// Represents initial message list in chat which can be add by user.
   List<Message> initialMessageList;
   ScrollController scrollController;
@@ -43,10 +42,8 @@ class ChatController {
   /// Represents message stream of chat
   StreamController<List<Message>> messageStreamController = StreamController();
 
-
   /// Used to dispose stream.
   void dispose() => messageStreamController.close();
-
 
   /// Used to add message in message list.
   void addMessage(Message message) {

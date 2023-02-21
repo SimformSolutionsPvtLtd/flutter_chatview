@@ -27,7 +27,6 @@ import '../utils/constants.dart';
 import '../utils/emoji_parser.dart';
 import '../utils/package_strings.dart';
 
-
 /// Extension for DateTime to get specific formats of dates and time.
 extension TimeDifference on DateTime {
   String get getDay {
@@ -50,7 +49,6 @@ extension TimeDifference on DateTime {
 
   String get getTimeFromDateTime => DateFormat.Hm().format(this);
 }
-
 
 /// Extension on String which implements different types string validations.
 extension ValidateString on String {
