@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 
@@ -98,10 +98,9 @@ class ImageMessageView extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: imageMessageConfig?.borderRadius ??
                         BorderRadius.circular(14),
-                    child: imageUrl.fromMemory
-                        ? Image.memory(
-                            base64Decode(imageUrl
-                                .substring(imageUrl.indexOf('base64') + 7)),
+                    child: !imageUrl.isUrl
+                        ? Image.file(
+                            File(imageUrl),
                             fit: BoxFit.fill,
                           )
                         : Image.network(
