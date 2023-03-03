@@ -19,15 +19,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'dart:convert';
 import 'dart:io';
-
-import 'package:flutter/material.dart';
 
 import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/models/models.dart';
+import 'package:flutter/material.dart';
 
-import 'share_icon.dart';
 import 'reaction_widget.dart';
+import 'share_icon.dart';
 
 class ImageMessageView extends StatelessWidget {
   const ImageMessageView({
@@ -98,27 +98,37 @@ class ImageMessageView extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: imageMessageConfig?.borderRadius ??
                         BorderRadius.circular(14),
-                    child: !imageUrl.isUrl
-                        ? Image.file(
-                            File(imageUrl),
-                            fit: BoxFit.fill,
-                          )
-                        : Image.network(
-                            imageUrl,
-                            fit: BoxFit.fitHeight,
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return Center(
-                                child: CircularProgressIndicator(
-                                  value: loadingProgress.expectedTotalBytes !=
-                                          null
-                                      ? loadingProgress.cumulativeBytesLoaded /
-                                          loadingProgress.expectedTotalBytes!
-                                      : null,
-                                ),
-                              );
-                            },
-                          ),
+                    child: (() {
+                      if (imageUrl.isUrl) {
+                        return Image.network(
+                          imageUrl,
+                          fit: BoxFit.fitHeight,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes !=
+                                        null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                    : null,
+                              ),
+                            );
+                          },
+                        );
+                      } else if (imageUrl.fromMemory) {
+                        return Image.memory(
+                          base64Decode(imageUrl
+                              .substring(imageUrl.indexOf('base64') + 7)),
+                          fit: BoxFit.fill,
+                        );
+                      } else {
+                        return Image.file(
+                          File(imageUrl),
+                          fit: BoxFit.fill,
+                        );
+                      }
+                    }()),
                   ),
                 ),
               ),
