@@ -247,7 +247,6 @@ class _ChatScreenState extends State<ChatScreen> {
     ReplyMessage replyMessage,
     MessageType messageType,
   ) {
-    if (messageType.isText) {
       final id = int.parse(Data.messageList.last.id) + 1;
       _chatController.addMessage(
         Message(
@@ -259,7 +258,6 @@ class _ChatScreenState extends State<ChatScreen> {
           messageType: messageType,
         ),
       );
-    }
   }
 
   void _onThemeIconTap() {
