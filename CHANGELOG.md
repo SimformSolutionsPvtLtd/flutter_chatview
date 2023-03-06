@@ -1,9 +1,11 @@
-## (UnReleased)
+## [1.2.1]
 
 * **Fix**: [60](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/60) Fix image from
   file is not loaded.
 * **Fix**: [61](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/61) Fix issue of
   audio message is not working.
+* **Feat**: [65](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/65) Add callback 
+  when user react on message.
 
 
 ## [1.2.0+1]
