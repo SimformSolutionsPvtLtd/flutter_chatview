@@ -247,17 +247,17 @@ class _ChatScreenState extends State<ChatScreen> {
     ReplyMessage replyMessage,
     MessageType messageType,
   ) {
-      final id = int.parse(Data.messageList.last.id) + 1;
-      _chatController.addMessage(
-        Message(
-          id: id.toString(),
-          createdAt: DateTime.now(),
-          message: message,
-          sendBy: currentUser.id,
-          replyMessage: replyMessage,
-          messageType: messageType,
-        ),
-      );
+    final id = int.parse(Data.messageList.last.id) + 1;
+    _chatController.addMessage(
+      Message(
+        id: id.toString(),
+        createdAt: DateTime.now(),
+        message: message,
+        sendBy: currentUser.id,
+        replyMessage: replyMessage,
+        messageType: messageType,
+      ),
+    );
   }
 
   void _onThemeIconTap() {

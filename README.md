@@ -258,6 +258,9 @@ ChatView(
   ...
   reactionPopupConfig: ReactionPopupConfiguration(
     backgroundColor: Colors.white,
+    userReactionCallback: (message, emoji){
+      // Your code goes here
+    }
     padding: EdgeInsets.all(12),
     shadow: BoxShadow(
       color: Colors.black54,
@@ -355,15 +358,12 @@ ChatView(
 )
 ```
 
-14. Get imagepath from image picker and add imagepicker icon configuration.
+14. Add image picker icon configuration.
 ```dart
 ChatView(
   ...
   sendMessageConfig: SendMessageConfiguration(
     imagePickerIconsConfig: ImagePickerIconsConfiguration(
-      onImageSelected: (imagePath, error){
-
-      },
       cameraIconColor: Colors.black,
       galleryIconColor: Colors.black,
     )
@@ -387,19 +387,6 @@ ChatView(
 ```
 
 16. Setting auto scroll and highlight config with `RepliedMsgAutoScrollConfig` class.
-```dart
-ChatView(
-    ...
-    repliedMsgAutoScrollConfig: RepliedMsgAutoScrollConfig(
-      enableHighlightRepliedMsg: true,
-      highlightColor: Colors.grey,
-      highlightScale: 1.1,
-    )
-    ...
-)
-```
-
-17. Setting auto scroll and highlight config with `RepliedMsgAutoScrollConfig` class.
 ```dart
 ChatView(
     ...

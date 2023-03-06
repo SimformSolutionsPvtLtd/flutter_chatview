@@ -189,7 +189,7 @@ class _ChatListWidgetState extends State<ChatListWidget>
                 onChatBubbleLongPress: (yCoordinate, xCoordinate, message) {
                   if (featureActiveConfig?.enableReactionPopup ?? false) {
                     _reactionPopupKey.currentState?.refreshWidget(
-                      messageId: message.id,
+                      message: message,
                       xCoordinate: xCoordinate,
                       yCoordinate:
                           yCoordinate < 0 ? -(yCoordinate) - 5 : yCoordinate,

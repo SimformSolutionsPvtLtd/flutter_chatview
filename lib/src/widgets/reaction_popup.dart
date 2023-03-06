@@ -58,7 +58,7 @@ class ReactionPopupState extends State<ReactionPopup>
   bool get showPopUp => widget.showPopUp;
   double _yCoordinate = 0.0;
   double _xCoordinate = 0.0;
-  String _messageId = '';
+  Message? _message;
 
   ChatController? chatController;
   ChatUser? currentUser;
@@ -155,10 +155,14 @@ class ReactionPopupState extends State<ReactionPopup>
   Widget get _reactionPopupRow => EmojiRow(
         onEmojiTap: (emoji) {
           widget.onTap();
-          if (currentUser != null) {
+          if (currentUser != null && _message != null) {
+            reactionPopupConfig?.userReactionCallback?.call(
+              _message!,
+              emoji,
+            );
             chatController?.setReaction(
               emoji: emoji,
-              messageId: _messageId,
+              messageId: _message!.id,
               userId: currentUser!.id,
             );
           }
@@ -167,12 +171,12 @@ class ReactionPopupState extends State<ReactionPopup>
       );
 
   void refreshWidget({
-    required String messageId,
+    required Message message,
     required double xCoordinate,
     required double yCoordinate,
   }) {
     setState(() {
-      _messageId = messageId;
+      _message = message;
       _xCoordinate = xCoordinate;
       _yCoordinate = yCoordinate;
     });
