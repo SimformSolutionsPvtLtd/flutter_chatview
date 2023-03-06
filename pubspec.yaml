@@ -28,7 +28,7 @@ dependencies:
   any_link_preview: ^3.0.0
   progress_indicators: ^1.0.0
   image_picker: ^0.8.6
-  audio_waveforms: 1.0.1
+  audio_waveforms: ^1.0.1
 
 dev_dependencies:
   flutter_test:
