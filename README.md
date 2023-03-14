@@ -398,6 +398,27 @@ ChatView(
     ...
 )
 ```
+
+1.  Callback when a user starts/stops typing in `TextFieldConfig`
+    
+```dart
+ChatView(
+    ...
+      sendMessageConfig: SendMessageConfiguration(
+       
+          textFieldConfig: TextFieldConfiguration(
+            onMessageComposition: (status) {
+                // send composing/composed status to other client.
+                // your code goes here
+            },       
+        ),
+    ...
+  )
+)
+```
+
+
+
 ## How to use
 
 Check out [blog](https://medium.com/simform-engineering/chatview-a-cutting-edge-chat-ui-solution-7367b1f9d772) for better understanding and basic implementation. 
