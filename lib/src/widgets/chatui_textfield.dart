@@ -26,6 +26,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../chatview.dart';
+import 'dart:async';
+import 'package:stream_transform/stream_transform.dart';
 import '../utils/constants.dart';
 import '../utils/package_strings.dart';
 
@@ -88,13 +90,34 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
             BorderRadius.circular(textFieldBorderRadius),
       );
 
+  StreamController<String> typingStreamController = StreamController();
+
+  ValueNotifier<ComposingStatus> composingStatus =
+      ValueNotifier(ComposingStatus.composed);
+
   @override
   void initState() {
+    // In init function
+    attachListeners();
+    typingStreamController.stream
+        .debounce(widget
+                .sendMessageConfig?.textFieldConfig?.compositionThresholdTime ??
+            const Duration(seconds: 1))
+        .listen((s) {
+      composingStatus.value = ComposingStatus.composed;
+    });
     super.initState();
     if (defaultTargetPlatform == TargetPlatform.iOS ||
         defaultTargetPlatform == TargetPlatform.android) {
       controller = RecorderController();
     }
+  }
+
+  void attachListeners() {
+    composingStatus.addListener(() {
+      widget.sendMessageConfig?.textFieldConfig?.onMessageComposition
+          ?.call(composingStatus.value);
+    });
   }
 
   @override
@@ -110,7 +133,7 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
       ),
       child: Row(
         children: [
-          if (isRecording && controller != null)
+          if (isRecording && controller != null && !kIsWeb)
             AudioWaveforms(
               size: Size(MediaQuery.of(context).size.width * 0.75, 50),
               recorderController: controller!,
@@ -141,7 +164,11 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                 minLines: textFieldConfig?.minLines ?? 1,
                 keyboardType: textFieldConfig?.textInputType,
                 inputFormatters: textFieldConfig?.inputFormatters,
-                onChanged: _onChanged,
+                onChanged: (str) {
+                  typingStreamController.add(str);
+                  _onChanged(str);
+                  composingStatus.value = ComposingStatus.composing;
+                },
                 textCapitalization: textFieldConfig?.textCapitalization ??
                     TextCapitalization.sentences,
                 decoration: InputDecoration(
@@ -202,7 +229,7 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                       ),
                     ],
                     if (widget.sendMessageConfig?.allowRecordingVoice ??
-                        true && Platform.isIOS && Platform.isAndroid)
+                        true && Platform.isIOS && Platform.isAndroid && !kIsWeb)
                       IconButton(
                         onPressed: _recordOrStop,
                         icon: (isRecording
