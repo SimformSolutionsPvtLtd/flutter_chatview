@@ -2,6 +2,7 @@ import 'package:chatview/chatview.dart';
 import 'package:example/data.dart';
 import 'package:example/models/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 void main() {
   runApp(const Example());
@@ -135,7 +136,8 @@ class _ChatScreenState extends State<ChatScreen> {
           closeIconColor: theme.closeIconColor,
           textFieldConfig: TextFieldConfiguration(
             onMessageTyping: (status) {
-                print(status);
+              /// Do with status
+              debugPrint(status.toString());
             },
             compositionThresholdTime: const Duration(seconds: 1),
             textStyle: TextStyle(color: theme.textFieldTextColor),
