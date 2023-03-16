@@ -134,9 +134,10 @@ class _ChatScreenState extends State<ChatScreen> {
           textFieldBackgroundColor: theme.textFieldBackgroundColor,
           closeIconColor: theme.closeIconColor,
           textFieldConfig: TextFieldConfiguration(
-            onMessageComposition: (status) {
+            onMessageTyping: (status) {
                 print(status);
             },
+            compositionThresholdTime: const Duration(seconds: 1),
             textStyle: TextStyle(color: theme.textFieldTextColor),
           ),
           micIconColor: theme.replyMicIconColor,

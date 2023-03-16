@@ -135,13 +135,13 @@ class TextFieldConfiguration {
   /// Used to give textCapitalization enums to text field.
   TextCapitalization? textCapitalization;
 
-  /// Callback when a user starts/stops typing a message by [ComposingStatus]
-  final void Function(ComposingStatus status)? onMessageComposition;
+  /// Callback when a user starts/stops typing a message by [TypeWriterStatus]
+  final void Function(TypeWriterStatus status)? onMessageTyping;
 
   /// After typing stopped, the threshold time after which the composing
-  /// status to be changed to [ComposingStatus.composed].
+  /// status to be changed to [TypeWriterStatus.composed].
   /// Default is 1 second.
-  final Duration? compositionThresholdTime;
+  final Duration compositionThresholdTime;
 
   TextFieldConfiguration({
     this.contentPadding,
@@ -154,8 +154,8 @@ class TextFieldConfiguration {
     this.margin,
     this.minLines,
     this.textInputType,
-    this.onMessageComposition,
-    this.compositionThresholdTime,
+    this.onMessageTyping,
+    this.compositionThresholdTime = const Duration(seconds: 1),
     this.inputFormatters,
     this.textCapitalization,
   });

@@ -29,6 +29,7 @@ import '../../chatview.dart';
 import 'dart:async';
 import 'package:stream_transform/stream_transform.dart';
 import '../utils/constants.dart';
+import '../utils/debounce.dart';
 import '../utils/package_strings.dart';
 
 class ChatUITextField extends StatefulWidget {
@@ -90,32 +91,34 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
             BorderRadius.circular(textFieldBorderRadius),
       );
 
-  StreamController<String> typingStreamController = StreamController();
+  ValueNotifier<TypeWriterStatus> composingStatus =
+      ValueNotifier(TypeWriterStatus.typed);
 
-  ValueNotifier<ComposingStatus> composingStatus =
-      ValueNotifier(ComposingStatus.composed);
+  late Debouncer debouncer;
 
   @override
   void initState() {
-    // In init function
     attachListeners();
-    typingStreamController.stream
-        .debounce(widget
-                .sendMessageConfig?.textFieldConfig?.compositionThresholdTime ??
-            const Duration(seconds: 1))
-        .listen((s) {
-      composingStatus.value = ComposingStatus.composed;
-    });
+    debouncer = Debouncer(
+        sendMessageConfig?.textFieldConfig?.compositionThresholdTime ??
+            const Duration(seconds: 1));
     super.initState();
+
     if (defaultTargetPlatform == TargetPlatform.iOS ||
         defaultTargetPlatform == TargetPlatform.android) {
       controller = RecorderController();
     }
   }
 
+  @override
+  void dispose() {
+    debouncer.dispose();
+    super.dispose();
+  }
+
   void attachListeners() {
     composingStatus.addListener(() {
-      widget.sendMessageConfig?.textFieldConfig?.onMessageComposition
+      widget.sendMessageConfig?.textFieldConfig?.onMessageTyping
           ?.call(composingStatus.value);
     });
   }
@@ -165,9 +168,7 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                 keyboardType: textFieldConfig?.textInputType,
                 inputFormatters: textFieldConfig?.inputFormatters,
                 onChanged: (str) {
-                  typingStreamController.add(str);
                   _onChanged(str);
-                  composingStatus.value = ComposingStatus.composing;
                 },
                 textCapitalization: textFieldConfig?.textCapitalization ??
                     TextCapitalization.sentences,
@@ -271,5 +272,12 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
     }
   }
 
-  void _onChanged(String inputText) => setState(() => _inputText = inputText);
+  void _onChanged(String inputText) {
+    debouncer.run(() {
+      composingStatus.value = TypeWriterStatus.typed;
+    }, () {
+      composingStatus.value = TypeWriterStatus.typing;
+    });
+    setState(() => _inputText = inputText);
+  }
 }

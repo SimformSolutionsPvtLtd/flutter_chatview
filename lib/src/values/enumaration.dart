@@ -30,7 +30,7 @@ enum MessageType {
   custom
 }
 
-enum ComposingStatus { composing, composed }
+enum TypeWriterStatus { typing, typed }
 
 /// Types of states
 enum ChatViewState { hasMessages, noData, loading, error }

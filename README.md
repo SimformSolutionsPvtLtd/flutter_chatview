@@ -399,7 +399,7 @@ ChatView(
 )
 ```
 
-1.  Callback when a user starts/stops typing in `TextFieldConfig`
+17.  Callback when a user starts/stops typing in `TextFieldConfiguration`
     
 ```dart
 ChatView(
@@ -407,10 +407,17 @@ ChatView(
       sendMessageConfig: SendMessageConfiguration(
        
           textFieldConfig: TextFieldConfiguration(
-            onMessageComposition: (status) {
-                // send composing/composed status to other client.
+            onMessageTyping: (status) {
+                // send composing/composed status to other client
                 // your code goes here
-            },       
+            },   
+
+            
+        /// After typing stopped, the threshold time after which the composing
+        /// status to be changed to [TypeWriterStatus.composed].
+        /// Default is 1 second.
+            compositionThresholdTime: const Duration(seconds: 1),
+
         ),
     ...
   )
