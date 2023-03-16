@@ -29,7 +29,8 @@ enum MessageType {
   voice,
   custom
 }
-
+/// Events, Wheter the user is still typing a message or has 
+/// typed the message
 enum TypeWriterStatus { typing, typed }
 
 /// Types of states

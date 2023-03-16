@@ -166,9 +166,7 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                 minLines: textFieldConfig?.minLines ?? 1,
                 keyboardType: textFieldConfig?.textInputType,
                 inputFormatters: textFieldConfig?.inputFormatters,
-                onChanged: (str) {
-                  _onChanged(str);
-                },
+                onChanged: _onChanged,
                 textCapitalization: textFieldConfig?.textCapitalization ??
                     TextCapitalization.sentences,
                 decoration: InputDecoration(
