@@ -398,6 +398,34 @@ ChatView(
     ...
 )
 ```
+
+17.  Callback when a user starts/stops typing in `TextFieldConfiguration`
+    
+```dart
+ChatView(
+    ...
+      sendMessageConfig: SendMessageConfiguration(
+       
+          textFieldConfig: TextFieldConfiguration(
+            onMessageTyping: (status) {
+                // send composing/composed status to other client
+                // your code goes here
+            },   
+
+            
+        /// After typing stopped, the threshold time after which the composing
+        /// status to be changed to [TypeWriterStatus.typed].
+        /// Default is 1 second.
+            compositionThresholdTime: const Duration(seconds: 1),
+
+        ),
+    ...
+  )
+)
+```
+
+
+
 ## How to use
 
 Check out [blog](https://medium.com/simform-engineering/chatview-a-cutting-edge-chat-ui-solution-7367b1f9d772) for better understanding and basic implementation. 

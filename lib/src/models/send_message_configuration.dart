@@ -20,6 +20,7 @@
  * SOFTWARE.
  */
 import 'package:audio_waveforms/audio_waveforms.dart';
+import 'package:chatview/src/values/enumaration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -134,6 +135,14 @@ class TextFieldConfiguration {
   /// Used to give textCapitalization enums to text field.
   TextCapitalization? textCapitalization;
 
+  /// Callback when a user starts/stops typing a message by [TypeWriterStatus]
+  final void Function(TypeWriterStatus status)? onMessageTyping;
+
+  /// After typing stopped, the threshold time after which the composing
+  /// status to be changed to [TypeWriterStatus.composed].
+  /// Default is 1 second.
+  final Duration compositionThresholdTime;
+
   TextFieldConfiguration({
     this.contentPadding,
     this.maxLines,
@@ -145,6 +154,8 @@ class TextFieldConfiguration {
     this.margin,
     this.minLines,
     this.textInputType,
+    this.onMessageTyping,
+    this.compositionThresholdTime = const Duration(seconds: 1),
     this.inputFormatters,
     this.textCapitalization,
   });

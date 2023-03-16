@@ -26,7 +26,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../chatview.dart';
+import 'dart:async';
 import '../utils/constants.dart';
+import '../utils/debounce.dart';
 import '../utils/package_strings.dart';
 
 class ChatUITextField extends StatefulWidget {
@@ -88,13 +90,36 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
             BorderRadius.circular(textFieldBorderRadius),
       );
 
+  ValueNotifier<TypeWriterStatus> composingStatus =
+      ValueNotifier(TypeWriterStatus.typed);
+
+  late Debouncer debouncer;
+
   @override
   void initState() {
+    attachListeners();
+    debouncer = Debouncer(
+        sendMessageConfig?.textFieldConfig?.compositionThresholdTime ??
+            const Duration(seconds: 1));
     super.initState();
+
     if (defaultTargetPlatform == TargetPlatform.iOS ||
         defaultTargetPlatform == TargetPlatform.android) {
       controller = RecorderController();
     }
+  }
+
+  @override
+  void dispose() {
+    debouncer.dispose();
+    super.dispose();
+  }
+
+  void attachListeners() {
+    composingStatus.addListener(() {
+      widget.sendMessageConfig?.textFieldConfig?.onMessageTyping
+          ?.call(composingStatus.value);
+    });
   }
 
   @override
@@ -110,7 +135,7 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
       ),
       child: Row(
         children: [
-          if (isRecording && controller != null)
+          if (isRecording && controller != null && !kIsWeb)
             AudioWaveforms(
               size: Size(MediaQuery.of(context).size.width * 0.75, 50),
               recorderController: controller!,
@@ -202,7 +227,7 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                       ),
                     ],
                     if (widget.sendMessageConfig?.allowRecordingVoice ??
-                        true && Platform.isIOS && Platform.isAndroid)
+                        true && Platform.isIOS && Platform.isAndroid && !kIsWeb)
                       IconButton(
                         onPressed: _recordOrStop,
                         icon: (isRecording
@@ -244,5 +269,12 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
     }
   }
 
-  void _onChanged(String inputText) => setState(() => _inputText = inputText);
+  void _onChanged(String inputText) {
+    debouncer.run(() {
+      composingStatus.value = TypeWriterStatus.typed;
+    }, () {
+      composingStatus.value = TypeWriterStatus.typing;
+    });
+    setState(() => _inputText = inputText);
+  }
 }
