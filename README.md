@@ -414,7 +414,7 @@ ChatView(
 
             
         /// After typing stopped, the threshold time after which the composing
-        /// status to be changed to [TypeWriterStatus.composed].
+        /// status to be changed to [TypeWriterStatus.typed].
         /// Default is 1 second.
             compositionThresholdTime: const Duration(seconds: 1),
 
