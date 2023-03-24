@@ -2,7 +2,6 @@ import 'package:chatview/chatview.dart';
 import 'package:example/data.dart';
 import 'package:example/models/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 
 void main() {
   runApp(const Example());
@@ -36,7 +35,7 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   AppTheme theme = LightTheme();
   bool isDarkTheme = false;
-  final currentUser = ChatUser(
+  final currentUser = const ChatUser(
     id: '1',
     name: 'Flutter',
     profilePhoto: Data.profileImage,
@@ -44,7 +43,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final _chatController = ChatController(
     initialMessageList: Data.messageList,
     scrollController: ScrollController(),
-    chatUsers: [
+    chatUsers: const [
       ChatUser(
         id: '2',
         name: 'Simform',
@@ -224,8 +223,9 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ),
         ),
-        profileCircleConfig:
-            ProfileCircleConfiguration(profileImageUrl: Data.profileImage),
+        profileCircleConfig: const ProfileCircleConfiguration(
+          profileImageUrl: Data.profileImage,
+        ),
         repliedMessageConfig: RepliedMessageConfiguration(
           backgroundColor: theme.repliedMessageColor,
           verticalBarColor: theme.verticalBarColor,

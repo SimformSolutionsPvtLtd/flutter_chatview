@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 /// A configuration model class for voice message bubble.
 class VoiceMessageConfiguration {
-  VoiceMessageConfiguration({
+  const VoiceMessageConfiguration({
     this.playerWaveStyle,
     this.padding = const EdgeInsets.symmetric(horizontal: 8),
     this.margin,

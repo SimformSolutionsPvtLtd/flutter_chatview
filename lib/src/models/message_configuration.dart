@@ -39,7 +39,7 @@ class MessageConfiguration {
   /// Configurations for voice message bubble
   final VoiceMessageConfiguration? voiceMessageConfig;
 
-  MessageConfiguration({
+  const MessageConfiguration({
     this.imageMessageConfig,
     this.messageReactionConfig,
     this.emojiMessageConfig,

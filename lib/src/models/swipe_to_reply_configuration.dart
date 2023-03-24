@@ -34,7 +34,7 @@ class SwipeToReplyConfiguration {
   /// Provides callback when user swipe chat bubble from right side.
   final void Function(String message, String sendBy)? onRightSwipe;
 
-  SwipeToReplyConfiguration({
+  const SwipeToReplyConfiguration({
     this.replyIconColor,
     this.animationDuration,
     this.onRightSwipe,

@@ -21,9 +21,8 @@
  */
 import 'package:chatview/chatview.dart';
 import 'package:chatview/src/widgets/chat_list_widget.dart';
-import 'package:chatview/src/widgets/chatview_state_widget.dart';
 import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
-
+import 'package:chatview/src/widgets/chatview_state_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'send_message_widget.dart';
@@ -138,7 +137,8 @@ class ChatView extends StatefulWidget {
 class _ChatViewState extends State<ChatView>
     with SingleTickerProviderStateMixin {
   final GlobalKey<SendMessageWidgetState> _sendMessageKey = GlobalKey();
-  ReplyMessage replyMessage = const ReplyMessage();
+  ValueNotifier<ReplyMessage> replyMessage =
+      ValueNotifier(const ReplyMessage());
 
   ChatController get chatController => widget.chatController;
 
@@ -213,25 +213,30 @@ class _ChatViewState extends State<ChatView>
                       onReloadButtonTap: chatViewStateConfig?.onReloadButtonTap,
                     )
                   else if (chatViewState.hasMessages)
-                    ChatListWidget(
-                      showTypingIndicator: widget.showTypingIndicator,
-                      replyMessage: replyMessage,
-                      chatController: widget.chatController,
-                      chatBackgroundConfig: widget.chatBackgroundConfig,
-                      reactionPopupConfig: widget.reactionPopupConfig,
-                      typeIndicatorConfig: widget.typeIndicatorConfig,
-                      chatBubbleConfig: widget.chatBubbleConfig,
-                      loadMoreData: widget.loadMoreData,
-                      isLastPage: widget.isLastPage,
-                      replyPopupConfig: widget.replyPopupConfig,
-                      loadingWidget: widget.loadingWidget,
-                      messageConfig: widget.messageConfig,
-                      profileCircleConfig: widget.profileCircleConfig,
-                      repliedMessageConfig: widget.repliedMessageConfig,
-                      swipeToReplyConfig: widget.swipeToReplyConfig,
-                      assignReplyMessage: (message) => _sendMessageKey
-                          .currentState
-                          ?.assignReplyMessage(message),
+                    ValueListenableBuilder<ReplyMessage>(
+                      valueListenable: replyMessage,
+                      builder: (_, state, child) {
+                        return ChatListWidget(
+                          showTypingIndicator: widget.showTypingIndicator,
+                          replyMessage: state,
+                          chatController: widget.chatController,
+                          chatBackgroundConfig: widget.chatBackgroundConfig,
+                          reactionPopupConfig: widget.reactionPopupConfig,
+                          typeIndicatorConfig: widget.typeIndicatorConfig,
+                          chatBubbleConfig: widget.chatBubbleConfig,
+                          loadMoreData: widget.loadMoreData,
+                          isLastPage: widget.isLastPage,
+                          replyPopupConfig: widget.replyPopupConfig,
+                          loadingWidget: widget.loadingWidget,
+                          messageConfig: widget.messageConfig,
+                          profileCircleConfig: widget.profileCircleConfig,
+                          repliedMessageConfig: widget.repliedMessageConfig,
+                          swipeToReplyConfig: widget.swipeToReplyConfig,
+                          assignReplyMessage: (message) => _sendMessageKey
+                              .currentState
+                              ?.assignReplyMessage(message),
+                        );
+                      },
                     ),
                   if (featureActiveConfig.enableTextField)
                     SendMessageWidget(
@@ -241,10 +246,9 @@ class _ChatViewState extends State<ChatView>
                       sendMessageConfig: widget.sendMessageConfig,
                       backgroundColor: chatBackgroundConfig.backgroundColor,
                       onSendTap: _onSendTap,
-                      onReplyCallback: (reply) =>
-                          setState(() => replyMessage = reply),
+                      onReplyCallback: (reply) => replyMessage.value = reply,
                       onReplyCloseCallback: () =>
-                          setState(() => replyMessage = const ReplyMessage()),
+                          replyMessage.value = const ReplyMessage(),
                     ),
                 ],
               ),
@@ -270,8 +274,14 @@ class _ChatViewState extends State<ChatView>
   }
 
   void _assignReplyMessage() {
-    if (replyMessage.message.isNotEmpty) {
-      setState(() => replyMessage = const ReplyMessage());
+    if (replyMessage.value.message.isNotEmpty) {
+      replyMessage.value = const ReplyMessage();
     }
+  }
+
+  @override
+  void dispose() {
+    replyMessage.dispose();
+    super.dispose();
   }
 }

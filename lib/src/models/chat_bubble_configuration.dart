@@ -46,7 +46,7 @@ class ChatBubbleConfiguration {
   /// Provides callback when user tap twice on chat bubble.
   final MessageCallBack? onDoubleTap;
 
-  ChatBubbleConfiguration({
+  const ChatBubbleConfiguration({
     this.padding,
     this.margin,
     this.maxWidth,

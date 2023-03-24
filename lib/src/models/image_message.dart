@@ -45,7 +45,7 @@ class ImageMessageConfiguration {
   /// Used for giving border radius of image message.
   final BorderRadius? borderRadius;
 
-  ImageMessageConfiguration({
+  const ImageMessageConfiguration({
     this.shareIconConfig,
     this.onTap,
     this.height,
