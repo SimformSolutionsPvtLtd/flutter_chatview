@@ -45,7 +45,7 @@ class ChatBubble {
   /// Used to give text style of message sender name.
   final TextStyle? senderNameTextStyle;
 
-  ChatBubble({
+  const ChatBubble({
     this.color,
     this.borderRadius,
     this.textStyle,

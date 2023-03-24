@@ -28,7 +28,7 @@ class EmojiMessageConfiguration {
   /// Used for giving text style to emoji messages.
   final TextStyle? textStyle;
 
-  EmojiMessageConfiguration({
+  const EmojiMessageConfiguration({
     this.padding,
     this.textStyle,
   });

@@ -29,7 +29,7 @@ class ChatUser {
   /// Provides profile picture URL of user.
   final String? profilePhoto;
 
-  ChatUser({
+  const ChatUser({
     required this.id,
     required this.name,
     this.profilePhoto,
