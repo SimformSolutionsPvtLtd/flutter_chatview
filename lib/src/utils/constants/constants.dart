@@ -67,7 +67,7 @@ applicationDateFormatter(DateTime inputTime) {
   }
 }
 
-/// Default widget that appears on reciepts at [MessageStatus.pending] when a message
+/// Default widget that appears on receipts at [MessageStatus.pending] when a message
 /// is not sent or at the pending state. A custom implementation can have different
 /// widgets for different states.
 /// Right now it is implemented to appear right next to the outgoing bubble.

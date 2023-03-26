@@ -424,7 +424,7 @@ ChatView(
 )
 ```
 
-18.  Passing customReciepts builder or handling stuffs related reciepts see `RecieptsWidgetConfig` in  outgoingChatBubbleConfig.
+18.  Passing customReceipts builder or handling stuffs related receipts see `ReceiptsWidgetConfig` in  outgoingChatBubbleConfig.
     
 ```dart
 ChatView(
@@ -432,12 +432,12 @@ ChatView(
 
      ChatBubbleConfiguration(
           outgoingChatBubbleConfig: ChatBubble(
-              recieptsWidgetConfig: RecieptsWidgetConfig(
-                      /// custom reciepts builder 
-                      recieptsBuilder: _customRecieptsBuilder,
-                      /// whether to display reciepts in all 
+              receiptsWidgetConfig: ReceiptsWidgetConfig(
+                      /// custom receipts builder 
+                      receiptsBuilder: _customReceiptsBuilder,
+                      /// whether to display receipts in all 
                       /// message or just at the last one just like instagram
-                      showRecieptsIn: ShowRecieptsIn.lastMessage
+                      showReceiptsIn: ShowReceiptsIn.lastMessage
               ),
             ), 
         ), 

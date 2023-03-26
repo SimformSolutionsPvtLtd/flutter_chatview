@@ -24,32 +24,32 @@ import 'package:flutter/cupertino.dart';
 import '../../chatview.dart';
 import '../utils/constants/constants.dart';
 
-class RecieptsWidgetConfig {
+class ReceiptsWidgetConfig {
   /// The builder that builds widget that right next to the senders message bubble.
   /// Right now it's implemented to show animation only at the last message just
   /// like instagram.
   /// By default [sendMessageAnimationBuilder]
-  final Widget Function(MessageStatus status)? recieptsBuilder;
+  final Widget Function(MessageStatus status)? receiptsBuilder;
 
-  /// Just like Instagram messages reciepts are displayed at the bottom of last
+  /// Just like Instagram messages receipts are displayed at the bottom of last
   /// message. If in case you want to modify it using your custom widget you can
   /// utilize this function.
   final Widget Function(Message message, String formattedDate)?
       lastSeenAgoBuilder;
 
-  /// Controls the visibility of message seen ago reciepts default is true
+  /// Controls the visibility of message seen ago receipts default is true
   final bool messageSeenAgoRecieptVisible;
 
-  /// Controls the visibility of the message [recieptsBuilder]
-  final bool recieptsBuilderVisibility;
+  /// Controls the visibility of the message [receiptsBuilder]
+  final bool receiptsBuilderVisibility;
 
-  /// Whether to show reciepts in all messages or not defaults to [ShowRecieptsIn.lastMessage]
-  final ShowRecieptsIn showRecieptsIn;
+  /// Whether to show receipts in all messages or not defaults to [ShowReceiptsIn.lastMessage]
+  final ShowReceiptsIn showReceiptsIn;
 
-  const RecieptsWidgetConfig(
-      {this.recieptsBuilder,
+  const ReceiptsWidgetConfig(
+      {this.receiptsBuilder,
       this.lastSeenAgoBuilder,
       this.messageSeenAgoRecieptVisible = true,
-      this.recieptsBuilderVisibility = true,
-      this.showRecieptsIn = ShowRecieptsIn.lastMessage});
+      this.receiptsBuilderVisibility = true,
+      this.showReceiptsIn = ShowReceiptsIn.lastMessage});
 }

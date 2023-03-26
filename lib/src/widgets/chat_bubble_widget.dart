@@ -246,34 +246,34 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
   }
 
   Widget getReciept() {
-    final showReciepts = widget.chatBubbleConfig?.outgoingChatBubbleConfig
-            ?.recieptsWidgetConfig?.showRecieptsIn ??
-        ShowRecieptsIn.lastMessage;
-    if (showReciepts == ShowRecieptsIn.all) {
+    final showReceipts = widget.chatBubbleConfig?.outgoingChatBubbleConfig
+            ?.receiptsWidgetConfig?.showReceiptsIn ??
+        ShowReceiptsIn.lastMessage;
+    if (showReceipts == ShowReceiptsIn.all) {
       return ValueListenableBuilder(
         valueListenable: widget.message.statusNotifier,
         builder: (context, value, child) {
           if (widget.chatBubbleConfig?.outgoingChatBubbleConfig
-                  ?.recieptsWidgetConfig?.recieptsBuilderVisibility ??
+                  ?.receiptsWidgetConfig?.receiptsBuilderVisibility ??
               true) {
             return widget.chatBubbleConfig?.outgoingChatBubbleConfig
-                    ?.recieptsWidgetConfig?.recieptsBuilder
+                    ?.receiptsWidgetConfig?.receiptsBuilder
                     ?.call(value as MessageStatus) ??
                 sendMessageAnimationBuilder(value as MessageStatus);
           }
           return const SizedBox();
         },
       );
-    } else if (showReciepts == ShowRecieptsIn.lastMessage && isLastMessage) {
+    } else if (showReceipts == ShowReceiptsIn.lastMessage && isLastMessage) {
       return ValueListenableBuilder(
           valueListenable:
               chatController!.initialMessageList.last.statusNotifier,
           builder: (context, value, child) {
             if (widget.chatBubbleConfig?.outgoingChatBubbleConfig
-                    ?.recieptsWidgetConfig?.recieptsBuilderVisibility ??
+                    ?.receiptsWidgetConfig?.receiptsBuilderVisibility ??
                 true) {
               return widget.chatBubbleConfig?.outgoingChatBubbleConfig
-                      ?.recieptsWidgetConfig?.recieptsBuilder
+                      ?.receiptsWidgetConfig?.receiptsBuilder
                       ?.call(value as MessageStatus) ??
                   sendMessageAnimationBuilder(value as MessageStatus);
             }
