@@ -80,11 +80,11 @@ class Message {
 
   /// For [MessageStatus] ValueNotfier which is used to for rebuilds
   /// when state changes.
-  /// Using ValueNotfier to avoid usage of setState((){}) in order 
-  /// rerender messages with new reciepts.
+  /// Using ValueNotfier to avoid usage of setState((){}) in order
+  /// rerender messages with new receipts.
   ValueNotifier<MessageStatus> get statusNotifier => _status;
 
-  /// This setter can be used to update message reciepts, after which the configured
+  /// This setter can be used to update message receipts, after which the configured
   /// builders will be updated.
   set setStatus(MessageStatus messageStatus) {
     _status.value = messageStatus;

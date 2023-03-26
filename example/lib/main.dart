@@ -154,13 +154,13 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         chatBubbleConfig: ChatBubbleConfiguration(
           outgoingChatBubbleConfig: ChatBubble(
-              linkPreviewConfig: LinkPreviewConfiguration(
-                backgroundColor: theme.linkPreviewOutgoingChatColor,
-                bodyStyle: theme.outgoingChatLinkBodyStyle,
-                titleStyle: theme.outgoingChatLinkTitleStyle,
-              ),
-              color: theme.outgoingChatBubbleColor,
-             ),
+            linkPreviewConfig: LinkPreviewConfiguration(
+              backgroundColor: theme.linkPreviewOutgoingChatColor,
+              bodyStyle: theme.outgoingChatLinkBodyStyle,
+              titleStyle: theme.outgoingChatLinkTitleStyle,
+            ),
+            color: theme.outgoingChatBubbleColor,
+          ),
           inComingChatBubbleConfig: ChatBubble(
             linkPreviewConfig: LinkPreviewConfiguration(
               linkStyle: TextStyle(
