@@ -2,7 +2,6 @@ import 'package:chatview/chatview.dart';
 import 'package:example/data.dart';
 import 'package:example/models/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 
 void main() {
   runApp(const Example());
@@ -155,13 +154,13 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         chatBubbleConfig: ChatBubbleConfiguration(
           outgoingChatBubbleConfig: ChatBubble(
-            linkPreviewConfig: LinkPreviewConfiguration(
-              backgroundColor: theme.linkPreviewOutgoingChatColor,
-              bodyStyle: theme.outgoingChatLinkBodyStyle,
-              titleStyle: theme.outgoingChatLinkTitleStyle,
-            ),
-            color: theme.outgoingChatBubbleColor,
-          ),
+              linkPreviewConfig: LinkPreviewConfiguration(
+                backgroundColor: theme.linkPreviewOutgoingChatColor,
+                bodyStyle: theme.outgoingChatLinkBodyStyle,
+                titleStyle: theme.outgoingChatLinkTitleStyle,
+              ),
+              color: theme.outgoingChatBubbleColor,
+             ),
           inComingChatBubbleConfig: ChatBubble(
             linkPreviewConfig: LinkPreviewConfiguration(
               linkStyle: TextStyle(
@@ -243,48 +242,6 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         swipeToReplyConfig: SwipeToReplyConfiguration(
           replyIconColor: theme.swipeToReplyIconColor,
-        ),
-      ),
-    );
-  }
-
-  Widget _customRecieptsBuilder(MessageStatus status) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10.0),
-      child: SizedBox(
-        child: Align(
-          alignment: Alignment.center,
-          child: Row(children: [
-            if ([
-              MessageStatus.undelivered,
-              MessageStatus.delivered,
-              MessageStatus.read
-            ].contains(status)) ...[
-              SizedBox(
-                child: Icon(
-                  Icons.check_circle_outlined,
-                  size: 14,
-                  color:
-                      status == MessageStatus.read ? Colors.blue : Colors.grey,
-                ),
-              )
-            ],
-            if ([MessageStatus.delivered, MessageStatus.read]
-                .contains(status)) ...[
-              Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: SizedBox(
-                  child: Icon(
-                    Icons.check_circle_outlined,
-                    size: 14,
-                    color: status == MessageStatus.read
-                        ? Colors.blue
-                        : Colors.grey,
-                  ),
-                ),
-              )
-            ],
-          ]),
         ),
       ),
     );

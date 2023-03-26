@@ -247,23 +247,17 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
 
   Widget getReciept() {
     final showReciepts = widget.chatBubbleConfig?.outgoingChatBubbleConfig
-            ?.recieptsAndSendingNotifierWidgetConfiguration?.showRecieptsIn ??
+            ?.recieptsWidgetConfig?.showRecieptsIn ??
         ShowRecieptsIn.lastMessage;
     if (showReciepts == ShowRecieptsIn.all) {
       return ValueListenableBuilder(
         valueListenable: widget.message.statusNotifier,
         builder: (context, value, child) {
-          if (widget
-                  .chatBubbleConfig
-                  ?.outgoingChatBubbleConfig
-                  ?.recieptsAndSendingNotifierWidgetConfiguration
-                  ?.recieptsBuilderVisibility ??
+          if (widget.chatBubbleConfig?.outgoingChatBubbleConfig
+                  ?.recieptsWidgetConfig?.recieptsBuilderVisibility ??
               true) {
-            return widget
-                    .chatBubbleConfig
-                    ?.outgoingChatBubbleConfig
-                    ?.recieptsAndSendingNotifierWidgetConfiguration
-                    ?.recieptsBuilder
+            return widget.chatBubbleConfig?.outgoingChatBubbleConfig
+                    ?.recieptsWidgetConfig?.recieptsBuilder
                     ?.call(value as MessageStatus) ??
                 sendMessageAnimationBuilder(value as MessageStatus);
           }
@@ -275,24 +269,18 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
           valueListenable:
               chatController!.initialMessageList.last.statusNotifier,
           builder: (context, value, child) {
-            if (widget
-                    .chatBubbleConfig
-                    ?.outgoingChatBubbleConfig
-                    ?.recieptsAndSendingNotifierWidgetConfiguration
-                    ?.recieptsBuilderVisibility ??
+            if (widget.chatBubbleConfig?.outgoingChatBubbleConfig
+                    ?.recieptsWidgetConfig?.recieptsBuilderVisibility ??
                 true) {
-              return widget
-                      .chatBubbleConfig
-                      ?.outgoingChatBubbleConfig
-                      ?.recieptsAndSendingNotifierWidgetConfiguration
-                      ?.recieptsBuilder
+              return widget.chatBubbleConfig?.outgoingChatBubbleConfig
+                      ?.recieptsWidgetConfig?.recieptsBuilder
                       ?.call(value as MessageStatus) ??
                   sendMessageAnimationBuilder(value as MessageStatus);
             }
             return sendMessageAnimationBuilder(value as MessageStatus);
           });
     }
-    return SizedBox();
+    return const SizedBox();
   }
 
   void _onAvatarLongPress(ChatUser? user) {

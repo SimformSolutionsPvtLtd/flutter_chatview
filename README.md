@@ -432,7 +432,7 @@ ChatView(
 
      ChatBubbleConfiguration(
           outgoingChatBubbleConfig: ChatBubble(
-              recieptsAndSendingNotifierWidgetConfiguration: RecieptsWidgetConfig(
+              recieptsWidgetConfig: RecieptsWidgetConfig(
                       /// custom reciepts builder 
                       recieptsBuilder: _customRecieptsBuilder,
                       /// whether to display reciepts in all 

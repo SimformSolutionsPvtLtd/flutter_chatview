@@ -47,7 +47,7 @@ class ChatBubbleConfiguration {
   /// Provides callback when user tap twice on chat bubble.
   final MessageCallBack? onDoubleTap;
 
-  final RecieptsWidgetConfig? recieptsAndSendingNotifierWidgetConfiguration;
+  final RecieptsWidgetConfig? recieptsWidgetConfig;
 
   ChatBubbleConfiguration(
       {this.padding,
@@ -57,5 +57,5 @@ class ChatBubbleConfiguration {
       this.inComingChatBubbleConfig,
       this.outgoingChatBubbleConfig,
       this.onDoubleTap,
-      this.recieptsAndSendingNotifierWidgetConfiguration});
+      this.recieptsWidgetConfig});
 }

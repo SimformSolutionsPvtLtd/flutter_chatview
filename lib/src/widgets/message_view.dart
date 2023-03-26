@@ -238,14 +238,10 @@ class _MessageViewState extends State<MessageView>
                   widget.controller?.initialMessageList.last.id ==
                       widget.message.id &&
                   widget.message.status == MessageStatus.read) {
-                if (widget
-                        .outgoingChatBubbleConfig
-                        ?.recieptsAndSendingNotifierWidgetConfiguration
+                if (widget.outgoingChatBubbleConfig?.recieptsWidgetConfig
                         ?.messageSeenAgoRecieptVisible ??
                     true) {
-                  return widget
-                          .outgoingChatBubbleConfig
-                          ?.recieptsAndSendingNotifierWidgetConfiguration
+                  return widget.outgoingChatBubbleConfig?.recieptsWidgetConfig
                           ?.lastSeenAgoBuilder
                           ?.call(
                               widget.message,
