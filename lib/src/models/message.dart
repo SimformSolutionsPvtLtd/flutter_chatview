@@ -99,6 +99,7 @@ class Message {
         reaction: Reaction.fromJson(json["reaction"]),
         messageType: json["message_type"],
         voiceMessageDuration: json["voice_message_duration"],
+        status: json['status']
       );
 
   Map<String, dynamic> toJson() => {
@@ -110,5 +111,6 @@ class Message {
         'reaction': reaction.toJson(),
         'message_type': messageType,
         'voice_message_duration': voiceMessageDuration,
+        'status':status.name
       };
 }

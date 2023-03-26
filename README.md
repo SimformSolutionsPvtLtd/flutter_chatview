@@ -446,6 +446,8 @@ ChatView(
 )
 ```
 
+
+
 ## How to use
 
 Check out [blog](https://medium.com/simform-engineering/chatview-a-cutting-edge-chat-ui-solution-7367b1f9d772) for better understanding and basic implementation. 
