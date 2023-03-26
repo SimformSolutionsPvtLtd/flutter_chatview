@@ -74,14 +74,14 @@ class ChatController {
       message.reaction.reactedUserIds.add(userId);
     }
     initialMessageList[indexOfMessage] = Message(
-      id: messageId,
-      message: message.message,
-      createdAt: message.createdAt,
-      sendBy: message.sendBy,
-      replyMessage: message.replyMessage,
-      reaction: message.reaction,
-      messageType: message.messageType,
-    );
+        id: messageId,
+        message: message.message,
+        createdAt: message.createdAt,
+        sendBy: message.sendBy,
+        replyMessage: message.replyMessage,
+        reaction: message.reaction,
+        messageType: message.messageType,
+        status: message.status);
     messageStreamController.sink.add(initialMessageList);
   }
 

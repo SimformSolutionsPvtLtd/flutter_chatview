@@ -25,7 +25,7 @@ import 'package:chatview/src/models/link_preview_configuration.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../utils/constants.dart';
+import '../utils/constants/constants.dart';
 
 class LinkPreview extends StatelessWidget {
   const LinkPreview({

@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'package:chatview/src/models/reciepts_widget_config.dart';
 import 'package:flutter/material.dart';
 
 import '../values/typedefs.dart';
@@ -46,13 +47,15 @@ class ChatBubbleConfiguration {
   /// Provides callback when user tap twice on chat bubble.
   final MessageCallBack? onDoubleTap;
 
-  ChatBubbleConfiguration({
-    this.padding,
-    this.margin,
-    this.maxWidth,
-    this.longPressAnimationDuration,
-    this.inComingChatBubbleConfig,
-    this.outgoingChatBubbleConfig,
-    this.onDoubleTap,
-  });
+  final RecieptsWidgetConfig? recieptsAndSendingNotifierWidgetConfiguration;
+
+  ChatBubbleConfiguration(
+      {this.padding,
+      this.margin,
+      this.maxWidth,
+      this.longPressAnimationDuration,
+      this.inComingChatBubbleConfig,
+      this.outgoingChatBubbleConfig,
+      this.onDoubleTap,
+      this.recieptsAndSendingNotifierWidgetConfiguration});
 }

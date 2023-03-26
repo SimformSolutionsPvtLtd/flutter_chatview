@@ -24,7 +24,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import '../models/models.dart';
-import '../utils/constants.dart';
+import '../utils/constants/constants.dart';
 
 class GlassMorphismReactionPopup extends StatelessWidget {
   const GlassMorphismReactionPopup({

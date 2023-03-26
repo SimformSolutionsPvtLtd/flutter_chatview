@@ -155,13 +155,20 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         chatBubbleConfig: ChatBubbleConfiguration(
           outgoingChatBubbleConfig: ChatBubble(
-            linkPreviewConfig: LinkPreviewConfiguration(
-              backgroundColor: theme.linkPreviewOutgoingChatColor,
-              bodyStyle: theme.outgoingChatLinkBodyStyle,
-              titleStyle: theme.outgoingChatLinkTitleStyle,
-            ),
-            color: theme.outgoingChatBubbleColor,
-          ),
+              linkPreviewConfig: LinkPreviewConfiguration(
+                backgroundColor: theme.linkPreviewOutgoingChatColor,
+                bodyStyle: theme.outgoingChatLinkBodyStyle,
+                titleStyle: theme.outgoingChatLinkTitleStyle,
+              ),
+              color: theme.outgoingChatBubbleColor,
+              recieptsAndSendingNotifierWidgetConfiguration:
+                  RecieptsWidgetConfig(
+                      messageSeenAgoRecieptVisible: false,
+                      recieptsBuilder: _customRecieptsBuilder,
+                      showRecieptsIn: ShowRecieptsIn.all
+                      // messageSeenAgoRecieptVisible: ,
+                      // recieptsBuilderVisibility: ,
+                      )),
           inComingChatBubbleConfig: ChatBubble(
             linkPreviewConfig: LinkPreviewConfiguration(
               linkStyle: TextStyle(
@@ -248,6 +255,48 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
+  Widget _customRecieptsBuilder(MessageStatus status) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      child: SizedBox(
+        child: Align(
+          alignment: Alignment.center,
+          child: Row(children: [
+            if ([
+              MessageStatus.undelivered,
+              MessageStatus.delivered,
+              MessageStatus.read
+            ].contains(status)) ...[
+              SizedBox(
+                child: Icon(
+                  Icons.check_circle_outlined,
+                  size: 14,
+                  color:
+                      status == MessageStatus.read ? Colors.blue : Colors.grey,
+                ),
+              )
+            ],
+            if ([MessageStatus.delivered, MessageStatus.read]
+                .contains(status)) ...[
+              Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: SizedBox(
+                  child: Icon(
+                    Icons.check_circle_outlined,
+                    size: 14,
+                    color: status == MessageStatus.read
+                        ? Colors.blue
+                        : Colors.grey,
+                  ),
+                ),
+              )
+            ],
+          ]),
+        ),
+      ),
+    );
+  }
+
   void _onSendTap(
     String message,
     ReplyMessage replyMessage,
@@ -264,6 +313,13 @@ class _ChatScreenState extends State<ChatScreen> {
         messageType: messageType,
       ),
     );
+    Future.delayed(const Duration(milliseconds: 300), () {
+      _chatController.initialMessageList.last.setStatus =
+          MessageStatus.undelivered;
+    });
+    Future.delayed(const Duration(seconds: 1), () {
+      _chatController.initialMessageList.last.setStatus = MessageStatus.read;
+    });
   }
 
   void _onThemeIconTap() {

@@ -1,6 +1,6 @@
 import 'package:chatview/src/controller/chat_controller.dart';
 import 'package:chatview/src/models/models.dart';
-import 'package:chatview/src/utils/constants.dart';
+import 'package:chatview/src/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 class ReactionsBottomSheet {

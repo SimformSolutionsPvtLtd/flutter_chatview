@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'package:chatview/src/utils/constants.dart';
+import 'package:chatview/src/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:chatview/src/extensions/extensions.dart';
 
@@ -99,6 +99,9 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
   String get replyMessage => widget.message.replyMessage.message;
 
   bool get isMessageBySender => widget.message.sendBy == currentUser?.id;
+
+  bool get isLastMessage =>
+      chatController?.initialMessageList.last.id == widget.message.id;
 
   ProfileCircleConfiguration? get profileCircleConfig =>
       widget.profileCircleConfig;
@@ -218,6 +221,7 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
                     child: _messagesWidgetColumn(messagedUser),
                   ),
           ),
+          if (isMessageBySender) ...[SizedBox(child: getReciept())],
           if (isMessageBySender &&
               (featureActiveConfig?.enableCurrentUserProfileAvatar ?? true))
             ProfileCircle(
@@ -239,6 +243,56 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
     if (profileCircleConfig?.onAvatarTap != null && user != null) {
       profileCircleConfig?.onAvatarTap!(user);
     }
+  }
+
+  Widget getReciept() {
+    final showReciepts = widget.chatBubbleConfig?.outgoingChatBubbleConfig
+            ?.recieptsAndSendingNotifierWidgetConfiguration?.showRecieptsIn ??
+        ShowRecieptsIn.lastMessage;
+    if (showReciepts == ShowRecieptsIn.all) {
+      return ValueListenableBuilder(
+        valueListenable: widget.message.statusNotifier,
+        builder: (context, value, child) {
+          if (widget
+                  .chatBubbleConfig
+                  ?.outgoingChatBubbleConfig
+                  ?.recieptsAndSendingNotifierWidgetConfiguration
+                  ?.recieptsBuilderVisibility ??
+              true) {
+            return widget
+                    .chatBubbleConfig
+                    ?.outgoingChatBubbleConfig
+                    ?.recieptsAndSendingNotifierWidgetConfiguration
+                    ?.recieptsBuilder
+                    ?.call(value as MessageStatus) ??
+                sendMessageAnimationBuilder(value as MessageStatus);
+          }
+          return const SizedBox();
+        },
+      );
+    } else if (showReciepts == ShowRecieptsIn.lastMessage && isLastMessage) {
+      return ValueListenableBuilder(
+          valueListenable:
+              chatController!.initialMessageList.last.statusNotifier,
+          builder: (context, value, child) {
+            if (widget
+                    .chatBubbleConfig
+                    ?.outgoingChatBubbleConfig
+                    ?.recieptsAndSendingNotifierWidgetConfiguration
+                    ?.recieptsBuilderVisibility ??
+                true) {
+              return widget
+                      .chatBubbleConfig
+                      ?.outgoingChatBubbleConfig
+                      ?.recieptsAndSendingNotifierWidgetConfiguration
+                      ?.recieptsBuilder
+                      ?.call(value as MessageStatus) ??
+                  sendMessageAnimationBuilder(value as MessageStatus);
+            }
+            return sendMessageAnimationBuilder(value as MessageStatus);
+          });
+    }
+    return SizedBox();
   }
 
   void _onAvatarLongPress(ChatUser? user) {
@@ -299,6 +353,7 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
                       : null
               : null,
           shouldHighlight: widget.shouldHighlight,
+          controller: chatController,
           highlightColor: widget.repliedMessageConfig
                   ?.repliedMsgAutoScrollConfig.highlightColor ??
               Colors.grey,

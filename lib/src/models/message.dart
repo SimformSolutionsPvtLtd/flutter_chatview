@@ -48,6 +48,9 @@ class Message {
   /// Provides message type.
   final MessageType messageType;
 
+  /// Status of the message.
+  final ValueNotifier<MessageStatus> _status;
+
   /// Provides max duration for recorded voice message.
   Duration? voiceMessageDuration;
 
@@ -60,8 +63,10 @@ class Message {
     Reaction? reaction,
     this.messageType = MessageType.text,
     this.voiceMessageDuration,
+    MessageStatus status = MessageStatus.pending,
   })  : reaction = reaction ?? Reaction(reactions: [], reactedUserIds: []),
         key = GlobalKey(),
+        _status = ValueNotifier(status),
         assert(
           (messageType.isVoice
               ? ((defaultTargetPlatform == TargetPlatform.iOS ||
@@ -69,6 +74,15 @@ class Message {
               : true),
           "Voice messages are only supported with android and ios platform",
         );
+
+  MessageStatus get status => _status.value;
+
+  ValueNotifier<MessageStatus> get statusNotifier => _status;
+
+
+  set setStatus(MessageStatus messageStatus) {
+    _status.value = messageStatus;
+  }
 
   factory Message.fromJson(Map<String, dynamic> json) => Message(
         id: json["id"],

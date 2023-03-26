@@ -19,8 +19,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'package:chatview/src/models/reciepts_widget_config.dart';
 import 'package:flutter/material.dart';
 
+import '../../chatview.dart';
 import 'link_preview_configuration.dart';
 
 class ChatBubble {
@@ -45,13 +47,17 @@ class ChatBubble {
   /// Used to give text style of message sender name.
   final TextStyle? senderNameTextStyle;
 
-  ChatBubble({
-    this.color,
-    this.borderRadius,
-    this.textStyle,
-    this.padding,
-    this.margin,
-    this.linkPreviewConfig,
-    this.senderNameTextStyle,
-  });
+  /// Used to provide builders for last seen message reciept,
+  /// at latest outgoing messsage.
+  final RecieptsWidgetConfig? recieptsAndSendingNotifierWidgetConfiguration;
+
+  ChatBubble(
+      {this.color,
+      this.borderRadius,
+      this.textStyle,
+      this.padding,
+      this.margin,
+      this.linkPreviewConfig,
+      this.senderNameTextStyle,
+      this.recieptsAndSendingNotifierWidgetConfiguration});
 }
