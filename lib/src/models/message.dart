@@ -75,11 +75,17 @@ class Message {
           "Voice messages are only supported with android and ios platform",
         );
 
+  /// curret messageStatus
   MessageStatus get status => _status.value;
 
+  /// For [MessageStatus] ValueNotfier which is used to for rebuilds
+  /// when state changes.
+  /// Using ValueNotfier to avoid usage of setState((){}) in order 
+  /// rerender messages with new reciepts.
   ValueNotifier<MessageStatus> get statusNotifier => _status;
 
-
+  /// This setter can be used to update message reciepts, after which the configured
+  /// builders will be updated.
   set setStatus(MessageStatus messageStatus) {
     _status.value = messageStatus;
   }
