@@ -155,20 +155,13 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         chatBubbleConfig: ChatBubbleConfiguration(
           outgoingChatBubbleConfig: ChatBubble(
-              linkPreviewConfig: LinkPreviewConfiguration(
-                backgroundColor: theme.linkPreviewOutgoingChatColor,
-                bodyStyle: theme.outgoingChatLinkBodyStyle,
-                titleStyle: theme.outgoingChatLinkTitleStyle,
-              ),
-              color: theme.outgoingChatBubbleColor,
-              recieptsAndSendingNotifierWidgetConfiguration:
-                  RecieptsWidgetConfig(
-                      messageSeenAgoRecieptVisible: false,
-                      recieptsBuilder: _customRecieptsBuilder,
-                      showRecieptsIn: ShowRecieptsIn.all
-                      // messageSeenAgoRecieptVisible: ,
-                      // recieptsBuilderVisibility: ,
-                      )),
+            linkPreviewConfig: LinkPreviewConfiguration(
+              backgroundColor: theme.linkPreviewOutgoingChatColor,
+              bodyStyle: theme.outgoingChatLinkBodyStyle,
+              titleStyle: theme.outgoingChatLinkTitleStyle,
+            ),
+            color: theme.outgoingChatBubbleColor,
+          ),
           inComingChatBubbleConfig: ChatBubble(
             linkPreviewConfig: LinkPreviewConfiguration(
               linkStyle: TextStyle(

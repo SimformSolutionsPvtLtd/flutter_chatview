@@ -49,7 +49,7 @@ class ChatBubble {
 
   /// Used to provide builders for last seen message reciept,
   /// at latest outgoing messsage.
-  final RecieptsWidgetConfig? recieptsAndSendingNotifierWidgetConfiguration;
+  final RecieptsWidgetConfig? recieptsWidgetConfig;
 
   ChatBubble(
       {this.color,
@@ -59,5 +59,5 @@ class ChatBubble {
       this.margin,
       this.linkPreviewConfig,
       this.senderNameTextStyle,
-      this.recieptsAndSendingNotifierWidgetConfiguration});
+      this.recieptsWidgetConfig});
 }
