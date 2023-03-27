@@ -20,6 +20,7 @@
  * SOFTWARE.
  */
 import 'package:chatview/src/utils/constants/constants.dart';
+import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:chatview/src/extensions/extensions.dart';
 
@@ -96,6 +97,7 @@ class ChatBubbleWidget extends StatefulWidget {
 }
 
 class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
+  
   String get replyMessage => widget.message.replyMessage.message;
 
   bool get isMessageBySender => widget.message.sendBy == currentUser?.id;
@@ -221,7 +223,7 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
                     child: _messagesWidgetColumn(messagedUser),
                   ),
           ),
-          if (isMessageBySender) ...[SizedBox(child: getReciept())],
+          if (isMessageBySender) ...[getReciept()],
           if (isMessageBySender &&
               (featureActiveConfig?.enableCurrentUserProfileAvatar ?? true))
             ProfileCircle(
@@ -253,8 +255,9 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
       return ValueListenableBuilder(
         valueListenable: widget.message.statusNotifier,
         builder: (context, value, child) {
-          if (widget.chatBubbleConfig?.outgoingChatBubbleConfig
-                  ?.receiptsWidgetConfig?.receiptsBuilderVisibility ??
+          if (ChatViewInheritedWidget.of(context)
+                  ?.featureActiveConfig
+                  .receiptsBuilderVisibility ??
               true) {
             return widget.chatBubbleConfig?.outgoingChatBubbleConfig
                     ?.receiptsWidgetConfig?.receiptsBuilder
@@ -269,8 +272,9 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
           valueListenable:
               chatController!.initialMessageList.last.statusNotifier,
           builder: (context, value, child) {
-            if (widget.chatBubbleConfig?.outgoingChatBubbleConfig
-                    ?.receiptsWidgetConfig?.receiptsBuilderVisibility ??
+            if (ChatViewInheritedWidget.of(context)
+                    ?.featureActiveConfig
+                    .receiptsBuilderVisibility ??
                 true) {
               return widget.chatBubbleConfig?.outgoingChatBubbleConfig
                       ?.receiptsWidgetConfig?.receiptsBuilder

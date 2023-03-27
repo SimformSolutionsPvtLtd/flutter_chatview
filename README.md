@@ -428,9 +428,20 @@ ChatView(
     
 ```dart
 ChatView(
-    ...
+   ...
+      featureActiveConfig: const FeatureActiveConfig(
+            /// Controls the visibility of message seen ago receipts default is true
+            lastSeenAgoBuilderVisibility: false,
+            /// Controls the visibility of the message [receiptsBuilder]
+            receiptsBuilderVisibility: false),            
+       ChatBubbleConfiguration(
+          inComingChatBubbleConfig: ChatBubble(
+            onMessageRead: (message) {
+              /// send your message reciepts to the other client
+              debugPrint('Message Read');
+            },
 
-     ChatBubbleConfiguration(
+          ),
           outgoingChatBubbleConfig: ChatBubble(
               receiptsWidgetConfig: ReceiptsWidgetConfig(
                       /// custom receipts builder 
@@ -441,7 +452,8 @@ ChatView(
               ),
             ), 
         ), 
-          ...
+        
+  ...
  
 )
 ```

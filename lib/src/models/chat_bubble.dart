@@ -48,13 +48,19 @@ class ChatBubble {
   /// at latest outgoing messsage.
   final ReceiptsWidgetConfig? receiptsWidgetConfig;
 
-  ChatBubble(
-      {this.color,
-      this.borderRadius,
-      this.textStyle,
-      this.padding,
-      this.margin,
-      this.linkPreviewConfig,
-      this.senderNameTextStyle,
-      this.receiptsWidgetConfig,});
+  /// Callback when a message has been displayed for the first 
+  /// time only
+  final Function(Message message)? onMessageRead;
+
+  ChatBubble({
+    this.color,
+    this.borderRadius,
+    this.textStyle,
+    this.padding,
+    this.margin,
+    this.linkPreviewConfig,
+    this.senderNameTextStyle,
+    this.receiptsWidgetConfig,
+    this.onMessageRead,
+  });
 }

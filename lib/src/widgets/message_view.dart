@@ -20,6 +20,7 @@
  * SOFTWARE.
  */
 import 'package:chatview/chatview.dart';
+import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:chatview/src/extensions/extensions.dart';
@@ -116,6 +117,10 @@ class _MessageViewState extends State<MessageView>
         upperBound: 0.1,
         lowerBound: 0.0,
       );
+      if (widget.message.status != MessageStatus.read &&
+          !widget.isMessageBySender) {
+        widget.inComingChatBubbleConfig?.onMessageRead?.call(widget.message);
+      }
       _animationController?.addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           _animationController?.reverse();
@@ -238,8 +243,9 @@ class _MessageViewState extends State<MessageView>
                   widget.controller?.initialMessageList.last.id ==
                       widget.message.id &&
                   widget.message.status == MessageStatus.read) {
-                if (widget.outgoingChatBubbleConfig?.receiptsWidgetConfig
-                        ?.messageSeenAgoRecieptVisible ??
+                if (ChatViewInheritedWidget.of(context)
+                        ?.featureActiveConfig
+                        .lastSeenAgoBuilderVisibility ??
                     true) {
                   return widget.outgoingChatBubbleConfig?.receiptsWidgetConfig
                           ?.lastSeenAgoBuilder

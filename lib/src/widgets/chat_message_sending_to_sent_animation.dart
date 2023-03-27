@@ -20,10 +20,7 @@ class _SendingMessageAnimatingWidgetState
 
   bool isVisible = false;
 
-  @override
-  void initState() {
-    super.initState();
-  }
+
 
   _attachOnStatusChangeListeners() {
     if (isSent) {

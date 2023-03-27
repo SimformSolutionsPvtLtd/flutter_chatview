@@ -37,19 +37,12 @@ class ReceiptsWidgetConfig {
   final Widget Function(Message message, String formattedDate)?
       lastSeenAgoBuilder;
 
-  /// Controls the visibility of message seen ago receipts default is true
-  final bool messageSeenAgoRecieptVisible;
-
-  /// Controls the visibility of the message [receiptsBuilder]
-  final bool receiptsBuilderVisibility;
-
   /// Whether to show receipts in all messages or not defaults to [ShowReceiptsIn.lastMessage]
   final ShowReceiptsIn showReceiptsIn;
 
-  const ReceiptsWidgetConfig(
-      {this.receiptsBuilder,
-      this.lastSeenAgoBuilder,
-      this.messageSeenAgoRecieptVisible = true,
-      this.receiptsBuilderVisibility = true,
-      this.showReceiptsIn = ShowReceiptsIn.lastMessage});
+  const ReceiptsWidgetConfig({
+    this.receiptsBuilder,
+    this.lastSeenAgoBuilder,
+    this.showReceiptsIn = ShowReceiptsIn.lastMessage,
+  });
 }
