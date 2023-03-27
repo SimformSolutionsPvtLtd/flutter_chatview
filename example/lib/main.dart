@@ -35,7 +35,7 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   AppTheme theme = LightTheme();
   bool isDarkTheme = false;
-  final currentUser = const ChatUser(
+  final currentUser = ChatUser(
     id: '1',
     name: 'Flutter',
     profilePhoto: Data.profileImage,
@@ -43,7 +43,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final _chatController = ChatController(
     initialMessageList: Data.messageList,
     scrollController: ScrollController(),
-    chatUsers: const [
+    chatUsers: [
       ChatUser(
         id: '2',
         name: 'Simform',
