@@ -57,5 +57,5 @@ class ChatBubbleConfiguration {
       this.inComingChatBubbleConfig,
       this.outgoingChatBubbleConfig,
       this.onDoubleTap,
-      this.receiptsWidgetConfig});
+      this.receiptsWidgetConfig,});
 }

@@ -131,8 +131,6 @@ class ChatView extends StatefulWidget {
   /// Provides parameter so user can assign ChatViewAppbar.
   final Widget? appBar;
 
-
-
   @override
   State<ChatView> createState() => _ChatViewState();
 }
@@ -159,7 +157,7 @@ class _ChatViewState extends State<ChatView>
   @override
   void initState() {
     super.initState();
-    setLocaleMessages('en', MyCustomMessages());
+    setLocaleMessages('en', ReceiptsCustomMessages());
     // Adds current user in users list.
     chatController.chatUsers.add(widget.currentUser);
   }

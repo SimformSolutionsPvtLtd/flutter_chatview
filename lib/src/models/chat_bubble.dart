@@ -56,5 +56,5 @@ class ChatBubble {
       this.margin,
       this.linkPreviewConfig,
       this.senderNameTextStyle,
-      this.receiptsWidgetConfig});
+      this.receiptsWidgetConfig,});
 }

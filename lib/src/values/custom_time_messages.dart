@@ -1,10 +1,10 @@
 import 'package:timeago/timeago.dart';
 
 // Override "en" locale messages with custom messages that are more precise and short
-// setLocaleMessages('en', MyCustomMessages())
+// setLocaleMessages('en', ReceiptsCustomMessages())
 
 // my_custom_messages.dart
-class MyCustomMessages implements LookupMessages {
+class ReceiptsCustomMessages implements LookupMessages {
   @override
   String prefixAgo() => '';
   @override

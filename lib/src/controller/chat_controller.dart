@@ -81,7 +81,7 @@ class ChatController {
         replyMessage: message.replyMessage,
         reaction: message.reaction,
         messageType: message.messageType,
-        status: message.status);
+        status: message.status,);
     messageStreamController.sink.add(initialMessageList);
   }
 
