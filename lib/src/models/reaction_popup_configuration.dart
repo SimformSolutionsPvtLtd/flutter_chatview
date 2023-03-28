@@ -54,7 +54,7 @@ class ReactionPopupConfiguration {
   /// Provides callback when user react on message.
   final void Function(Message message, String emoji)? userReactionCallback;
 
-  ReactionPopupConfiguration({
+  const ReactionPopupConfiguration({
     this.userReactionCallback,
     this.showGlassMorphismEffect = false,
     this.backgroundColor,
@@ -75,7 +75,7 @@ class EmojiConfiguration {
   /// Used to give size of emoji.
   final double? size;
 
-  EmojiConfiguration({
+  const EmojiConfiguration({
     this.emojiList,
     this.size,
   });
@@ -94,7 +94,7 @@ class GlassMorphismConfiguration {
   /// Used to give border radius of reaction pop-up.
   final double? borderRadius;
 
-  GlassMorphismConfiguration({
+  const GlassMorphismConfiguration({
     this.borderColor,
     this.strokeWidth,
     this.backgroundColor,

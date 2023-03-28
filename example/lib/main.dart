@@ -232,8 +232,9 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ),
         ),
-        profileCircleConfig:
-            ProfileCircleConfiguration(profileImageUrl: Data.profileImage),
+        profileCircleConfig: const ProfileCircleConfiguration(
+          profileImageUrl: Data.profileImage,
+        ),
         repliedMessageConfig: RepliedMessageConfiguration(
           backgroundColor: theme.repliedMessageColor,
           verticalBarColor: theme.verticalBarColor,

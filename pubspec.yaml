@@ -18,7 +18,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  grouped_list: ^5.1.2
+  # grouped_list: ^5.1.2
   intl: ^0.18.0
   flutter_linkify: ^5.0.2
   url_launcher: ^6.1.7
@@ -31,7 +31,9 @@ dependencies:
   audio_waveforms: ^1.0.1
   # For formatting time locale in message receipts
   timeago: ^3.4.0
-
+  grouped_list:
+    hosted: https://github.com/Yogesh-Dubey-Ayesavi/grouped_list.git
+    version: ^5.1.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

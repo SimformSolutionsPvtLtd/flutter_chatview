@@ -52,7 +52,7 @@ class ChatBubble {
   /// time only
   final Function(Message message)? onMessageRead;
 
-  ChatBubble({
+  const ChatBubble({
     this.color,
     this.borderRadius,
     this.textStyle,

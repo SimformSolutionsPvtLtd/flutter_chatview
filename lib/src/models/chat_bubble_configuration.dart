@@ -49,7 +49,7 @@ class ChatBubbleConfiguration {
 
   final ReceiptsWidgetConfig? receiptsWidgetConfig;
 
-  ChatBubbleConfiguration({
+  const ChatBubbleConfiguration({
     this.padding,
     this.margin,
     this.maxWidth,

@@ -61,7 +61,7 @@ class SendMessageConfiguration {
   /// Styling configuration for recorder widget.
   final VoiceRecordingConfiguration? voiceRecordingConfiguration;
 
-  SendMessageConfiguration({
+  const SendMessageConfiguration({
     this.textFieldConfig,
     this.textFieldBackgroundColor,
     this.imagePickerIconsConfig,
@@ -90,7 +90,7 @@ class ImagePickerIconsConfiguration {
   /// Used to give color to gallery icon.
   final Color? galleryIconColor;
 
-  ImagePickerIconsConfiguration({
+  const ImagePickerIconsConfiguration({
     this.cameraIconColor,
     this.galleryIconColor,
     this.galleryImagePickerIcon,
@@ -133,7 +133,7 @@ class TextFieldConfiguration {
   final List<TextInputFormatter>? inputFormatters;
 
   /// Used to give textCapitalization enums to text field.
-  TextCapitalization? textCapitalization;
+  final TextCapitalization? textCapitalization;
 
   /// Callback when a user starts/stops typing a message by [TypeWriterStatus]
   final void Function(TypeWriterStatus status)? onMessageTyping;
@@ -143,7 +143,7 @@ class TextFieldConfiguration {
   /// Default is 1 second.
   final Duration compositionThresholdTime;
 
-  TextFieldConfiguration({
+  const TextFieldConfiguration({
     this.contentPadding,
     this.maxLines,
     this.borderRadius,
