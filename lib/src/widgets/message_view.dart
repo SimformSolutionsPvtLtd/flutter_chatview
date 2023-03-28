@@ -19,13 +19,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'package:chatview/chatview.dart';
+import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:chatview/src/extensions/extensions.dart';
-import 'package:chatview/src/models/models.dart';
-
-import '../utils/constants.dart';
-import '../values/typedefs.dart';
+import '../utils/constants/constants.dart';
 import 'image_message_view.dart';
 import 'text_message_view.dart';
 import 'reaction_widget.dart';
@@ -48,6 +47,7 @@ class MessageView extends StatefulWidget {
     this.highlightScale = 1.2,
     this.messageConfig,
     this.onMaxDuration,
+    this.controller,
   }) : super(key: key);
 
   /// Provides message instance of chat.
@@ -89,6 +89,9 @@ class MessageView extends StatefulWidget {
 
   /// Allow user to turn on/off long press tap on chat bubble.
   final bool isLongPressEnable;
+
+  final ChatController? controller;
+
   final Function(int)? onMaxDuration;
 
   @override
@@ -114,6 +117,10 @@ class _MessageViewState extends State<MessageView>
         upperBound: 0.1,
         lowerBound: 0.0,
       );
+      if (widget.message.status != MessageStatus.read &&
+          !widget.isMessageBySender) {
+        widget.inComingChatBubbleConfig?.onMessageRead?.call(widget.message);
+      }
       _animationController?.addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           _animationController?.reverse();
@@ -154,72 +161,108 @@ class _MessageViewState extends State<MessageView>
       padding: EdgeInsets.only(
         bottom: widget.message.reaction.reactions.isNotEmpty ? 6 : 0,
       ),
-      child: (() {
-        if (message.isAllEmoji) {
-          return Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Padding(
-                padding: emojiMessageConfiguration?.padding ??
-                    EdgeInsets.fromLTRB(
-                      leftPadding2,
-                      4,
-                      leftPadding2,
-                      widget.message.reaction.reactions.isNotEmpty ? 14 : 0,
-                    ),
-                child: Transform.scale(
-                  scale: widget.shouldHighlight ? widget.highlightScale : 1.0,
-                  child: Text(
-                    message,
-                    style: emojiMessageConfiguration?.textStyle ??
-                        const TextStyle(fontSize: 30),
-                  ),
-                ),
-              ),
-              if (widget.message.reaction.reactions.isNotEmpty)
-                ReactionWidget(
-                  reaction: widget.message.reaction,
-                  messageReactionConfig: messageConfig?.messageReactionConfig,
-                  isMessageBySender: widget.isMessageBySender,
-                ),
-            ],
-          );
-        } else if (widget.message.messageType.isImage) {
-          return ImageMessageView(
-            message: widget.message,
-            isMessageBySender: widget.isMessageBySender,
-            imageMessageConfig: messageConfig?.imageMessageConfig,
-            messageReactionConfig: messageConfig?.messageReactionConfig,
-            highlightImage: widget.shouldHighlight,
-            highlightScale: widget.highlightScale,
-          );
-        } else if (widget.message.messageType.isText) {
-          return TextMessageView(
-            inComingChatBubbleConfig: widget.inComingChatBubbleConfig,
-            outgoingChatBubbleConfig: widget.outgoingChatBubbleConfig,
-            isMessageBySender: widget.isMessageBySender,
-            message: widget.message,
-            chatBubbleMaxWidth: widget.chatBubbleMaxWidth,
-            messageReactionConfig: messageConfig?.messageReactionConfig,
-            highlightColor: widget.highlightColor,
-            highlightMessage: widget.shouldHighlight,
-          );
-        } else if (widget.message.messageType.isVoice) {
-          return VoiceMessageView(
-            screenWidth: MediaQuery.of(context).size.width,
-            message: widget.message,
-            config: messageConfig?.voiceMessageConfig,
-            onMaxDuration: widget.onMaxDuration,
-            isMessageBySender: widget.isMessageBySender,
-            messageReactionConfig: messageConfig?.messageReactionConfig,
-            inComingChatBubbleConfig: widget.inComingChatBubbleConfig,
-            outgoingChatBubbleConfig: widget.outgoingChatBubbleConfig,
-          );
-        } else if (widget.message.messageType.isCustom &&
-            messageConfig?.customMessageBuilder != null) {
-          return messageConfig?.customMessageBuilder!(widget.message);
-        }
-      }()),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          (() {
+                if (message.isAllEmoji) {
+                  return Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Padding(
+                        padding: emojiMessageConfiguration?.padding ??
+                            EdgeInsets.fromLTRB(
+                              leftPadding2,
+                              4,
+                              leftPadding2,
+                              widget.message.reaction.reactions.isNotEmpty
+                                  ? 14
+                                  : 0,
+                            ),
+                        child: Transform.scale(
+                          scale: widget.shouldHighlight
+                              ? widget.highlightScale
+                              : 1.0,
+                          child: Text(
+                            message,
+                            style: emojiMessageConfiguration?.textStyle ??
+                                const TextStyle(fontSize: 30),
+                          ),
+                        ),
+                      ),
+                      if (widget.message.reaction.reactions.isNotEmpty)
+                        ReactionWidget(
+                          reaction: widget.message.reaction,
+                          messageReactionConfig:
+                              messageConfig?.messageReactionConfig,
+                          isMessageBySender: widget.isMessageBySender,
+                        ),
+                    ],
+                  );
+                } else if (widget.message.messageType.isImage) {
+                  return ImageMessageView(
+                    message: widget.message,
+                    isMessageBySender: widget.isMessageBySender,
+                    imageMessageConfig: messageConfig?.imageMessageConfig,
+                    messageReactionConfig: messageConfig?.messageReactionConfig,
+                    highlightImage: widget.shouldHighlight,
+                    highlightScale: widget.highlightScale,
+                  );
+                } else if (widget.message.messageType.isText) {
+                  return TextMessageView(
+                    inComingChatBubbleConfig: widget.inComingChatBubbleConfig,
+                    outgoingChatBubbleConfig: widget.outgoingChatBubbleConfig,
+                    isMessageBySender: widget.isMessageBySender,
+                    message: widget.message,
+                    chatBubbleMaxWidth: widget.chatBubbleMaxWidth,
+                    messageReactionConfig: messageConfig?.messageReactionConfig,
+                    highlightColor: widget.highlightColor,
+                    highlightMessage: widget.shouldHighlight,
+                  );
+                } else if (widget.message.messageType.isVoice) {
+                  return VoiceMessageView(
+                    screenWidth: MediaQuery.of(context).size.width,
+                    message: widget.message,
+                    config: messageConfig?.voiceMessageConfig,
+                    onMaxDuration: widget.onMaxDuration,
+                    isMessageBySender: widget.isMessageBySender,
+                    messageReactionConfig: messageConfig?.messageReactionConfig,
+                    inComingChatBubbleConfig: widget.inComingChatBubbleConfig,
+                    outgoingChatBubbleConfig: widget.outgoingChatBubbleConfig,
+                  );
+                } else if (widget.message.messageType.isCustom &&
+                    messageConfig?.customMessageBuilder != null) {
+                  return messageConfig?.customMessageBuilder!(widget.message);
+                }
+              }()) ??
+              const SizedBox(),
+          ValueListenableBuilder(
+            valueListenable: widget.message.statusNotifier,
+            builder: (context, value, child) {
+              if (widget.isMessageBySender &&
+                  widget.controller?.initialMessageList.last.id ==
+                      widget.message.id &&
+                  widget.message.status == MessageStatus.read) {
+                if (ChatViewInheritedWidget.of(context)
+                        ?.featureActiveConfig
+                        .lastSeenAgoBuilderVisibility ??
+                    true) {
+                  return widget.outgoingChatBubbleConfig?.receiptsWidgetConfig
+                          ?.lastSeenAgoBuilder
+                          ?.call(
+                              widget.message,
+                              applicationDateFormatter(
+                                  widget.message.createdAt)) ??
+                      lastSeenAgoBuilder(widget.message,
+                          applicationDateFormatter(widget.message.createdAt));
+                }
+                return const SizedBox();
+              }
+              return const SizedBox();
+            },
+          )
+        ],
+      ),
     );
   }
 

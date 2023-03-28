@@ -34,8 +34,14 @@ enum MessageType {
 /// typed the message
 enum TypeWriterStatus { typing, typed }
 
+/// [MessageStatus] defines the current state of the message
+/// if you are sender sending a message then, the
+enum MessageStatus { read, delivered, undelivered, pending }
+
 /// Types of states
 enum ChatViewState { hasMessages, noData, loading, error }
+
+enum ShowReceiptsIn { all, lastMessage }
 
 extension ChatViewStateExtension on ChatViewState {
   bool get hasMessages => this == ChatViewState.hasMessages;

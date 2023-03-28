@@ -23,12 +23,12 @@ import 'dart:async';
 import 'dart:io' show Platform;
 
 import 'package:audio_waveforms/audio_waveforms.dart';
+import 'package:chatview/src/utils/constants/constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../chatview.dart';
-import '../utils/constants.dart';
 import '../utils/debounce.dart';
 import '../utils/package_strings.dart';
 

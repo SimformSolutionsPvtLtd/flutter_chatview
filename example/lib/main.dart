@@ -74,6 +74,9 @@ class _ChatScreenState extends State<ChatScreen> {
         currentUser: currentUser,
         chatController: _chatController,
         onSendTap: _onSendTap,
+        featureActiveConfig: const FeatureActiveConfig(
+            lastSeenAgoBuilderVisibility: true,
+            receiptsBuilderVisibility: true),
         chatViewState: ChatViewState.hasMessages,
         chatViewStateConfig: ChatViewStateConfiguration(
           loadingWidgetConfig: ChatViewStateWidgetConfiguration(
@@ -159,6 +162,8 @@ class _ChatScreenState extends State<ChatScreen> {
               bodyStyle: theme.outgoingChatLinkBodyStyle,
               titleStyle: theme.outgoingChatLinkTitleStyle,
             ),
+            receiptsWidgetConfig:
+                const ReceiptsWidgetConfig(showReceiptsIn: ShowReceiptsIn.all),
             color: theme.outgoingChatBubbleColor,
           ),
           inComingChatBubbleConfig: ChatBubble(
@@ -172,6 +177,10 @@ class _ChatScreenState extends State<ChatScreen> {
               titleStyle: theme.incomingChatLinkTitleStyle,
             ),
             textStyle: TextStyle(color: theme.inComingChatBubbleTextColor),
+            onMessageRead: (message) {
+              /// send your message reciepts to the other client
+              debugPrint('Message Read');
+            },
             senderNameTextStyle:
                 TextStyle(color: theme.inComingChatBubbleTextColor),
             color: theme.inComingChatBubbleColor,
@@ -264,6 +273,13 @@ class _ChatScreenState extends State<ChatScreen> {
         messageType: messageType,
       ),
     );
+    Future.delayed(const Duration(milliseconds: 300), () {
+      _chatController.initialMessageList.last.setStatus =
+          MessageStatus.undelivered;
+    });
+    Future.delayed(const Duration(seconds: 1), () {
+      _chatController.initialMessageList.last.setStatus = MessageStatus.read;
+    });
   }
 
   void _onThemeIconTap() {

@@ -9,24 +9,28 @@ class Data {
       message: "Hi!",
       createdAt: DateTime.now(),
       sendBy: '1', // userId of who sends the message
+      status: MessageStatus.read,
     ),
     Message(
       id: '2',
       message: "Hi!",
       createdAt: DateTime.now(),
       sendBy: '2',
+      status: MessageStatus.read,
     ),
     Message(
       id: '3',
       message: "We can meet?I am free",
       createdAt: DateTime.now(),
       sendBy: '1',
+      status: MessageStatus.read,
     ),
     Message(
       id: '4',
       message: "Can you write the time and place of the meeting?",
       createdAt: DateTime.now(),
       sendBy: '1',
+      status: MessageStatus.read,
     ),
     Message(
       id: '5',
@@ -34,18 +38,21 @@ class Data {
       createdAt: DateTime.now(),
       sendBy: '2',
       reaction: Reaction(reactions: ['\u{2764}'], reactedUserIds: ['1']),
+      status: MessageStatus.read,
     ),
     Message(
       id: '6',
       message: "When to go ?",
       createdAt: DateTime.now(),
       sendBy: '3',
+      status: MessageStatus.read,
     ),
     Message(
       id: '7',
       message: "I guess Simform will reply",
       createdAt: DateTime.now(),
       sendBy: '4',
+      status: MessageStatus.read,
     ),
     Message(
       id: '8',
@@ -56,6 +63,7 @@ class Data {
         reactions: ['\u{2764}', '\u{1F44D}', '\u{1F44D}'],
         reactedUserIds: ['2', '3', '4'],
       ),
+      status: MessageStatus.read,
       replyMessage: const ReplyMessage(
         message: "Can you write the time and place of the meeting?",
         replyTo: '1',
@@ -68,6 +76,7 @@ class Data {
       message: "Done",
       createdAt: DateTime.now(),
       sendBy: '1',
+      status: MessageStatus.read,
       reaction: Reaction(
         reactions: [
           '\u{2764}',
@@ -80,6 +89,7 @@ class Data {
     Message(
       id: '10',
       message: "Thank you!!",
+      status: MessageStatus.read,
       createdAt: DateTime.now(),
       sendBy: '1',
       reaction: Reaction(
@@ -94,12 +104,14 @@ class Data {
       messageType: MessageType.image,
       sendBy: '1',
       reaction: Reaction(reactions: ['\u{2764}'], reactedUserIds: ['2']),
+      status: MessageStatus.read,
     ),
     Message(
       id: '12',
       message: "🤩🤩",
       createdAt: DateTime.now(),
       sendBy: '2',
+      status: MessageStatus.read,
     ),
   ];
 }

@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 import 'package:flutter/material.dart';
-import 'package:chatview/src/utils/constants.dart';
+import 'package:chatview/src/utils/constants/constants.dart';
 
 class ProfileCircle extends StatelessWidget {
   const ProfileCircle({

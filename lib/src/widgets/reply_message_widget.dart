@@ -26,7 +26,7 @@ import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/models/models.dart';
 import 'package:chatview/src/utils/package_strings.dart';
 
-import '../utils/constants.dart';
+import '../utils/constants/constants.dart';
 import 'chat_view_inherited_widget.dart';
 import 'vertical_line.dart';
 

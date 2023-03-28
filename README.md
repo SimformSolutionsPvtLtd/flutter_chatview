@@ -424,6 +424,40 @@ ChatView(
 )
 ```
 
+18.  Passing customReceipts builder or handling stuffs related receipts see `ReceiptsWidgetConfig` in  outgoingChatBubbleConfig.
+    
+```dart
+ChatView(
+   ...
+      featureActiveConfig: const FeatureActiveConfig(
+            /// Controls the visibility of message seen ago receipts default is true
+            lastSeenAgoBuilderVisibility: false,
+            /// Controls the visibility of the message [receiptsBuilder]
+            receiptsBuilderVisibility: false),            
+       ChatBubbleConfiguration(
+          inComingChatBubbleConfig: ChatBubble(
+            onMessageRead: (message) {
+              /// send your message reciepts to the other client
+              debugPrint('Message Read');
+            },
+
+          ),
+          outgoingChatBubbleConfig: ChatBubble(
+              receiptsWidgetConfig: ReceiptsWidgetConfig(
+                      /// custom receipts builder 
+                      receiptsBuilder: _customReceiptsBuilder,
+                      /// whether to display receipts in all 
+                      /// message or just at the last one just like instagram
+                      showReceiptsIn: ShowReceiptsIn.lastMessage
+              ),
+            ), 
+        ), 
+        
+  ...
+ 
+)
+```
+
 
 
 ## How to use
