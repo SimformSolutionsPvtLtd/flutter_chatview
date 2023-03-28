@@ -49,13 +49,14 @@ class ChatBubbleConfiguration {
 
   final ReceiptsWidgetConfig? receiptsWidgetConfig;
 
-  ChatBubbleConfiguration(
-      {this.padding,
-      this.margin,
-      this.maxWidth,
-      this.longPressAnimationDuration,
-      this.inComingChatBubbleConfig,
-      this.outgoingChatBubbleConfig,
-      this.onDoubleTap,
-      this.receiptsWidgetConfig,});
+  ChatBubbleConfiguration({
+    this.padding,
+    this.margin,
+    this.maxWidth,
+    this.longPressAnimationDuration,
+    this.inComingChatBubbleConfig,
+    this.outgoingChatBubbleConfig,
+    this.onDoubleTap,
+    this.receiptsWidgetConfig,
+  });
 }

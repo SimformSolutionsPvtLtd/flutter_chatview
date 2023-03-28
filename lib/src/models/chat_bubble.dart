@@ -48,7 +48,7 @@ class ChatBubble {
   /// at latest outgoing messsage.
   final ReceiptsWidgetConfig? receiptsWidgetConfig;
 
-  /// Callback when a message has been displayed for the first 
+  /// Callback when a message has been displayed for the first
   /// time only
   final Function(Message message)? onMessageRead;
 

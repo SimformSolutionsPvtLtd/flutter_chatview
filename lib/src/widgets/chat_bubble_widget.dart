@@ -97,7 +97,6 @@ class ChatBubbleWidget extends StatefulWidget {
 }
 
 class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
-  
   String get replyMessage => widget.message.replyMessage.message;
 
   bool get isMessageBySender => widget.message.sendBy == currentUser?.id;

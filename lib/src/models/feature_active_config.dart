@@ -49,7 +49,4 @@ class FeatureActiveConfig {
 
   /// Controls the visibility of the message [receiptsBuilder]
   final bool receiptsBuilderVisibility;
-
-
-
 }

@@ -91,16 +91,15 @@ class Message {
   }
 
   factory Message.fromJson(Map<String, dynamic> json) => Message(
-        id: json["id"],
-        message: json["message"],
-        createdAt: json["createdAt"],
-        sendBy: json["sendBy"],
-        replyMessage: ReplyMessage.fromJson(json["reply_message"]),
-        reaction: Reaction.fromJson(json["reaction"]),
-        messageType: json["message_type"],
-        voiceMessageDuration: json["voice_message_duration"],
-        status: json['status']
-      );
+      id: json["id"],
+      message: json["message"],
+      createdAt: json["createdAt"],
+      sendBy: json["sendBy"],
+      replyMessage: ReplyMessage.fromJson(json["reply_message"]),
+      reaction: Reaction.fromJson(json["reaction"]),
+      messageType: json["message_type"],
+      voiceMessageDuration: json["voice_message_duration"],
+      status: json['status']);
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -111,6 +110,6 @@ class Message {
         'reaction': reaction.toJson(),
         'message_type': messageType,
         'voice_message_duration': voiceMessageDuration,
-        'status':status.name
+        'status': status.name
       };
 }

@@ -15,12 +15,9 @@ class SendingMessageAnimatingWidget extends StatefulWidget {
 
 class _SendingMessageAnimatingWidgetState
     extends State<SendingMessageAnimatingWidget> with TickerProviderStateMixin {
-      
   bool get isSent => widget.status != MessageStatus.pending;
 
   bool isVisible = false;
-
-
 
   _attachOnStatusChangeListeners() {
     if (isSent) {
