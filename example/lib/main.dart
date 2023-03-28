@@ -2,6 +2,7 @@ import 'package:chatview/chatview.dart';
 import 'package:example/data.dart';
 import 'package:example/models/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:scrollable_positioned_list_extended/scrollable_positioned_list_extended.dart';
 
 void main() {
   runApp(const Example());
@@ -41,8 +42,8 @@ class _ChatScreenState extends State<ChatScreen> {
     profilePhoto: Data.profileImage,
   );
   final _chatController = ChatController(
-    initialMessageList: Data.messageList,
-    scrollController: ScrollController(),
+    initialMessageList: Data.messageList.reversed.toList(),
+    scrollController: ItemScrollController(),
     chatUsers: [
       ChatUser(
         id: '2',
@@ -268,17 +269,17 @@ class _ChatScreenState extends State<ChatScreen> {
         id: id.toString(),
         createdAt: DateTime.now(),
         message: message,
-        sendBy: currentUser.id,
+        sendBy: '3',
         replyMessage: replyMessage,
         messageType: messageType,
       ),
     );
     Future.delayed(const Duration(milliseconds: 300), () {
-      _chatController.initialMessageList.last.setStatus =
+      _chatController.initialMessageList.first.setStatus =
           MessageStatus.undelivered;
     });
     Future.delayed(const Duration(seconds: 1), () {
-      _chatController.initialMessageList.last.setStatus = MessageStatus.read;
+      _chatController.initialMessageList.first.setStatus = MessageStatus.read;
     });
   }
 

@@ -26,6 +26,7 @@ import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/widgets/chat_groupedlist_widget.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:scrollable_positioned_list_extended/scrollable_positioned_list_extended.dart';
 
 import '../../chatview.dart';
 import 'reaction_popup.dart';
@@ -118,7 +119,7 @@ class _ChatListWidgetState extends State<ChatListWidget>
 
   List<Message> get messageList => chatController.initialMessageList;
 
-  ScrollController get scrollController => chatController.scrollController;
+  ItemScrollController get scrollController => chatController.scrollController;
 
   bool get showTypingIndicator => widget.showTypingIndicator;
 
@@ -144,7 +145,7 @@ class _ChatListWidgetState extends State<ChatListWidget>
     if (featureActiveConfig?.enablePagination ?? false) {
       // When flag is on then it will include pagination logic to scroll
       // controller.
-      scrollController.addListener(_pagination);
+      _pagination();
     }
   }
 
@@ -236,13 +237,15 @@ class _ChatListWidgetState extends State<ChatListWidget>
 
   void _pagination() {
     if (widget.loadMoreData == null || widget.isLastPage == true) return;
-    if ((scrollController.position.pixels ==
-            scrollController.position.minScrollExtent) &&
-        !_isNextPageLoading.value) {
-      _isNextPageLoading.value = true;
-      widget.loadMoreData!()
-          .whenComplete(() => _isNextPageLoading.value = false);
-    }
+    scrollController.scrollListener((notification) {
+      if ((notification.position.pixels ==
+              notification.position.minScrollExtent) &&
+          !_isNextPageLoading.value) {
+        _isNextPageLoading.value = true;
+        widget.loadMoreData!()
+            .whenComplete(() => _isNextPageLoading.value = false);
+      }
+    });
   }
 
   void _showReplyPopup({
@@ -305,7 +308,7 @@ class _ChatListWidgetState extends State<ChatListWidget>
   @override
   void dispose() {
     chatController.messageStreamController.close();
-    scrollController.dispose();
+    // scrollController.dispose();
     _isNextPageLoading.dispose();
     showPopUp.dispose();
     super.dispose();

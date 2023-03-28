@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.5
+  scrollable_positioned_list_extended: ^0.3.8
   chatview:
     path: ../
 

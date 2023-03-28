@@ -7,7 +7,7 @@ class Data {
     Message(
       id: '1',
       message: "Hi!",
-      createdAt: DateTime.now(),
+      createdAt: DateTime.now().subtract(const Duration(days: 80)),
       sendBy: '1', // userId of who sends the message
       status: MessageStatus.read,
     ),

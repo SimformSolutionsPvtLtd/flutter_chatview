@@ -20,15 +20,14 @@
  * SOFTWARE.
  */
 import 'dart:async';
-
-import 'package:flutter/material.dart';
+import 'package:scrollable_positioned_list_extended/scrollable_positioned_list_extended.dart';
 
 import '../models/models.dart';
 
 class ChatController {
   /// Represents initial message list in chat which can be add by user.
   List<Message> initialMessageList;
-  ScrollController scrollController;
+  ItemScrollController scrollController;
 
   /// Represents list of chat users
   List<ChatUser> chatUsers;
@@ -47,7 +46,7 @@ class ChatController {
 
   /// Used to add message in message list.
   void addMessage(Message message) {
-    initialMessageList.add(message);
+    initialMessageList.insert(0, message);
     messageStreamController.sink.add(initialMessageList);
   }
 
@@ -87,14 +86,12 @@ class ChatController {
   }
 
   /// Function to scroll to last messages in chat view
-  void scrollToLastMessage() => Timer(
+  void scrollToLastMessage() {
+    Timer(
         const Duration(milliseconds: 300),
-        () => scrollController.animateTo(
-          scrollController.position.minScrollExtent,
-          curve: Curves.easeIn,
-          duration: const Duration(milliseconds: 300),
-        ),
-      );
+        () => scrollController.scrollToMax(
+            duration: const Duration(milliseconds: 300)));
+  }
 
   /// Function for loading data while pagination.
   void loadMoreData(List<Message> messageList) {

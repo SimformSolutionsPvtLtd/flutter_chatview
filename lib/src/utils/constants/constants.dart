@@ -86,3 +86,14 @@ Widget lastSeenAgoBuilder(Message message, String formattedDate) {
     ),
   );
 }
+
+bool sameDay(int firstStamp, int? secondStamp) {
+  if (DateFormat('dd MMM yyyy')
+          .format(DateTime.fromMillisecondsSinceEpoch(firstStamp)) ==
+      DateFormat('dd MMM yyyy')
+          .format(DateTime.fromMillisecondsSinceEpoch(secondStamp!))) {
+    return true;
+  } else {
+    return false;
+  }
+}

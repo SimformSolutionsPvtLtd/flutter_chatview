@@ -165,9 +165,10 @@ class _ChatViewState extends State<ChatView>
 
   @override
   Widget build(BuildContext context) {
+    // debugPrint('rebuilt');
     // Scroll to last message on in hasMessages state.
     if (showTypingIndicator && chatViewState.hasMessages) {
-      chatController.scrollToLastMessage();
+      // chatController.scrollToLastMessage();
     }
     return ChatViewInheritedWidget(
       chatController: chatController,
