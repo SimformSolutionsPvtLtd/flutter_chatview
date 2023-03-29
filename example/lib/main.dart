@@ -117,7 +117,7 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
             ),
             IconButton(
-              tooltip: 'From Chat Controller',
+              tooltip: 'Toggle TypingIndicator',
               onPressed: _showHideTypingIndicator,
               icon: Icon(
                 Icons.keyboard,
