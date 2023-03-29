@@ -20,14 +20,36 @@
  * SOFTWARE.
  */
 import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:scrollable_positioned_list_extended/scrollable_positioned_list_extended.dart';
-
 import '../models/models.dart';
 
 class ChatController {
   /// Represents initial message list in chat which can be add by user.
   List<Message> initialMessageList;
   ItemScrollController scrollController;
+
+  /// Allow user to show typing indicator defaults to false.
+  final ValueNotifier<bool> _showTypingIndicator = ValueNotifier(false);
+
+  /// TypingIndicator as [ValueNotifier] for [GroupedChatList] widget's typingIndicator [ValueListenableBuilder].
+  ///  Use this for listening typing indicators
+  ///   ```dart
+  ///    chatcontroller.typingIndicatorNotifier.addListener((){});
+  ///  ```
+  /// For more functionalities see [ValueNotifier].
+  ValueNotifier<bool> get typingIndicatorNotifier => _showTypingIndicator;
+
+  /// Getter for typingIndicator value instead of accessing [_showTypingIndicator.value]
+  /// for better accessibility.
+  bool get showTypingIndicator => _showTypingIndicator.value;
+
+  /// Setter for changing values of typingIndicator
+  /// ```dart
+  ///  chatContoller.setTypingIndicator = true; // for showing indicator
+  ///  chatContoller.setTypingIndicator = false; // for hiding indicator
+  ///  ````
+  set setTypingIndicator(bool value) => _showTypingIndicator.value = value;
 
   /// Represents list of chat users
   List<ChatUser> chatUsers;

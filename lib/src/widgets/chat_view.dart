@@ -104,6 +104,8 @@ class ChatView extends StatefulWidget {
   /// Provides builder which helps you to make custom text field and functionality.
   final ReplyMessageWithReturnWidget? sendMessageBuilder;
 
+  @Deprecated('Use [ChatController.setTypingIndicator]  instead')
+
   /// Allow user to show typing indicator.
   final bool showTypingIndicator;
 
@@ -143,7 +145,7 @@ class _ChatViewState extends State<ChatView>
 
   ChatController get chatController => widget.chatController;
 
-  bool get showTypingIndicator => widget.showTypingIndicator;
+  // bool get showTypingIndicator => widget.showTypingIndicator;
 
   ChatBackgroundConfiguration get chatBackgroundConfig =>
       widget.chatBackgroundConfig;
@@ -167,8 +169,12 @@ class _ChatViewState extends State<ChatView>
   Widget build(BuildContext context) {
     // debugPrint('rebuilt');
     // Scroll to last message on in hasMessages state.
-    if (showTypingIndicator && chatViewState.hasMessages) {
-      // chatController.scrollToLastMessage();
+    // TODO: Remove this in new versions.
+    // ignore: deprecated_member_use_from_same_package
+    if (widget.showTypingIndicator ||
+        widget.chatController.showTypingIndicator &&
+            chatViewState.hasMessages) {
+      chatController.scrollToLastMessage();
     }
     return ChatViewInheritedWidget(
       chatController: chatController,
@@ -220,6 +226,8 @@ class _ChatViewState extends State<ChatView>
                       valueListenable: replyMessage,
                       builder: (_, state, child) {
                         return ChatListWidget(
+                          /// TODO: Remove this in future releases.
+                          // ignore: deprecated_member_use_from_same_package
                           showTypingIndicator: widget.showTypingIndicator,
                           replyMessage: state,
                           chatController: widget.chatController,

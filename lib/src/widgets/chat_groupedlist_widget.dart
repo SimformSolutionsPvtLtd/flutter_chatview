@@ -187,12 +187,24 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
                   )
                 : _chatStreamBuilder,
           ),
-          TypingIndicator(
-            typeIndicatorConfig: widget.typeIndicatorConfig,
-            chatBubbleConfig: chatBubbleConfig?.inComingChatBubbleConfig,
-            showIndicator: showTypingIndicator,
-            profilePic: profileCircleConfig?.profileImageUrl,
-          ),
+          widget.showTypingIndicator
+              ? TypingIndicator(
+                  typeIndicatorConfig: widget.typeIndicatorConfig,
+                  chatBubbleConfig: chatBubbleConfig?.inComingChatBubbleConfig,
+                  showIndicator: widget.showTypingIndicator,
+                  profilePic: profileCircleConfig?.profileImageUrl,
+                )
+              : ValueListenableBuilder(
+                  valueListenable: ChatViewInheritedWidget.of(context)!
+                      .chatController
+                      .typingIndicatorNotifier,
+                  builder: (context, value, child) => TypingIndicator(
+                        typeIndicatorConfig: widget.typeIndicatorConfig,
+                        chatBubbleConfig:
+                            chatBubbleConfig?.inComingChatBubbleConfig,
+                        showIndicator: value as bool,
+                        profilePic: profileCircleConfig?.profileImageUrl,
+                      )),
           SizedBox(
             height: MediaQuery.of(context).size.width *
                 (widget.replyMessage.message.isNotEmpty ? 0.3 : 0.14),
