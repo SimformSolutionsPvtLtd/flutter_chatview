@@ -25,7 +25,9 @@ import 'dart:ui';
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:chatview/chatview.dart';
 import 'package:chatview/src/extensions/extensions.dart';
+import 'package:chatview/src/extensions/input_textfield_controller.dart';
 import 'package:chatview/src/utils/package_strings.dart';
+import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
 import 'package:chatview/src/widgets/chatui_textfield.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -41,6 +43,7 @@ class SendMessageWidget extends StatefulWidget {
     this.backgroundColor,
     this.sendMessageBuilder,
     this.onReplyCallback,
+    required this.replyMessageNotfier,
     this.onReplyCloseCallback,
   }) : super(key: key);
 
@@ -65,17 +68,19 @@ class SendMessageWidget extends StatefulWidget {
   /// Provides controller for accessing few function for running chat.
   final ChatController chatController;
 
+  final ValueNotifier<ReplyMessage> replyMessageNotfier;
+
   @override
   State<SendMessageWidget> createState() => SendMessageWidgetState();
 }
 
 class SendMessageWidgetState extends State<SendMessageWidget> {
-  final _textEditingController = TextEditingController();
+  final _textEditingController = InputTextFieldController();
+
   final ValueNotifier<ReplyMessage> _replyMessage =
       ValueNotifier(const ReplyMessage());
 
   ReplyMessage get replyMessage => _replyMessage.value;
-  final _focusNode = FocusNode();
 
   ChatUser? get repliedUser => replyMessage.replyTo.isNotEmpty
       ? widget.chatController.getUserFromId(replyMessage.replyTo)
@@ -86,6 +91,17 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
       : repliedUser?.name ?? '';
 
   ChatUser? currentUser;
+
+  ChatController get chatController =>
+      ChatViewInheritedWidget.of(context)!.chatController;
+
+  @override
+  void initState() {
+    widget.replyMessageNotfier.addListener(() {
+      _replyMessage.value = widget.replyMessageNotfier.value;
+    });
+    super.initState();
+  }
 
   @override
   void didChangeDependencies() {
@@ -226,7 +242,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                           valueListenable: _replyMessage,
                         ),
                         ChatUITextField(
-                          focusNode: _focusNode,
+                          focusNode: chatController.focusNode,
                           textEditingController: _textEditingController,
                           onPressed: _onPressed,
                           sendMessageConfig: widget.sendMessageConfig,
@@ -290,7 +306,6 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
   }
 
   void _onImageSelected(String imagePath, String error) {
-    debugPrint('Call in Send Message Widget');
     if (imagePath.isNotEmpty) {
       widget.onSendTap.call(imagePath, replyMessage, MessageType.image);
       _assignRepliedMessage();
@@ -327,7 +342,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
         voiceMessageDuration: message.voiceMessageDuration,
       );
     }
-    FocusScope.of(context).requestFocus(_focusNode);
+    FocusScope.of(context).requestFocus(chatController.focusNode);
     if (widget.onReplyCallback != null) widget.onReplyCallback!(replyMessage);
   }
 
@@ -337,7 +352,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
   }
 
   double get _bottomPadding => (!kIsWeb && Platform.isIOS)
-      ? (_focusNode.hasFocus
+      ? (chatController.focusNode.hasFocus
           ? bottomPadding1
           : window.viewPadding.bottom > 0
               ? bottomPadding2
@@ -347,7 +362,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
   @override
   void dispose() {
     _textEditingController.dispose();
-    _focusNode.dispose();
+    chatController.focusNode.dispose();
     _replyMessage.dispose();
     super.dispose();
   }

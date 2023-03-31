@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:chatview/chatview.dart';
 import 'package:example/data.dart';
 import 'package:example/models/theme.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scrollable_positioned_list_extended/scrollable_positioned_list_extended.dart';
 
@@ -13,15 +16,16 @@ class Example extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
+      key: Key('Main App'),
       title: 'Flutter Chat UI Demo',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primaryColor: const Color(0xffEE5366),
-        colorScheme:
-            ColorScheme.fromSwatch(accentColor: const Color(0xffEE5366)),
-      ),
-      home: const ChatScreen(),
+      localizationsDelegates: <LocalizationsDelegate<dynamic>>[
+        DefaultMaterialLocalizations.delegate,
+        DefaultWidgetsLocalizations.delegate,
+        DefaultCupertinoLocalizations.delegate,
+      ],
+      home: ChatScreen(),
     );
   }
 }
@@ -76,11 +80,13 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ChatView(
+        // isCupertinoApp: true,
         currentUser: currentUser,
         chatController: _chatController,
         onSendTap: _onSendTap,
         featureActiveConfig: const FeatureActiveConfig(
             lastSeenAgoBuilderVisibility: true,
+            enableReplySnackBar: false,
             receiptsBuilderVisibility: true),
         chatViewState: ChatViewState.hasMessages,
         chatViewStateConfig: ChatViewStateConfiguration(
@@ -94,6 +100,30 @@ class _ChatScreenState extends State<ChatScreen> {
           flashingCircleDarkColor: theme.flashingCircleDarkColor,
         ),
         appBar: ChatViewAppBar(
+          messageActionsBuilder: (message) {
+            return [
+              IconButton(
+                tooltip: 'Delete a Message',
+                onPressed: () {
+                  _chatController.hideReactionPopUp();
+                  _chatController.deleteMessage(message);
+                },
+                icon: Icon(
+                  Icons.delete_outline_rounded,
+                  color: theme.themeIconColor,
+                ),
+              ),
+              PopupMenuButton(itemBuilder: (context) {
+                _chatController.hideReactionPopUp();
+                
+                _chatController.unFocus();
+                return const [
+                  PopupMenuItem(child: Text('Share')),
+                  PopupMenuItem(child: Text('Report'))
+                ];
+              })
+            ];
+          },
           elevation: theme.elevation,
           backGroundColor: theme.appBarColor,
           profilePicture: Data.profileImage,
@@ -118,7 +148,7 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
             ),
             IconButton(
-              tooltip: 'From Chat Controller',
+              tooltip: 'Toggle TypingIndicator',
               onPressed: _showHideTypingIndicator,
               icon: Icon(
                 Icons.keyboard,
@@ -275,23 +305,21 @@ class _ChatScreenState extends State<ChatScreen> {
     ReplyMessage replyMessage,
     MessageType messageType,
   ) {
-    final id = int.parse(Data.messageList.last.id) + 1;
-    _chatController.addMessage(
-      Message(
-        id: id.toString(),
-        createdAt: DateTime.now(),
-        message: message,
-        sendBy: '3',
-        replyMessage: replyMessage,
-        messageType: messageType,
-      ),
+    final id = Random().nextDouble() * 324 + 1;
+    Message msg = Message(
+      id: id.toString(),
+      createdAt: DateTime.now(),
+      message: message,
+      sendBy: '1',
+      replyMessage: replyMessage,
+      messageType: messageType,
     );
+    _chatController.addMessage(msg);
     Future.delayed(const Duration(milliseconds: 300), () {
-      _chatController.initialMessageList.first.setStatus =
-          MessageStatus.undelivered;
+      msg.setStatus = MessageStatus.undelivered;
     });
     Future.delayed(const Duration(seconds: 1), () {
-      _chatController.initialMessageList.first.setStatus = MessageStatus.read;
+      msg.setStatus = MessageStatus.read;
     });
   }
 

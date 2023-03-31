@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'package:chatview/src/wrappers/condition_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:chatview/src/models/reaction_popup_configuration.dart';
 import 'package:chatview/src/utils/constants/constants.dart';
@@ -31,6 +32,7 @@ class EmojiRow extends StatelessWidget {
     Key? key,
     required this.onEmojiTap,
     this.emojiConfiguration,
+    this.isCupertino = false,
   }) : super(key: key);
 
   /// Provides callback when user taps on emoji in reaction pop-up.
@@ -38,6 +40,8 @@ class EmojiRow extends StatelessWidget {
 
   /// Provides configuration of emoji's appearance in reaction pop-up.
   final EmojiConfiguration? emojiConfiguration;
+
+  final bool isCupertino;
 
   /// These are default emojis.
   final List<String> _emojiUnicodes = [
@@ -56,7 +60,10 @@ class EmojiRow extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: Row(
+          child: ConditionalWrapper(
+            condition: isCupertino ,
+            wrapper: (child) => SingleChildScrollView(scrollDirection: Axis.horizontal,child: child,),
+            child: Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: List.generate(
@@ -69,7 +76,7 @@ class EmojiRow extends StatelessWidget {
                 ),
               ),
             ),
-          ),
+          )),
         ),
         IconButton(
           constraints: const BoxConstraints(),

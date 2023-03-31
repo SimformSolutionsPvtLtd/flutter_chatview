@@ -20,13 +20,13 @@
  * SOFTWARE.
  */
 import 'dart:io' if (kIsWeb) 'dart:html';
+import 'package:chatview/chatview.dart';
+import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:flutter/material.dart';
 
-import '../values/typedefs.dart';
-
-class ChatViewAppBar extends StatelessWidget {
+class ChatViewAppBar extends StatefulWidget {
   const ChatViewAppBar({
     Key? key,
     required this.chatTitle,
@@ -42,6 +42,7 @@ class ChatViewAppBar extends StatelessWidget {
     this.padding,
     this.leading,
     this.showLeading = true,
+    this.messageActionsBuilder,
   }) : super(key: key);
 
   /// Allow user to change colour of appbar.
@@ -83,62 +84,92 @@ class ChatViewAppBar extends StatelessWidget {
   /// Allow user to turn on/off leading icon.
   final bool showLeading;
 
+  final List<Widget> Function(Message message)? messageActionsBuilder;
+
+  @override
+  State<ChatViewAppBar> createState() => _ChatViewAppBarState();
+}
+
+class _ChatViewAppBarState extends State<ChatViewAppBar> {
+  ChatController get chatController =>
+      ChatViewInheritedWidget.of(context)!.chatController;
+
+  bool get isCupertino => ChatViewInheritedWidget.of(context)!.isCupertinoApp;
+
   @override
   Widget build(BuildContext context) {
     return Material(
-      elevation: elevation ?? 1,
+      elevation: widget.elevation ?? 1,
       child: Container(
-        padding: padding ??
+        padding: widget.padding ??
             EdgeInsets.only(
               top: MediaQuery.of(context).padding.top,
               bottom: 4,
             ),
-        color: backGroundColor ?? Colors.white,
+        color: widget.backGroundColor ?? Colors.white,
         child: Row(
           children: [
-            if (showLeading)
-              leading ??
+            if (widget.showLeading)
+              widget.leading ??
                   IconButton(
-                    onPressed: onBackPress ?? () => Navigator.pop(context),
+                    onPressed:
+                        widget.onBackPress ?? () => Navigator.pop(context),
                     icon: Icon(
                       (!kIsWeb && Platform.isIOS)
                           ? Icons.arrow_back_ios
                           : Icons.arrow_back,
-                      color: backArrowColor,
+                      color: widget.backArrowColor,
                     ),
                   ),
             Expanded(
               child: Row(
                 children: [
-                  if (profilePicture != null)
+                  if (widget.profilePicture != null)
                     Padding(
                       padding: const EdgeInsets.only(right: 8.0),
                       child: CircleAvatar(
-                          backgroundImage: NetworkImage(profilePicture!)),
+                          backgroundImage:
+                              NetworkImage(widget.profilePicture!)),
                     ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        chatTitle,
-                        style: chatTitleTextStyle ??
+                        widget.chatTitle,
+                        style: widget.chatTitleTextStyle ??
                             const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                               letterSpacing: 0.25,
                             ),
                       ),
-                      if (userStatus != null)
+                      if (widget.userStatus != null)
                         Text(
-                          userStatus!,
-                          style: userStatusTextStyle,
+                          widget.userStatus!,
+                          style: widget.userStatusTextStyle,
                         ),
                     ],
                   ),
                 ],
               ),
             ),
-            if (actions != null) ...actions!,
+            ValueListenableBuilder(
+              valueListenable: chatController.showMessageActions,
+              builder: (context, message, child) {
+                message as Message?;
+                if (message != null &&
+                    widget.messageActionsBuilder != null &&
+                    !isCupertino) {
+                  return Row(
+                      children: widget.messageActionsBuilder!.call(message));
+                } else if (widget.actions != null) {
+                  return Row(
+                    children: widget.actions!,
+                  );
+                }
+                return const SizedBox();
+              },
+            )
           ],
         ),
       ),

@@ -32,6 +32,7 @@ dependencies:
   # For formatting time locale in message receipts
   timeago: ^3.4.0
   scrollable_positioned_list_extended: ^0.3.8
+  flutter_parsed_text: ^2.2.1
 
 dev_dependencies:
   flutter_test:

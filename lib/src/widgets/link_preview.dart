@@ -52,36 +52,40 @@ class LinkPreview extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: verticalPadding),
             child: url.isImageUrl
-                ? InkWell(
-                    onTap: _onLinkTap,
-                    child: Image.network(
-                      url,
-                      height: 120,
-                      width: double.infinity,
-                      fit: BoxFit.fitWidth,
-                    ),
-                  )
-                : AnyLinkPreview(
-                    link: url,
-                    removeElevation: true,
-                    proxyUrl: linkPreviewConfig?.proxyUrl,
-                    onTap: _onLinkTap,
-                    placeholderWidget: SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.25,
-                      width: double.infinity,
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          strokeWidth: 1,
-                          color: linkPreviewConfig?.loadingColor,
-                        ),
+                ? Material(
+                    child: InkWell(
+                      onTap: _onLinkTap,
+                      child: Image.network(
+                        url,
+                        height: 120,
+                        width: double.infinity,
+                        fit: BoxFit.fitWidth,
                       ),
                     ),
-                    backgroundColor: linkPreviewConfig?.backgroundColor ??
-                        Colors.grey.shade200,
-                    borderRadius: linkPreviewConfig?.borderRadius,
-                    bodyStyle: linkPreviewConfig?.bodyStyle ??
-                        const TextStyle(color: Colors.black),
-                    titleStyle: linkPreviewConfig?.titleStyle,
+                  )
+                : Material(
+                    child: AnyLinkPreview(
+                      link: url,
+                      removeElevation: true,
+                      proxyUrl: linkPreviewConfig?.proxyUrl,
+                      onTap: _onLinkTap,
+                      placeholderWidget: SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.25,
+                        width: double.infinity,
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            strokeWidth: 1,
+                            color: linkPreviewConfig?.loadingColor,
+                          ),
+                        ),
+                      ),
+                      backgroundColor: linkPreviewConfig?.backgroundColor ??
+                          Colors.grey.shade200,
+                      borderRadius: linkPreviewConfig?.borderRadius,
+                      bodyStyle: linkPreviewConfig?.bodyStyle ??
+                          const TextStyle(color: Colors.black),
+                      titleStyle: linkPreviewConfig?.titleStyle,
+                    ),
                   ),
           ),
           const SizedBox(height: verticalPadding),

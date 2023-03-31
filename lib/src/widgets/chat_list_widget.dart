@@ -29,6 +29,7 @@ import 'package:flutter/material.dart';
 import 'package:scrollable_positioned_list_extended/scrollable_positioned_list_extended.dart';
 
 import '../../chatview.dart';
+import 'chat_view_inherited_widget.dart';
 import 'reaction_popup.dart';
 import 'reply_popup_widget.dart';
 
@@ -40,6 +41,7 @@ class ChatListWidget extends StatefulWidget {
     required this.showTypingIndicator,
     required this.assignReplyMessage,
     required this.replyMessage,
+    required this.focusNode,
     this.loadingWidget,
     this.reactionPopupConfig,
     this.messageConfig,
@@ -105,15 +107,20 @@ class ChatListWidget extends StatefulWidget {
   /// bubble.
   final MessageCallBack assignReplyMessage;
 
+  final FocusNode focusNode;
+
   @override
   State<ChatListWidget> createState() => _ChatListWidgetState();
 }
 
 class _ChatListWidgetState extends State<ChatListWidget>
     with SingleTickerProviderStateMixin {
-  final ValueNotifier<bool> _isNextPageLoading = ValueNotifier(false);
-  ValueNotifier<bool> showPopUp = ValueNotifier(false);
-  final GlobalKey<ReactionPopupState> _reactionPopupKey = GlobalKey();
+  final ValueNotifier<bool> _isNextPageLoading = ValueNotifier(true);
+
+  ValueNotifier<bool> get showPopUp =>
+      ChatViewInheritedWidget.of(context)!.chatController.showPopUp;
+
+  final GlobalKey<ReactionPopupState> _reactionPopupKey = GlobalKey(); 
 
   ChatController get chatController => widget.chatController;
 
@@ -129,6 +136,9 @@ class _ChatListWidgetState extends State<ChatListWidget>
   FeatureActiveConfig? featureActiveConfig;
   ChatUser? currentUser;
 
+  bool get isCupertino =>
+      ChatViewInheritedWidget.of(context)?.isCupertinoApp ?? false;
+
   @override
   void initState() {
     super.initState();
@@ -142,6 +152,7 @@ class _ChatListWidgetState extends State<ChatListWidget>
       featureActiveConfig = provide!.featureActiveConfig;
       currentUser = provide!.currentUser;
     }
+
     if (featureActiveConfig?.enablePagination ?? false) {
       // When flag is on then it will include pagination logic to scroll
       // controller.
@@ -154,6 +165,7 @@ class _ChatListWidgetState extends State<ChatListWidget>
     if (!chatController.messageStreamController.isClosed) {
       chatController.messageStreamController.sink.add(messageList);
     }
+
     if (messageList.isNotEmpty) chatController.scrollToLastMessage();
   }
 
@@ -164,8 +176,12 @@ class _ChatListWidgetState extends State<ChatListWidget>
         ValueListenableBuilder<bool>(
           valueListenable: _isNextPageLoading,
           builder: (_, isNextPageLoading, child) {
+            /// TODO: change the logic with [ItemScrollController]
+            /// When user scrolls to the minimum scroll extent show this, if scrolls down hide it again
+            /// do this until new messages have been added to the tree.
             if (isNextPageLoading &&
-                (featureActiveConfig?.enablePagination ?? false)) {
+                (featureActiveConfig?.enablePagination ?? false) &&
+                !ChatViewInheritedWidget.of(context)!.isCupertinoApp) {
               return SizedBox(
                 height: Scaffold.of(context).appBarMaxHeight,
                 child: Center(
@@ -182,10 +198,23 @@ class _ChatListWidgetState extends State<ChatListWidget>
           child: ValueListenableBuilder<bool>(
             valueListenable: showPopUp,
             builder: (_, showPopupValue, child) {
+              if (!showPopupValue) {
+                if (!isCupertino) {
+                  Future.delayed(const Duration(milliseconds: 0), () {
+                    ChatViewInheritedWidget.of(context)!
+                        .chatController
+                        .showMessageActions
+                        .value = null;
+                  });
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                }
+              }
+
               return Stack(
                 children: [
                   ChatGroupedListWidget(
                     showPopUp: showPopupValue,
+                    reactionPopupConfig: widget.reactionPopupConfig,
                     showTypingIndicator: showTypingIndicator,
                     scrollController: scrollController,
                     isEnableSwipeToSeeTime:
@@ -200,21 +229,29 @@ class _ChatListWidgetState extends State<ChatListWidget>
                     chatBubbleConfig: widget.chatBubbleConfig,
                     typeIndicatorConfig: widget.typeIndicatorConfig,
                     onChatBubbleLongPress: (yCoordinate, xCoordinate, message) {
-                      if (featureActiveConfig?.enableReactionPopup ?? false) {
-                        _reactionPopupKey.currentState?.refreshWidget(
-                          message: message,
-                          xCoordinate: xCoordinate,
-                          yCoordinate: yCoordinate < 0
-                              ? -(yCoordinate) - 5
-                              : yCoordinate,
-                        );
-                        showPopUp.value = true;
-                      }
-                      if (featureActiveConfig?.enableReplySnackBar ?? false) {
-                        _showReplyPopup(
-                          message: message,
-                          sendByCurrentUser: message.sendBy == currentUser?.id,
-                        );
+                      if (!isCupertino) {
+                        ChatViewInheritedWidget.of(context)!
+                            .chatController
+                            .showMessageActions
+                            .value = message;
+
+                        if (featureActiveConfig?.enableReactionPopup ?? false) {
+                          _reactionPopupKey.currentState?.refreshWidget(
+                            message: message,
+                            xCoordinate: xCoordinate,
+                            yCoordinate: yCoordinate < 0
+                                ? -(yCoordinate) - 5
+                                : yCoordinate,
+                          );
+                          showPopUp.value = true;
+                        }
+                        if (featureActiveConfig?.enableReplySnackBar ?? false) {
+                          _showReplyPopup(
+                            message: message,
+                            sendByCurrentUser:
+                                message.sendBy == currentUser?.id,
+                          );
+                        }
                       }
                     },
                     onChatListTap: _onChatListTap,
@@ -302,7 +339,14 @@ class _ChatListWidgetState extends State<ChatListWidget>
   void _onChatListTap() {
     if (!kIsWeb && Platform.isIOS) FocusScope.of(context).unfocus();
     showPopUp.value = false;
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    //TODO: Conditional when non cupertinoApp
+    if (!isCupertino) {
+      ChatViewInheritedWidget.of(context)!
+          .chatController
+          .showMessageActions
+          .value = null;
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    }
   }
 
   @override

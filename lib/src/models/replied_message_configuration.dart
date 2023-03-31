@@ -75,6 +75,8 @@ class RepliedMessageConfiguration {
   /// Color for microphone icon.
   final Color? micIconColor;
 
+
+
   const RepliedMessageConfiguration({
     this.verticalBarColor,
     this.backgroundColor,

@@ -131,7 +131,6 @@ class _MessageViewState extends State<MessageView>
 
   @override
   Widget build(BuildContext context) {
-    // debugPrint('${widget.message.id} rebuilt');
     return GestureDetector(
       onLongPressStart: isLongPressEnable ? _onLongPressStart : null,
       onDoubleTap: () {
@@ -241,7 +240,7 @@ class _MessageViewState extends State<MessageView>
             valueListenable: widget.message.statusNotifier,
             builder: (context, value, child) {
               if (widget.isMessageBySender &&
-                  widget.controller?.initialMessageList.last.id ==
+                  widget.controller?.initialMessageList.first.id ==
                       widget.message.id &&
                   widget.message.status == MessageStatus.read) {
                 if (ChatViewInheritedWidget.of(context)

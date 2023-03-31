@@ -20,30 +20,23 @@
  * SOFTWARE.
  */
 
-import 'package:flutter/cupertino.dart';
-import '../../chatview.dart';
-import '../utils/constants/constants.dart';
+import 'package:chatview/src/wrappers/condition_wrapper.dart';
+import 'package:flutter/material.dart';
 
-class ReceiptsWidgetConfig {
-  /// The builder that builds widget that right next to the senders message bubble.
-  /// Right now it's implemented to show animation only at the last message just
-  /// like instagram.
-  /// By default [sendMessageAnimationBuilder]
-  /// TODO: Pass messsage here too
-  final Widget Function(MessageStatus status)? receiptsBuilder;
+class MaterialConditionalWrapper extends StatelessWidget {
+  const MaterialConditionalWrapper(
+      {Key? key, this.condition = false, required this.child})
+      : super(key: key);
 
-  /// Just like Instagram messages receipts are displayed at the bottom of last
-  /// message. If in case you want to modify it using your custom widget you can
-  /// utilize this function.
-  final Widget Function(Message message, String formattedDate)?
-      lastSeenAgoBuilder;
+  final bool condition;
+  final Widget child;
 
-  /// Whether to show receipts in all messages or not defaults to [ShowReceiptsIn.lastMessage]
-  final ShowReceiptsIn showReceiptsIn;
-
-  const ReceiptsWidgetConfig({
-    this.receiptsBuilder,
-    this.lastSeenAgoBuilder,
-    this.showReceiptsIn = ShowReceiptsIn.lastMessage,
-  });
+  @override
+  Widget build(BuildContext context) {
+    return ConditionalWrapper(
+        condition: condition,
+        wrapper: (widget) =>
+            Material(type: MaterialType.transparency, child: widget),
+        child: child);
+  }
 }

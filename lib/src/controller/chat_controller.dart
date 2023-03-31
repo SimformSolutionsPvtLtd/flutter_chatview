@@ -32,6 +32,8 @@ class ChatController {
   /// Allow user to show typing indicator defaults to false.
   final ValueNotifier<bool> _showTypingIndicator = ValueNotifier(false);
 
+  final FocusNode focusNode = FocusNode();
+
   /// TypingIndicator as [ValueNotifier] for [GroupedChatList] widget's typingIndicator [ValueListenableBuilder].
   ///  Use this for listening typing indicators
   ///   ```dart
@@ -63,6 +65,10 @@ class ChatController {
   /// Represents message stream of chat
   StreamController<List<Message>> messageStreamController = StreamController();
 
+  final ValueNotifier<Message?> showMessageActions = ValueNotifier(null);
+
+  final ValueNotifier<bool> showPopUp = ValueNotifier(false);
+
   /// Used to dispose stream.
   void dispose() => messageStreamController.close();
 
@@ -70,6 +76,33 @@ class ChatController {
   void addMessage(Message message) {
     initialMessageList.insert(0, message);
     messageStreamController.sink.add(initialMessageList);
+  }
+
+  void hideReactionPopUp() {
+    showPopUp.value = false;
+  }
+
+  void deleteMessage(Message message) {
+    initialMessageList.removeWhere((element) => element.id == message.id);
+    messageStreamController.sink.add(initialMessageList);
+  }
+
+  getFocus() {
+    focusNode.requestFocus();
+  }
+
+  unFocus() {
+    focusNode.unfocus();
+  }
+
+  scrollToMessage(String replyId) {
+    int index =
+        initialMessageList.lastIndexWhere((element) => element.id == replyId);
+    scrollController.scrollTo(
+        index: index,
+        duration: const Duration(seconds: 2),
+        curve: Curves.easeInOutCubicEmphasized,
+        alignment: 0.5);
   }
 
   /// Function for setting reaction on specific chat bubble

@@ -21,6 +21,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'dart:math';
+
 import 'package:chatview/chatview.dart';
 import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/utils/constants/constants.dart';
@@ -45,12 +47,14 @@ class ChatGroupedListWidget extends StatefulWidget {
     required this.onChatListTap,
     required this.onChatBubbleLongPress,
     required this.isEnableSwipeToSeeTime,
+
     this.messageConfig,
     this.chatBubbleConfig,
     this.profileCircleConfig,
     this.swipeToReplyConfig,
     this.repliedMessageConfig,
     this.typeIndicatorConfig,
+    this.reactionPopupConfig,
   }) : super(key: key);
 
   /// Allow user to swipe to see time while reaction pop is not open.
@@ -96,6 +100,10 @@ class ChatGroupedListWidget extends StatefulWidget {
   /// swipe whole chat.
   final bool isEnableSwipeToSeeTime;
 
+  final ReactionPopupConfiguration? reactionPopupConfig;
+
+
+
   @override
   State<ChatGroupedListWidget> createState() => _ChatGroupedListWidgetState();
 }
@@ -129,6 +137,17 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
   void initState() {
     super.initState();
     _initializeAnimation();
+    _autoGetPosition();
+  }
+
+  void _autoGetPosition() {
+    Future.delayed(const Duration(milliseconds: 500), () {
+      widget.scrollController.scrollListener(
+        (notification) {
+          /// do with notification
+        },
+      );
+    });
   }
 
   void _initializeAnimation() {
@@ -154,6 +173,7 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
     if (provide != null) {
       featureActiveConfig = provide!.featureActiveConfig;
       chatController = provide!.chatController;
@@ -219,22 +239,29 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
     final repliedMessages = messages?.firstWhere((message) => id == message.id);
 
     // Scrolls to replied message and highlights
-    if (repliedMessages != null && repliedMessages.key.currentState != null) {
-      await Scrollable.ensureVisible(
-        repliedMessages.key.currentState!.context,
-        // This value will make widget to be in center when auto scrolled.
-        alignment: 0.5,
-        curve: widget.repliedMessageConfig?.repliedMsgAutoScrollConfig
-                .highlightScrollCurve ??
-            Curves.easeIn,
-        duration: widget.repliedMessageConfig?.repliedMsgAutoScrollConfig
-                .highlightDuration ??
-            const Duration(milliseconds: 300),
-      );
+    if (repliedMessages != null && messages != null) {
       if (widget.repliedMessageConfig?.repliedMsgAutoScrollConfig
               .enableHighlightRepliedMsg ??
           false) {
         _replyId.value = id;
+
+        if (widget.repliedMessageConfig?.repliedMsgAutoScrollConfig.isJumpTo ??
+            true) {
+          widget.scrollController
+              .jumpTo(index: messages.indexOf(repliedMessages));
+        } else {
+          widget.scrollController.scrollTo(
+              index: messages.indexOf(repliedMessages),
+              duration: widget.repliedMessageConfig?.repliedMsgAutoScrollConfig
+                      .highlightDuration ??
+                  const Duration(milliseconds: 300),
+              curve: widget.repliedMessageConfig?.repliedMsgAutoScrollConfig
+                      .highlightScrollCurve ??
+                  Curves.linear,
+              alignment: widget.repliedMessageConfig?.repliedMsgAutoScrollConfig
+                      .alignment ??
+                  0);
+        }
 
         Future.delayed(
           widget.repliedMessageConfig?.repliedMsgAutoScrollConfig
@@ -311,7 +338,8 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
                         valueListenable: _replyId,
                         builder: (context, state, child) {
                           return ChatBubbleWidget(
-                            key: message.key,
+                            key: GlobalKey(),
+
                             messageTimeTextStyle:
                                 chatBackgroundConfig.messageTimeTextStyle,
                             messageTimeIconColor:

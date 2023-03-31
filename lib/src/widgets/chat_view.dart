@@ -20,11 +20,14 @@
  * SOFTWARE.
  */
 import 'package:chatview/chatview.dart';
+import 'package:chatview/src/models/cupertino_widget_model/cupertino_context.dart';
 import 'package:chatview/src/widgets/chat_list_widget.dart';
 import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
 import 'package:chatview/src/widgets/chatview_state_widget.dart';
+import 'package:chatview/src/wrappers/material_conditional_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart';
+import '../models/cupertino_widget_configuration.dart';
 import '../values/custom_time_messages.dart';
 import 'send_message_widget.dart';
 
@@ -33,6 +36,7 @@ class ChatView extends StatefulWidget {
     Key? key,
     required this.chatController,
     required this.currentUser,
+    this.isCupertinoApp = false,
     this.onSendTap,
     this.profileCircleConfig,
     this.chatBubbleConfig,
@@ -45,6 +49,7 @@ class ChatView extends StatefulWidget {
     this.messageConfig,
     this.isLastPage,
     this.appBar,
+    this.cupertinoWidgetConfig,
     ChatBackgroundConfiguration? chatBackgroundConfig,
     this.typeIndicatorConfig,
     this.sendMessageBuilder,
@@ -133,13 +138,19 @@ class ChatView extends StatefulWidget {
   /// Provides parameter so user can assign ChatViewAppbar.
   final Widget? appBar;
 
+  final bool isCupertinoApp;
+
+  final CupertinoWidgetConfiguration? cupertinoWidgetConfig;
+
   @override
   State<ChatView> createState() => _ChatViewState();
 }
 
 class _ChatViewState extends State<ChatView>
     with SingleTickerProviderStateMixin {
-  final GlobalKey<SendMessageWidgetState> _sendMessageKey = GlobalKey();
+  ValueNotifier<ReplyMessage> replyMessageNotifier =
+      ValueNotifier(const ReplyMessage());
+
   ValueNotifier<ReplyMessage> replyMessage =
       ValueNotifier(const ReplyMessage());
 
@@ -157,17 +168,19 @@ class _ChatViewState extends State<ChatView>
 
   FeatureActiveConfig get featureActiveConfig => widget.featureActiveConfig;
 
+  late final FocusNode focusNode;
+
   @override
   void initState() {
     super.initState();
     setLocaleMessages('en', ReceiptsCustomMessages());
+    focusNode = FocusNode();
     // Adds current user in users list.
     chatController.chatUsers.add(widget.currentUser);
   }
 
   @override
   Widget build(BuildContext context) {
-    // debugPrint('rebuilt');
     // Scroll to last message on in hasMessages state.
     // TODO: Remove this in new versions.
     // ignore: deprecated_member_use_from_same_package
@@ -177,94 +190,111 @@ class _ChatViewState extends State<ChatView>
       chatController.scrollToLastMessage();
     }
     return ChatViewInheritedWidget(
+      isCupertinoApp: widget.isCupertinoApp,
       chatController: chatController,
+      cupertinoWidgetConfig: widget.cupertinoWidgetConfig,
       featureActiveConfig: featureActiveConfig,
       currentUser: widget.currentUser,
-      child: Container(
-        height:
-            chatBackgroundConfig.height ?? MediaQuery.of(context).size.height,
-        width: chatBackgroundConfig.width ?? MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          color: chatBackgroundConfig.backgroundColor ?? Colors.white,
-          image: chatBackgroundConfig.backgroundImage != null
-              ? DecorationImage(
-                  fit: BoxFit.fill,
-                  image: NetworkImage(chatBackgroundConfig.backgroundImage!),
-                )
-              : null,
-        ),
-        padding: chatBackgroundConfig.padding,
-        margin: chatBackgroundConfig.margin,
-        child: Column(
-          children: [
-            if (widget.appBar != null) widget.appBar!,
-            Expanded(
-              child: Stack(
-                children: [
-                  if (chatViewState.isLoading)
-                    ChatViewStateWidget(
-                      chatViewStateWidgetConfig:
-                          chatViewStateConfig?.loadingWidgetConfig,
-                      chatViewState: chatViewState,
-                    )
-                  else if (chatViewState.noMessages)
-                    ChatViewStateWidget(
-                      chatViewStateWidgetConfig:
-                          chatViewStateConfig?.noMessageWidgetConfig,
-                      chatViewState: chatViewState,
-                      onReloadButtonTap: chatViewStateConfig?.onReloadButtonTap,
-                    )
-                  else if (chatViewState.isError)
-                    ChatViewStateWidget(
-                      chatViewStateWidgetConfig:
-                          chatViewStateConfig?.errorWidgetConfig,
-                      chatViewState: chatViewState,
-                      onReloadButtonTap: chatViewStateConfig?.onReloadButtonTap,
-                    )
-                  else if (chatViewState.hasMessages)
-                    ValueListenableBuilder<ReplyMessage>(
-                      valueListenable: replyMessage,
-                      builder: (_, state, child) {
-                        return ChatListWidget(
-                          /// TODO: Remove this in future releases.
-                          // ignore: deprecated_member_use_from_same_package
-                          showTypingIndicator: widget.showTypingIndicator,
-                          replyMessage: state,
-                          chatController: widget.chatController,
-                          chatBackgroundConfig: widget.chatBackgroundConfig,
-                          reactionPopupConfig: widget.reactionPopupConfig,
-                          typeIndicatorConfig: widget.typeIndicatorConfig,
-                          chatBubbleConfig: widget.chatBubbleConfig,
-                          loadMoreData: widget.loadMoreData,
-                          isLastPage: widget.isLastPage,
-                          replyPopupConfig: widget.replyPopupConfig,
-                          loadingWidget: widget.loadingWidget,
-                          messageConfig: widget.messageConfig,
-                          profileCircleConfig: widget.profileCircleConfig,
-                          repliedMessageConfig: widget.repliedMessageConfig,
-                          swipeToReplyConfig: widget.swipeToReplyConfig,
-                          assignReplyMessage: (message) => _sendMessageKey
-                              .currentState
-                              ?.assignReplyMessage(message),
-                        );
-                      },
-                    ),
-                  if (featureActiveConfig.enableTextField)
-                    SendMessageWidget(
-                      key: _sendMessageKey,
-                      chatController: chatController,
-                      sendMessageBuilder: widget.sendMessageBuilder,
-                      sendMessageConfig: widget.sendMessageConfig,
-                      backgroundColor: chatBackgroundConfig.backgroundColor,
-                      onSendTap: _onSendTap,
-                      onReplyCallback: (reply) => replyMessage.value = reply,
-                      onReplyCloseCallback: () =>
-                          replyMessage.value = const ReplyMessage(),
-                    ),
-                ],
+      child: MaterialConditionalWrapper(
+        condition: widget.isCupertinoApp,
+        child: Container(
+          height:
+              chatBackgroundConfig.height ?? MediaQuery.of(context).size.height,
+          width:
+              chatBackgroundConfig.width ?? MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            color: chatBackgroundConfig.backgroundColor ?? Colors.white,
+            image: chatBackgroundConfig.backgroundImage != null
+                ? DecorationImage(
+                    fit: BoxFit.fill,
+                    image: NetworkImage(chatBackgroundConfig.backgroundImage!),
+                  )
+                : null,
+          ),
+          padding: chatBackgroundConfig.padding,
+          margin: chatBackgroundConfig.margin,
+          child: Column(
+            children: [
+              if (widget.appBar != null) widget.appBar!,
+              Expanded(
+                child: Stack(
+                  children: [
+                    if (chatViewState.isLoading)
+                      ChatViewStateWidget(
+                        chatViewStateWidgetConfig:
+                            chatViewStateConfig?.loadingWidgetConfig,
+                        chatViewState: chatViewState,
+                      )
+                    else if (chatViewState.noMessages)
+                      ChatViewStateWidget(
+                        chatViewStateWidgetConfig:
+                            chatViewStateConfig?.noMessageWidgetConfig,
+                        chatViewState: chatViewState,
+                        onReloadButtonTap:
+                            chatViewStateConfig?.onReloadButtonTap,
+                      )
+                    else if (chatViewState.isError)
+                      ChatViewStateWidget(
+                        chatViewStateWidgetConfig:
+                            chatViewStateConfig?.errorWidgetConfig,
+                        chatViewState: chatViewState,
+                        onReloadButtonTap:
+                            chatViewStateConfig?.onReloadButtonTap,
+                      )
+                    else if (chatViewState.hasMessages)
+                      ValueListenableBuilder<ReplyMessage>(
+                        valueListenable: replyMessage,
+                        builder: (_, state, child) {
+                          return ChatListWidget(
+
+                              /// TODO: Remove this in future releases.
+                              // ignore: deprecated_member_use_from_same_package
+                              showTypingIndicator: widget.showTypingIndicator,
+                              focusNode: focusNode,
+                              replyMessage: state,
+                              chatController: widget.chatController,
+                              chatBackgroundConfig: widget.chatBackgroundConfig,
+                              reactionPopupConfig: widget.reactionPopupConfig,
+                              typeIndicatorConfig: widget.typeIndicatorConfig,
+                              chatBubbleConfig: widget.chatBubbleConfig,
+                              loadMoreData: widget.loadMoreData,
+                              isLastPage: widget.isLastPage,
+                              replyPopupConfig: widget.replyPopupConfig,
+                              loadingWidget: widget.loadingWidget,
+                              messageConfig: widget.messageConfig,
+                              profileCircleConfig: widget.profileCircleConfig,
+                              repliedMessageConfig: widget.repliedMessageConfig,
+                              swipeToReplyConfig: widget.swipeToReplyConfig,
+                              assignReplyMessage: (message) {
+                                replyMessageNotifier.value = ReplyMessage(
+                                  message: message.message,
+                                  replyBy: widget.currentUser.id,
+                                  replyTo: message.sendBy,
+                                  messageType: message.messageType,
+                                  messageId: message.id,
+                                  voiceMessageDuration:
+                                      message.voiceMessageDuration,
+                                );
+                              });
+                        },
+                      ),
+                    if (featureActiveConfig.enableTextField)
+                      SendMessageWidget(
+                        replyMessageNotfier: replyMessageNotifier,
+                        chatController: chatController,
+                        sendMessageBuilder: widget.sendMessageBuilder,
+                        sendMessageConfig: widget.sendMessageConfig,
+                        backgroundColor: chatBackgroundConfig.backgroundColor,
+                        onSendTap: _onSendTap,
+                        onReplyCallback: (reply) => replyMessage.value = reply,
+                        onReplyCloseCallback: () =>
+                            replyMessage.value = const ReplyMessage(),
+                      ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
