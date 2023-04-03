@@ -307,11 +307,11 @@ ChatView(
 )
 ```
 
-11. Show typing indicator and adding configuration.
+11. For customizing typing indicators use `typeIndicatorConfig` with `TypeIndicatorConfig`.
 ```dart
 ChatView(
   ...
-  showTypingIndicator: true, // To show idicator when receiver satrted typing
+
   typeIndicatorConfig: TypeIndicatorConfiguration(
     flashingCircleBrightColor: Colors.grey,
     flashingCircleDarkColor: Colors.black,
@@ -319,8 +319,17 @@ ChatView(
   ...
 )
 ```
+12. For showing hiding typeIndicatorwidget use `ChatController.setTypingIndicaor`, for more info see `ChatController`.
+```dart
+/// use it with your [ChatController] instance.
+_chatContoller.setTypingIndicator = true; // for showing indicator
+_chatContoller.setTypingIndicator = false; // for hiding indicator
+```
 
-12. Adding linkpreview configuration with `LinkPreviewConfiguration` class.
+
+
+
+13. Adding linkpreview configuration with `LinkPreviewConfiguration` class.
 ```dart
 ChatView(
   ...
@@ -344,6 +353,8 @@ ChatView(
   ...
 )
 ```
+
+
 
 13. Adding pagination.
 ```dart

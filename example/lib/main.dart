@@ -67,6 +67,10 @@ class _ChatScreenState extends State<ChatScreen> {
     ],
   );
 
+  void _showHideTypingIndicator() {
+    _chatController.setTypingIndicator = !_chatController.showTypingIndicator;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -109,6 +113,14 @@ class _ChatScreenState extends State<ChatScreen> {
                 isDarkTheme
                     ? Icons.brightness_4_outlined
                     : Icons.dark_mode_outlined,
+                color: theme.themeIconColor,
+              ),
+            ),
+            IconButton(
+              tooltip: 'Toggle TypingIndicator',
+              onPressed: _showHideTypingIndicator,
+              icon: Icon(
+                Icons.keyboard,
                 color: theme.themeIconColor,
               ),
             ),
