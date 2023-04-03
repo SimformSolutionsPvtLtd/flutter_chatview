@@ -449,7 +449,7 @@ ChatView(
           inComingChatBubbleConfig: ChatBubble(
             onMessageRead: (message) {
               /// send your message reciepts to the other client
-              debugPrint('Message Read');
+              // debugPrint('Message Read');
             },
 
           ),

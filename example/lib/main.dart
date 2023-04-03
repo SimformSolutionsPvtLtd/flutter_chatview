@@ -5,7 +5,9 @@ import 'package:example/data.dart';
 import 'package:example/models/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:scrollable_positioned_list_extended/scrollable_positioned_list_extended.dart';
+import 'package:uuid/uuid.dart';
 
 void main() {
   runApp(const Example());
@@ -46,8 +48,8 @@ class _ChatScreenState extends State<ChatScreen> {
     profilePhoto: Data.profileImage,
   );
   final _chatController = ChatController(
-    initialMessageList: Data.messageList.reversed.toList(),
-    scrollController: ItemScrollController(),
+    initialMessageList: Data.messageList,
+    scrollController: AutoScrollController(),
     chatUsers: [
       ChatUser(
         id: '2',
@@ -80,7 +82,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ChatView(
-        // isCupertinoApp: true,
+        isCupertinoApp: false,
         currentUser: currentUser,
         chatController: _chatController,
         onSendTap: _onSendTap,
@@ -115,7 +117,7 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
               PopupMenuButton(itemBuilder: (context) {
                 _chatController.hideReactionPopUp();
-                
+
                 _chatController.unFocus();
                 return const [
                   PopupMenuItem(child: Text('Share')),
@@ -182,7 +184,7 @@ class _ChatScreenState extends State<ChatScreen> {
           textFieldConfig: TextFieldConfiguration(
             onMessageTyping: (status) {
               /// Do with status
-              debugPrint(status.toString());
+              // debugPrint(status.toString());
             },
             compositionThresholdTime: const Duration(seconds: 1),
             textStyle: TextStyle(color: theme.textFieldTextColor),
@@ -199,6 +201,7 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
         ),
         chatBubbleConfig: ChatBubbleConfiguration(
+          // padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 5),
           outgoingChatBubbleConfig: ChatBubble(
             linkPreviewConfig: LinkPreviewConfiguration(
               backgroundColor: theme.linkPreviewOutgoingChatColor,
@@ -222,7 +225,7 @@ class _ChatScreenState extends State<ChatScreen> {
             textStyle: TextStyle(color: theme.inComingChatBubbleTextColor),
             onMessageRead: (message) {
               /// send your message reciepts to the other client
-              debugPrint('Message Read');
+              // debugPrint('Message Read');
             },
             senderNameTextStyle:
                 TextStyle(color: theme.inComingChatBubbleTextColor),
@@ -305,9 +308,9 @@ class _ChatScreenState extends State<ChatScreen> {
     ReplyMessage replyMessage,
     MessageType messageType,
   ) {
-    final id = Random().nextDouble() * 324 + 1;
+    final id = Uuid().v4();
     Message msg = Message(
-      id: id.toString(),
+      id: const Uuid().v4(),
       createdAt: DateTime.now(),
       message: message,
       sendBy: '1',

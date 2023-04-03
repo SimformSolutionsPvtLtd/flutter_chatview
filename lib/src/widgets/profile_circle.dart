@@ -19,8 +19,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'package:flutter/material.dart';
-import 'package:chatview/src/utils/constants/constants.dart';
+part of '../../chatview.dart';
+
 
 class ProfileCircle extends StatelessWidget {
   const ProfileCircle({
@@ -63,7 +63,11 @@ class ProfileCircle extends StatelessWidget {
           onTap: onTap,
           child: CircleAvatar(
             radius: circleRadius ?? 16,
-            backgroundImage: NetworkImage(imageUrl ?? profileImage),
+            child: Image.network(
+              imageUrl ?? profileImage,
+              cacheHeight: 32,
+              cacheWidth: 32,
+            ),
           ),
         ),
       ),

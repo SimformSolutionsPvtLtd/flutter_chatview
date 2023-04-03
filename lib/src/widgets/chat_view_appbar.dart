@@ -19,12 +19,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'dart:io' if (kIsWeb) 'dart:html';
-import 'package:chatview/chatview.dart';
-import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 
-import 'package:flutter/material.dart';
+part of '../../chatview.dart';
+
 
 class ChatViewAppBar extends StatefulWidget {
   const ChatViewAppBar({
@@ -96,6 +93,8 @@ class _ChatViewAppBarState extends State<ChatViewAppBar> {
 
   bool get isCupertino => ChatViewInheritedWidget.of(context)!.isCupertinoApp;
 
+  int get profileRadius => 20;
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -128,8 +127,14 @@ class _ChatViewAppBarState extends State<ChatViewAppBar> {
                     Padding(
                       padding: const EdgeInsets.only(right: 8.0),
                       child: CircleAvatar(
-                          backgroundImage:
-                              NetworkImage(widget.profilePicture!)),
+
+                          /// TODO: Provide user to control over radius property.
+                          radius: profileRadius.toDouble(),
+                          child: Image.network(
+                            widget.profilePicture!,
+                            cacheHeight: profileRadius * 2,
+                            cacheWidth: profileRadius * 2,
+                          )),
                     ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -157,9 +162,7 @@ class _ChatViewAppBarState extends State<ChatViewAppBar> {
               valueListenable: chatController.showMessageActions,
               builder: (context, message, child) {
                 message as Message?;
-                if (message != null &&
-                    widget.messageActionsBuilder != null &&
-                    !isCupertino) {
+                if (message != null && widget.messageActionsBuilder != null) {
                   return Row(
                       children: widget.messageActionsBuilder!.call(message));
                 } else if (widget.actions != null) {

@@ -19,20 +19,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'dart:io' if (kIsWeb) 'dart:html';
-import 'dart:ui';
 
-import 'package:audio_waveforms/audio_waveforms.dart';
-import 'package:chatview/chatview.dart';
-import 'package:chatview/src/extensions/extensions.dart';
-import 'package:chatview/src/extensions/input_textfield_controller.dart';
-import 'package:chatview/src/utils/package_strings.dart';
-import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
-import 'package:chatview/src/widgets/chatui_textfield.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter/material.dart';
+part of '../../chatview.dart';
 
-import '../utils/constants/constants.dart';
 
 class SendMessageWidget extends StatefulWidget {
   const SendMessageWidget({
@@ -79,6 +68,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
 
   final ValueNotifier<ReplyMessage> _replyMessage =
       ValueNotifier(const ReplyMessage());
+
 
   ReplyMessage get replyMessage => _replyMessage.value;
 
@@ -241,8 +231,10 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                           },
                           valueListenable: _replyMessage,
                         ),
+
                         ChatUITextField(
                           focusNode: chatController.focusNode,
+                          chatController:widget.chatController,
                           textEditingController: _textEditingController,
                           onPressed: _onPressed,
                           sendMessageConfig: widget.sendMessageConfig,

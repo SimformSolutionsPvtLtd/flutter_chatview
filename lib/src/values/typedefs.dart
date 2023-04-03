@@ -21,6 +21,7 @@
  */
 import 'package:chatview/chatview.dart';
 import 'package:flutter/material.dart';
+import 'enumaration.dart';
 
 typedef StringCallback = void Function(String);
 typedef StringMessageCallBack = void Function(

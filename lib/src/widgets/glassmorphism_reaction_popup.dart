@@ -19,12 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'dart:ui';
-
-import 'package:flutter/material.dart';
-
-import '../models/models.dart';
-import '../utils/constants/constants.dart';
+part of '../../chatview.dart';
 
 class GlassMorphismReactionPopup extends StatelessWidget {
   const GlassMorphismReactionPopup({

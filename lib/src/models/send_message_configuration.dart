@@ -61,6 +61,8 @@ class SendMessageConfiguration {
   /// Styling configuration for recorder widget.
   final VoiceRecordingConfiguration? voiceRecordingConfiguration;
 
+
+
   const SendMessageConfiguration({
     this.textFieldConfig,
     this.textFieldBackgroundColor,

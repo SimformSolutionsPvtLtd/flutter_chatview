@@ -19,14 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'package:chatview/chatview.dart';
-import 'package:chatview/src/extensions/extensions.dart';
-import 'package:chatview/src/widgets/default_reaction_popup_widget.dart';
-import 'package:chatview/src/widgets/glassmorphism_reaction_popup.dart';
-import 'package:flutter/material.dart';
-
-import 'chat_view_inherited_widget.dart';
-import 'emoji_row.dart';
+part of '../../chatview.dart';
 
 class ReactionPopup extends StatefulWidget {
   const ReactionPopup({

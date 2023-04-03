@@ -10,15 +10,17 @@ environment:
 
 dependencies:
   flutter:
-    sdk: flutter
+    sdk: 'flutter'
   cupertino_icons: ^1.0.5
   scrollable_positioned_list_extended: ^0.3.8
   chatview:
     path: ../
+  uuid: ^3.0.7
+  scroll_to_index: ^3.0.1
 
 dev_dependencies:
   flutter_test:
-    sdk: flutter
+    sdk: 'flutter'
   flutter_lints: ^2.0.1
 
 flutter:

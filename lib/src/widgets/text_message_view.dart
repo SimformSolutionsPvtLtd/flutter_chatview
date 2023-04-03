@@ -19,16 +19,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'package:chatview/src/models/pattern_style.dart';
-import 'package:flutter/material.dart';
+part of '../../chatview.dart';
 
-import 'package:chatview/src/extensions/extensions.dart';
-import 'package:chatview/src/models/models.dart';
-import 'package:flutter_parsed_text/flutter_parsed_text.dart';
-
-import '../utils/constants/constants.dart';
-import 'link_preview.dart';
-import 'reaction_widget.dart';
 
 class TextMessageView extends StatelessWidget {
   const TextMessageView({
@@ -96,7 +88,7 @@ class TextMessageView extends StatelessWidget {
                     url: textMessage,
                   )
                 : ParsedText(
-                    selectable: true,
+                    selectable: false,
                     text: message.message,
                     style: _textStyle ??
                         textTheme.bodyMedium!.copyWith(
@@ -170,20 +162,9 @@ class TextMessageView extends StatelessWidget {
                         },
                       ),
                     ],
-                  )
-
-            //  Text(
-            //     textMessage,
-            //     style: _textStyle ??
-            //         textTheme.bodyMedium!.copyWith(
-            //           color: Colors.white,
-            //           fontSize: 16,
-            //         ),
-            //   ),
-            ),
+                  )),
         if (message.reaction.reactions.isNotEmpty)
           ReactionWidget(
-            key: key,
             isMessageBySender: isMessageBySender,
             reaction: message.reaction,
             messageReactionConfig: messageReactionConfig,

@@ -19,17 +19,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'package:chatview/chatview.dart';
-import 'package:chatview/src/models/cupertino_widget_model/cupertino_context.dart';
-import 'package:chatview/src/widgets/chat_list_widget.dart';
-import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
-import 'package:chatview/src/widgets/chatview_state_widget.dart';
-import 'package:chatview/src/wrappers/material_conditional_wrapper.dart';
-import 'package:flutter/material.dart';
-import 'package:timeago/timeago.dart';
-import '../models/cupertino_widget_configuration.dart';
-import '../values/custom_time_messages.dart';
-import 'send_message_widget.dart';
+
+
+part of '../../chatview.dart';
 
 class ChatView extends StatefulWidget {
   const ChatView({
@@ -266,6 +258,7 @@ class _ChatViewState extends State<ChatView>
                               repliedMessageConfig: widget.repliedMessageConfig,
                               swipeToReplyConfig: widget.swipeToReplyConfig,
                               assignReplyMessage: (message) {
+
                                 replyMessageNotifier.value = ReplyMessage(
                                   message: message.message,
                                   replyBy: widget.currentUser.id,
@@ -300,7 +293,7 @@ class _ChatViewState extends State<ChatView>
     );
   }
 
-  void _onSendTap(
+   _onSendTap(
     String message,
     ReplyMessage replyMessage,
     MessageType messageType,

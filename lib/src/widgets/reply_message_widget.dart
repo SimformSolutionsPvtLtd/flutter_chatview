@@ -19,16 +19,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'package:audio_waveforms/audio_waveforms.dart';
-import 'package:flutter/material.dart';
 
-import 'package:chatview/src/extensions/extensions.dart';
-import 'package:chatview/src/models/models.dart';
-import 'package:chatview/src/utils/package_strings.dart';
+part of '../../chatview.dart';
 
-import '../utils/constants/constants.dart';
-import 'chat_view_inherited_widget.dart';
-import 'vertical_line.dart';
 
 class ReplyMessageWidget extends StatelessWidget {
   const ReplyMessageWidget({

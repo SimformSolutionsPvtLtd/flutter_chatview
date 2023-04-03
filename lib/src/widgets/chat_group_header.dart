@@ -19,9 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'package:flutter/material.dart';
-import 'package:chatview/src/models/models.dart';
-import 'package:chatview/src/extensions/extensions.dart';
+part of '../../chatview.dart';
 
 class ChatGroupHeader extends StatelessWidget {
   const ChatGroupHeader({

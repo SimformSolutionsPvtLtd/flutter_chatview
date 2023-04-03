@@ -24,7 +24,7 @@ import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../../../chatview.dart';
-import '../../widgets/chat_message_sending_to_sent_animation.dart';
+import '../../values/enumaration.dart';
 
 const String enUS = "en_US";
 const String emojiRegExpression =

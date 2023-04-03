@@ -17,7 +17,7 @@ environment:
 
 dependencies:
   flutter:
-    sdk: flutter
+    sdk: 'flutter'
   grouped_list: ^5.1.2
   intl: ^0.18.0
   flutter_linkify: ^5.0.2
@@ -31,12 +31,15 @@ dependencies:
   audio_waveforms: ^1.0.1
   # For formatting time locale in message receipts
   timeago: ^3.4.0
-  scrollable_positioned_list_extended: ^0.3.8
+  scrollable_positioned_list_extended: ^0.3.9
   flutter_parsed_text: ^2.2.1
+  swipeable_tile: ^2.0.0+3
+  scroll_to_index: ^3.0.1
+  vibration: ^1.7.6
 
 dev_dependencies:
   flutter_test:
-    sdk: flutter
+    sdk: 'flutter'
   flutter_lints: ^2.0.1
 
 flutter:

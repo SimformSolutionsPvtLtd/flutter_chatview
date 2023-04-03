@@ -19,15 +19,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:scrollable_positioned_list_extended/scrollable_positioned_list_extended.dart';
-import '../models/models.dart';
+part of '../../chatview.dart';
+
 
 class ChatController {
   /// Represents initial message list in chat which can be add by user.
   List<Message> initialMessageList;
-  ItemScrollController scrollController;
+  AutoScrollController scrollController;
 
   /// Allow user to show typing indicator defaults to false.
   final ValueNotifier<bool> _showTypingIndicator = ValueNotifier(false);
@@ -74,7 +72,7 @@ class ChatController {
 
   /// Used to add message in message list.
   void addMessage(Message message) {
-    initialMessageList.insert(0, message);
+    initialMessageList.add(message);
     messageStreamController.sink.add(initialMessageList);
   }
 
@@ -93,16 +91,6 @@ class ChatController {
 
   unFocus() {
     focusNode.unfocus();
-  }
-
-  scrollToMessage(String replyId) {
-    int index =
-        initialMessageList.lastIndexWhere((element) => element.id == replyId);
-    scrollController.scrollTo(
-        index: index,
-        duration: const Duration(seconds: 2),
-        curve: Curves.easeInOutCubicEmphasized,
-        alignment: 0.5);
   }
 
   /// Function for setting reaction on specific chat bubble
@@ -141,12 +129,14 @@ class ChatController {
   }
 
   /// Function to scroll to last messages in chat view
-  void scrollToLastMessage() {
-    Timer(
+  void scrollToLastMessage() => Timer(
         const Duration(milliseconds: 300),
-        () => scrollController.scrollToMax(
-            duration: const Duration(milliseconds: 300)));
-  }
+        () => scrollController.animateTo(
+          scrollController.position.maxScrollExtent,
+          curve: Curves.easeIn,
+          duration: const Duration(milliseconds: 300),
+        ),
+      );
 
   /// Function for loading data while pagination.
   void loadMoreData(List<Message> messageList) {

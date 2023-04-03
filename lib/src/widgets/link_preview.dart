@@ -19,13 +19,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'package:any_link_preview/any_link_preview.dart';
-import 'package:chatview/src/extensions/extensions.dart';
-import 'package:chatview/src/models/link_preview_configuration.dart';
-import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+part of '../../chatview.dart';
 
-import '../utils/constants/constants.dart';
 
 class LinkPreview extends StatelessWidget {
   const LinkPreview({

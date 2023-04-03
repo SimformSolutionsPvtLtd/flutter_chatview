@@ -19,13 +19,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'package:chatview/src/wrappers/condition_wrapper.dart';
-import 'package:flutter/material.dart';
-import 'package:chatview/src/models/reaction_popup_configuration.dart';
-import 'package:chatview/src/utils/constants/constants.dart';
+part of '../../chatview.dart';
 
-import '../values/typedefs.dart';
-import 'emoji_picker_widget.dart';
 
 class EmojiRow extends StatelessWidget {
   EmojiRow({
@@ -61,22 +56,25 @@ class EmojiRow extends StatelessWidget {
       children: [
         Expanded(
           child: ConditionalWrapper(
-            condition: isCupertino ,
-            wrapper: (child) => SingleChildScrollView(scrollDirection: Axis.horizontal,child: child,),
-            child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: List.generate(
-              emojiList.length,
-              (index) => GestureDetector(
-                onTap: () => onEmojiTap(emojiList[index]),
-                child: Text(
-                  emojiList[index],
-                  style: TextStyle(fontSize: size ?? 28),
+              condition: isCupertino,
+              wrapper: (child) => SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: child,
+                  ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: List.generate(
+                  emojiList.length,
+                  (index) => GestureDetector(
+                    onTap: () => onEmojiTap(emojiList[index]),
+                    child: Text(
+                      emojiList[index],
+                      style: TextStyle(fontSize: size ?? 28),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          )),
+              )),
         ),
         IconButton(
           constraints: const BoxConstraints(),

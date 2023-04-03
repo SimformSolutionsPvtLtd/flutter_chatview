@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:chatview/chatview.dart';
-
-import '../models/cupertino_widget_configuration.dart';
+part of '../../chatview.dart';
 
 /// This widget for alternative of excessive amount of passing arguments
 /// over widgets.

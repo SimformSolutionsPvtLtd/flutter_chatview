@@ -1,5 +1,4 @@
-import 'package:chatview/chatview.dart';
-import 'package:flutter/material.dart';
+part of '../../chatview.dart';
 
 class DefaultReactionPopup extends StatelessWidget {
   const DefaultReactionPopup(

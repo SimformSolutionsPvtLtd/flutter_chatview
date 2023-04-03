@@ -20,8 +20,11 @@
  * SOFTWARE.
  */
 import 'package:chatview/chatview.dart';
+import 'package:chatview/src/extensions/extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+
+import '../values/enumaration.dart';
 
 class Message {
   /// Provides id
@@ -84,6 +87,8 @@ class Message {
   /// Using ValueNotfier to avoid usage of setState((){}) in order
   /// rerender messages with new receipts.
   ValueNotifier<MessageStatus> get statusNotifier => _status;
+
+  ValueNotifier<bool> isDeleted = ValueNotifier(false);
 
   /// This setter can be used to update message receipts, after which the configured
   /// builders will be updated.

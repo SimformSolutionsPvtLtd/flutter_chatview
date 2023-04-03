@@ -1,10 +1,4 @@
-import 'dart:async';
-
-import 'package:audio_waveforms/audio_waveforms.dart';
-import 'package:chatview/chatview.dart';
-import 'package:chatview/src/models/voice_message_configuration.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
+part of '../../chatview.dart';
 
 class VoiceMessageView extends StatefulWidget {
   const VoiceMessageView({

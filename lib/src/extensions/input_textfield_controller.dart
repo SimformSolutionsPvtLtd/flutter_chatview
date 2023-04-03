@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import '../models/pattern_style.dart';
+
 /// Controller for the [TextField] on [Input] widget
 /// To highlighting the matches for pattern
 class InputTextFieldController extends TextEditingController {
   /// A map of style to apply to the text pattern.
+
   final List<PatternStyle> _listPatternStyle = [
     PatternStyle.bold,
     PatternStyle.italic,
@@ -19,18 +21,38 @@ class InputTextFieldController extends TextEditingController {
     required bool withComposing,
   }) {
     final children = <TextSpan>[];
+    /// chatusers here.
+    final users = ["@yogesh dubey"];
+
 
     text.splitMapJoin(
       RegExp(_listPatternStyle.map((it) => it.regExp.pattern).join('|')),
       onMatch: (match) {
-        final text = match[0]!;
-        final style = _listPatternStyle
+        String text = match[0]!;
+        final newStyle = _listPatternStyle
             .firstWhere((element) => element.regExp.hasMatch(text))
             .textStyle;
 
-        final span = TextSpan(text: match.group(0), style: style);
-        children.add(span);
-        return span.toPlainText();
+        debugPrint(text);
+            if (text.startsWith('@')){
+              if(users.contains(text)){
+                final span = TextSpan(text: match.group(0), style: newStyle);
+                children.add(span);
+                return span.toPlainText();
+              }
+              else   {
+                final span = TextSpan(text: text, style: style);
+                children.add(span);
+                return span.toPlainText();
+              }
+            }
+            else   {
+              final span = TextSpan(text: text, style: newStyle);
+              children.add(span);
+              return span.toPlainText();
+            }
+
+
       },
       onNonMatch: (text) {
         final span = TextSpan(text: text, style: style);
