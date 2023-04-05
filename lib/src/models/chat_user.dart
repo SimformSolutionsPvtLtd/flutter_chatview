@@ -29,9 +29,13 @@ class ChatUser {
   /// Provides profile picture URL of user.
   final String? profilePhoto;
 
+  /// Additional details to be added
+  final Map<String, dynamic>? map;
+
   ChatUser({
     required this.id,
     required this.name,
+    this.map,
     this.profilePhoto,
   });
 

@@ -92,6 +92,7 @@ class ChatBubbleWidget extends StatefulWidget {
 
 class _ChatBubbleWidgetState extends State<ChatBubbleWidget>
     with SingleTickerProviderStateMixin {
+
   String get replyMessage => widget.message.replyMessage.message;
 
   bool get isMessageBySender => widget.message.sendBy == currentUser?.id;
@@ -104,17 +105,17 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget>
 
   ProfileCircleConfiguration? get profileCircleConfig =>
       widget.profileCircleConfig;
+
   FeatureActiveConfig? featureActiveConfig;
+
   ChatController? chatController;
+
   ChatUser? currentUser;
+
   int? maxDuration;
+
   ValueNotifier<double> isOn = ValueNotifier(0.00);
 
-  @override
-  void initState() {
-    super.initState();
-    // debugPrint('Built ${widget.message.id}');
-  }
 
   @override
   void didChangeDependencies() {
@@ -124,12 +125,6 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget>
       chatController = provide!.chatController;
       currentUser = provide!.currentUser;
     }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    // debugPrint('Disopse ${widget.message.id}');
   }
 
   @override
@@ -165,7 +160,6 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget>
 
   Widget _chatBubbleWidget(ChatUser? messagedUser) {
     return ConditionalWrapper(
-
         /// Todo: for our usecase only not for the community.
         condition: false,
         // isCupertino &&

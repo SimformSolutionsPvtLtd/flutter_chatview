@@ -20,6 +20,7 @@
  * SOFTWARE.
  */
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -97,3 +98,5 @@ bool sameDay(int firstStamp, int? secondStamp) {
     return false;
   }
 }
+
+final serviceLocator = GetIt.I;

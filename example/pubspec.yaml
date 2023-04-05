@@ -6,7 +6,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.15.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -17,6 +17,12 @@ dependencies:
     path: ../
   uuid: ^3.0.7
   scroll_to_index: ^3.0.1
+  moxxmpp:
+    hosted: https://git.polynom.me/api/packages/Moxxy/pub
+    version: 0.2.0
+  moxxmpp_socket_tcp:
+    hosted: https://git.polynom.me/api/packages/Moxxy/pub
+    version: 0.2.1
 
 dev_dependencies:
   flutter_test:
