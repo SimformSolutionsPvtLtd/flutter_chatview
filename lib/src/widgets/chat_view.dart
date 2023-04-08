@@ -140,8 +140,7 @@ class ChatView extends StatefulWidget {
 class _ChatViewState extends State<ChatView>
     with SingleTickerProviderStateMixin {
   final GlobalKey<SendMessageWidgetState> _sendMessageKey = GlobalKey();
-  ValueNotifier<ReplyMessage> replyMessage =
-      ValueNotifier(const ReplyMessage());
+  ValueNotifier<Message?> replyMessage = ValueNotifier(null);
 
   ChatController get chatController => widget.chatController;
 
@@ -221,7 +220,7 @@ class _ChatViewState extends State<ChatView>
                       onReloadButtonTap: chatViewStateConfig?.onReloadButtonTap,
                     )
                   else if (chatViewState.hasMessages)
-                    ValueListenableBuilder<ReplyMessage>(
+                    ValueListenableBuilder<Message?>(
                       valueListenable: replyMessage,
                       builder: (_, state, child) {
                         return ChatListWidget(
@@ -257,8 +256,7 @@ class _ChatViewState extends State<ChatView>
                       backgroundColor: chatBackgroundConfig.backgroundColor,
                       onSendTap: _onSendTap,
                       onReplyCallback: (reply) => replyMessage.value = reply,
-                      onReplyCloseCallback: () =>
-                          replyMessage.value = const ReplyMessage(),
+                      onReplyCloseCallback: () => replyMessage.value = null,
                     ),
                 ],
               ),
@@ -270,13 +268,12 @@ class _ChatViewState extends State<ChatView>
   }
 
   void _onSendTap(
-    String message,
-    ReplyMessage replyMessage,
-    MessageType messageType,
-  ) {
+      String message, Message? replyMessage, MessageType messageType,
+      {Duration? duration}) {
     if (widget.sendMessageBuilder == null) {
       if (widget.onSendTap != null) {
-        widget.onSendTap!(message, replyMessage, messageType);
+        widget.onSendTap!(message, replyMessage, messageType,
+            duration: duration);
       }
       _assignReplyMessage();
     }
@@ -284,8 +281,8 @@ class _ChatViewState extends State<ChatView>
   }
 
   void _assignReplyMessage() {
-    if (replyMessage.value.message.isNotEmpty) {
-      replyMessage.value = const ReplyMessage();
+    if (replyMessage.value != null) {
+      replyMessage.value = null;
     }
   }
 

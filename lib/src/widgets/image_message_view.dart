@@ -41,7 +41,7 @@ class ImageMessageView extends StatelessWidget {
   }) : super(key: key);
 
   /// Provides message instance of chat.
-  final Message message;
+  final ImageMessage message;
 
   /// Represents current message is sent by current user.
   final bool isMessageBySender;
@@ -58,7 +58,7 @@ class ImageMessageView extends StatelessWidget {
   /// Provides scale of highlighted image when user taps on replied image.
   final double highlightScale;
 
-  String get imageUrl => message.message;
+  String get imageUrl => message.uri;
 
   Widget get iconButton => ShareIcon(
         shareIconConfig: imageMessageConfig?.shareIconConfig,
@@ -91,7 +91,7 @@ class ImageMessageView extends StatelessWidget {
                         top: 6,
                         right: isMessageBySender ? 6 : 0,
                         left: isMessageBySender ? 0 : 6,
-                        bottom: message.reaction.reactions.isNotEmpty ? 15 : 0,
+                        bottom: message.reaction?.reactions.isNotEmpty ?? false ? 15 : 0,
                       ),
                   height: imageMessageConfig?.height ?? 200,
                   width: imageMessageConfig?.width ?? 150,
@@ -133,10 +133,10 @@ class ImageMessageView extends StatelessWidget {
                 ),
               ),
             ),
-            if (message.reaction.reactions.isNotEmpty)
+            if (message.reaction?.reactions.isNotEmpty  ?? false)
               ReactionWidget(
                 isMessageBySender: isMessageBySender,
-                reaction: message.reaction,
+                reaction: message.reaction!,
                 messageReactionConfig: messageReactionConfig,
               ),
           ],

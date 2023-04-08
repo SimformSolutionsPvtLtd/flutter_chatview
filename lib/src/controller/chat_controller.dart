@@ -20,14 +20,13 @@
  * SOFTWARE.
  */
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-
 import '../models/models.dart';
+import '../values/typedefs.dart';
 
 class ChatController {
   /// Represents initial message list in chat which can be add by user.
-  List<Message> initialMessageList;
+  final MessageNotifierList initialMessageList = [];
 
   ScrollController scrollController;
 
@@ -57,20 +56,24 @@ class ChatController {
   List<ChatUser> chatUsers;
 
   ChatController({
-    required this.initialMessageList,
+    required List<Message> initialMessageList,
     required this.scrollController,
     required this.chatUsers,
-  });
+  }) {
+    // this.initialMessageList =
+    //     initialMessageList.map((e) => ValueNotifier(e)).toList();
+  }
 
   /// Represents message stream of chat
-  StreamController<List<Message>> messageStreamController = StreamController();
+  StreamController<MessageNotifierList> messageStreamController =
+      StreamController();
 
   /// Used to dispose stream.
   void dispose() => messageStreamController.close();
 
   /// Used to add message in message list.
   void addMessage(Message message) {
-    initialMessageList.add(message);
+    initialMessageList.add(ValueNotifier(message));
     messageStreamController.sink.add(initialMessageList);
   }
 
@@ -80,33 +83,40 @@ class ChatController {
     required String messageId,
     required String userId,
   }) {
-    final message =
-        initialMessageList.firstWhere((element) => element.id == messageId);
-    final reactedUserIds = message.reaction.reactedUserIds;
+    final message = initialMessageList
+        .firstWhere((element) => element.value.id == messageId);
+
     final indexOfMessage = initialMessageList.indexOf(message);
-    final userIndex = reactedUserIds.indexOf(userId);
-    if (userIndex != -1) {
-      if (message.reaction.reactions[userIndex] == emoji) {
-        message.reaction.reactions.removeAt(userIndex);
-        message.reaction.reactedUserIds.removeAt(userIndex);
-      } else {
-        message.reaction.reactions[userIndex] = emoji;
+
+    if (message.value.reaction != null) {
+      if(message.value.reaction?.reactedUserIds.contains(userId) ?? false){
+        final userIndex =   message.value.reaction!.reactedUserIds.indexOf(userId);
+        final emojiAtIndex =  message.value.reaction?.reactions[userIndex];
+        if(  emojiAtIndex == emoji){
+        /// Remove Emoticon.
+          message.value.reaction!.reactions.removeAt(userIndex);
+          message.value.reaction!.reactedUserIds.removeAt(userIndex);
+        }
+        else{
+          message.value.reaction?.reactions[
+              message.value.reaction!.reactedUserIds.indexOf(userId)] = emoji;
+        }
+      }else{
+        /// Add new user and emoticon.
+     message.value.reaction!.reactions.add(emoji);
+     message.value.reaction!.reactedUserIds.add(userId);
       }
+      final newMessage = message.value.copyWith();
+      message.value = newMessage;
+      messageStreamController.sink.add(initialMessageList);
+
     } else {
-      message.reaction.reactions.add(emoji);
-      message.reaction.reactedUserIds.add(userId);
+      final newMessage = message.value.copyWith(
+          reaction: Reaction(reactions: [emoji], reactedUserIds: [userId]));
+      message.value = newMessage;
+
     }
-    initialMessageList[indexOfMessage] = Message(
-      id: messageId,
-      message: message.message,
-      createdAt: message.createdAt,
-      sendBy: message.sendBy,
-      replyMessage: message.replyMessage,
-      reaction: message.reaction,
-      messageType: message.messageType,
-      status: message.status,
-    );
-    messageStreamController.sink.add(initialMessageList);
+
   }
 
   /// Function to scroll to last messages in chat view
@@ -120,9 +130,10 @@ class ChatController {
       );
 
   /// Function for loading data while pagination.
+  /// TODO: Add a converter version.
   void loadMoreData(List<Message> messageList) {
-    initialMessageList.addAll(messageList);
-    messageStreamController.sink.add(initialMessageList);
+    // initialMessageList.addAll(messageList);
+    // messageStreamController.sink.add(initialMessageList);
   }
 
   /// Function for getting ChatUser object from user id

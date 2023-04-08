@@ -21,7 +21,6 @@
  */
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/material.dart';
-
 import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/models/models.dart';
 import 'package:chatview/src/utils/package_strings.dart';
@@ -51,13 +50,12 @@ class ReplyMessageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentUser = ChatViewInheritedWidget.of(context)?.currentUser;
-    final replyBySender = message.replyMessage.replyBy == currentUser?.id;
+    final replyBySender = message.repliedMessage?.author.id == currentUser?.id;
     final textTheme = Theme.of(context).textTheme;
-    final replyMessage = message.replyMessage.message;
-    final chatController = ChatViewInheritedWidget.of(context)?.chatController;
-    final messagedUser =
-        chatController?.getUserFromId(message.replyMessage.replyBy);
-    final replyBy = replyBySender ? PackageStrings.you : messagedUser?.name;
+    final replyMessage = message.repliedMessage;
+    final messagedUser = message.repliedMessage?.author;
+    final replyBy =
+        replyBySender ? PackageStrings.you : messagedUser?.firstName;
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -95,7 +93,7 @@ class ReplyMessageWidget extends StatelessWidget {
                   Flexible(
                     child: Opacity(
                       opacity: repliedMessageConfig?.opacity ?? 0.8,
-                      child: message.replyMessage.messageType.isImage
+                      child: message.repliedMessage!.type.isImage
                           ? Container(
                               height: repliedMessageConfig
                                       ?.repliedImageMessageHeight ??
@@ -103,16 +101,18 @@ class ReplyMessageWidget extends StatelessWidget {
                               width: repliedMessageConfig
                                       ?.repliedImageMessageWidth ??
                                   80,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: NetworkImage(replyMessage),
-                                  fit: BoxFit.fill,
-                                ),
-                                borderRadius:
-                                    repliedMessageConfig?.borderRadius ??
-                                        BorderRadius.circular(14),
-                              ),
-                            )
+                              decoration: (() {
+                                final msg = replyMessage as ImageMessage;
+                                return BoxDecoration(
+                                  image: DecorationImage(
+                                    image: NetworkImage(msg.uri),
+                                    fit: BoxFit.fill,
+                                  ),
+                                  borderRadius:
+                                      repliedMessageConfig?.borderRadius ??
+                                          BorderRadius.circular(14),
+                                );
+                              }()))
                           : Container(
                               constraints: BoxConstraints(
                                 maxWidth: repliedMessageConfig?.maxWidth ?? 280,
@@ -124,41 +124,43 @@ class ReplyMessageWidget extends StatelessWidget {
                                   ),
                               decoration: BoxDecoration(
                                 borderRadius: _borderRadius(
-                                  replyMessage: replyMessage,
+                                  replyMessage: replyMessage!.id,
                                   replyBySender: replyBySender,
                                 ),
                                 color: repliedMessageConfig?.backgroundColor ??
                                     Colors.grey.shade500,
                               ),
-                              child: message.replyMessage.messageType.isVoice
-                                  ? Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Icon(
-                                          Icons.mic,
-                                          color: repliedMessageConfig
-                                                  ?.micIconColor ??
-                                              Colors.white,
-                                        ),
-                                        const SizedBox(width: 2),
-                                        if (message.replyMessage
-                                                .voiceMessageDuration !=
-                                            null)
+                              child: message.repliedMessage!.type.isVoice
+                                  ? (() {
+                                      final msg = replyMessage as AudioMessage;
+                                      return Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Icon(
+                                            Icons.mic,
+                                            color: repliedMessageConfig
+                                                    ?.micIconColor ??
+                                                Colors.white,
+                                          ),
+                                          const SizedBox(width: 2),
                                           Text(
-                                            message.replyMessage
-                                                .voiceMessageDuration!
-                                                .toHHMMSS(),
+                                            msg.duration.toString(),
                                             style:
                                                 repliedMessageConfig?.textStyle,
                                           ),
-                                      ],
-                                    )
-                                  : Text(
-                                      replyMessage,
-                                      style: repliedMessageConfig?.textStyle ??
-                                          textTheme.bodyMedium!
-                                              .copyWith(color: Colors.black),
-                                    ),
+                                        ],
+                                      );
+                                    }())
+                                  : (() {
+                                      final msg = replyMessage as TextMessage;
+                                      return Text(
+                                        msg.text,
+                                        style: repliedMessageConfig
+                                                ?.textStyle ??
+                                            textTheme.bodyMedium!
+                                                .copyWith(color: Colors.black),
+                                      );
+                                    }()),
                             ),
                     ),
                   ),

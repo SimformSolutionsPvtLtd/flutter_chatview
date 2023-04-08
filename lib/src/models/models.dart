@@ -41,3 +41,12 @@ export 'chat_view_states_configuration.dart';
 export 'reaction.dart';
 export 'replied_msg_auto_scroll_config.dart';
 export 'feature_active_config.dart';
+export 'message_models/text_message/text_message.dart';
+export 'message_models/audio_message/audio_message.dart';
+export 'message_models/image_message/image_message.dart';
+export 'message_models/custom_message/custom_message.dart';
+export 'message_models/message.dart';
+export 'message_models/user.dart';
+
+
+

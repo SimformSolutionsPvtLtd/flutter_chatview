@@ -88,7 +88,7 @@ class ChatListWidget extends StatefulWidget {
   final TypeIndicatorConfiguration? typeIndicatorConfig;
 
   /// Provides reply message when user swipe to chat bubble.
-  final ReplyMessage replyMessage;
+  final Message? replyMessage;
 
   /// Provides configuration for reply snack bar's appearance and options.
   final ReplyPopupConfiguration? replyPopupConfig;
@@ -116,7 +116,7 @@ class _ChatListWidgetState extends State<ChatListWidget>
 
   ChatController get chatController => widget.chatController;
 
-  List<Message> get messageList => chatController.initialMessageList;
+  List<ValueNotifier<Message>> get messageList => chatController.initialMessageList;
 
   ScrollController get scrollController => chatController.scrollController;
 
@@ -212,7 +212,7 @@ class _ChatListWidgetState extends State<ChatListWidget>
                       if (featureActiveConfig?.enableReplySnackBar ?? false) {
                         _showReplyPopup(
                           message: message,
-                          sendByCurrentUser: message.sendBy == currentUser?.id,
+                          sendByCurrentUser: message.author.id == currentUser?.id,
                         );
                       }
                     },

@@ -71,19 +71,17 @@ class SendMessageWidget extends StatefulWidget {
 
 class SendMessageWidgetState extends State<SendMessageWidget> {
   final _textEditingController = TextEditingController();
-  final ValueNotifier<ReplyMessage> _replyMessage =
-      ValueNotifier(const ReplyMessage());
+  final ValueNotifier<Message?> _replyMessage = ValueNotifier(null);
 
-  ReplyMessage get replyMessage => _replyMessage.value;
+  Message? get replyMessage => _replyMessage.value;
   final _focusNode = FocusNode();
 
-  ChatUser? get repliedUser => replyMessage.replyTo.isNotEmpty
-      ? widget.chatController.getUserFromId(replyMessage.replyTo)
-      : null;
+  ChatUser? get repliedUser =>
+      replyMessage?.author != null ? replyMessage?.author : null;
 
-  String get _replyTo => replyMessage.replyTo == currentUser?.id
+  String get _replyTo => replyMessage?.author.id == currentUser?.id
       ? PackageStrings.you
-      : repliedUser?.name ?? '';
+      : repliedUser?.firstName ?? '';
 
   ChatUser? currentUser;
 
@@ -131,9 +129,9 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                     child: Stack(
                       alignment: Alignment.bottomCenter,
                       children: [
-                        ValueListenableBuilder<ReplyMessage>(
+                        ValueListenableBuilder<Message?>(
                           builder: (_, state, child) {
-                            if (state.message.isNotEmpty) {
+                            if (state != null) {
                               return Container(
                                 decoration: BoxDecoration(
                                   color: widget.sendMessageConfig
@@ -199,22 +197,25 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                                           ),
                                         ],
                                       ),
-                                      if (state.messageType.isVoice)
+                                      if (state.type.isVoice)
                                         _voiceReplyMessageView
-                                      else if (state.messageType.isImage)
+                                      else if (state.type.isImage)
                                         _imageReplyMessageView
                                       else
-                                        Text(
-                                          state.message,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: widget.sendMessageConfig
-                                                    ?.replyMessageColor ??
-                                                Colors.black,
-                                          ),
-                                        ),
+                                        (() {
+                                          state as TextMessage;
+                                          return Text(
+                                            state.text,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: widget.sendMessageConfig
+                                                      ?.replyMessageColor ??
+                                                  Colors.black,
+                                            ),
+                                          );
+                                        }())
                                     ],
                                   ),
                                 ),
@@ -243,6 +244,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
   }
 
   Widget get _voiceReplyMessageView {
+    final msg = replyMessage as AudioMessage?;
     return Row(
       children: [
         Icon(
@@ -250,9 +252,9 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
           color: widget.sendMessageConfig?.micIconColor,
         ),
         const SizedBox(width: 4),
-        if (replyMessage.voiceMessageDuration != null)
+        if (msg != null)
           Text(
-            replyMessage.voiceMessageDuration!.toHHMMSS(),
+            Duration(milliseconds: msg.duration).toHHMMSS(),
             style: TextStyle(
               fontSize: 12,
               color:
@@ -282,9 +284,10 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
     );
   }
 
-  void _onRecordingComplete(String? path) {
+  void _onRecordingComplete(String? path, Duration? duration) {
     if (path != null) {
-      widget.onSendTap.call(path, replyMessage, MessageType.voice);
+      widget.onSendTap
+          .call(path, replyMessage, MessageType.voice, duration: duration);
       _assignRepliedMessage();
     }
   }
@@ -298,8 +301,8 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
   }
 
   void _assignRepliedMessage() {
-    if (replyMessage.message.isNotEmpty) {
-      _replyMessage.value = const ReplyMessage();
+    if (replyMessage != null) {
+      _replyMessage.value = null;
     }
   }
 
@@ -318,21 +321,14 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
 
   void assignReplyMessage(Message message) {
     if (currentUser != null) {
-      _replyMessage.value = ReplyMessage(
-        message: message.message,
-        replyBy: currentUser!.id,
-        replyTo: message.sendBy,
-        messageType: message.messageType,
-        messageId: message.id,
-        voiceMessageDuration: message.voiceMessageDuration,
-      );
+      _replyMessage.value = message;
     }
     FocusScope.of(context).requestFocus(_focusNode);
-    if (widget.onReplyCallback != null) widget.onReplyCallback!(replyMessage);
+    if (widget.onReplyCallback != null) widget.onReplyCallback!(replyMessage!);
   }
 
   void _onCloseTap() {
-    _replyMessage.value = const ReplyMessage();
+    _replyMessage.value = null;
     if (widget.onReplyCloseCallback != null) widget.onReplyCloseCallback!();
   }
 

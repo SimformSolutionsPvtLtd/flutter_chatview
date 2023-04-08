@@ -56,7 +56,7 @@ class ChatUITextField extends StatefulWidget {
   final VoidCallBack onPressed;
 
   /// Provides callback once voice is recorded.
-  final Function(String?) onRecordingComplete;
+  final Function(String? path, Duration? duration) onRecordingComplete;
 
   /// Provides callback when user select images from camera/gallery.
   final StringsCallBack onImageSelected;
@@ -279,8 +279,9 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
       isRecording.value = true;
     } else {
       final path = await controller?.stop();
+      final duration = controller?.recordedDuration;
       isRecording.value = false;
-      widget.onRecordingComplete(path);
+      widget.onRecordingComplete(path, duration);
     }
   }
 

@@ -23,6 +23,7 @@ import 'package:flutter/material.dart';
 
 import '../values/typedefs.dart';
 import 'message.dart';
+import 'models.dart';
 
 class ReplyPopupConfiguration {
   /// Used for giving background color to reply snack-bar.

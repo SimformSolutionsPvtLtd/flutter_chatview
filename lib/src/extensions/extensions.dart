@@ -80,7 +80,7 @@ extension ValidateString on String {
       child: CircleAvatar(
         radius: profileCircleRadius ?? 8,
         backgroundImage:
-            NetworkImage(getChatUser(this)?.profilePhoto ?? profileImage),
+            NetworkImage(getChatUser(this)?.imageUrl ?? profileImage),
       ),
     );
   }
@@ -119,6 +119,7 @@ extension ChatViewStateTitleExtension on String? {
     }
   }
 }
+
 
 /// Extension on State for accessing inherited widget.
 extension StatefulWidgetExtension on State {

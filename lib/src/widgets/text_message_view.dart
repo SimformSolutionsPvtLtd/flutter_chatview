@@ -24,6 +24,7 @@ import 'package:flutter/material.dart';
 import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/models/models.dart';
 
+import '../models/message_models/text_message/text_message.dart';
 import '../utils/constants/constants.dart';
 import 'link_preview.dart';
 import 'reaction_widget.dart';
@@ -45,7 +46,7 @@ class TextMessageView extends StatelessWidget {
   final bool isMessageBySender;
 
   /// Provides message instance of chat.
-  final Message message;
+  final TextMessage message;
 
   /// Allow users to give max width of chat bubble.
   final double? chatBubbleMaxWidth;
@@ -68,7 +69,7 @@ class TextMessageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final textMessage = message.message;
+    final textMessage = message.text;
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -82,8 +83,8 @@ class TextMessageView extends StatelessWidget {
                 vertical: 10,
               ),
           margin: _margin ??
-              EdgeInsets.fromLTRB(
-                  5, 0, 6, message.reaction.reactions.isNotEmpty ? 15 : 2),
+              EdgeInsets.fromLTRB(5, 0, 6,
+                  message.reaction?.reactions.isNotEmpty ?? false ? 15 : 2),
           decoration: BoxDecoration(
             color: highlightMessage ? highlightColor : _color,
             borderRadius: _borderRadius(textMessage),
@@ -102,11 +103,11 @@ class TextMessageView extends StatelessWidget {
                       ),
                 ),
         ),
-        if (message.reaction.reactions.isNotEmpty)
+        if (message.reaction?.reactions.isNotEmpty ?? false)
           ReactionWidget(
             key: key,
             isMessageBySender: isMessageBySender,
-            reaction: message.reaction,
+            reaction: message.reaction!,
             messageReactionConfig: messageReactionConfig,
           ),
       ],

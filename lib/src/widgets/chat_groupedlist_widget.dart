@@ -36,7 +36,7 @@ class ChatGroupedListWidget extends StatefulWidget {
     required this.showTypingIndicator,
     required this.scrollController,
     required this.chatBackgroundConfig,
-    required this.replyMessage,
+    this.replyMessage,
     required this.assignReplyMessage,
     required this.onChatListTap,
     required this.onChatBubbleLongPress,
@@ -77,7 +77,7 @@ class ChatGroupedListWidget extends StatefulWidget {
   final TypeIndicatorConfiguration? typeIndicatorConfig;
 
   /// Provides reply message if actual message is sent by replying any message.
-  final ReplyMessage replyMessage;
+  final Message? replyMessage;
 
   /// Provides callback for assigning reply message when user swipe on chat bubble.
   final MessageCallBack assignReplyMessage;
@@ -203,26 +203,28 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
                         typeIndicatorConfig: widget.typeIndicatorConfig,
                         chatBubbleConfig:
                             chatBubbleConfig?.inComingChatBubbleConfig,
-                        showIndicator: value as bool,
+                        showIndicator: value,
                         profilePic: profileCircleConfig?.profileImageUrl,
                       )),
           SizedBox(
             height: MediaQuery.of(context).size.width *
-                (widget.replyMessage.message.isNotEmpty ? 0.3 : 0.14),
+                (widget.replyMessage != null ? 0.3 : 0.14),
           ),
         ],
       ),
     );
   }
 
-  Future<void> _onReplyTap(String id, List<Message>? messages) async {
+  Future<void> _onReplyTap(String id, MessageNotifierList? messages) async {
     // Finds the replied message if exists
-    final repliedMessages = messages?.firstWhere((message) => id == message.id);
+    final repliedMessages =
+        messages?.firstWhere((message) => id == message.value.id);
 
     // Scrolls to replied message and highlights
-    if (repliedMessages != null && repliedMessages.key.currentState != null) {
+    if (repliedMessages != null &&
+        repliedMessages.value.key.currentState != null) {
       await Scrollable.ensureVisible(
-        repliedMessages.key.currentState!.context,
+        repliedMessages.value.key.currentState!.context,
         // This value will make widget to be in center when auto scrolled.
         alignment: 0.5,
         curve: widget.repliedMessageConfig?.repliedMsgAutoScrollConfig
@@ -274,16 +276,19 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
   }
 
   Widget get _chatStreamBuilder {
-    return StreamBuilder<List<Message>>(
+    return StreamBuilder<MessageNotifierList>(
       stream: chatController?.messageStreamController.stream,
       builder: (context, snapshot) {
         return snapshot.connectionState.isActive
-            ? GroupedListView<Message, String>(
+            ? GroupedListView<ValueNotifier<Message>, String>(
                 shrinkWrap: true,
                 elements: snapshot.data!,
-                groupBy: (element) => element.createdAt.getDateFromDateTime,
+                groupBy: (element) =>
+                    DateTime.fromMillisecondsSinceEpoch(element.value.createdAt)
+                        .getDateFromDateTime,
                 itemComparator: (message1, message2) =>
-                    message1.message.compareTo(message2.message),
+                    // TODO: CHECK OUT HERE
+                    message1.value.id.compareTo(message2.value.id),
                 physics: const NeverScrollableScrollPhysics(),
                 order: chatBackgroundConfig.groupedListOrder,
                 sort: chatBackgroundConfig.sortEnable,
@@ -301,35 +306,40 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
                   return ValueListenableBuilder<String?>(
                     valueListenable: _replyId,
                     builder: (context, state, child) {
-                      return ChatBubbleWidget(
-                        key: message.key,
-                        messageTimeTextStyle:
-                            chatBackgroundConfig.messageTimeTextStyle,
-                        messageTimeIconColor:
-                            chatBackgroundConfig.messageTimeIconColor,
-                        message: message,
-                        messageConfig: widget.messageConfig,
-                        chatBubbleConfig: chatBubbleConfig,
-                        profileCircleConfig: profileCircleConfig,
-                        swipeToReplyConfig: widget.swipeToReplyConfig,
-                        repliedMessageConfig: widget.repliedMessageConfig,
-                        slideAnimation: _slideAnimation,
-                        onLongPress: (yCoordinate, xCoordinate) =>
-                            widget.onChatBubbleLongPress(
-                          yCoordinate,
-                          xCoordinate,
-                          message,
-                        ),
-                        onSwipe: widget.assignReplyMessage,
-                        shouldHighlight: state == message.id,
-                        onReplyTap: widget
-                                    .repliedMessageConfig
-                                    ?.repliedMsgAutoScrollConfig
-                                    .enableScrollToRepliedMsg ??
-                                false
-                            ? (replyId) => _onReplyTap(replyId, snapshot.data)
-                            : null,
-                      );
+                      return ValueListenableBuilder(
+                          valueListenable: message,
+                          builder: (context, value, child) {
+                            return ChatBubbleWidget(
+                              key: value.key,
+                              messageTimeTextStyle:
+                                  chatBackgroundConfig.messageTimeTextStyle,
+                              messageTimeIconColor:
+                                  chatBackgroundConfig.messageTimeIconColor,
+                              message: value,
+                              messageConfig: widget.messageConfig,
+                              chatBubbleConfig: chatBubbleConfig,
+                              profileCircleConfig: profileCircleConfig,
+                              swipeToReplyConfig: widget.swipeToReplyConfig,
+                              repliedMessageConfig: widget.repliedMessageConfig,
+                              slideAnimation: _slideAnimation,
+                              onLongPress: (yCoordinate, xCoordinate) =>
+                                  widget.onChatBubbleLongPress(
+                                yCoordinate,
+                                xCoordinate,
+                                message.value,
+                              ),
+                              onSwipe: widget.assignReplyMessage,
+                              shouldHighlight: state == message.value.id,
+                              onReplyTap: widget
+                                          .repliedMessageConfig
+                                          ?.repliedMsgAutoScrollConfig
+                                          .enableScrollToRepliedMsg ??
+                                      false
+                                  ? (replyId) =>
+                                      _onReplyTap(replyId, snapshot.data)
+                                  : null,
+                            );
+                          });
                     },
                   );
                 },

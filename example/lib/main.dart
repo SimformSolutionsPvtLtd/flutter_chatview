@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:chatview/chatview.dart';
 import 'package:example/data.dart';
 import 'package:example/models/theme.dart';
@@ -35,34 +37,29 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   AppTheme theme = LightTheme();
   bool isDarkTheme = false;
-  final currentUser = ChatUser(
+  final currentUser = const ChatUser(
     id: '1',
-    name: 'Flutter',
-    profilePhoto: Data.profileImage,
+    firstName: 'Flutter',
   );
   final _chatController = ChatController(
-    initialMessageList: Data.messageList,
+    initialMessageList: [],
     scrollController: ScrollController(),
     chatUsers: [
-      ChatUser(
+      const ChatUser(
         id: '2',
-        name: 'Simform',
-        profilePhoto: Data.profileImage,
+        firstName: 'Simform',
       ),
-      ChatUser(
+      const ChatUser(
         id: '3',
-        name: 'Jhon',
-        profilePhoto: Data.profileImage,
+        firstName: 'Jhon',
       ),
-      ChatUser(
+      const ChatUser(
         id: '4',
-        name: 'Mike',
-        profilePhoto: Data.profileImage,
+        firstName: 'Mike',
       ),
-      ChatUser(
+      const ChatUser(
         id: '5',
-        name: 'Rich',
-        profilePhoto: Data.profileImage,
+        firstName: 'Rich',
       ),
     ],
   );
@@ -95,7 +92,6 @@ class _ChatScreenState extends State<ChatScreen> {
         appBar: ChatViewAppBar(
           elevation: theme.elevation,
           backGroundColor: theme.appBarColor,
-          profilePicture: Data.profileImage,
           backArrowColor: theme.backArrowColor,
           chatTitle: "Chat view",
           chatTitleTextStyle: TextStyle(
@@ -244,9 +240,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ),
         ),
-        profileCircleConfig: const ProfileCircleConfiguration(
-          profileImageUrl: Data.profileImage,
-        ),
+        profileCircleConfig: const ProfileCircleConfiguration(),
         repliedMessageConfig: RepliedMessageConfiguration(
           backgroundColor: theme.repliedMessageColor,
           verticalBarColor: theme.verticalBarColor,
@@ -270,28 +264,62 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void _onSendTap(
-    String message,
-    ReplyMessage replyMessage,
-    MessageType messageType,
-  ) {
-    final id = int.parse(Data.messageList.last.id) + 1;
-    _chatController.addMessage(
-      Message(
+      String message, Message? replyMessage, MessageType messageType,
+      {Duration? duration}) {
+    final id = Random().nextDouble() * 23472441 + 1;
+    if (messageType == MessageType.text) {
+      _chatController.addMessage(TextMessage(
+          author: currentUser,
+          id: id.toString(),
+          createdAt: DateTime.now().millisecondsSinceEpoch,
+          repliedMessage: replyMessage,
+          text: message));
+    } else if (messageType == MessageType.image) {
+      _chatController.addMessage(ImageMessage(
+          author: currentUser,
+          name: "image1",
+          size: 465,
+          id: id.toString(),
+          createdAt: DateTime.now().millisecondsSinceEpoch,
+          repliedMessage: replyMessage,
+          uri: message));
+    } else if (messageType == MessageType.voice) {
+      print(duration?.inMilliseconds);
+      _chatController.addMessage(AudioPathMessage(
+        message,
+        author: currentUser,
+        duration: duration?.inMilliseconds ?? 0,
+        name: "Audio1",
+        size: duration?.inMilliseconds ?? 0,
         id: id.toString(),
-        createdAt: DateTime.now(),
-        message: message,
-        sendBy: currentUser.id,
-        replyMessage: replyMessage,
-        messageType: messageType,
-      ),
-    );
-    Future.delayed(const Duration(milliseconds: 300), () {
-      _chatController.initialMessageList.last.setStatus =
-          MessageStatus.undelivered;
-    });
-    Future.delayed(const Duration(seconds: 1), () {
-      _chatController.initialMessageList.last.setStatus = MessageStatus.read;
-    });
+        createdAt: DateTime.now().millisecondsSinceEpoch,
+        repliedMessage: replyMessage,
+      ));
+
+      Future.delayed(const Duration(milliseconds: 300), () {
+        final msg =
+            _chatController.initialMessageList.last.value as AudioPathMessage;
+        _chatController.initialMessageList.last.value = AudioPathMessage(
+            msg.uri,
+            author: msg.author,
+            createdAt: msg.createdAt,
+            id: msg.id,
+            name: msg.name,
+            status: MessageStatus.undelivered,
+            size: msg.size,
+            duration: msg.duration);
+        debugPrint((msg.hashCode ==
+                _chatController.initialMessageList.last.value.hashCode)
+            .toString());
+      });
+    }
+    if (messageType != MessageType.voice) {
+      Future.delayed(const Duration(milliseconds: 300), () {
+        _chatController.initialMessageList.last.value = _chatController
+            .initialMessageList.last.value
+            .copyWith(status: MessageStatus.undelivered);
+      });
+    }
   }
 
   void _onThemeIconTap() {
