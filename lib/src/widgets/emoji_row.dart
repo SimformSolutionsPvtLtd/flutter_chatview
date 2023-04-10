@@ -19,18 +19,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'package:flutter/material.dart';
-import 'package:chatview/src/models/reaction_popup_configuration.dart';
-import 'package:chatview/src/utils/constants/constants.dart';
-
-import '../values/typedefs.dart';
-import 'emoji_picker_widget.dart';
+part of '../../chatview.dart';
 
 class EmojiRow extends StatelessWidget {
   EmojiRow({
     Key? key,
     required this.onEmojiTap,
     this.emojiConfiguration,
+    this.isCupertino = false,
   }) : super(key: key);
 
   /// Provides callback when user taps on emoji in reaction pop-up.
@@ -38,6 +34,8 @@ class EmojiRow extends StatelessWidget {
 
   /// Provides configuration of emoji's appearance in reaction pop-up.
   final EmojiConfiguration? emojiConfiguration;
+
+  final bool isCupertino;
 
   /// These are default emojis.
   final List<String> _emojiUnicodes = [
@@ -56,20 +54,26 @@ class EmojiRow extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: List.generate(
-              emojiList.length,
-              (index) => GestureDetector(
-                onTap: () => onEmojiTap(emojiList[index]),
-                child: Text(
-                  emojiList[index],
-                  style: TextStyle(fontSize: size ?? 28),
+          child: ConditionalWrapper(
+              condition: isCupertino,
+              wrapper: (child) => SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: child,
+                  ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: List.generate(
+                  emojiList.length,
+                  (index) => GestureDetector(
+                    onTap: () => onEmojiTap(emojiList[index]),
+                    child: Text(
+                      emojiList[index],
+                      style: TextStyle(fontSize: size ?? 28),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ),
+              )),
         ),
         IconButton(
           constraints: const BoxConstraints(),

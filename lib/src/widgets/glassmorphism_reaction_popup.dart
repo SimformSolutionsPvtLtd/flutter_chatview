@@ -19,17 +19,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'dart:ui';
-
-import 'package:flutter/material.dart';
-
-import '../models/models.dart';
-import '../utils/constants/constants.dart';
+part of '../../chatview.dart';
 
 class GlassMorphismReactionPopup extends StatelessWidget {
   const GlassMorphismReactionPopup({
     Key? key,
     required this.child,
+    this.isCupertino = false,
     this.reactionPopupConfig,
   }) : super(key: key);
 
@@ -40,11 +36,14 @@ class GlassMorphismReactionPopup extends StatelessWidget {
   /// Provides configuration for reaction pop-up appearance.
   final ReactionPopupConfiguration? reactionPopupConfig;
 
+  final bool isCupertino;
+
   Color get backgroundColor =>
       reactionPopupConfig?.glassMorphismConfig?.backgroundColor ?? Colors.white;
 
-  double get strokeWidth =>
-      reactionPopupConfig?.glassMorphismConfig?.strokeWidth ?? 2;
+  double get strokeWidth => isCupertino
+      ? 0
+      : reactionPopupConfig?.glassMorphismConfig?.strokeWidth ?? 2;
 
   Color get borderColor =>
       reactionPopupConfig?.glassMorphismConfig?.borderColor ??

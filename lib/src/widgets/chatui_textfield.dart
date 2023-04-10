@@ -19,18 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'dart:async';
-import 'dart:io' show Platform;
-
-import 'package:audio_waveforms/audio_waveforms.dart';
-import 'package:chatview/src/utils/constants/constants.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-
-import '../../chatview.dart';
-import '../utils/debounce.dart';
-import '../utils/package_strings.dart';
+part of '../../chatview.dart';
 
 class ChatUITextField extends StatefulWidget {
   const ChatUITextField({
@@ -41,6 +30,7 @@ class ChatUITextField extends StatefulWidget {
     required this.onPressed,
     required this.onRecordingComplete,
     required this.onImageSelected,
+    required this.chatController,
   }) : super(key: key);
 
   /// Provides configuration of default text field in chat.
@@ -61,12 +51,18 @@ class ChatUITextField extends StatefulWidget {
   /// Provides callback when user select images from camera/gallery.
   final StringsCallBack onImageSelected;
 
+  final ChatController chatController;
+
   @override
   State<ChatUITextField> createState() => _ChatUITextFieldState();
 }
 
 class _ChatUITextFieldState extends State<ChatUITextField> {
   final ValueNotifier<String> _inputText = ValueNotifier('');
+
+  final ValueNotifier<bool> isUserTagging = ValueNotifier(false);
+
+  ChatUser? get currentUser => ChatViewInheritedWidget.of(context)?.currentUser;
 
   final ImagePicker _imagePicker = ImagePicker();
 
@@ -137,133 +133,207 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
             BorderRadius.circular(textFieldBorderRadius),
         color: sendMessageConfig?.textFieldBackgroundColor ?? Colors.white,
       ),
-      child: ValueListenableBuilder<bool>(
-        valueListenable: isRecording,
-        builder: (_, isRecordingValue, child) {
-          return Row(
-            children: [
-              if (isRecordingValue && controller != null && !kIsWeb)
-                AudioWaveforms(
-                  size: Size(MediaQuery.of(context).size.width * 0.75, 50),
-                  recorderController: controller!,
-                  margin: voiceRecordingConfig?.margin,
-                  padding: voiceRecordingConfig?.padding ??
-                      const EdgeInsets.symmetric(horizontal: 8),
-                  decoration: voiceRecordingConfig?.decoration ??
-                      BoxDecoration(
-                        color: voiceRecordingConfig?.backgroundColor,
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                  waveStyle: voiceRecordingConfig?.waveStyle ??
-                      WaveStyle(
-                        extendWaveform: true,
-                        showMiddleLine: false,
-                        waveColor: voiceRecordingConfig?.waveStyle?.waveColor ??
-                            Colors.black,
-                      ),
-                )
-              else
-                Expanded(
-                  child: TextField(
-                    focusNode: widget.focusNode,
-                    controller: widget.textEditingController,
-                    style: textFieldConfig?.textStyle ??
-                        const TextStyle(color: Colors.white),
-                    maxLines: textFieldConfig?.maxLines ?? 5,
-                    minLines: textFieldConfig?.minLines ?? 1,
-                    keyboardType: textFieldConfig?.textInputType,
-                    inputFormatters: textFieldConfig?.inputFormatters,
-                    onChanged: _onChanged,
-                    textCapitalization: textFieldConfig?.textCapitalization ??
-                        TextCapitalization.sentences,
-                    decoration: InputDecoration(
-                      hintText:
-                          textFieldConfig?.hintText ?? PackageStrings.message,
-                      fillColor: sendMessageConfig?.textFieldBackgroundColor ??
-                          Colors.white,
-                      filled: true,
-                      hintStyle: textFieldConfig?.hintStyle ??
-                          TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.grey.shade600,
-                            letterSpacing: 0.25,
-                          ),
-                      contentPadding: textFieldConfig?.contentPadding ??
-                          const EdgeInsets.symmetric(horizontal: 6),
-                      border: _outLineBorder,
-                      focusedBorder: _outLineBorder,
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.transparent),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ValueListenableBuilder<bool>(
+              valueListenable: isUserTagging,
+              builder: (context, value, child) => value
+                  ? AnimatedContainer(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
                         borderRadius: textFieldConfig?.borderRadius ??
                             BorderRadius.circular(textFieldBorderRadius),
+                        color: sendMessageConfig?.textFieldBackgroundColor ??
+                            Colors.white,
+                      ),
+                      height: 200,
+                      duration: const Duration(seconds: 2),
+                      curve: Curves.linear,
+                      child: Stack(
+                        children: [
+                          ListView.builder(
+                              itemCount: widget.chatController.chatUsers.length,
+                              padding: const EdgeInsets.all(5),
+                              itemBuilder: (context, index) {
+                                if (widget.chatController.chatUsers[index].id ==
+                                    currentUser?.id) return const SizedBox();
+                                return ListTile(
+                                  title: Text(
+                                    widget.chatController.chatUsers[index]
+                                            .firstName ??
+                                        '',
+                                    style: textFieldConfig?.textStyle ??
+                                        const TextStyle(color: Colors.white),
+                                  ),
+                                  leading: widget.chatController
+                                              .chatUsers[index].imageUrl !=
+                                          null
+                                      ? CircleAvatar(
+                                          child: Image.network(widget
+                                                  .chatController
+                                                  .chatUsers[index]
+                                                  .imageUrl ??
+                                              ""),
+                                        )
+                                      : null,
+                                );
+                              }),
+                          Positioned(
+                              top: 10,
+                              right: 10,
+                              child: IconButton(
+                                onPressed: () {
+                                  isUserTagging.value = false;
+                                },
+                                icon: const Icon(CupertinoIcons.xmark_circle),
+                              ))
+                        ],
+                      ),
+                    )
+                  : const SizedBox()),
+          ValueListenableBuilder<bool>(
+            valueListenable: isRecording,
+            builder: (_, isRecordingValue, child) {
+              return Row(
+                children: [
+                  if (isRecordingValue && controller != null && !kIsWeb)
+                    AudioWaveforms(
+                      size: Size(MediaQuery.of(context).size.width * 0.75, 50),
+                      recorderController: controller!,
+                      margin: voiceRecordingConfig?.margin,
+                      padding: voiceRecordingConfig?.padding ??
+                          const EdgeInsets.symmetric(horizontal: 8),
+                      decoration: voiceRecordingConfig?.decoration ??
+                          BoxDecoration(
+                            color: voiceRecordingConfig?.backgroundColor,
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                      waveStyle: voiceRecordingConfig?.waveStyle ??
+                          WaveStyle(
+                            extendWaveform: true,
+                            showMiddleLine: false,
+                            waveColor:
+                                voiceRecordingConfig?.waveStyle?.waveColor ??
+                                    Colors.black,
+                          ),
+                    )
+                  else
+                    Expanded(
+                      child: TextField(
+                        focusNode: widget.focusNode,
+                        controller: widget.textEditingController,
+                        style: textFieldConfig?.textStyle ??
+                            const TextStyle(color: Colors.white),
+                        maxLines: textFieldConfig?.maxLines ?? 5,
+                        minLines: textFieldConfig?.minLines ?? 1,
+                        keyboardType: textFieldConfig?.textInputType,
+                        inputFormatters: textFieldConfig?.inputFormatters,
+                        onChanged: _onChanged,
+                        textCapitalization:
+                            textFieldConfig?.textCapitalization ??
+                                TextCapitalization.sentences,
+                        decoration: InputDecoration(
+                          hintText: textFieldConfig?.hintText ??
+                              PackageStrings.message,
+                          fillColor:
+                              sendMessageConfig?.textFieldBackgroundColor ??
+                                  Colors.white,
+                          filled: true,
+                          hintStyle: textFieldConfig?.hintStyle ??
+                              TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.grey.shade600,
+                                letterSpacing: 0.25,
+                              ),
+                          contentPadding: textFieldConfig?.contentPadding ??
+                              const EdgeInsets.symmetric(horizontal: 6),
+                          border: _outLineBorder,
+                          focusedBorder: _outLineBorder,
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                const BorderSide(color: Colors.transparent),
+                            borderRadius: textFieldConfig?.borderRadius ??
+                                BorderRadius.circular(textFieldBorderRadius),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              ValueListenableBuilder<String>(
-                valueListenable: _inputText,
-                builder: (_, inputTextValue, child) {
-                  if (inputTextValue.isNotEmpty) {
-                    return IconButton(
-                      color: sendMessageConfig?.defaultSendButtonColor ??
-                          Colors.green,
-                      onPressed: () {
-                        widget.onPressed();
-                        _inputText.value = '';
-                      },
-                      icon: sendMessageConfig?.sendButtonIcon ??
-                          const Icon(Icons.send),
-                    );
-                  } else {
-                    return Row(
-                      children: [
-                        if (!isRecordingValue) ...[
-                          IconButton(
-                            constraints: const BoxConstraints(),
-                            onPressed: () => _onIconPressed(ImageSource.camera),
-                            icon:
-                                imagePickerIconsConfig?.cameraImagePickerIcon ??
+                  ValueListenableBuilder<String>(
+                    valueListenable: _inputText,
+                    builder: (_, inputTextValue, child) {
+                      if (widget.textEditingController.text.trim().isNotEmpty) {
+                        return IconButton(
+                          color: sendMessageConfig?.defaultSendButtonColor ??
+                              Colors.green,
+                          onPressed: () {
+                            if (widget.textEditingController.text
+                                .trim()
+                                .isNotEmpty) {
+                              isUserTagging.value = false;
+                              widget.onPressed();
+                            }
+                            widget.textEditingController.clear();
+                            _inputText.value = '';
+                          },
+                          icon: sendMessageConfig?.sendButtonIcon ??
+                              const Icon(Icons.send),
+                        );
+                      } else {
+                        return Row(
+                          children: [
+                            if (!isRecordingValue) ...[
+                              IconButton(
+                                constraints: const BoxConstraints(),
+                                onPressed: () =>
+                                    _onIconPressed(ImageSource.camera),
+                                icon: imagePickerIconsConfig
+                                        ?.cameraImagePickerIcon ??
                                     Icon(
                                       Icons.camera_alt_outlined,
                                       color: imagePickerIconsConfig
                                           ?.cameraIconColor,
                                     ),
-                          ),
-                          IconButton(
-                            constraints: const BoxConstraints(),
-                            onPressed: () =>
-                                _onIconPressed(ImageSource.gallery),
-                            icon: imagePickerIconsConfig
-                                    ?.galleryImagePickerIcon ??
-                                Icon(
-                                  Icons.image,
-                                  color:
-                                      imagePickerIconsConfig?.galleryIconColor,
-                                ),
-                          ),
-                        ],
-                        if (widget.sendMessageConfig?.allowRecordingVoice ??
-                            true &&
-                                Platform.isIOS &&
-                                Platform.isAndroid &&
-                                !kIsWeb)
-                          IconButton(
-                            onPressed: _recordOrStop,
-                            icon: (isRecordingValue
-                                    ? voiceRecordingConfig?.micIcon
-                                    : voiceRecordingConfig?.stopIcon) ??
-                                Icon(isRecordingValue ? Icons.stop : Icons.mic),
-                            color: voiceRecordingConfig?.recorderIconColor,
-                          )
-                      ],
-                    );
-                  }
-                },
-              ),
-            ],
-          );
-        },
+                              ),
+                              IconButton(
+                                constraints: const BoxConstraints(),
+                                onPressed: () =>
+                                    _onIconPressed(ImageSource.gallery),
+                                icon: imagePickerIconsConfig
+                                        ?.galleryImagePickerIcon ??
+                                    Icon(
+                                      Icons.image,
+                                      color: imagePickerIconsConfig
+                                          ?.galleryIconColor,
+                                    ),
+                              ),
+                            ],
+                            if (widget.sendMessageConfig?.allowRecordingVoice ??
+                                true &&
+                                    Platform.isIOS &&
+                                    Platform.isAndroid &&
+                                    !kIsWeb)
+                              IconButton(
+                                onPressed: _recordOrStop,
+                                icon: (isRecordingValue
+                                        ? voiceRecordingConfig?.micIcon
+                                        : voiceRecordingConfig?.stopIcon) ??
+                                    Icon(isRecordingValue
+                                        ? Icons.stop
+                                        : Icons.mic),
+                                color: voiceRecordingConfig?.recorderIconColor,
+                              )
+                          ],
+                        );
+                      }
+                    },
+                  ),
+                ],
+              );
+            },
+          ),
+        ],
       ),
     );
   }
@@ -295,6 +365,14 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
   }
 
   void _onChanged(String inputText) {
+    if (widget.textEditingController.text
+            .split(' ')
+            .indexWhere((element) => element.startsWith('@')) !=
+        -1) {
+      isUserTagging.value = true;
+    } else if (inputText.trim().isEmpty) {
+      isUserTagging.value = false;
+    }
     debouncer.run(() {
       composingStatus.value = TypeWriterStatus.typed;
     }, () {

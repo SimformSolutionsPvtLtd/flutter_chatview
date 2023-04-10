@@ -19,8 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'package:flutter/material.dart';
-import 'package:chatview/src/utils/constants/constants.dart';
+part of '../../chatview.dart';
 
 class ProfileCircle extends StatelessWidget {
   const ProfileCircle({
@@ -56,12 +55,19 @@ class ProfileCircle extends StatelessWidget {
     return Padding(
       padding: profileCirclePadding ??
           EdgeInsets.only(left: 6.0, right: 4, bottom: bottomPadding),
-      child: InkWell(
-        onLongPress: onLongPress,
-        onTap: onTap,
-        child: CircleAvatar(
-          radius: circleRadius ?? 16,
-          backgroundImage: NetworkImage(imageUrl ?? profileImage),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onLongPress: onLongPress,
+          onTap: onTap,
+          child: CircleAvatar(
+            radius: circleRadius ?? 16,
+            child: Image.network(
+              imageUrl ?? profileImage,
+              cacheHeight: 32,
+              cacheWidth: 32,
+            ),
+          ),
         ),
       ),
     );

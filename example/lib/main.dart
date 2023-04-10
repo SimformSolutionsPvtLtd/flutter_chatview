@@ -1,9 +1,10 @@
 import 'dart:math';
 
 import 'package:chatview/chatview.dart';
-import 'package:example/data.dart';
-import 'package:example/models/theme.dart';
+import 'theme.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 
 void main() {
   runApp(const Example());
@@ -14,15 +15,16 @@ class Example extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
+      key: Key('Main App'),
       title: 'Flutter Chat UI Demo',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primaryColor: const Color(0xffEE5366),
-        colorScheme:
-            ColorScheme.fromSwatch(accentColor: const Color(0xffEE5366)),
-      ),
-      home: const ChatScreen(),
+      localizationsDelegates: <LocalizationsDelegate<dynamic>>[
+        DefaultMaterialLocalizations.delegate,
+        DefaultWidgetsLocalizations.delegate,
+        DefaultCupertinoLocalizations.delegate,
+      ],
+      home: ChatScreen(),
     );
   }
 }
@@ -43,7 +45,7 @@ class _ChatScreenState extends State<ChatScreen> {
   );
   final _chatController = ChatController(
     initialMessageList: [],
-    scrollController: ScrollController(),
+    scrollController: AutoScrollController(),
     chatUsers: [
       const ChatUser(
         id: '2',
@@ -72,11 +74,13 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ChatView(
+        isCupertinoApp: false,
         currentUser: currentUser,
         chatController: _chatController,
         onSendTap: _onSendTap,
         featureActiveConfig: const FeatureActiveConfig(
             lastSeenAgoBuilderVisibility: true,
+            enableReplySnackBar: false,
             receiptsBuilderVisibility: true),
         chatViewState: ChatViewState.hasMessages,
         chatViewStateConfig: ChatViewStateConfiguration(
@@ -90,6 +94,30 @@ class _ChatScreenState extends State<ChatScreen> {
           flashingCircleDarkColor: theme.flashingCircleDarkColor,
         ),
         appBar: ChatViewAppBar(
+          messageActionsBuilder: (message) {
+            return [
+              IconButton(
+                tooltip: 'Delete a Message',
+                onPressed: () {
+                  _chatController.hideReactionPopUp();
+                  _chatController.deleteMessage(message);
+                },
+                icon: Icon(
+                  Icons.delete_outline_rounded,
+                  color: theme.themeIconColor,
+                ),
+              ),
+              PopupMenuButton(itemBuilder: (context) {
+                _chatController.hideReactionPopUp();
+
+                _chatController.unFocus();
+                return const [
+                  PopupMenuItem(child: Text('Share')),
+                  PopupMenuItem(child: Text('Report'))
+                ];
+              })
+            ];
+          },
           elevation: theme.elevation,
           backGroundColor: theme.appBarColor,
           backArrowColor: theme.backArrowColor,
@@ -114,6 +142,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
             IconButton(
               tooltip: 'Toggle TypingIndicator',
+           
               onPressed: _showHideTypingIndicator,
               icon: Icon(
                 Icons.keyboard,
@@ -147,7 +176,7 @@ class _ChatScreenState extends State<ChatScreen> {
           textFieldConfig: TextFieldConfiguration(
             onMessageTyping: (status) {
               /// Do with status
-              debugPrint(status.toString());
+              // debugPrint(status.toString());
             },
             compositionThresholdTime: const Duration(seconds: 1),
             textStyle: TextStyle(color: theme.textFieldTextColor),
@@ -164,6 +193,7 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
         ),
         chatBubbleConfig: ChatBubbleConfiguration(
+          // padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 5),
           outgoingChatBubbleConfig: ChatBubble(
             linkPreviewConfig: LinkPreviewConfiguration(
               backgroundColor: theme.linkPreviewOutgoingChatColor,
@@ -187,7 +217,7 @@ class _ChatScreenState extends State<ChatScreen> {
             textStyle: TextStyle(color: theme.inComingChatBubbleTextColor),
             onMessageRead: (message) {
               /// send your message reciepts to the other client
-              debugPrint('Message Read');
+              // debugPrint('Message Read');
             },
             senderNameTextStyle:
                 TextStyle(color: theme.inComingChatBubbleTextColor),
@@ -284,7 +314,6 @@ class _ChatScreenState extends State<ChatScreen> {
           repliedMessage: replyMessage,
           uri: message));
     } else if (messageType == MessageType.voice) {
-      print(duration?.inMilliseconds);
       _chatController.addMessage(AudioPathMessage(
         message,
         author: currentUser,

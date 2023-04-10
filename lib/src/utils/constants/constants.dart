@@ -20,11 +20,12 @@
  * SOFTWARE.
  */
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../../../chatview.dart';
-import '../../widgets/chat_message_sending_to_sent_animation.dart';
+import '../../values/enumaration.dart';
 
 const String enUS = "en_US";
 const String emojiRegExpression =
@@ -86,3 +87,16 @@ Widget lastSeenAgoBuilder(Message message, String formattedDate) {
     ),
   );
 }
+
+bool sameDay(int firstStamp, int? secondStamp) {
+  if (DateFormat('dd MMM yyyy')
+          .format(DateTime.fromMillisecondsSinceEpoch(firstStamp)) ==
+      DateFormat('dd MMM yyyy')
+          .format(DateTime.fromMillisecondsSinceEpoch(secondStamp!))) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+final serviceLocator = GetIt.I;

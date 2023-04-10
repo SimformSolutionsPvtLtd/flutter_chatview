@@ -19,11 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'package:flutter/material.dart';
-
-import 'package:chatview/src/utils/package_strings.dart';
-
-import '../values/typedefs.dart';
+part of '../../chatview.dart';
 
 class ReplyPopupWidget extends StatelessWidget {
   const ReplyPopupWidget({
@@ -70,32 +66,35 @@ class ReplyPopupWidget extends StatelessWidget {
             top: BorderSide(
                 color: topBorderColor ?? Colors.grey.shade400, width: 1)),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          InkWell(
-            onTap: onReplyTap,
-            child: Text(
-              PackageStrings.reply,
-              style: textStyle,
-            ),
-          ),
-          if (sendByCurrentUser)
+      child: Material(
+        color: Colors.transparent,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
             InkWell(
-              onTap: onUnsendTap,
+              onTap: onReplyTap,
               child: Text(
-                PackageStrings.unsend,
+                PackageStrings.reply,
                 style: textStyle,
               ),
             ),
-          InkWell(
-            onTap: onMoreTap,
-            child: Text(
-              PackageStrings.more,
-              style: textStyle,
+            if (sendByCurrentUser)
+              InkWell(
+                onTap: onUnsendTap,
+                child: Text(
+                  PackageStrings.unsend,
+                  style: textStyle,
+                ),
+              ),
+            InkWell(
+              onTap: onMoreTap,
+              child: Text(
+                PackageStrings.more,
+                style: textStyle,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

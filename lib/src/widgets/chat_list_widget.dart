@@ -19,17 +19,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'dart:async';
-import 'dart:io' if (kIsWeb) 'dart:html';
 
-import 'package:chatview/src/extensions/extensions.dart';
-import 'package:chatview/src/widgets/chat_groupedlist_widget.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter/material.dart';
-
-import '../../chatview.dart';
-import 'reaction_popup.dart';
-import 'reply_popup_widget.dart';
+part of '../../chatview.dart';
 
 class ChatListWidget extends StatefulWidget {
   const ChatListWidget({
@@ -39,6 +30,7 @@ class ChatListWidget extends StatefulWidget {
     required this.showTypingIndicator,
     required this.assignReplyMessage,
     required this.replyMessage,
+    required this.focusNode,
     this.loadingWidget,
     this.reactionPopupConfig,
     this.messageConfig,
@@ -104,21 +96,27 @@ class ChatListWidget extends StatefulWidget {
   /// bubble.
   final MessageCallBack assignReplyMessage;
 
+  final FocusNode focusNode;
+
   @override
   State<ChatListWidget> createState() => _ChatListWidgetState();
 }
 
 class _ChatListWidgetState extends State<ChatListWidget>
     with SingleTickerProviderStateMixin {
-  final ValueNotifier<bool> _isNextPageLoading = ValueNotifier(false);
-  ValueNotifier<bool> showPopUp = ValueNotifier(false);
+  final ValueNotifier<bool> _isNextPageLoading = ValueNotifier(true);
+
+  ValueNotifier<bool> get showPopUp =>
+      ChatViewInheritedWidget.of(context)!.chatController.showPopUp;
+
   final GlobalKey<ReactionPopupState> _reactionPopupKey = GlobalKey();
 
   ChatController get chatController => widget.chatController;
 
-  List<ValueNotifier<Message>> get messageList => chatController.initialMessageList;
+  List<ValueNotifier<Message>> get messageList =>
+      chatController.initialMessageList;
 
-  ScrollController get scrollController => chatController.scrollController;
+  AutoScrollController get scrollController => chatController.scrollController;
 
   bool get showTypingIndicator => widget.showTypingIndicator;
 
@@ -127,6 +125,9 @@ class _ChatListWidgetState extends State<ChatListWidget>
 
   FeatureActiveConfig? featureActiveConfig;
   ChatUser? currentUser;
+
+  bool get isCupertino =>
+      ChatViewInheritedWidget.of(context)?.isCupertinoApp ?? false;
 
   @override
   void initState() {
@@ -141,10 +142,11 @@ class _ChatListWidgetState extends State<ChatListWidget>
       featureActiveConfig = provide!.featureActiveConfig;
       currentUser = provide!.currentUser;
     }
+
     if (featureActiveConfig?.enablePagination ?? false) {
       // When flag is on then it will include pagination logic to scroll
       // controller.
-      scrollController.addListener(_pagination);
+      _pagination();
     }
   }
 
@@ -153,7 +155,8 @@ class _ChatListWidgetState extends State<ChatListWidget>
     if (!chatController.messageStreamController.isClosed) {
       chatController.messageStreamController.sink.add(messageList);
     }
-    if (messageList.isNotEmpty) chatController.scrollToLastMessage();
+
+    // if (messageList.isNotEmpty) chatController.scrollToLastMessage();
   }
 
   @override
@@ -163,8 +166,12 @@ class _ChatListWidgetState extends State<ChatListWidget>
         ValueListenableBuilder<bool>(
           valueListenable: _isNextPageLoading,
           builder: (_, isNextPageLoading, child) {
+            /// TODO: change the logic with [ItemScrollController]
+            /// When user scrolls to the minimum scroll extent show this, if scrolls down hide it again
+            /// do this until new messages have been added to the tree.
             if (isNextPageLoading &&
-                (featureActiveConfig?.enablePagination ?? false)) {
+                (featureActiveConfig?.enablePagination ?? false) &&
+                !ChatViewInheritedWidget.of(context)!.isCupertinoApp) {
               return SizedBox(
                 height: Scaffold.of(context).appBarMaxHeight,
                 child: Center(
@@ -178,56 +185,75 @@ class _ChatListWidgetState extends State<ChatListWidget>
           },
         ),
         Expanded(
-          child: ValueListenableBuilder<bool>(
-            valueListenable: showPopUp,
-            builder: (_, showPopupValue, child) {
-              return Stack(
-                children: [
-                  ChatGroupedListWidget(
-                    showPopUp: showPopupValue,
-                    showTypingIndicator: showTypingIndicator,
-                    scrollController: scrollController,
-                    isEnableSwipeToSeeTime:
-                        featureActiveConfig?.enableSwipeToSeeTime ?? true,
-                    chatBackgroundConfig: widget.chatBackgroundConfig,
-                    assignReplyMessage: widget.assignReplyMessage,
-                    replyMessage: widget.replyMessage,
-                    swipeToReplyConfig: widget.swipeToReplyConfig,
-                    repliedMessageConfig: widget.repliedMessageConfig,
-                    profileCircleConfig: widget.profileCircleConfig,
-                    messageConfig: widget.messageConfig,
-                    chatBubbleConfig: widget.chatBubbleConfig,
-                    typeIndicatorConfig: widget.typeIndicatorConfig,
-                    onChatBubbleLongPress: (yCoordinate, xCoordinate, message) {
-                      if (featureActiveConfig?.enableReactionPopup ?? false) {
-                        _reactionPopupKey.currentState?.refreshWidget(
-                          message: message,
-                          xCoordinate: xCoordinate,
-                          yCoordinate: yCoordinate < 0
-                              ? -(yCoordinate) - 5
-                              : yCoordinate,
-                        );
-                        showPopUp.value = true;
+          child: Stack(
+            children: [
+              ChatGroupedListWidget(
+                showPopUp: showPopUp.value,
+                // reactionPopupConfig: widget.reactionPopupConfig,
+                showTypingIndicator: showTypingIndicator,
+                scrollController: scrollController,
+                isEnableSwipeToSeeTime:
+                    featureActiveConfig?.enableSwipeToSeeTime ?? true,
+                chatBackgroundConfig: widget.chatBackgroundConfig,
+                assignReplyMessage: widget.assignReplyMessage,
+                replyMessage: widget.replyMessage,
+                swipeToReplyConfig: widget.swipeToReplyConfig,
+                repliedMessageConfig: widget.repliedMessageConfig,
+                profileCircleConfig: widget.profileCircleConfig,
+                messageConfig: widget.messageConfig,
+                chatBubbleConfig: widget.chatBubbleConfig,
+                typeIndicatorConfig: widget.typeIndicatorConfig,
+                onChatBubbleLongPress: (yCoordinate, xCoordinate, message) {
+                  if (!isCupertino) {
+                    ChatViewInheritedWidget.of(context)!
+                        .chatController
+                        .showMessageActions
+                        .value = message;
+
+                    if (featureActiveConfig?.enableReactionPopup ?? false) {
+                      _reactionPopupKey.currentState?.refreshWidget(
+                        message: message,
+                        xCoordinate: xCoordinate,
+                        yCoordinate:
+                            yCoordinate < 0 ? -(yCoordinate) - 5 : yCoordinate,
+                      );
+                      showPopUp.value = true;
+                    }
+                    if (featureActiveConfig?.enableReplySnackBar ?? false) {
+                      _showReplyPopup(
+                        message: message,
+                        sendByCurrentUser: message.author.id == currentUser?.id,
+                      );
+                    }
+                  }
+                },
+                onChatListTap: _onChatListTap,
+              ),
+              if (featureActiveConfig?.enableReactionPopup ?? false) ...[
+                ValueListenableBuilder<bool>(
+                    valueListenable: showPopUp,
+                    builder: (_, showPopupValue, child) {
+                      if (!showPopupValue) {
+                        if (!isCupertino) {
+                          Future.delayed(const Duration(milliseconds: 0), () {
+                            ChatViewInheritedWidget.of(context)!
+                                .chatController
+                                .showMessageActions
+                                .value = null;
+                          });
+                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                        }
                       }
-                      if (featureActiveConfig?.enableReplySnackBar ?? false) {
-                        _showReplyPopup(
-                          message: message,
-                          sendByCurrentUser: message.author.id == currentUser?.id,
-                        );
-                      }
-                    },
-                    onChatListTap: _onChatListTap,
-                  ),
-                  if (featureActiveConfig?.enableReactionPopup ?? false)
-                    ReactionPopup(
-                      key: _reactionPopupKey,
-                      reactionPopupConfig: widget.reactionPopupConfig,
-                      onTap: _onChatListTap,
-                      showPopUp: showPopupValue,
-                    ),
-                ],
-              );
-            },
+
+                      return ReactionPopup(
+                        key: _reactionPopupKey,
+                        reactionPopupConfig: widget.reactionPopupConfig,
+                        onTap: _onChatListTap,
+                        showPopUp: showPopupValue,
+                      );
+                    })
+              ]
+            ],
           ),
         ),
       ],
@@ -236,13 +262,15 @@ class _ChatListWidgetState extends State<ChatListWidget>
 
   void _pagination() {
     if (widget.loadMoreData == null || widget.isLastPage == true) return;
-    if ((scrollController.position.pixels ==
-            scrollController.position.minScrollExtent) &&
-        !_isNextPageLoading.value) {
-      _isNextPageLoading.value = true;
-      widget.loadMoreData!()
-          .whenComplete(() => _isNextPageLoading.value = false);
-    }
+    // scrollController.scrollListener((notification) {
+    //   if ((notification.position.pixels ==
+    //           notification.position.minScrollExtent) &&
+    //       !_isNextPageLoading.value) {
+    //     _isNextPageLoading.value = true;
+    //     widget.loadMoreData!()
+    //         .whenComplete(() => _isNextPageLoading.value = false);
+    //   }
+    // });
   }
 
   void _showReplyPopup({
@@ -299,13 +327,20 @@ class _ChatListWidgetState extends State<ChatListWidget>
   void _onChatListTap() {
     if (!kIsWeb && Platform.isIOS) FocusScope.of(context).unfocus();
     showPopUp.value = false;
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    //TODO: Conditional when non cupertinoApp
+    if (!isCupertino) {
+      ChatViewInheritedWidget.of(context)!
+          .chatController
+          .showMessageActions
+          .value = null;
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    }
   }
 
   @override
   void dispose() {
     chatController.messageStreamController.close();
-    scrollController.dispose();
+    // scrollController.dispose();
     _isNextPageLoading.dispose();
     showPopUp.dispose();
     super.dispose();

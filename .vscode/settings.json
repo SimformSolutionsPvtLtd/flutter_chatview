@@ -1,4 +1,7 @@
 {
+<<<<<<< HEAD
     "java.configuration.updateBuildConfiguration": "interactive",
+=======
+>>>>>>> 31c873e5030322035c9ec8cadb529d5052ba3200
     "dart.flutterSdkPath": "C:\\Users\\yoges\\Downloads\\flutter_windows_3.7.8-stable\\flutter\\"
 }

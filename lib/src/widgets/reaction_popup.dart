@@ -19,12 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'package:chatview/chatview.dart';
-import 'package:chatview/src/extensions/extensions.dart';
-import 'package:chatview/src/widgets/glassmorphism_reaction_popup.dart';
-import 'package:flutter/material.dart';
-
-import 'emoji_row.dart';
+part of '../../chatview.dart';
 
 class ReactionPopup extends StatefulWidget {
   const ReactionPopup({
@@ -51,6 +46,9 @@ class ReactionPopupState extends State<ReactionPopup>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
+
+  bool get isCupertino =>
+      ChatViewInheritedWidget.of(context)?.isCupertinoApp ?? false;
 
   ReactionPopupConfiguration? get reactionPopupConfig =>
       widget.reactionPopupConfig;
@@ -113,39 +111,17 @@ class ReactionPopupState extends State<ReactionPopup>
               child: AnimatedBuilder(
                 animation: _scaleAnimation,
                 builder: (context, child) => Transform.scale(
-                  scale: _scaleAnimation.value,
-                  child: reactionPopupConfig?.showGlassMorphismEffect ?? false
-                      ? GlassMorphismReactionPopup(
-                          reactionPopupConfig: reactionPopupConfig,
-                          child: _reactionPopupRow,
-                        )
-                      : Container(
-                          constraints: BoxConstraints(
-                              maxWidth: reactionPopupConfig?.maxWidth ?? 350),
-                          margin: reactionPopupConfig?.margin ??
-                              const EdgeInsets.symmetric(horizontal: 25),
-                          padding: reactionPopupConfig?.padding ??
-                              const EdgeInsets.symmetric(
-                                vertical: 6,
-                                horizontal: 14,
-                              ),
-                          decoration: BoxDecoration(
-                            color: reactionPopupConfig?.backgroundColor ??
-                                Colors.white,
-                            borderRadius: BorderRadius.circular(30),
-                            boxShadow: [
-                              reactionPopupConfig?.shadow ??
-                                  BoxShadow(
-                                    color: Colors.grey.shade400,
-                                    blurRadius: 8,
-                                    spreadRadius: -2,
-                                    offset: const Offset(0, 8),
-                                  )
-                            ],
-                          ),
-                          child: _reactionPopupRow,
-                        ),
-                ),
+                    scale: _scaleAnimation.value,
+                    child: reactionPopupConfig?.showGlassMorphismEffect ?? false
+                        ? GlassMorphismReactionPopup(
+                            isCupertino: isCupertino,
+                            reactionPopupConfig: reactionPopupConfig,
+                            child: _reactionPopupRow,
+                          )
+                        : DefaultReactionPopup(
+                            reactionPopupRow: _reactionPopupRow,
+                            reactionPopupConfig: reactionPopupConfig,
+                          )),
               ),
             ),
           )
@@ -175,11 +151,13 @@ class ReactionPopupState extends State<ReactionPopup>
     required double xCoordinate,
     required double yCoordinate,
   }) {
-    setState(() {
-      _message = message;
-      _xCoordinate = xCoordinate;
-      _yCoordinate = yCoordinate;
-    });
+    if (mounted) {
+      setState(() {
+        _message = message;
+        _xCoordinate = xCoordinate;
+        _yCoordinate = yCoordinate;
+      });
+    }
   }
 
   @override

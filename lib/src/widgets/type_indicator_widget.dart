@@ -19,13 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'dart:math';
-import 'package:flutter/material.dart';
-
-import 'package:chatview/src/widgets/profile_circle.dart';
-
-import '../../chatview.dart';
-import '../utils/constants/constants.dart';
+part of '../../chatview.dart';
 
 class TypingIndicator extends StatefulWidget {
   const TypingIndicator({

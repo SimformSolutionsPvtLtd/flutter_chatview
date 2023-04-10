@@ -19,14 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'dart:io';
-import 'package:flutter/foundation.dart' show kIsWeb;
-
-import 'package:flutter/material.dart';
-
-import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
-
-import '../values/typedefs.dart';
+part of '../../chatview.dart';
 
 class EmojiPickerWidget extends StatelessWidget {
   const EmojiPickerWidget({Key? key, required this.onSelected})
@@ -56,13 +49,14 @@ class EmojiPickerWidget extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: EmojiPicker(
-              onEmojiSelected: (Category? category, Emoji emoji) =>
-                  onSelected(emoji.emoji),
-              config: Config(
+            child: picker.EmojiPicker(
+              onEmojiSelected:
+                  (picker.Category? category, picker.Emoji emoji) =>
+                      onSelected(emoji.emoji),
+              config: picker.Config(
                 columns: 7,
                 emojiSizeMax: 32 * ((!kIsWeb && Platform.isIOS) ? 1.30 : 1.0),
-                initCategory: Category.RECENT,
+                initCategory: picker.Category.RECENT,
                 bgColor: Colors.white,
                 showRecentsTab: false,
                 recentsLimit: 28,

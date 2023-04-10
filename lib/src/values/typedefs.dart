@@ -21,12 +21,13 @@
  */
 import 'package:chatview/chatview.dart';
 import 'package:flutter/material.dart';
+import 'enumaration.dart';
 
 typedef StringCallback = void Function(String);
 typedef StringMessageCallBack = void Function(
-    String message, Message? replyMessage, MessageType messageType,{Duration? duration});
-typedef ReplyMessageWithReturnWidget = Widget Function(
-    Message? replyMessage);
+    String message, Message? replyMessage, MessageType messageType,
+    {Duration? duration});
+typedef ReplyMessageWithReturnWidget = Widget Function(Message? replyMessage);
 typedef ReplyMessageCallBack = void Function(Message replyMessage);
 typedef VoidCallBack = void Function();
 typedef DoubleCallBack = void Function(double, double);

@@ -20,12 +20,12 @@
  * SOFTWARE.
  */
 import 'package:chatview/chatview.dart';
-import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../utils/constants/constants.dart';
 import '../utils/emoji_parser.dart';
 import '../utils/package_strings.dart';
+import '../values/enumaration.dart';
 
 /// Extension for DateTime to get specific formats of dates and time.
 extension TimeDifference on DateTime {
@@ -119,7 +119,6 @@ extension ChatViewStateTitleExtension on String? {
     }
   }
 }
-
 
 /// Extension on State for accessing inherited widget.
 extension StatefulWidgetExtension on State {

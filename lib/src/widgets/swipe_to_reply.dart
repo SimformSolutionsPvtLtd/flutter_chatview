@@ -19,9 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'package:flutter/material.dart';
-
-import 'reply_icon.dart';
+part of '../../chatview.dart';
 
 class SwipeToReply extends StatefulWidget {
   const SwipeToReply({
@@ -91,7 +89,7 @@ class _SwipeToReplyState extends State<SwipeToReply>
         animation: _controller,
         builder: (context, child) {
           return Stack(
-            alignment: Alignment.center,
+            alignment: Alignment.centerLeft,
             fit: StackFit.passthrough,
             children: [
               Row(
@@ -115,9 +113,12 @@ class _SwipeToReplyState extends State<SwipeToReply>
                   ),
                 ],
               ),
-              SlideTransition(
-                position: _slideAnimation,
-                child: widget.child,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SlideTransition(
+                  position: _slideAnimation,
+                  child: widget.child,
+                ),
               ),
             ],
           );

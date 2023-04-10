@@ -19,15 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:chatview/src/extensions/extensions.dart';
-import 'package:chatview/src/models/models.dart';
-import 'package:flutter/material.dart';
-
-import 'reaction_widget.dart';
-import 'share_icon.dart';
+part of '../../chatview.dart';
 
 class ImageMessageView extends StatelessWidget {
   const ImageMessageView({
@@ -84,56 +76,74 @@ class ImageMessageView extends StatelessWidget {
                 alignment: isMessageBySender
                     ? Alignment.centerRight
                     : Alignment.centerLeft,
-                child: Container(
+                child: Padding(
                   padding: imageMessageConfig?.padding ?? EdgeInsets.zero,
-                  margin: imageMessageConfig?.margin ??
-                      EdgeInsets.only(
-                        top: 6,
-                        right: isMessageBySender ? 6 : 0,
-                        left: isMessageBySender ? 0 : 6,
-                        bottom: message.reaction?.reactions.isNotEmpty ?? false ? 15 : 0,
-                      ),
-                  height: imageMessageConfig?.height ?? 200,
-                  width: imageMessageConfig?.width ?? 150,
-                  child: ClipRRect(
-                    borderRadius: imageMessageConfig?.borderRadius ??
-                        BorderRadius.circular(14),
-                    child: (() {
-                      if (imageUrl.isUrl) {
-                        return Image.network(
-                          imageUrl,
-                          fit: BoxFit.fitHeight,
-                          loadingBuilder: (context, child, loadingProgress) {
-                            if (loadingProgress == null) return child;
-                            return Center(
-                              child: CircularProgressIndicator(
-                                value: loadingProgress.expectedTotalBytes !=
-                                        null
-                                    ? loadingProgress.cumulativeBytesLoaded /
-                                        loadingProgress.expectedTotalBytes!
-                                    : null,
-                              ),
+                  child: Padding(
+                    padding: imageMessageConfig?.margin ??
+                        EdgeInsets.only(
+                          top: 6,
+                          right: isMessageBySender ? 6 : 0,
+                          left: isMessageBySender ? 0 : 6,
+                          bottom:
+                              message.reaction?.reactions.isNotEmpty ?? false
+                                  ? 15
+                                  : 0,
+                        ),
+                    child: SizedBox(
+                      height: imageMessageConfig?.height ?? 200,
+                      width: imageMessageConfig?.width ?? 150,
+                      child: ClipRRect(
+                        borderRadius: imageMessageConfig?.borderRadius ??
+                            BorderRadius.circular(14),
+                        child: (() {
+                          if (imageUrl.isUrl) {
+                            return Image.network(
+                              imageUrl,
+                              fit: BoxFit.contain,
+                              cacheHeight:
+                                  imageMessageConfig?.height?.toInt() ?? 200,
+                              cacheWidth:
+                                  imageMessageConfig?.width?.toInt() ?? 150,
+                              // fit: BoxFit.fitHeight,
+                              loadingBuilder:
+                                  (context, child, loadingProgress) {
+                                if (loadingProgress == null) return child;
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    value: loadingProgress.expectedTotalBytes !=
+                                            null
+                                        ? loadingProgress
+                                                .cumulativeBytesLoaded /
+                                            loadingProgress.expectedTotalBytes!
+                                        : null,
+                                  ),
+                                );
+                              },
                             );
-                          },
-                        );
-                      } else if (imageUrl.fromMemory) {
-                        return Image.memory(
-                          base64Decode(imageUrl
-                              .substring(imageUrl.indexOf('base64') + 7)),
-                          fit: BoxFit.fill,
-                        );
-                      } else {
-                        return Image.file(
-                          File(imageUrl),
-                          fit: BoxFit.fill,
-                        );
-                      }
-                    }()),
+                          } else if (imageUrl.fromMemory) {
+                            return Image.memory(
+                              base64Decode(imageUrl
+                                  .substring(imageUrl.indexOf('base64') + 7)),
+                              fit: BoxFit.fill,
+                              cacheHeight:
+                                  imageMessageConfig?.height?.toInt() ?? 200,
+                              cacheWidth:
+                                  imageMessageConfig?.width?.toInt() ?? 150,
+                            );
+                          } else {
+                            return Image.file(
+                              File(imageUrl),
+                              fit: BoxFit.fill,
+                            );
+                          }
+                        }()),
+                      ),
+                    ),
                   ),
                 ),
               ),
             ),
-            if (message.reaction?.reactions.isNotEmpty  ?? false)
+            if (message.reaction?.reactions.isNotEmpty ?? false)
               ReactionWidget(
                 isMessageBySender: isMessageBySender,
                 reaction: message.reaction!,

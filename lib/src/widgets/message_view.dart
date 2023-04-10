@@ -19,16 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'package:chatview/chatview.dart';
-import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
-import 'package:flutter/material.dart';
-
-import 'package:chatview/src/extensions/extensions.dart';
-import '../utils/constants/constants.dart';
-import 'image_message_view.dart';
-import 'text_message_view.dart';
-import 'reaction_widget.dart';
-import 'voice_message_view.dart';
+part of '../../chatview.dart';
 
 class MessageView extends StatefulWidget {
   const MessageView({
@@ -98,55 +89,45 @@ class MessageView extends StatefulWidget {
   State<MessageView> createState() => _MessageViewState();
 }
 
-class _MessageViewState extends State<MessageView>
-    with SingleTickerProviderStateMixin {
-  AnimationController? _animationController;
-
+class _MessageViewState extends State<MessageView> {
   MessageConfiguration? get messageConfig => widget.messageConfig;
 
   bool get isLongPressEnable => widget.isLongPressEnable;
 
+  bool get isCupertino =>
+      ChatViewInheritedWidget.of(context)?.isCupertinoApp ?? false;
+
+  ValueNotifier<bool> isOn = ValueNotifier(false);
+
   @override
   void initState() {
     super.initState();
-    if (isLongPressEnable) {
-      _animationController = AnimationController(
-        vsync: this,
-        duration: widget.longPressAnimationDuration ??
-            const Duration(milliseconds: 250),
-        upperBound: 0.1,
-        lowerBound: 0.0,
-      );
-      if (widget.message.status != MessageStatus.read &&
-          !widget.isMessageBySender) {
-        widget.inComingChatBubbleConfig?.onMessageRead?.call(widget.message);
-      }
-      _animationController?.addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          _animationController?.reverse();
-        }
-      });
-    }
+    if (isLongPressEnable) {}
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onLongPressStart: isLongPressEnable ? _onLongPressStart : null,
-      onDoubleTap: () {
+      onLongPressEnd: isLongPressEnable ? _onLongPressEnd : null,
+      onDoubleTap: () async {
+        if (await Vibration.hasCustomVibrationsSupport() ?? false) {
+          Vibration.vibrate(duration: 10, amplitude: 10);
+        }
         if (widget.onDoubleTap != null) widget.onDoubleTap!(widget.message);
       },
       child: (() {
         if (isLongPressEnable) {
-          return AnimatedBuilder(
-            builder: (_, __) {
-              return Transform.scale(
-                scale: 1 - _animationController!.value,
-                child: _messageView,
-              );
-            },
-            animation: _animationController!,
-          );
+          return ValueListenableBuilder<bool>(
+              valueListenable: isOn,
+              builder: (context, value, child) {
+                return AnimatedScale(
+                  scale: value ? .8 : 1,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.decelerate,
+                  child: _messageView,
+                );
+              });
         } else {
           return _messageView;
         }
@@ -269,17 +250,28 @@ class _MessageViewState extends State<MessageView>
     );
   }
 
-  void _onLongPressStart(LongPressStartDetails details) async {
-    await _animationController?.forward();
-    widget.onLongPress(
-      details.globalPosition.dy - 120 - 64,
-      details.globalPosition.dx,
-    );
+  void _onLongPressStart(LongPressStartDetails details) {
+    isOn.value = true;
+    Future.delayed(const Duration(milliseconds: 150), () async {
+      if (await Vibration.hasCustomVibrationsSupport() ?? false) {
+        Vibration.vibrate(duration: 10, amplitude: 10);
+      }
+      widget.onLongPress(
+        details.globalPosition.dy - 120 - 64,
+        details.globalPosition.dx,
+      );
+    });
+  }
+
+  void _onLongPressEnd(LongPressEndDetails details) {
+    Future.delayed(const Duration(milliseconds: 200), () {
+      isOn.value = false;
+    });
   }
 
   @override
   void dispose() {
-    _animationController?.dispose();
+    debugPrint('dispose');
     super.dispose();
   }
 

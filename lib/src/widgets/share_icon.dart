@@ -19,8 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'package:flutter/material.dart';
-import 'package:chatview/src/models/image_message.dart';
+part of '../../chatview.dart';
 
 class ShareIcon extends StatelessWidget {
   const ShareIcon({

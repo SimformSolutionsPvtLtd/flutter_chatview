@@ -23,12 +23,14 @@
 import 'package:flutter/cupertino.dart';
 import '../../chatview.dart';
 import '../utils/constants/constants.dart';
+import '../values/enumaration.dart';
 
 class ReceiptsWidgetConfig {
   /// The builder that builds widget that right next to the senders message bubble.
   /// Right now it's implemented to show animation only at the last message just
   /// like instagram.
   /// By default [sendMessageAnimationBuilder]
+  /// TODO: Pass messsage here too
   final Widget Function(MessageStatus status)? receiptsBuilder;
 
   /// Just like Instagram messages receipts are displayed at the bottom of last

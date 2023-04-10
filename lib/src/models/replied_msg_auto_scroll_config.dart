@@ -25,6 +25,13 @@ class RepliedMsgAutoScrollConfig {
   /// Animation curve for auto scroll. Defaults to Curves.easeIn.
   final Curve highlightScrollCurve;
 
+  final bool isJumpTo;
+
+  /// * 0 aligns the top edge of the item with the top edge of the view.
+  /// * 1 aligns the top edge of the item with the bottom of the view.
+  /// * 0.5 aligns the top edge of the item with the center of the view.
+  final double? alignment;
+
   /// Configuration for auto scrolling and highlighting a message when
   /// tapping on the original message above the replied message.
   const RepliedMsgAutoScrollConfig({
@@ -33,6 +40,8 @@ class RepliedMsgAutoScrollConfig {
     this.highlightColor = Colors.grey,
     this.highlightDuration = const Duration(milliseconds: 500),
     this.highlightScale = 1.1,
+    this.alignment,
+    this.isJumpTo = true,
     this.highlightScrollDuration = const Duration(milliseconds: 300),
     this.highlightScrollCurve = Curves.easeIn,
   });

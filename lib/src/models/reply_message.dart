@@ -30,7 +30,7 @@ class ReplyMessage {
 
   /// Provides user id of whom to reply.
   final String replyTo;
-  
+
   final MessageType messageType;
 
   /// Provides max duration for recorded voice message.

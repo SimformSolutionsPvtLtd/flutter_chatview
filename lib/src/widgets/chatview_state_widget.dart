@@ -1,6 +1,4 @@
-import 'package:chatview/chatview.dart';
-import 'package:chatview/src/extensions/extensions.dart';
-import 'package:flutter/material.dart';
+part of '../../chatview.dart';
 
 class ChatViewStateWidget extends StatelessWidget {
   const ChatViewStateWidget({
