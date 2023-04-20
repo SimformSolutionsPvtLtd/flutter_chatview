@@ -147,19 +147,7 @@ class TextMessageView extends StatelessWidget {
                           ),
                         },
                       ),
-                      MatchText(
-                        pattern: PatternStyle.at.pattern,
-                        style: (PatternStyle.at.textStyle),
-                        renderText: (
-                                {required String str,
-                                required String pattern}) =>
-                            {
-                          'display': str.replaceAll(
-                            PatternStyle.code.from,
-                            PatternStyle.code.replace,
-                          ),
-                        },
-                      ),
+                   
                     ],
                   )),
         if (message.reaction?.reactions.isNotEmpty ?? false)

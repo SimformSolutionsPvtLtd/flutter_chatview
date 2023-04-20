@@ -271,7 +271,7 @@ class _MessageViewState extends State<MessageView> {
 
   @override
   void dispose() {
-    debugPrint('dispose');
+    debugPrint('dispose ${widget.message.id}');
     super.dispose();
   }
 

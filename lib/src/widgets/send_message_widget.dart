@@ -63,6 +63,7 @@ class SendMessageWidget extends StatefulWidget {
 }
 
 class SendMessageWidgetState extends State<SendMessageWidget> {
+  
   final _textEditingController = InputTextFieldController();
 
   final ValueNotifier<Message?> _replyMessage = ValueNotifier(null);

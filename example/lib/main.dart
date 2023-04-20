@@ -142,7 +142,6 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
             IconButton(
               tooltip: 'Toggle TypingIndicator',
-           
               onPressed: _showHideTypingIndicator,
               icon: Icon(
                 Icons.keyboard,
@@ -344,8 +343,8 @@ class _ChatScreenState extends State<ChatScreen> {
     }
     if (messageType != MessageType.voice) {
       Future.delayed(const Duration(milliseconds: 300), () {
-        _chatController.initialMessageList.last.value = _chatController
-            .initialMessageList.last.value
+        _chatController.initialMessageList.first.value = _chatController
+            .initialMessageList.first.value
             .copyWith(status: MessageStatus.undelivered);
       });
     }

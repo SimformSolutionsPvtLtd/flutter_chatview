@@ -76,7 +76,7 @@ class ChatController {
 
   /// Used to add message in message list.
   void addMessage(Message message) {
-    initialMessageList.add(ValueNotifier(message));
+    initialMessageList.insert(0, ValueNotifier(message));
     messageStreamController.sink.add(initialMessageList);
   }
 
@@ -140,7 +140,7 @@ class ChatController {
   void scrollToLastMessage() => Timer(
         const Duration(milliseconds: 300),
         () => scrollController.animateTo(
-          scrollController.position.maxScrollExtent,
+          scrollController.position.minScrollExtent,
           curve: Curves.easeIn,
           duration: const Duration(milliseconds: 300),
         ),
