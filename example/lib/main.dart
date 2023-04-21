@@ -68,7 +68,13 @@ class _ChatScreenState extends State<ChatScreen> {
   );
 
   void _showHideTypingIndicator() {
-    _chatController.setTypingIndicator = !_chatController.showTypingIndicator;
+    if (_chatController.showTypingIndicator) {
+      /// To hide the indicator
+      _chatController.setTypingIndicator = null;
+    } else {
+      /// Suppose user id = 4 is typing the message
+      _chatController.setTypingIndicator = '4';
+    }
   }
 
   @override
@@ -79,6 +85,7 @@ class _ChatScreenState extends State<ChatScreen> {
         chatController: _chatController,
         onSendTap: _onSendTap,
         featureActiveConfig: const FeatureActiveConfig(
+            isMarkdownSupported: true,
             lastSeenAgoBuilderVisibility: true,
             receiptsBuilderVisibility: true),
         chatViewState: ChatViewState.hasMessages,

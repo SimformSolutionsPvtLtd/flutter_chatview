@@ -322,14 +322,25 @@ ChatView(
 12. For showing hiding typeIndicatorwidget use `ChatController.setTypingIndicaor`, for more info see `ChatController`.
 ```dart
 /// use it with your [ChatController] instance.
-_chatContoller.setTypingIndicator = true; // for showing indicator
-_chatContoller.setTypingIndicator = false; // for hiding indicator
+_chatContoller.setTypingIndicator = userId; // for showing indicator userId of the user typing
+_chatContoller.setTypingIndicator = null; // for hiding indicator
+```
+13.  One can access userID of the typing user by 
+
+```dart
+
+/// use it with your [ChatController] instance.
+debugPrint(_chatContoller.typingUserId); // It is nullable
+
+// To access current state whether is showing or hidden
+debugPrint(_chatController.showTypingIndicator);
+
 ```
 
 
 
 
-13. Adding linkpreview configuration with `LinkPreviewConfiguration` class.
+14. Adding linkpreview configuration with `LinkPreviewConfiguration` class.
 ```dart
 ChatView(
   ...
@@ -445,7 +456,7 @@ ChatView(
             lastSeenAgoBuilderVisibility: false,
             /// Controls the visibility of the message [receiptsBuilder]
             receiptsBuilderVisibility: false),            
-       ChatBubbleConfiguration(
+      chatBubbleConfig: ChatBubbleConfiguration(
           inComingChatBubbleConfig: ChatBubble(
             onMessageRead: (message) {
               /// send your message reciepts to the other client
@@ -467,6 +478,23 @@ ChatView(
   ...
  
 )
+```
+19. Markdown is by default supported, to toggle it 
+
+```dart
+
+  ChatView(
+   ...
+      featureActiveConfig: const FeatureActiveConfig(
+            /// Controls whether markdown is enabled or not defaults to true
+            isMarkdownSupported = true,
+            ),            
+  
+        
+  ...
+ 
+)
+
 ```
 
 

@@ -203,7 +203,7 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
                         typeIndicatorConfig: widget.typeIndicatorConfig,
                         chatBubbleConfig:
                             chatBubbleConfig?.inComingChatBubbleConfig,
-                        showIndicator: value as bool,
+                        showIndicator: value != null,
                         profilePic: profileCircleConfig?.profileImageUrl,
                       )),
           SizedBox(

@@ -12,6 +12,7 @@ class FeatureActiveConfig {
     this.enableDoubleTapToLike = true,
     this.lastSeenAgoBuilderVisibility = true,
     this.receiptsBuilderVisibility = true,
+    this.isMarkdownSupported = true,
   });
 
   /// Used for enable/disable swipe to reply.
@@ -49,4 +50,7 @@ class FeatureActiveConfig {
 
   /// Controls the visibility of the message [receiptsBuilder]
   final bool receiptsBuilderVisibility;
+
+  /// Controls whether markdown is enabled or not defaults to true
+  final bool isMarkdownSupported;
 }
