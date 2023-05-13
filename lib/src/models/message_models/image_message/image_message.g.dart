@@ -23,7 +23,7 @@ ImageMessage _$ImageMessageFromJson(Map<String, dynamic> json) => ImageMessage(
       roomId: json['roomId'] as String?,
       showStatus: json['showStatus'] as bool?,
       size: json['size'] as num,
-      status: json['status'],
+      status: $enumDecodeNullable(_$MessageStatusEnumMap, json['status']),
       type: $enumDecodeNullable(_$MessageTypeEnumMap, json['type']),
       updatedAt: json['updatedAt'] as int?,
       uri: json['uri'] as String,
@@ -40,7 +40,7 @@ Map<String, dynamic> _$ImageMessageToJson(ImageMessage instance) =>
       'repliedMessage': instance.repliedMessage?.toJson(),
       'roomId': instance.roomId,
       'showStatus': instance.showStatus,
-      'status': _$MessageStatusEnumMap[instance.status],
+      'status': _$MessageStatusEnumMap[instance.status]!,
       'type': _$MessageTypeEnumMap[instance.type]!,
       'updatedAt': instance.updatedAt,
       'reaction': instance.reaction?.toJson(),
@@ -51,14 +51,6 @@ Map<String, dynamic> _$ImageMessageToJson(ImageMessage instance) =>
       'width': instance.width,
     };
 
-const _$MessageTypeEnumMap = {
-  MessageType.custom: 'custom',
-  MessageType.image: 'image',
-  MessageType.text: 'text',
-  MessageType.unsupported: 'unsupported',
-  MessageType.voice: 'voice',
-};
-
 const _$MessageStatusEnumMap = {
   MessageStatus.error: 'error',
   MessageStatus.sending: 'sending',
@@ -68,4 +60,12 @@ const _$MessageStatusEnumMap = {
   MessageStatus.undelivered: 'undelivered',
   MessageStatus.pending: 'pending',
   MessageStatus.custom: 'custom',
+};
+
+const _$MessageTypeEnumMap = {
+  MessageType.custom: 'custom',
+  MessageType.image: 'image',
+  MessageType.text: 'text',
+  MessageType.unsupported: 'unsupported',
+  MessageType.voice: 'voice',
 };

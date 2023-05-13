@@ -8,8 +8,8 @@ part of 'text_message.dart';
 
 TextMessage _$TextMessageFromJson(Map<String, dynamic> json) => TextMessage(
       author: ChatUser.fromJson(json['author'] as Map<String, dynamic>),
-      createdAt: json['createdAt'] as int,
       id: json['id'] as String,
+      createdAt: json['createdAt'] as int,
       reaction: json['reaction'] == null
           ? null
           : Reaction.fromJson(json['reaction'] as Map<String, dynamic>),
@@ -20,7 +20,7 @@ TextMessage _$TextMessageFromJson(Map<String, dynamic> json) => TextMessage(
           : Message.fromJson(json['repliedMessage'] as Map<String, dynamic>),
       roomId: json['roomId'] as String?,
       showStatus: json['showStatus'] as bool?,
-      status: json['status'],
+      status: $enumDecodeNullable(_$MessageStatusEnumMap, json['status']),
       text: json['text'] as String,
       type: $enumDecodeNullable(_$MessageTypeEnumMap, json['type']),
       updatedAt: json['updatedAt'] as int?,
@@ -36,20 +36,12 @@ Map<String, dynamic> _$TextMessageToJson(TextMessage instance) =>
       'repliedMessage': instance.repliedMessage?.toJson(),
       'roomId': instance.roomId,
       'showStatus': instance.showStatus,
-      'status': _$MessageStatusEnumMap[instance.status],
+      'status': _$MessageStatusEnumMap[instance.status]!,
       'type': _$MessageTypeEnumMap[instance.type]!,
       'updatedAt': instance.updatedAt,
       'reaction': instance.reaction?.toJson(),
       'text': instance.text,
     };
-
-const _$MessageTypeEnumMap = {
-  MessageType.custom: 'custom',
-  MessageType.image: 'image',
-  MessageType.text: 'text',
-  MessageType.unsupported: 'unsupported',
-  MessageType.voice: 'voice',
-};
 
 const _$MessageStatusEnumMap = {
   MessageStatus.error: 'error',
@@ -60,4 +52,12 @@ const _$MessageStatusEnumMap = {
   MessageStatus.undelivered: 'undelivered',
   MessageStatus.pending: 'pending',
   MessageStatus.custom: 'custom',
+};
+
+const _$MessageTypeEnumMap = {
+  MessageType.custom: 'custom',
+  MessageType.image: 'image',
+  MessageType.text: 'text',
+  MessageType.unsupported: 'unsupported',
+  MessageType.voice: 'voice',
 };

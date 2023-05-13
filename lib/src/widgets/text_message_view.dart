@@ -147,7 +147,6 @@ class TextMessageView extends StatelessWidget {
                           ),
                         },
                       ),
-                   
                     ],
                   )),
         if (message.reaction?.reactions.isNotEmpty ?? false)

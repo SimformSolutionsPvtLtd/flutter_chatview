@@ -50,3 +50,5 @@ extension ChatViewStateExtension on ChatViewState {
 
   bool get noMessages => this == ChatViewState.noData;
 }
+
+enum ToolBarPriority { high, medium, low }

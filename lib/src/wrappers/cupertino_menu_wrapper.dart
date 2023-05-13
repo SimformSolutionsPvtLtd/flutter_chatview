@@ -5,14 +5,12 @@ class CupertinoMenuWrapper extends StatefulWidget {
       {Key? key,
       required this.child,
       required this.message,
-      required this.chatController,
       this.messageConfig,
       this.reactionPopupConfig})
       : super(key: key);
 
   final Widget child;
   final Message message;
-  final ChatController chatController;
   final MessageConfiguration? messageConfig;
   final ReactionPopupConfiguration? reactionPopupConfig;
 
@@ -24,11 +22,18 @@ class _CupertinoMenuWrapperState extends State<CupertinoMenuWrapper> {
   void get pop => mounted ? Navigator.pop(context) : null;
 
   bool isReversed = false;
+  ChatController? chatController;
+  CupertinoMenuConfiguration? menuConfiguration;
 
-  CupertinoMenuConfiguration? get menuConfiguration =>
-      ChatViewInheritedWidget.of(context)
-          ?.cupertinoWidgetConfig
-          ?.cupertinoMenuConfig;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (provide != null) {
+      chatController = provide!.chatController;
+      menuConfiguration = provide!.cupertinoWidgetConfig?.cupertinoMenuConfig;
+    }
+  }
+
   DefaultMenuActionsConfiguration get menuActionConfig =>
       menuConfiguration?.defaultMenuActionsConfigurations ??
       const DefaultMenuActionsConfiguration();
@@ -38,7 +43,7 @@ class _CupertinoMenuWrapperState extends State<CupertinoMenuWrapper> {
       onEmojiTap: (e) {
         Navigator.pop(context);
         Future.delayed(const Duration(milliseconds: 500), () {
-          widget.chatController.setReaction(
+          chatController?.setReaction(
               emoji: e,
               messageId: widget.message.id,
               userId: widget.message.author.id);
@@ -139,15 +144,17 @@ class _CupertinoMenuWrapperState extends State<CupertinoMenuWrapper> {
                           Navigator.pop(context);
                           if (widget.message.reaction?.reactions.isNotEmpty ??
                               false) {
-                            ReactionsBottomSheet().show(
-                              context: context,
-                              reaction: widget.message.reaction!,
-                              chatController: widget.chatController,
-                              reactionsBottomSheetConfig: widget
-                                  .messageConfig
-                                  ?.messageReactionConfig
-                                  ?.reactionsBottomSheetConfig,
-                            );
+                            if (chatController != null) {
+                              ReactionsBottomSheet().show(
+                                context: context,
+                                reaction: widget.message.reaction!,
+                                chatController: chatController!,
+                                reactionsBottomSheetConfig: widget
+                                    .messageConfig
+                                    ?.messageReactionConfig
+                                    ?.reactionsBottomSheetConfig,
+                              );
+                            }
                           }
                         },
                 trailingIcon: menuActionConfig.reactionsIcon,

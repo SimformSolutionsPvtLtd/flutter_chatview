@@ -99,4 +99,4 @@ bool sameDay(int firstStamp, int? secondStamp) {
   }
 }
 
-final serviceLocator = GetIt.I;
+final serviceLocator = GetIt.instance;

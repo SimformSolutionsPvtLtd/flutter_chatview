@@ -47,8 +47,7 @@ class ReactionPopupState extends State<ReactionPopup>
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
 
-  bool get isCupertino =>
-      ChatViewInheritedWidget.of(context)?.isCupertinoApp ?? false;
+  bool isCupertino = false;
 
   ReactionPopupConfiguration? get reactionPopupConfig =>
       widget.reactionPopupConfig;
@@ -86,6 +85,7 @@ class ReactionPopupState extends State<ReactionPopup>
     if (provide != null) {
       chatController = provide!.chatController;
       currentUser = provide!.currentUser;
+      isCupertino = provide!.isCupertinoApp;
     }
   }
 

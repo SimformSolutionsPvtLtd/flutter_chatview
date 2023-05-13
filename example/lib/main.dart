@@ -1,12 +1,23 @@
 import 'dart:math';
-
 import 'package:chatview/chatview.dart';
+import 'package:example/create_user_screen.dart';
+import 'package:example/service_locator.dart';
+import 'package:example/users_screen.dart';
+import 'package:uuid/uuid.dart';
 import 'theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  const user = ChatUser(id: '7489016865', firstName: 'Flutter');
+  serviceLocator.registerSingleton<ChatViewController>(
+      ChatViewController.getInstance(user,
+          chatViewExtension: ChatViewExtension(
+              serviceExtension: ServiceExtension<SqfliteDataBaseService>(
+                  dataBaseService:
+                      SqfliteDataBaseService(currentUser: user)))));
   runApp(const Example());
 }
 
@@ -15,22 +26,169 @@ class Example extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      key: Key('Main App'),
-      title: 'Flutter Chat UI Demo',
+    return MaterialApp(
+      key: const Key('Main App'),
+      title: 'Example',
       debugShowCheckedModeBanner: false,
-      localizationsDelegates: <LocalizationsDelegate<dynamic>>[
+      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
         DefaultMaterialLocalizations.delegate,
         DefaultWidgetsLocalizations.delegate,
         DefaultCupertinoLocalizations.delegate,
       ],
-      home: ChatScreen(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const HomeScreen(),
+        '/create_user_screen': (context) => const UserFormScreen(),
+        '/user_screen': (context) => const UserListScreen(),
+      },
+    );
+  }
+}
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    init();
+  }
+
+  init() async {
+    Future.delayed(const Duration(seconds: 2), () async {
+      _chatRooms.value = await _chatroomService?.fetchRooms() ?? [];
+    });
+  }
+
+  Future<void> _onRefresh() async {
+    _chatRooms.value = await _chatroomService?.fetchRooms() ?? [];
+  }
+
+  SqfLiteChatRoomDataBaseService? get _chatroomService => serviceLocator
+      .get<ChatViewController>()
+      .chatViewExtension
+      ?.serviceExtension
+      ?.dataBaseService
+      ?.chatRoomDataBaseService as SqfLiteChatRoomDataBaseService;
+
+  final ValueNotifier<List<ChatDataBaseService>> _chatRooms = ValueNotifier([]);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            const UserAccountsDrawerHeader(
+              accountName: Text('John Doe'),
+              accountEmail: Text('johndoe@example.com'),
+              currentAccountPicture: CircleAvatar(
+                child: Text('JD'),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.supervised_user_circle),
+              title: const Text('Create User'),
+              onTap: () {
+                Navigator.pushNamed(context, '/create_user_screen');
+                // Perform action when user taps on the Settings item
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.group_add_outlined),
+              title: const Text('Create Room'),
+              onTap: () {
+                Navigator.pushNamed(context, '/user_screen');
+                // Perform action when user taps on the Settings item
+              },
+            ),
+          ],
+        ),
+      ),
+      appBar: AppBar(
+        title: const Text('My App'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              // Perform action when user taps on the user icon
+            },
+            icon: const Icon(Icons.person),
+          ),
+          IconButton(
+            onPressed: () {
+              _chatroomService?.deleteMessages();
+              // Perform action when user taps on the menu icon
+            },
+            icon: const Icon(Icons.menu),
+          ),
+          IconButton(
+            onPressed: () {
+              _chatroomService?.createMessages();
+
+              // Perform action when user taps on the search icon
+            },
+            icon: const Icon(Icons.search),
+          ),
+        ],
+      ),
+      body: ValueListenableBuilder<List<ChatDataBaseService>>(
+        valueListenable: _chatRooms,
+        builder: (context, value, child) {
+          return RefreshIndicator(
+            onRefresh: _onRefresh,
+            child: ListView.builder(
+              itemCount: value.length,
+              itemBuilder: (BuildContext context, int index) {
+                final chatUser = value[index];
+                return ListTile(
+                  leading: CircleAvatar(
+                    child: Text(chatUser.room.name ?? chatUser.room.id),
+                  ),
+                  title: Text(chatUser.room.name ?? chatUser.room.id),
+                  subtitle: StreamBuilder<Message>(
+                    stream: chatUser.lastMessageStream.stream,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        if (snapshot.data!.type == MessageType.text) {
+                          return Text((snapshot.data as TextMessage).text);
+                        }
+                        return const SizedBox();
+                      }
+                      return const SizedBox();
+                    },
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ChatScreen(
+                          chatService: chatUser,
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          );
+        },
+      ),
     );
   }
 }
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({Key? key}) : super(key: key);
+  const ChatScreen({
+    Key? key,
+    required this.chatService,
+  }) : super(key: key);
+
+  final ChatDataBaseService chatService;
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -39,35 +197,49 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   AppTheme theme = LightTheme();
   bool isDarkTheme = false;
-  final currentUser = const ChatUser(
-    id: '1',
-    firstName: 'Flutter',
-  );
-  final _chatController = ChatController(
-    initialMessageList: [],
-    scrollController: AutoScrollController(),
-    chatUsers: [
-      const ChatUser(
-        id: '2',
-        firstName: 'Simform',
-      ),
-      const ChatUser(
-        id: '3',
-        firstName: 'Jhon',
-      ),
-      const ChatUser(
-        id: '4',
-        firstName: 'Mike',
-      ),
-      const ChatUser(
-        id: '5',
-        firstName: 'Rich',
-      ),
-    ],
-  );
+
+  @override
+  void initState() {
+    super.initState();
+    init();
+  }
+
+  void init() async {
+    _chatController = ChatController(
+      chatViewController: _chatViewController,
+      initialMessageList: widget.chatService.messages,
+      chatService: widget.chatService,
+      scrollController: AutoScrollController(),
+      chatUsers: [
+        const ChatUser(
+          id: '2',
+          firstName: 'Simform',
+        ),
+        const ChatUser(
+          id: '3',
+          firstName: 'Jhon',
+        ),
+        const ChatUser(
+          id: '4',
+          firstName: 'Mike',
+        ),
+        const ChatUser(
+          id: '5',
+          firstName: 'Rich',
+        ),
+      ],
+    );
+
+    // _chatController.loadMoreData(widget.chatService.messages);
+  }
+
+  ChatViewController get _chatViewController =>
+      serviceLocator.get<ChatViewController>();
+
+  late final ChatController _chatController;
 
   void _showHideTypingIndicator() {
-    _chatController.setTypingIndicator = !_chatController.showTypingIndicator;
+    _chatController.showHideTyping('id');
   }
 
   @override
@@ -75,11 +247,12 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       body: ChatView(
         isCupertinoApp: false,
-        currentUser: currentUser,
+        currentUser: _chatViewController.currentUser,
         chatController: _chatController,
         onSendTap: _onSendTap,
         featureActiveConfig: const FeatureActiveConfig(
             lastSeenAgoBuilderVisibility: true,
+            enablePagination: true,
             enableReplySnackBar: false,
             receiptsBuilderVisibility: true),
         chatViewState: ChatViewState.hasMessages,
@@ -121,7 +294,7 @@ class _ChatScreenState extends State<ChatScreen> {
           elevation: theme.elevation,
           backGroundColor: theme.appBarColor,
           backArrowColor: theme.backArrowColor,
-          chatTitle: "Chat view",
+          chatTitle: widget.chatService.room.name ?? "",
           chatTitleTextStyle: TextStyle(
             color: theme.appBarTitleTextStyle,
             fontWeight: FontWeight.bold,
@@ -162,6 +335,7 @@ class _ChatScreenState extends State<ChatScreen> {
           backgroundColor: theme.backgroundColor,
         ),
         sendMessageConfig: SendMessageConfiguration(
+          allowRecordingVoice: false,
           imagePickerIconsConfig: ImagePickerIconsConfiguration(
             cameraIconColor: theme.cameraIconColor,
             galleryIconColor: theme.galleryIconColor,
@@ -294,35 +468,41 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void _onSendTap(
       String message, Message? replyMessage, MessageType messageType,
-      {Duration? duration}) {
-    final id = Random().nextDouble() * 23472441 + 1;
+      {Duration? duration}) async {
+    final id = const Uuid().v4();
     if (messageType == MessageType.text) {
-      _chatController.addMessage(TextMessage(
-          author: currentUser,
-          id: id.toString(),
+      final txtMessage = TextMessage(
+          author: _chatViewController.currentUser,
+          id: id,
           createdAt: DateTime.now().millisecondsSinceEpoch,
           repliedMessage: replyMessage,
-          text: message));
+          roomId: widget.chatService.room.id,
+          text: message);
+      _chatController.addMessage(txtMessage);
     } else if (messageType == MessageType.image) {
-      _chatController.addMessage(ImageMessage(
-          author: currentUser,
-          name: "image1",
+      final img = ImageMessage(
+          author: _chatViewController.currentUser,
+          name: DateTime.now().toIso8601String(),
           size: 465,
-          id: id.toString(),
+          roomId: widget.chatService.room.id,
+          id: id,
           createdAt: DateTime.now().millisecondsSinceEpoch,
           repliedMessage: replyMessage,
-          uri: message));
+          uri: message);
+      _chatController.addMessage(img);
     } else if (messageType == MessageType.voice) {
-      _chatController.addMessage(AudioPathMessage(
+      final voice = AudioPathMessage(
         message,
-        author: currentUser,
+        author: _chatViewController.currentUser,
         duration: duration?.inMilliseconds ?? 0,
+        roomId: widget.chatService.room.id,
         name: "Audio1",
         size: duration?.inMilliseconds ?? 0,
-        id: id.toString(),
+        id: id,
         createdAt: DateTime.now().millisecondsSinceEpoch,
         repliedMessage: replyMessage,
-      ));
+      );
+      _chatController.addMessage(voice);
 
       Future.delayed(const Duration(milliseconds: 300), () {
         final msg =
@@ -342,10 +522,11 @@ class _ChatScreenState extends State<ChatScreen> {
       });
     }
     if (messageType != MessageType.voice) {
-      Future.delayed(const Duration(milliseconds: 300), () {
-        _chatController.initialMessageList.first.value = _chatController
-            .initialMessageList.first.value
+      Future.delayed(const Duration(milliseconds: 300), () async {
+        final newMessage = _chatController.initialMessageList.first.value
             .copyWith(status: MessageStatus.undelivered);
+        _chatController.initialMessageList.first.value = newMessage;
+        print(await widget.chatService.updateMessage(newMessage));
       });
     }
   }

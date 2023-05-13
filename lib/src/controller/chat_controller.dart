@@ -21,14 +21,25 @@
  */
 part of '../../chatview.dart';
 
+/// Through ChatController User must be able to access room's underlying
+/// backend and database services.
 class ChatController {
   /// Represents initial message list in chat which can be add by user.
-  final MessageNotifierList initialMessageList = [];
+  final MessageNotifierList initialMessageList;
 
+  /// AutoScrollController for custom scrolling to messages and
+  /// scroll positions.
   AutoScrollController scrollController;
+
+  /// [ChatViewController] controls whole chat infrastructure including
+  /// managing rooms, databases and networks see [ChatViewController].
+  final ChatViewController? chatViewController;
 
   /// Allow user to show typing indicator defaults to false.
   final ValueNotifier<bool> _showTypingIndicator = ValueNotifier(false);
+
+  /// For Chat specific functions.
+  final ChatDataBaseService? chatService;
 
   final FocusNode focusNode = FocusNode();
 
@@ -54,14 +65,15 @@ class ChatController {
   /// Represents list of chat users
   List<ChatUser> chatUsers;
 
+  final ValueNotifier<bool> _isNextPageLoadingNotifier = ValueNotifier(false);
+
   ChatController({
-    required List<Message> initialMessageList,
+    required this.initialMessageList,
     required this.scrollController,
     required this.chatUsers,
-  }) {
-    // this.initialMessageList =
-    //     initialMessageList.map((e) => ValueNotifier(e)).toList();
-  }
+    this.chatService,
+    this.chatViewController,
+  });
 
   /// Represents message stream of chat
   StreamController<MessageNotifierList> messageStreamController =
@@ -78,6 +90,7 @@ class ChatController {
   void addMessage(Message message) {
     initialMessageList.insert(0, ValueNotifier(message));
     messageStreamController.sink.add(initialMessageList);
+    chatService?.addMessageWrapper(message);
   }
 
   void hideReactionPopUp() {
@@ -87,6 +100,8 @@ class ChatController {
   void deleteMessage(Message message) {
     initialMessageList.removeWhere((element) => element.value.id == message.id);
     messageStreamController.sink.add(initialMessageList);
+    chatService?.deleteMessage(message);
+    chatService?.lastMessageStream.sink.add(initialMessageList.first.value);
   }
 
   getFocus() {
@@ -95,6 +110,11 @@ class ChatController {
 
   unFocus() {
     focusNode.unfocus();
+  }
+
+  showHideTyping(String id) {
+    setTypingIndicator = !showTypingIndicator;
+    messageStreamController.sink.add(initialMessageList);
   }
 
   /// Function for setting reaction on specific chat bubble
@@ -112,6 +132,7 @@ class ChatController {
         final userIndex =
             message.value.reaction!.reactedUserIds.indexOf(userId);
         final emojiAtIndex = message.value.reaction?.reactions[userIndex];
+
         if (emojiAtIndex == emoji) {
           /// Remove Emoticon.
           message.value.reaction!.reactions.removeAt(userIndex);
@@ -127,13 +148,20 @@ class ChatController {
       }
       final newMessage = message.value.copyWith();
       message.value = newMessage;
+      chatService?.updateReaction(newMessage);
       messageStreamController.sink.add(initialMessageList);
     } else {
       final newMessage = message.value.copyWith(
           reaction: Reaction(reactions: [emoji], reactedUserIds: [userId]));
+      chatService?.updateReaction(newMessage);
       initialMessageList[indexOfMessage] = ValueNotifier(newMessage);
       messageStreamController.sink.add(initialMessageList);
     }
+  }
+
+  Future<void> _pagintationLoadMore() async {
+    await chatService?.fetchlastMessages();
+    messageStreamController.sink.add(initialMessageList);
   }
 
   /// Function to scroll to last messages in chat view
@@ -146,11 +174,13 @@ class ChatController {
         ),
       );
 
+  // updateReciepts(List<UpdateReciept> updatedReceipts) {}
+
   /// Function for loading data while pagination.
   /// TODO: Add a converter version.
-  void loadMoreData(List<Message> messageList) {
-    // initialMessageList.addAll(messageList);
-    // messageStreamController.sink.add(initialMessageList);
+  void loadMoreData(MessageNotifierList messageList) {
+    initialMessageList.addAll(messageList);
+    messageStreamController.sink.add(initialMessageList);
   }
 
   /// Function for getting ChatUser object from user id

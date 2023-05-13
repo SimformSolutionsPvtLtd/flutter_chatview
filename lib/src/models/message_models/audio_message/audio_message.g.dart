@@ -8,9 +8,9 @@ part of 'audio_message.dart';
 
 AudioMessage _$AudioMessageFromJson(Map<String, dynamic> json) =>
     AudioMessage.network(
+      uri: json['uri'] as String,
       author: ChatUser.fromJson(json['author'] as Map<String, dynamic>),
       createdAt: json['createdAt'] as int,
-      uri: json['uri'] as String,
       id: json['id'] as String,
       duration: json['duration'] as int,
       size: json['size'] as num,
@@ -32,18 +32,17 @@ AudioMessage _$AudioMessageFromJson(Map<String, dynamic> json) =>
       updatedAt: json['updatedAt'] as int?,
     );
 
-Map<String, dynamic> _$AudioMessageToJson(AudioPathMessage instance) =>
+Map<String, dynamic> _$AudioMessageToJson(AudioMessage instance) =>
     <String, dynamic>{
       'author': instance.author,
       'createdAt': instance.createdAt,
       'id': instance.id,
       'metadata': instance.metadata,
       'remoteId': instance.remoteId,
-      'uri': instance.uri,
       'repliedMessage': instance.repliedMessage,
       'roomId': instance.roomId,
       'showStatus': instance.showStatus,
-      'status': _$MessageStatusEnumMap[instance.status],
+      'status': _$MessageStatusEnumMap[instance.status]!,
       'type': _$MessageTypeEnumMap[instance.type]!,
       'updatedAt': instance.updatedAt,
       'reaction': instance.reaction,

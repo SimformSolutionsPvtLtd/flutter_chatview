@@ -21,7 +21,7 @@ CustomMessage _$CustomMessageFromJson(Map<String, dynamic> json) =>
           : Message.fromJson(json['repliedMessage'] as Map<String, dynamic>),
       roomId: json['roomId'] as String?,
       showStatus: json['showStatus'] as bool?,
-      status: json['status'],
+      status: $enumDecodeNullable(_$MessageStatusEnumMap, json['status']),
       type: $enumDecodeNullable(_$MessageTypeEnumMap, json['type']),
       updatedAt: json['updatedAt'] as int?,
     );
@@ -36,19 +36,11 @@ Map<String, dynamic> _$CustomMessageToJson(CustomMessage instance) =>
       'repliedMessage': instance.repliedMessage?.toJson(),
       'roomId': instance.roomId,
       'showStatus': instance.showStatus,
-      'status': _$MessageStatusEnumMap[instance.status],
+      'status': _$MessageStatusEnumMap[instance.status]!,
       'type': _$MessageTypeEnumMap[instance.type]!,
       'updatedAt': instance.updatedAt,
       'reaction': instance.reaction?.toJson(),
     };
-
-const _$MessageTypeEnumMap = {
-  MessageType.custom: 'custom',
-  MessageType.image: 'image',
-  MessageType.text: 'text',
-  MessageType.unsupported: 'unsupported',
-  MessageType.voice: 'voice',
-};
 
 const _$MessageStatusEnumMap = {
   MessageStatus.error: 'error',
@@ -59,4 +51,12 @@ const _$MessageStatusEnumMap = {
   MessageStatus.undelivered: 'undelivered',
   MessageStatus.pending: 'pending',
   MessageStatus.custom: 'custom',
+};
+
+const _$MessageTypeEnumMap = {
+  MessageType.custom: 'custom',
+  MessageType.image: 'image',
+  MessageType.text: 'text',
+  MessageType.unsupported: 'unsupported',
+  MessageType.voice: 'voice',
 };

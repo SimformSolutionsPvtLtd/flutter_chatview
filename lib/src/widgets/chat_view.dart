@@ -185,98 +185,55 @@ class _ChatViewState extends State<ChatView>
       featureActiveConfig: featureActiveConfig,
       currentUser: widget.currentUser,
       child: MaterialConditionalWrapper(
-        condition: widget.isCupertinoApp,
-        child: Container(
-          height:
-              chatBackgroundConfig.height ?? MediaQuery.of(context).size.height,
-          width:
-              chatBackgroundConfig.width ?? MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            color: chatBackgroundConfig.backgroundColor ?? Colors.white,
-            image: chatBackgroundConfig.backgroundImage != null
-                ? DecorationImage(
-                    fit: BoxFit.fill,
-                    image: NetworkImage(chatBackgroundConfig.backgroundImage!),
-                  )
-                : null,
-          ),
-          padding: chatBackgroundConfig.padding,
-          margin: chatBackgroundConfig.margin,
-          child: Column(
-            children: [
-              if (widget.appBar != null) widget.appBar!,
-              Expanded(
-                child: Stack(
-                  children: [
-                    if (chatViewState.isLoading)
-                      ChatViewStateWidget(
-                        chatViewStateWidgetConfig:
-                            chatViewStateConfig?.loadingWidgetConfig,
-                        chatViewState: chatViewState,
-                      )
-                    else if (chatViewState.noMessages)
-                      ChatViewStateWidget(
-                        chatViewStateWidgetConfig:
-                            chatViewStateConfig?.noMessageWidgetConfig,
-                        chatViewState: chatViewState,
-                        onReloadButtonTap:
-                            chatViewStateConfig?.onReloadButtonTap,
-                      )
-                    else if (chatViewState.isError)
-                      ChatViewStateWidget(
-                        chatViewStateWidgetConfig:
-                            chatViewStateConfig?.errorWidgetConfig,
-                        chatViewState: chatViewState,
-                        onReloadButtonTap:
-                            chatViewStateConfig?.onReloadButtonTap,
-                      )
-                    else if (chatViewState.hasMessages)
-                      ValueListenableBuilder<Message?>(
-                        valueListenable: replyMessage,
-                        builder: (_, state, child) {
-                          return ChatListWidget(
-
-                              /// TODO: Remove this in future releases.
-                              // ignore: deprecated_member_use_from_same_package
-                              showTypingIndicator: widget.showTypingIndicator,
-                              focusNode: focusNode,
-                              replyMessage: state,
-                              chatController: widget.chatController,
-                              chatBackgroundConfig: widget.chatBackgroundConfig,
-                              reactionPopupConfig: widget.reactionPopupConfig,
-                              typeIndicatorConfig: widget.typeIndicatorConfig,
-                              chatBubbleConfig: widget.chatBubbleConfig,
-                              loadMoreData: widget.loadMoreData,
-                              isLastPage: widget.isLastPage,
-                              replyPopupConfig: widget.replyPopupConfig,
-                              loadingWidget: widget.loadingWidget,
-                              messageConfig: widget.messageConfig,
-                              profileCircleConfig: widget.profileCircleConfig,
-                              repliedMessageConfig: widget.repliedMessageConfig,
-                              swipeToReplyConfig: widget.swipeToReplyConfig,
-                              assignReplyMessage: (message) {
-                                replyMessageNotifier.value = message;
-                              });
-                        },
-                      ),
-                    if (featureActiveConfig.enableTextField)
-                      SendMessageWidget(
-                        replyMessageNotfier: replyMessageNotifier,
-                        chatController: chatController,
-                        sendMessageBuilder: widget.sendMessageBuilder,
-                        sendMessageConfig: widget.sendMessageConfig,
-                        backgroundColor: chatBackgroundConfig.backgroundColor,
-                        onSendTap: _onSendTap,
-                        onReplyCallback: (reply) => replyMessage.value = reply,
-                        onReplyCloseCallback: () => replyMessage.value = null,
-                      ),
-                  ],
-                ),
+          condition: widget.isCupertinoApp,
+          child: Stack(children: [
+            SingleChildScrollView(
+              physics: const NeverScrollableScrollPhysics(),
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
               ),
-            ],
-          ),
-        ),
-      ),
+            ),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (widget.appBar != null) widget.appBar!,
+                Flexible(
+                  child: getWidget(),
+                ),
+                // widget.showTypingIndicator
+                //     ? TypingIndicator(
+                //         typeIndicatorConfig: widget.typeIndicatorConfig,
+                //         chatBubbleConfig:
+                //             widget.chatBubbleConfig?.inComingChatBubbleConfig,
+                //         showIndicator: widget.showTypingIndicator,
+                //         profilePic: widget.profileCircleConfig?.profileImageUrl,
+                //       )
+                //     : ValueListenableBuilder(
+                //         valueListenable:
+                //             widget.chatController.typingIndicatorNotifier,
+                //         builder: (context, value, child) => TypingIndicator(
+                //               typeIndicatorConfig: widget.typeIndicatorConfig,
+                //               chatBubbleConfig: widget
+                //                   .chatBubbleConfig?.inComingChatBubbleConfig,
+                //               showIndicator: value,
+                //               profilePic:
+                //                   widget.profileCircleConfig?.profileImageUrl,
+                //             )),
+                if (featureActiveConfig.enableTextField)
+                  SendMessageWidget(
+                    replyMessageNotfier: replyMessageNotifier,
+                    chatController: chatController,
+                    sendMessageBuilder: widget.sendMessageBuilder,
+                    sendMessageConfig: widget.sendMessageConfig,
+                    backgroundColor: chatBackgroundConfig.backgroundColor,
+                    onSendTap: _onSendTap,
+                    onReplyCallback: (reply) => replyMessage.value = reply,
+                    onReplyCloseCallback: () => replyMessage.value = null,
+                  ),
+              ],
+            )
+          ])),
     );
   }
 
@@ -291,6 +248,58 @@ class _ChatViewState extends State<ChatView>
       _assignReplyMessage();
     }
     chatController.scrollToLastMessage();
+  }
+
+  Widget getWidget() {
+    if (chatViewState.isLoading) {
+      return ChatViewStateWidget(
+        chatViewStateWidgetConfig: chatViewStateConfig?.loadingWidgetConfig,
+        chatViewState: chatViewState,
+      );
+    } else if (chatViewState.noMessages) {
+      return ChatViewStateWidget(
+        chatViewStateWidgetConfig: chatViewStateConfig?.noMessageWidgetConfig,
+        chatViewState: chatViewState,
+        onReloadButtonTap: chatViewStateConfig?.onReloadButtonTap,
+      );
+    } else if (chatViewState.isError) {
+      return ChatViewStateWidget(
+        chatViewStateWidgetConfig: chatViewStateConfig?.errorWidgetConfig,
+        chatViewState: chatViewState,
+        onReloadButtonTap: chatViewStateConfig?.onReloadButtonTap,
+      );
+    } else if (chatViewState.hasMessages) {
+      return ValueListenableBuilder<Message?>(
+        valueListenable: replyMessage,
+        builder: (_, state, child) {
+          return ChatListWidget(
+
+              /// TODO: Remove this in future releases.
+              // ignore: deprecated_member_use_from_same_package
+              showTypingIndicator: widget.showTypingIndicator,
+              focusNode: focusNode,
+              replyMessage: state,
+              chatController: widget.chatController,
+              chatBackgroundConfig: widget.chatBackgroundConfig,
+              reactionPopupConfig: widget.reactionPopupConfig,
+              typeIndicatorConfig: widget.typeIndicatorConfig,
+              chatBubbleConfig: widget.chatBubbleConfig,
+              loadMoreData: widget.loadMoreData,
+              isLastPage: widget.isLastPage,
+              replyPopupConfig: widget.replyPopupConfig,
+              loadingWidget: widget.loadingWidget,
+              messageConfig: widget.messageConfig,
+              profileCircleConfig: widget.profileCircleConfig,
+              repliedMessageConfig: widget.repliedMessageConfig,
+              swipeToReplyConfig: widget.swipeToReplyConfig,
+              assignReplyMessage: (message) {
+                replyMessageNotifier.value = message;
+              });
+        },
+      );
+    } else {
+      return const SizedBox();
+    }
   }
 
   void _assignReplyMessage() {

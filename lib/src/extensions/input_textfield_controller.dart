@@ -33,7 +33,6 @@ class InputTextFieldController extends TextEditingController {
             .firstWhere((element) => element.regExp.hasMatch(text))
             .textStyle;
 
-        debugPrint(text);
         if (text.startsWith('@')) {
           if (users.contains(text)) {
             final span = TextSpan(text: match.group(0), style: newStyle);

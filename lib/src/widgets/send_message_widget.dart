@@ -63,16 +63,13 @@ class SendMessageWidget extends StatefulWidget {
 }
 
 class SendMessageWidgetState extends State<SendMessageWidget> {
-  
   final _textEditingController = InputTextFieldController();
 
   final ValueNotifier<Message?> _replyMessage = ValueNotifier(null);
 
   Message? get replyMessage => _replyMessage.value;
-  final _focusNode = FocusNode();
 
-  ChatUser? get repliedUser =>
-      replyMessage?.author != null ? replyMessage?.author : null;
+  ChatUser? get repliedUser => replyMessage?.author;
 
   String get _replyTo => replyMessage?.author.id == currentUser?.id
       ? PackageStrings.you
@@ -80,8 +77,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
 
   ChatUser? currentUser;
 
-  ChatController get chatController =>
-      ChatViewInheritedWidget.of(context)!.chatController;
+  ChatController? chatController;
 
   @override
   void initState() {
@@ -96,6 +92,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
     super.didChangeDependencies();
     if (provide != null) {
       currentUser = provide!.currentUser;
+      chatController = provide!.chatController;
     }
   }
 
@@ -233,7 +230,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                           valueListenable: _replyMessage,
                         ),
                         ChatUITextField(
-                          focusNode: chatController.focusNode,
+                          focusNode: chatController?.focusNode ??  FocusNode(),
                           chatController: widget.chatController,
                           textEditingController: _textEditingController,
                           onPressed: _onPressed,
@@ -329,7 +326,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
     if (currentUser != null) {
       _replyMessage.value = message;
     }
-    FocusScope.of(context).requestFocus(chatController.focusNode);
+    FocusScope.of(context).requestFocus(chatController?.focusNode);
     if (widget.onReplyCallback != null) widget.onReplyCallback!(replyMessage!);
   }
 
@@ -339,7 +336,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
   }
 
   double get _bottomPadding => (!kIsWeb && Platform.isIOS)
-      ? (chatController.focusNode.hasFocus
+      ? (chatController?.focusNode.hasFocus ?? false
           ? bottomPadding1
           : window.viewPadding.bottom > 0
               ? bottomPadding2
@@ -349,7 +346,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
   @override
   void dispose() {
     _textEditingController.dispose();
-    chatController.focusNode.dispose();
+    chatController?.focusNode.dispose();
     _replyMessage.dispose();
     super.dispose();
   }

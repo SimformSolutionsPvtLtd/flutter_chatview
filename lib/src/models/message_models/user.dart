@@ -37,7 +37,8 @@ abstract class ChatUser extends Equatable {
   }) = _User;
 
   /// Creates user from a map (decoded JSON).
-  factory ChatUser.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+  factory ChatUser.fromJson(Map<String, dynamic> json) =>
+      _$ChatUserFromJson(json);
 
   /// Created user timestamp, in ms.
   final int? createdAt;
@@ -93,7 +94,7 @@ abstract class ChatUser extends Equatable {
   });
 
   /// Converts user to the map representation, encodable to JSON.
-  Map<String, dynamic> toJson() => _$UserToJson(this);
+  Map<String, dynamic> toJson() => _$ChatUserToJson(this);
 }
 
 /// A utility class to enable better copyWith.

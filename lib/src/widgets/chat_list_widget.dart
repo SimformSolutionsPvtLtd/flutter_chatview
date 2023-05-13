@@ -104,10 +104,7 @@ class ChatListWidget extends StatefulWidget {
 
 class _ChatListWidgetState extends State<ChatListWidget>
     with SingleTickerProviderStateMixin {
-  final ValueNotifier<bool> _isNextPageLoading = ValueNotifier(true);
-
-  ValueNotifier<bool> get showPopUp =>
-      ChatViewInheritedWidget.of(context)!.chatController.showPopUp;
+  ValueNotifier<bool> showPopUp = ValueNotifier(false);
 
   final GlobalKey<ReactionPopupState> _reactionPopupKey = GlobalKey();
 
@@ -124,15 +121,32 @@ class _ChatListWidgetState extends State<ChatListWidget>
       widget.chatBackgroundConfig;
 
   FeatureActiveConfig? featureActiveConfig;
+
   ChatUser? currentUser;
 
-  bool get isCupertino =>
-      ChatViewInheritedWidget.of(context)?.isCupertinoApp ?? false;
+  bool isCupertino = false;
 
   @override
   void initState() {
     super.initState();
     _initialize();
+    // scrollController.addListener(_scrollListener);
+  }
+
+  void _scrollListener() {
+    // if (scrollController.offset >=
+    //     scrollController.position.maxScrollExtent - 10) {
+    //   if (!chatController._isNextPageLoadingNotifier.value) {
+    //     chatController._isNextPageLoadingNotifier.value = true;
+
+    //     // TODO: Change the logic and make indicator bigger as far as user goes beyond maxScrollExtent
+    //     /// utilise maxScrollExtent extentBefore and outOfRange properties from `ScrollController.position`
+    //     // chatController._pagintationLoadMore().then(
+    //     //     (value) => chatController._isNextPageLoadingNotifier.value = false);
+    //   }
+    // } else {
+    //   chatController._isNextPageLoadingNotifier.value = false;
+    // }
   }
 
   @override
@@ -141,12 +155,14 @@ class _ChatListWidgetState extends State<ChatListWidget>
     if (provide != null) {
       featureActiveConfig = provide!.featureActiveConfig;
       currentUser = provide!.currentUser;
+      showPopUp = provide!.chatController.showPopUp;
+      isCupertino = provide!.isCupertinoApp;
     }
 
     if (featureActiveConfig?.enablePagination ?? false) {
       // When flag is on then it will include pagination logic to scroll
       // controller.
-      _pagination();
+      // _pagination();
     }
   }
 
@@ -163,27 +179,6 @@ class _ChatListWidgetState extends State<ChatListWidget>
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ValueListenableBuilder<bool>(
-          valueListenable: _isNextPageLoading,
-          builder: (_, isNextPageLoading, child) {
-            /// TODO: change the logic with [ItemScrollController]
-            /// When user scrolls to the minimum scroll extent show this, if scrolls down hide it again
-            /// do this until new messages have been added to the tree.
-            if (isNextPageLoading &&
-                (featureActiveConfig?.enablePagination ?? false) &&
-                !ChatViewInheritedWidget.of(context)!.isCupertinoApp) {
-              return SizedBox(
-                height: Scaffold.of(context).appBarMaxHeight,
-                child: Center(
-                  child:
-                      widget.loadingWidget ?? const CircularProgressIndicator(),
-                ),
-              );
-            } else {
-              return const SizedBox.shrink();
-            }
-          },
-        ),
         Expanded(
           child: Stack(
             children: [
@@ -205,10 +200,7 @@ class _ChatListWidgetState extends State<ChatListWidget>
                 typeIndicatorConfig: widget.typeIndicatorConfig,
                 onChatBubbleLongPress: (yCoordinate, xCoordinate, message) {
                   if (!isCupertino) {
-                    ChatViewInheritedWidget.of(context)!
-                        .chatController
-                        .showMessageActions
-                        .value = message;
+                    chatController.showMessageActions.value = message;
 
                     if (featureActiveConfig?.enableReactionPopup ?? false) {
                       _reactionPopupKey.currentState?.refreshWidget(
@@ -236,10 +228,7 @@ class _ChatListWidgetState extends State<ChatListWidget>
                       if (!showPopupValue) {
                         if (!isCupertino) {
                           Future.delayed(const Duration(milliseconds: 0), () {
-                            ChatViewInheritedWidget.of(context)!
-                                .chatController
-                                .showMessageActions
-                                .value = null;
+                            chatController.showMessageActions.value = null;
                           });
                           ScaffoldMessenger.of(context).hideCurrentSnackBar();
                         }
@@ -261,16 +250,10 @@ class _ChatListWidgetState extends State<ChatListWidget>
   }
 
   void _pagination() {
-    if (widget.loadMoreData == null || widget.isLastPage == true) return;
-    // scrollController.scrollListener((notification) {
-    //   if ((notification.position.pixels ==
-    //           notification.position.minScrollExtent) &&
-    //       !_isNextPageLoading.value) {
-    //     _isNextPageLoading.value = true;
-    //     widget.loadMoreData!()
-    //         .whenComplete(() => _isNextPageLoading.value = false);
-    //   }
-    // });
+    // if (widget.loadMoreData == null || widget.isLastPage == true) return;
+    scrollController.addListener(() {
+      print(scrollController.position);
+    });
   }
 
   void _showReplyPopup({
@@ -341,7 +324,7 @@ class _ChatListWidgetState extends State<ChatListWidget>
   void dispose() {
     chatController.messageStreamController.close();
     // scrollController.dispose();
-    _isNextPageLoading.dispose();
+    chatController._isNextPageLoadingNotifier.dispose();
     showPopUp.dispose();
     super.dispose();
   }

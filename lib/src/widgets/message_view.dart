@@ -111,7 +111,8 @@ class _MessageViewState extends State<MessageView> {
       onLongPressStart: isLongPressEnable ? _onLongPressStart : null,
       onLongPressEnd: isLongPressEnable ? _onLongPressEnd : null,
       onDoubleTap: () async {
-        if (await Vibration.hasCustomVibrationsSupport() ?? false) {
+        if (!kIsWeb &&
+            (await Vibration.hasCustomVibrationsSupport() ?? false)) {
           Vibration.vibrate(duration: 10, amplitude: 10);
         }
         if (widget.onDoubleTap != null) widget.onDoubleTap!(widget.message);
@@ -253,7 +254,7 @@ class _MessageViewState extends State<MessageView> {
   void _onLongPressStart(LongPressStartDetails details) {
     isOn.value = true;
     Future.delayed(const Duration(milliseconds: 150), () async {
-      if (await Vibration.hasCustomVibrationsSupport() ?? false) {
+      if (!kIsWeb && (await Vibration.hasCustomVibrationsSupport() ?? false)) {
         Vibration.vibrate(duration: 10, amplitude: 10);
       }
       widget.onLongPress(
@@ -271,7 +272,6 @@ class _MessageViewState extends State<MessageView> {
 
   @override
   void dispose() {
-    debugPrint('dispose ${widget.message.id}');
     super.dispose();
   }
 

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:io' show Platform;
 
@@ -28,7 +29,7 @@ class PatternStyle {
         RegExp('`(.*?)`'),
         '',
         TextStyle(
-          fontFamily: Platform.isIOS ? 'Courier' : 'monospace',
+          fontFamily: (!kIsWeb && Platform.isIOS) ? 'Courier' : 'monospace',
         ),
       );
 

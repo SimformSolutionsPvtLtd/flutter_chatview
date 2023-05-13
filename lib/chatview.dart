@@ -28,6 +28,7 @@ import 'dart:math';
 import 'dart:ui';
 import 'package:any_link_preview/any_link_preview.dart';
 import 'package:audio_waveforms/audio_waveforms.dart';
+import 'package:chatview/src/controller/chat_view_controller.dart';
 import 'package:chatview/src/models/voice_message_configuration.dart';
 import 'package:chatview/src/utils/debounce.dart';
 import 'package:chatview/src/values/custom_time_messages.dart';
@@ -36,9 +37,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_parsed_text/flutter_parsed_text.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 import 'package:timeago/timeago.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vibration/vibration.dart';
+import 'src/extensions/extension_apis/service/chat_database_service.dart';
 import 'src/extensions/input_textfield_controller.dart';
 import 'src/models/cupertino_widget_configuration.dart';
 import 'src/models/cupertino_widget_model/cupertino_context.dart';
@@ -55,7 +58,6 @@ import 'dart:io' if (kIsWeb) 'dart:html';
 import './src/models/models.dart';
 import 'src/utils/constants/constants.dart';
 import 'src/wrappers/condition_wrapper.dart';
-
 import 'src/extensions/extensions.dart';
 import 'src/wrappers/material_conditional_wrapper.dart';
 
@@ -66,6 +68,10 @@ export 'package:audio_waveforms/audio_waveforms.dart'
     show WaveStyle, PlayerWaveStyle;
 export 'src/models/receipts_widget_config.dart';
 export 'src/extensions/extensions.dart' show MessageTypes;
+export 'src/extensions/extension_apis/default plugins/exports.dart';
+export 'src/controller/chat_view_controller.dart';
+export 'src/extensions/extension_apis/chat_view_extension.dart';
+export 'src/extensions/extension_apis/service/service_export.dart';
 
 part './src/controller/chat_controller.dart';
 part './src/widgets/chat_bubble_widget.dart';
