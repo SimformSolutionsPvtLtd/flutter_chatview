@@ -80,7 +80,7 @@ class ChatViewAppBar extends StatefulWidget {
   /// Allow user to turn on/off leading icon.
   final bool showLeading;
 
-  final List<Widget> Function(Message message)? messageActionsBuilder;
+  final List<Widget> Function(List<Message> message)? messageActionsBuilder;
 
   @override
   State<ChatViewAppBar> createState() => _ChatViewAppBarState();
@@ -167,9 +167,10 @@ class _ChatViewAppBarState extends State<ChatViewAppBar> {
             ),
             if (chatController != null) ...[
               ValueListenableBuilder(
-                valueListenable: chatController!.showMessageActions,
+                valueListenable: chatController!.multipleMessageSelection,
                 builder: (context, message, child) {
-                  if (message != null && widget.messageActionsBuilder != null) {
+                  if (message.isNotEmpty &&
+                      widget.messageActionsBuilder != null) {
                     return Row(
                         children: widget.messageActionsBuilder!.call(message));
                   } else if (widget.actions != null) {

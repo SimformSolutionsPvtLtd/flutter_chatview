@@ -22,7 +22,6 @@
 import 'package:flutter/material.dart';
 
 import '../values/typedefs.dart';
-import 'message.dart';
 import 'models.dart';
 
 class ReplyPopupConfiguration {

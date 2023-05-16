@@ -99,41 +99,31 @@ class _MessageViewState extends State<MessageView> {
 
   ValueNotifier<bool> isOn = ValueNotifier(false);
 
+  bool selectMultipleMessages = false;
+
+  bool receiptsVisibility = true;
+
   @override
-  void initState() {
-    super.initState();
-    if (isLongPressEnable) {}
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (provide != null) {
+      selectMultipleMessages =
+          provide!.featureActiveConfig.selectMultipleMessages;
+      receiptsVisibility =
+          provide!.featureActiveConfig.receiptsBuilderVisibility;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onLongPressStart: isLongPressEnable ? _onLongPressStart : null,
-      onLongPressEnd: isLongPressEnable ? _onLongPressEnd : null,
-      onDoubleTap: () async {
-        if (!kIsWeb &&
-            (await Vibration.hasCustomVibrationsSupport() ?? false)) {
-          Vibration.vibrate(duration: 10, amplitude: 10);
-        }
-        if (widget.onDoubleTap != null) widget.onDoubleTap!(widget.message);
-      },
-      child: (() {
-        if (isLongPressEnable) {
-          return ValueListenableBuilder<bool>(
-              valueListenable: isOn,
-              builder: (context, value, child) {
-                return AnimatedScale(
-                  scale: value ? .8 : 1,
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.decelerate,
-                  child: _messageView,
-                );
-              });
-        } else {
-          return _messageView;
-        }
-      }()),
-    );
+    return selectMultipleMessages
+        ? _messageView
+        : GestureView(
+            onLongPress: widget.onLongPress,
+            isLongPressEnable: isLongPressEnable,
+            message: widget.message,
+            child: _messageView,
+          );
   }
 
   Widget get _messageView {
@@ -186,15 +176,18 @@ class _MessageViewState extends State<MessageView> {
                 } else if (widget.message.type.isImage) {
                   return ImageMessageView(
                     message: widget.message as ImageMessage,
+                    receiptsBuilderVisibility: receiptsVisibility,
                     isMessageBySender: widget.isMessageBySender,
                     imageMessageConfig: messageConfig?.imageMessageConfig,
                     messageReactionConfig: messageConfig?.messageReactionConfig,
                     highlightImage: widget.shouldHighlight,
                     highlightScale: widget.highlightScale,
+                    outgoingChatBubbleConfig: widget.outgoingChatBubbleConfig,
                   );
                 } else if (widget.message.type.isText) {
                   return TextMessageView(
                     inComingChatBubbleConfig: widget.inComingChatBubbleConfig,
+                    receiptsBuilderVisibility: receiptsVisibility,
                     outgoingChatBubbleConfig: widget.outgoingChatBubbleConfig,
                     isMessageBySender: widget.isMessageBySender,
                     message: widget.message as TextMessage,
@@ -249,25 +242,6 @@ class _MessageViewState extends State<MessageView> {
         ],
       ),
     );
-  }
-
-  void _onLongPressStart(LongPressStartDetails details) {
-    isOn.value = true;
-    Future.delayed(const Duration(milliseconds: 150), () async {
-      if (!kIsWeb && (await Vibration.hasCustomVibrationsSupport() ?? false)) {
-        Vibration.vibrate(duration: 10, amplitude: 10);
-      }
-      widget.onLongPress(
-        details.globalPosition.dy - 120 - 64,
-        details.globalPosition.dx,
-      );
-    });
-  }
-
-  void _onLongPressEnd(LongPressEndDetails details) {
-    Future.delayed(const Duration(milliseconds: 200), () {
-      isOn.value = false;
-    });
   }
 
   @override

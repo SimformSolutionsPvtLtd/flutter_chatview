@@ -16,7 +16,7 @@ class SqfliteChatDataBaseService extends ChatDataBaseService {
 
   final _tableName = 'Messages';
 
-  SqfliteUserProfileService get userProfileService =>
+  SqfliteUserProfileService get profileManager =>
       GetIt.I.get<SqfliteUserProfileService>();
 
   Database get _database => GetIt.I.get<SqfliteDataBaseService>().database;
@@ -25,6 +25,7 @@ class SqfliteChatDataBaseService extends ChatDataBaseService {
   Future<bool> addMessage(Message message) async {
     return await _database.transaction((txn) async {
       (await txn.insert(_tableName, toDBJsonMessage(message)) != 0);
+
       return true;
     });
   }
@@ -72,7 +73,7 @@ class SqfliteChatDataBaseService extends ChatDataBaseService {
     return await _database.transaction((txn) async {
       final response = await txn.query(id, where: 'id = "$id');
       return response.isNotEmpty
-          ? fromDBJsonMessage(userProfileService, response.first)
+          ? fromDBJsonMessage(profileManager, response.first)
           : null;
     });
   }
@@ -88,7 +89,7 @@ class SqfliteChatDataBaseService extends ChatDataBaseService {
       return (await txn.rawQuery(PluginQueries.getAllMessagesByLimit
               .format(room.id, limit, _offset)))
           .map((e) async {
-        return await fromDBJsonMessage(userProfileService, e);
+        return await fromDBJsonMessage(profileManager, e);
       }).toList();
     });
 
@@ -117,9 +118,12 @@ class SqfliteChatDataBaseService extends ChatDataBaseService {
 
   @override
   Future<bool> updateMessage(Message message) async {
-    return await _database.transaction((txn) async => (await txn
-            .rawUpdate(PluginQueries.updateQuery(toDBJsonMessage(message))) !=
-        0));
+    final map = toDBJsonMessage(message);
+    return await _database.transaction((txn) async {
+      return (await txn.update(_tableName, map,
+              where: 'id =?', whereArgs: [map['id']]) !=
+          0);
+    });
   }
   // ''' UPDATE Messages SET status = "${message.status.name}" WHERE id = "${message.id}"  ''')) !=
 
@@ -164,7 +168,7 @@ class SqfliteChatDataBaseService extends ChatDataBaseService {
               where: 'status = "delivered AND roomId  =  "${room.id}"'))
           .map((e) async {
         _unreadOffset += 1;
-        return await fromDBJsonMessage(userProfileService, e);
+        return await fromDBJsonMessage(profileManager, e);
       }).toList();
       responseList.addAll(await Future.wait(response));
     });

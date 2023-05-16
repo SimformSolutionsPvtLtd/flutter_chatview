@@ -1,5 +1,3 @@
-import '../../../../chatview.dart';
-
 class PluginQueries {
   static const String getAllRoomsByLimit =
       'SELECT Rooms.* FROM rooms INNER join RoomUsers on RoomUsers.roomId = Rooms.id and RoomUsers.userId = "{} LIMIT {} OFFSET {}";';
@@ -134,7 +132,6 @@ class PluginQueries {
         0, updateQuery.length - 2); // Remove the trailing comma and space
 
     updateQuery += " WHERE id = '${map["id"]}';";
-    print(updateQuery);
     return updateQuery;
   }
 }

@@ -4,7 +4,7 @@ import 'package:sqflite/sqflite.dart';
 import './sql_queries.dart';
 import '../../../../chatview.dart';
 
-class SqfliteDataBaseService extends DataBaseService<SqfliteUserProfileService,
+class SqfliteDataBaseService extends DatabaseManager<SqfliteUserProfileService,
     SqfLiteChatRoomDataBaseService> {
   SqfliteDataBaseService({
     required ChatUser currentUser,
@@ -19,11 +19,10 @@ class SqfliteDataBaseService extends DataBaseService<SqfliteUserProfileService,
   late final SqfLiteChatRoomDataBaseService _chatRoomDataBaseService;
 
   @override
-  SqfliteUserProfileService get userProfileService => _userProfileService;
+  SqfliteUserProfileService get profileManager => _userProfileService;
 
   @override
-  SqfLiteChatRoomDataBaseService get chatRoomDataBaseService =>
-      _chatRoomDataBaseService;
+  SqfLiteChatRoomDataBaseService get roomManager => _chatRoomDataBaseService;
 
   @override
   void init() async {
@@ -45,7 +44,5 @@ class SqfliteDataBaseService extends DataBaseService<SqfliteUserProfileService,
       _userProfileService.createChatUser(currentUser);
     }
     serviceLocator.registerSingleton(_chatRoomDataBaseService);
-
-    /// TODO: find a method to always register the currentUser also track for  changes in it .
   }
 }

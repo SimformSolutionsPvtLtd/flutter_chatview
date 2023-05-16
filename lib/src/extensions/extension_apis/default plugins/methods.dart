@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:chatview/chatview.dart';
 import 'package:chatview/packages/format/format.dart';
 import 'package:chatview/src/extensions/extension_apis/default%20plugins/sql_queries.dart';
-import 'package:chatview/src/extensions/extension_apis/service/user_profile_service.dart';
 import 'package:chatview/src/utils/constants/constants.dart';
 
 Map<String, dynamic> toDBJsonMessage(Message message, [bool isUpdate = false]) {
@@ -12,19 +11,17 @@ Map<String, dynamic> toDBJsonMessage(Message message, [bool isUpdate = false]) {
   map['metadata'] = jsonEncode(map['metadata']);
   map['repliedMessage'] = jsonEncode(map['repliedMessage']);
   map['reaction'] = jsonEncode(map['reaction']);
-  print(map);
   return map;
 }
 
 Future<Message> fromDBJsonMessage(
-    UserProfileService service, Map<String, dynamic> map) async {
+    ProfileManager service, Map<String, dynamic> map) async {
   final Map<String, dynamic> json = Map.from(map);
   json['author'] = (await service.fetchChatUser(json['authorId']))?.toJson() ??
       const ChatUser(id: 'chatUser', firstName: 'Undefined ').toJson();
   json['metadata'] = jsonDecode(json['metadata']);
   json['repliedMessage'] = jsonDecode(json['repliedMessage']);
   json['reaction'] = jsonDecode(json['reaction']);
-  print(json);
   return Message.fromJson(json);
 }
 
@@ -65,7 +62,7 @@ Future<Room> fromDBRoom(Map<String, dynamic> map) async {
 
   final currentUser = serviceLocator.get<SqfliteDataBaseService>().currentUser;
   final userService =
-      serviceLocator.get<SqfliteDataBaseService>().userProfileService;
+      serviceLocator.get<SqfliteDataBaseService>().profileManager;
   final users = await userService.fetchChatUsers(map['id']);
   if (json['type'] == "direct") {
     try {
@@ -90,7 +87,7 @@ Future<Message?> findLastMessage(String roomId) async {
         (await txn.rawQuery(PluginQueries.getLastMessageByRoom.format(roomId)))
             .map((e) async {
       return await fromDBJsonMessage(
-          serviceLocator.get<SqfliteDataBaseService>().userProfileService, e);
+          serviceLocator.get<SqfliteDataBaseService>().profileManager, e);
     }).toList();
     if (response.isNotEmpty) {
       return response.first;

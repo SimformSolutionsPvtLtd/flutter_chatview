@@ -20,6 +20,20 @@
  * SOFTWARE.
  */
 
+/// # `flutter_chatbook` - Rapidly Create Flutter Chat Apps
+
+/// flutter_chatbook is a powerful Flutter package designed to accelerate the development of chat applications. With flutter_chatbook, you can create feature-rich chat apps in minutes, enabling seamless communication and collaboration between users.
+
+/// ## Key Features
+
+/// - **Plugin System**: flutter_chatbook provides a flexible plugin system that allows you to extend the functionality of your chat app. Easily integrate plugins for additional features such as file sharing, voice messaging, or chatbots.
+/// - **Plugin Marketplace**: Discover and utilize a wide range of pre-built plugins from the flutter_chatbook Plugin Marketplace. Quickly enhance your chat app by integrating popular and customizable plugins from a centralized repository.
+/// - **Real-Time UI Updates**: Ensure real-time updates in the user interface to deliver a dynamic chat experience. Users can see new messages, typing indicators, and other relevant updates in real-time without the need for manual refreshing.
+/// - **User Authentication**: Implement user authentication functionality, allowing users to register, log in, and manage their profiles securely.
+/// - **Group Chats**: Enable users to participate in group conversations, fostering collaboration and interaction among multiple participants.
+/// - **Message Formatting**: Provide users with rich text formatting options, including text styling, emojis, attachments, and more, to enhance their messaging experience.
+/// - **Customization**: Customize the look and feel of your chat app with ease. Modify themes, color schemes, fonts, and other visual elements to match your branding and design preferences.
+
 library chatview;
 
 import 'dart:async';
@@ -37,7 +51,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_parsed_text/flutter_parsed_text.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 import 'package:timeago/timeago.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vibration/vibration.dart';
@@ -107,3 +120,5 @@ part 'src/widgets/text_message_view.dart';
 part 'src/widgets/type_indicator_widget.dart';
 part 'src/widgets/vertical_line.dart';
 part 'src/widgets/voice_message_view.dart';
+part 'src/widgets/reusables/gesture_detector_view.dart';
+part 'src/widgets/reusables/message_time_widget.dart';

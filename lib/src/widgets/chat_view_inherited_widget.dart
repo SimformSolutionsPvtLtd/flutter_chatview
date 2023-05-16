@@ -5,7 +5,7 @@ part of '../../chatview.dart';
 ///
 @immutable
 class ChatViewInheritedWidget extends InheritedWidget {
- const ChatViewInheritedWidget({
+  const ChatViewInheritedWidget({
     Key? key,
     required Widget child,
     required this.featureActiveConfig,

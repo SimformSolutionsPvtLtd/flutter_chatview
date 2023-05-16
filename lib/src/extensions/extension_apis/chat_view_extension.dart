@@ -21,22 +21,22 @@ class ChatViewExtension {
 }
 
 /// `ServiceExtension` are used to allocate services such as
-/// 1. [DataBaseService]
+/// 1. [DatabaseManager]
 /// 2. [BackendManager]
 ///
-/// ### DataBaseService
-/// `DataBaseService` is used for providing support for custom
+/// ### DatabaseManager
+/// `DatabaseManager` is used for providing support for custom
 /// database, it consists of various CRUD methods that will be utilised by
 /// [ChatView] under the hood.
-/// It is the place where you can implement persistence and storing logics see [DataBaseService] for more.
+/// It is the place where you can implement persistence and storing logics see [DatabaseManager] for more.
 ///
 ///### BackendManager
 /// `BackendManager` is used for providing support for handling transmission and recieving messages
 /// [ChatView] will utlise this when a [Room] sends or recieves a message see [BackendManager] for more info.
-class ServiceExtension<T extends DataBaseService> {
-  const ServiceExtension({this.dataBaseService, this.backendService});
+class ServiceExtension<T extends DatabaseManager> {
+  const ServiceExtension({this.dataManager, this.backendService});
 
-  final T? dataBaseService;
+  final T? dataManager;
 
   final BackendManager? backendService;
 }

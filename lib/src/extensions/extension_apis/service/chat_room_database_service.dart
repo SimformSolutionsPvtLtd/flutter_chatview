@@ -1,17 +1,19 @@
+// ignore_for_file: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
+
 import 'dart:async';
 import 'package:chatview/chatview.dart';
 import 'package:flutter/foundation.dart';
 
-abstract class ChatRoomDataBaseService {
-  ChatRoomDataBaseService() {
+abstract class RoomManager {
+  RoomManager() {
     init();
   }
 
   final ValueNotifier<List<ChatDataBaseService>> chatDataBasesNotifier =
       ValueNotifier([]);
 
-  final StreamController<List<DataBaseService>> chattersStream =
-      StreamController<List<DataBaseService>>();
+  final StreamController<List<DatabaseManager>> chattersStream =
+      StreamController<List<DatabaseManager>>();
 
   void init();
 

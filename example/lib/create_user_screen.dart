@@ -7,16 +7,17 @@ class UserFormScreen extends StatefulWidget {
   const UserFormScreen({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _UserFormScreenState createState() => _UserFormScreenState();
 }
 
 class _UserFormScreenState extends State<UserFormScreen> {
-  final userProfileService = serviceLocator
+  final profileManager = serviceLocator
       .get<ChatViewController>()
       .chatViewExtension
       ?.serviceExtension
-      ?.dataBaseService
-      ?.userProfileService as SqfliteUserProfileService;
+      ?.dataManager
+      ?.profileManager as SqfliteUserProfileService;
 
   final uuid = const Uuid();
 
@@ -27,14 +28,12 @@ class _UserFormScreenState extends State<UserFormScreen> {
 
   void _createUser() {
     if (_formKey.currentState!.validate()) {
-      userProfileService.createChatUser(ChatUser(
+      profileManager.createChatUser(ChatUser(
           id: uuid.v4(),
           firstName: _firstName,
           lastName: _lastName,
           imageUrl: _imageUrl,
           createdAt: DateTime.now().millisecondsSinceEpoch));
-      print(
-          'Creating user with name $_firstName $_lastName and image URL $_imageUrl');
     }
   }
 

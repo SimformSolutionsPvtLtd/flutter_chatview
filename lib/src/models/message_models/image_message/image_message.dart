@@ -2,8 +2,6 @@ import 'package:chatview/chatview.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 
-import '../message.dart';
-import '../user.dart' show ChatUser;
 import 'partial_image.dart';
 
 part 'image_message.g.dart';
@@ -173,44 +171,38 @@ class _ImageMessage extends ImageMessage {
   Message copyWith({
     ChatUser? author,
     int? createdAt,
-    dynamic height = _Unset,
+    double? height,
     String? id,
-    dynamic reaction,
-    dynamic metadata = _Unset,
+    Map<String, dynamic>? metadata,
     String? name,
-    dynamic remoteId = _Unset,
-    dynamic repliedMessage = _Unset,
-    dynamic roomId,
-    dynamic showStatus = _Unset,
+    String? remoteId,
+    Reaction? reaction,
+    Message? repliedMessage,
+    String? roomId,
+    bool? showStatus,
     num? size,
-    dynamic status = _Unset,
-    dynamic updatedAt = _Unset,
+    MessageStatus? status,
+    int? updatedAt,
     String? uri,
-    dynamic width = _Unset,
-  }) =>
-      _ImageMessage(
-        author: author ?? this.author,
-        reaction: reaction == _Unset ? this.reaction : reaction as Reaction?,
-        createdAt: createdAt ?? this.createdAt,
-        height: height == _Unset ? this.height : height as double?,
-        id: id ?? this.id,
-        metadata: metadata == _Unset
-            ? this.metadata
-            : metadata as Map<String, dynamic>?,
-        name: name ?? this.name,
-        remoteId: remoteId == _Unset ? this.remoteId : remoteId as String?,
-        repliedMessage: repliedMessage == _Unset
-            ? this.repliedMessage
-            : repliedMessage as Message?,
-        roomId: roomId == _Unset ? this.roomId : roomId as String?,
-        showStatus:
-            showStatus == _Unset ? this.showStatus : showStatus as bool?,
-        size: size ?? this.size,
-        status: status == _Unset ? this.status : status as MessageStatus?,
-        updatedAt: updatedAt == _Unset ? this.updatedAt : updatedAt as int?,
-        uri: uri ?? this.uri,
-        width: width == _Unset ? this.width : width as double?,
-      );
+    double? width,
+  }) {
+    return _ImageMessage(
+      author: author ?? this.author,
+      createdAt: createdAt ?? this.createdAt,
+      height: height ?? this.height,
+      id: id ?? this.id,
+      metadata: metadata ?? this.metadata,
+      name: name ?? this.name,
+      remoteId: remoteId ?? this.remoteId,
+      reaction: reaction ?? this.reaction,
+      repliedMessage: repliedMessage ?? this.repliedMessage,
+      roomId: roomId ?? this.roomId,
+      showStatus: showStatus ?? this.showStatus,
+      size: size ?? this.size,
+      status: status ?? this.status,
+      updatedAt: updatedAt ?? this.updatedAt,
+      uri: uri ?? this.uri,
+      width: width ?? this.width,
+    );
+  }
 }
-
-class _Unset {}

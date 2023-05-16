@@ -18,6 +18,7 @@ abstract class NewMessageSupport {
     this.icon,
     this.priority = ToolBarPriority.medium,
     this.customToolBarWidget,
+    this.isInsideBubble = true,
   });
 
   final Message messageClass;
@@ -28,4 +29,5 @@ abstract class NewMessageSupport {
   final Widget? customToolBarWidget;
   final Widget replyPreview;
   final ToolBarPriority priority;
+  final bool isInsideBubble;
 }

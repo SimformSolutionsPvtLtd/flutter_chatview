@@ -3,7 +3,6 @@ description: A Flutter package that allows you to integrate Chat View with highl
 version: 1.2.1
 issue_tracker: https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues
 repository: https://github.com/SimformSolutionsPvtLtd/flutter_chatview
-publish_to: none
 
 platforms:
   android:
@@ -43,9 +42,7 @@ dependencies:
   path: ^1.8.2
   get_it: ^7.2.0
   json_annotation: ^4.8.0
-  sticky_grouped_list:
-    git:
-      url: https://github.com/Yogesh-Dubey-Ayesavi/sticky_grouped_list.git
+  flutter_markdown: ^0.6.14
 
 dev_dependencies:
   flutter_test:

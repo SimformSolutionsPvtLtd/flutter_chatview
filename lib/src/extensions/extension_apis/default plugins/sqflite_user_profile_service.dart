@@ -3,9 +3,8 @@ import 'package:chatview/src/extensions/extension_apis/default%20plugins/sql_que
 import 'package:chatview/src/utils/constants/constants.dart';
 import 'package:sqflite/sqflite.dart';
 import '../../../../chatview.dart';
-import '../service/user_profile_service.dart';
 
-class SqfliteUserProfileService extends UserProfileService {
+class SqfliteUserProfileService extends ProfileManager {
   SqfliteUserProfileService(this.currentUser, this.db);
 
   final String tableName = 'ChatUser';

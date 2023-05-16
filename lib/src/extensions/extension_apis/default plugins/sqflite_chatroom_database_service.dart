@@ -1,22 +1,16 @@
-import 'dart:convert';
-import 'package:chatview/packages/format/format.dart';
 import 'package:chatview/src/extensions/extension_apis/default%20plugins/sql_queries.dart';
-import 'package:chatview/src/extensions/extension_apis/service/chat_database_service.dart';
-import 'package:chatview/src/extensions/extension_apis/service/chat_room_database_service.dart';
 import 'package:chatview/src/utils/constants/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sqflite/sqflite.dart';
 import '../../../../chatview.dart';
 
-class SqfLiteChatRoomDataBaseService extends ChatRoomDataBaseService {
+class SqfLiteChatRoomDataBaseService extends RoomManager {
   late Database database;
 
   String tableName = "Rooms";
 
-  int _offset = 0;
-
-  final userProfileService = GetIt.I.get<SqfliteUserProfileService>();
+  final profileManager = GetIt.I.get<SqfliteUserProfileService>();
 
   ChatUser currentUser = GetIt.I.get<SqfliteUserProfileService>().currentUser;
 
@@ -24,7 +18,7 @@ class SqfLiteChatRoomDataBaseService extends ChatRoomDataBaseService {
   Future<bool> createRoom(Room room) async {
     return await database.transaction((txn) async {
       return txn.insert(tableName, toDBJsonRoom(room)).then((value) async {
-        userProfileService.createChatUsers(room);
+        profileManager.createChatUsers(room);
         return true;
       });
     });

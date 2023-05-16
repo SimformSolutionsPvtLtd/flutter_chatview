@@ -141,8 +141,6 @@ class _ChatViewState extends State<ChatView>
     with SingleTickerProviderStateMixin {
   ValueNotifier<Message?> replyMessageNotifier = ValueNotifier(null);
 
-  ValueNotifier<Message?> replyMessage = ValueNotifier(null);
-
   ChatController get chatController => widget.chatController;
 
   // bool get showTypingIndicator => widget.showTypingIndicator;
@@ -228,8 +226,10 @@ class _ChatViewState extends State<ChatView>
                     sendMessageConfig: widget.sendMessageConfig,
                     backgroundColor: chatBackgroundConfig.backgroundColor,
                     onSendTap: _onSendTap,
-                    onReplyCallback: (reply) => replyMessage.value = reply,
-                    onReplyCloseCallback: () => replyMessage.value = null,
+                    onReplyCallback: (reply) {},
+                    onReplyCloseCallback: () {
+                      replyMessageNotifier.value = null;
+                    },
                   ),
               ],
             )
@@ -270,7 +270,7 @@ class _ChatViewState extends State<ChatView>
       );
     } else if (chatViewState.hasMessages) {
       return ValueListenableBuilder<Message?>(
-        valueListenable: replyMessage,
+        valueListenable: replyMessageNotifier,
         builder: (_, state, child) {
           return ChatListWidget(
 
@@ -303,14 +303,14 @@ class _ChatViewState extends State<ChatView>
   }
 
   void _assignReplyMessage() {
-    if (replyMessage.value != null) {
-      replyMessage.value = null;
+    if (replyMessageNotifier.value != null) {
+      replyMessageNotifier.value = null;
     }
   }
 
   @override
   void dispose() {
-    replyMessage.dispose();
+    replyMessageNotifier.dispose();
     super.dispose();
   }
 }

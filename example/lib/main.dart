@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:chatview/chatview.dart';
 import 'package:example/create_user_screen.dart';
 import 'package:example/service_locator.dart';
@@ -16,8 +15,7 @@ void main() {
       ChatViewController.getInstance(user,
           chatViewExtension: ChatViewExtension(
               serviceExtension: ServiceExtension<SqfliteDataBaseService>(
-                  dataBaseService:
-                      SqfliteDataBaseService(currentUser: user)))));
+                  dataManager: SqfliteDataBaseService(currentUser: user)))));
   runApp(const Example());
 }
 
@@ -73,8 +71,8 @@ class _HomeScreenState extends State<HomeScreen> {
       .get<ChatViewController>()
       .chatViewExtension
       ?.serviceExtension
-      ?.dataBaseService
-      ?.chatRoomDataBaseService as SqfLiteChatRoomDataBaseService;
+      ?.dataManager
+      ?.roomManager as SqfLiteChatRoomDataBaseService;
 
   final ValueNotifier<List<ChatDataBaseService>> _chatRooms = ValueNotifier([]);
 
@@ -253,6 +251,8 @@ class _ChatScreenState extends State<ChatScreen> {
         featureActiveConfig: const FeatureActiveConfig(
             lastSeenAgoBuilderVisibility: true,
             enablePagination: true,
+            enableSwipeToSeeTime: false,
+            selectMultipleMessages: true,
             enableReplySnackBar: false,
             receiptsBuilderVisibility: true),
         chatViewState: ChatViewState.hasMessages,
@@ -272,7 +272,7 @@ class _ChatScreenState extends State<ChatScreen> {
               IconButton(
                 tooltip: 'Delete a Message',
                 onPressed: () {
-                  _chatController.hideReactionPopUp();
+                  _chatController.hideReactionPopUp(messageActions: true);
                   _chatController.deleteMessage(message);
                 },
                 icon: Icon(
@@ -282,7 +282,6 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
               PopupMenuButton(itemBuilder: (context) {
                 _chatController.hideReactionPopUp();
-
                 _chatController.unFocus();
                 return const [
                   PopupMenuItem(child: Text('Share')),
@@ -373,8 +372,9 @@ class _ChatScreenState extends State<ChatScreen> {
               bodyStyle: theme.outgoingChatLinkBodyStyle,
               titleStyle: theme.outgoingChatLinkTitleStyle,
             ),
-            receiptsWidgetConfig:
-                const ReceiptsWidgetConfig(showReceiptsIn: ShowReceiptsIn.all),
+            receiptsWidgetConfig: const ReceiptsWidgetConfig(
+                receiptsBubblePreference: ReceiptsBubblePreference.inside,
+                showReceiptsIn: ShowReceiptsIn.all),
             color: theme.outgoingChatBubbleColor,
           ),
           inComingChatBubbleConfig: ChatBubble(
@@ -526,7 +526,7 @@ class _ChatScreenState extends State<ChatScreen> {
         final newMessage = _chatController.initialMessageList.first.value
             .copyWith(status: MessageStatus.undelivered);
         _chatController.initialMessageList.first.value = newMessage;
-        print(await widget.chatService.updateMessage(newMessage));
+        await widget.chatService.updateMessage(newMessage);
       });
     }
   }

@@ -159,86 +159,28 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-        onHorizontalDragUpdate: (details) => isEnableSwipeToSeeTime
-            ? showPopUp
-                ? null
-                : _onHorizontalDrag(details)
-            : null,
-        onHorizontalDragEnd: (details) => isEnableSwipeToSeeTime
-            ? showPopUp
-                ? null
-                : _animationController?.reverse()
-            : null,
-        onTap: widget.onChatListTap,
-        child: _animationController != null
-            ? AnimatedBuilder(
-                animation: _animationController!,
-                builder: (context, child) {
-                  return _chatStreamBuilder;
-                },
-              )
-            : _chatStreamBuilder);
-
-    // SingleChildScrollView(
-    //     reverse: true,
-    //     // When reaction popup is being appeared at that user should not scroll.
-    //     physics: const NeverScrollableScrollPhysics(),
-    //     padding: EdgeInsets.only(bottom: showTypingIndicator ? 50 : 0),
-    //     child: ConstrainedBox(
-    //       constraints: BoxConstraints(
-    //         minWidth: MediaQuery.of(context).size.width,
-    //         minHeight: MediaQuery.of(context).size.height,
-    //       ),
-    //       child: Column(
-    //         children: [
-    //           GestureDetector(
-    //             onHorizontalDragUpdate: (details) => isEnableSwipeToSeeTime
-    //                 ? showPopUp
-    //                     ? null
-    //                     : _onHorizontalDrag(details)
-    //                 : null,
-    //             onHorizontalDragEnd: (details) => isEnableSwipeToSeeTime
-    //                 ? showPopUp
-    //                     ? null
-    //                     : _animationController?.reverse()
-    //                 : null,
-    //             onTap: widget.onChatListTap,
-    //             child: _animationController != null
-    //                 ? AnimatedBuilder(
-    //                     animation: _animationController!,
-    //                     builder: (context, child) {
-    //                       return _chatStreamBuilder;
-    //                     },
-    //                   )
-    //                 : _chatStreamBuilder,
-    //           ),
-    // widget.showTypingIndicator
-    //     ? TypingIndicator(
-    //         typeIndicatorConfig: widget.typeIndicatorConfig,
-    //         chatBubbleConfig:
-    //             chatBubbleConfig?.inComingChatBubbleConfig,
-    //         showIndicator: widget.showTypingIndicator,
-    //         profilePic: profileCircleConfig?.profileImageUrl,
-    //       )
-    //     : ValueListenableBuilder(
-    //         valueListenable: ChatViewInheritedWidget.of(context)!
-    //             .chatController
-    //             .typingIndicatorNotifier,
-    //         builder: (context, value, child) => TypingIndicator(
-    //               typeIndicatorConfig: widget.typeIndicatorConfig,
-    //               chatBubbleConfig:
-    //                   chatBubbleConfig?.inComingChatBubbleConfig,
-    //               showIndicator: value,
-    //               profilePic: profileCircleConfig?.profileImageUrl,
-    //             )),
-    //           // SizedBox(
-    //           //   height: MediaQuery.of(context).size.width *
-    //           //       (widget.replyMessage != null ? 0.3 : 0.14),
-    //           // ),
-    //         ],
-    //       ),
-    //     ));
+    return isEnableSwipeToSeeTime
+        ? GestureDetector(
+            onHorizontalDragUpdate: (details) => isEnableSwipeToSeeTime
+                ? showPopUp
+                    ? null
+                    : _onHorizontalDrag(details)
+                : null,
+            onHorizontalDragEnd: (details) => isEnableSwipeToSeeTime
+                ? showPopUp
+                    ? null
+                    : _animationController?.reverse()
+                : null,
+            onTap: widget.onChatListTap,
+            child: _animationController != null
+                ? AnimatedBuilder(
+                    animation: _animationController!,
+                    builder: (context, child) {
+                      return _chatStreamBuilder;
+                    },
+                  )
+                : _chatStreamBuilder)
+        : _chatStreamBuilder;
   }
 
   Future<void> _onReplyTap(String id, MessageNotifierList? messages) async {

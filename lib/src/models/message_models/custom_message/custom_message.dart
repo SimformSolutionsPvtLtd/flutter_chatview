@@ -1,8 +1,6 @@
 import 'package:chatview/chatview.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
-import '../message.dart';
-import '../user.dart' show ChatUser;
 import 'partial_custom.dart';
 part 'custom_message.g.dart';
 

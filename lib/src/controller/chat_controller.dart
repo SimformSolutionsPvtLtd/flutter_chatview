@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_visible_for_testing_member
+
 /*
  * Copyright (c) 2022 Simform Solutions
  *
@@ -83,6 +85,11 @@ class ChatController {
 
   final ValueNotifier<bool> showPopUp = ValueNotifier(false);
 
+  final ValueNotifier<bool> showMenuManager = ValueNotifier(false);
+
+  final ValueNotifier<List<Message>> multipleMessageSelection =
+      ValueNotifier([]);
+
   /// Used to dispose stream.
   void dispose() => messageStreamController.close();
 
@@ -93,15 +100,34 @@ class ChatController {
     chatService?.addMessageWrapper(message);
   }
 
-  void hideReactionPopUp() {
+  void hideReactionPopUp({bool messageActions = false}) {
     showPopUp.value = false;
+    if (messageActions == true) {
+      multipleMessageSelection.value = [];
+    }
   }
 
-  void deleteMessage(Message message) {
-    initialMessageList.removeWhere((element) => element.value.id == message.id);
-    messageStreamController.sink.add(initialMessageList);
-    chatService?.deleteMessage(message);
-    chatService?.lastMessageStream.sink.add(initialMessageList.first.value);
+  void deleteMessage(List<Message> messages) {
+    for (int i = 0; i < messages.length; i++) {
+      final message = messages[i];
+      initialMessageList.removeWhere((item) => item.value.id == message.id);
+      messageStreamController.sink.add(initialMessageList);
+      chatService?.deleteMessage(message);
+      if (initialMessageList.isNotEmpty) {
+        chatService?.lastMessageStream.sink.add(initialMessageList.first.value);
+      }
+    }
+  }
+
+  void _addMultipleMessage(Message message) {
+    if (multipleMessageSelection.value.contains(message)) {
+      multipleMessageSelection.value.remove(message);
+    } else {
+      multipleMessageSelection.value.add(message);
+    }
+
+    // ignore: invalid_use_of_protected_member
+    multipleMessageSelection.notifyListeners();
   }
 
   getFocus() {
@@ -157,6 +183,7 @@ class ChatController {
       initialMessageList[indexOfMessage] = ValueNotifier(newMessage);
       messageStreamController.sink.add(initialMessageList);
     }
+    multipleMessageSelection.value = [];
   }
 
   Future<void> _pagintationLoadMore() async {
@@ -175,7 +202,6 @@ class ChatController {
       );
 
   // updateReciepts(List<UpdateReciept> updatedReceipts) {}
-
   /// Function for loading data while pagination.
   /// TODO: Add a converter version.
   void loadMoreData(MessageNotifierList messageList) {

@@ -41,6 +41,8 @@ enum ChatViewState { hasMessages, noData, loading, error }
 
 enum ShowReceiptsIn { all, lastMessage }
 
+enum ReceiptsBubblePreference { inside, outSide }
+
 extension ChatViewStateExtension on ChatViewState {
   bool get hasMessages => this == ChatViewState.hasMessages;
 

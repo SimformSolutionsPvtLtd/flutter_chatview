@@ -1,11 +1,7 @@
 import 'package:chatview/chatview.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
-
-import '../message.dart';
-import '../user.dart' show ChatUser;
 import 'partial_text.dart';
-
 part 'text_message.g.dart';
 
 /// A class that represents text message.
@@ -138,35 +134,28 @@ class _TextMessage extends TextMessage {
     ChatUser? author,
     int? createdAt,
     String? id,
-    dynamic reaction = _Unset,
-    dynamic metadata = _Unset,
-    dynamic remoteId = _Unset,
-    dynamic repliedMessage = _Unset,
-    dynamic roomId,
-    dynamic showStatus = _Unset,
-    dynamic status = _Unset,
+    Map<String, dynamic>? metadata,
+    String? remoteId,
+    Message? repliedMessage,
+    String? roomId,
+    Reaction? reaction,
+    bool? showStatus,
+    MessageStatus? status,
     String? text,
-    dynamic updatedAt = _Unset,
+    int? updatedAt,
   }) =>
       _TextMessage(
         author: author ?? this.author,
         createdAt: createdAt ?? this.createdAt,
         id: id ?? this.id,
-        metadata: metadata == _Unset
-            ? this.metadata
-            : metadata as Map<String, dynamic>?,
-        reaction: reaction == _Unset ? this.reaction : reaction as Reaction?,
-        remoteId: remoteId == _Unset ? this.remoteId : remoteId as String?,
-        repliedMessage: repliedMessage == _Unset
-            ? this.repliedMessage
-            : repliedMessage as Message?,
-        roomId: roomId == _Unset ? this.roomId : roomId as String?,
-        showStatus:
-            showStatus == _Unset ? this.showStatus : showStatus as bool?,
-        status: status == _Unset ? this.status : status as MessageStatus?,
+        metadata: metadata ?? this.metadata,
+        reaction: reaction ?? this.reaction,
+        remoteId: remoteId ?? this.remoteId,
+        repliedMessage: repliedMessage ?? this.repliedMessage,
+        roomId: roomId ?? this.roomId,
+        showStatus: showStatus ?? this.showStatus,
+        status: status ?? this.status,
         text: text ?? this.text,
-        updatedAt: updatedAt == _Unset ? this.updatedAt : updatedAt as int?,
+        updatedAt: updatedAt ?? this.updatedAt,
       );
 }
-
-class _Unset {}

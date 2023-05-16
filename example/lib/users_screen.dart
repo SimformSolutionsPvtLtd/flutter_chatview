@@ -17,15 +17,15 @@ class _UserListScreenState extends State<UserListScreen> {
       .get<ChatViewController>()
       .chatViewExtension
       ?.serviceExtension
-      ?.dataBaseService
-      ?.userProfileService as SqfliteUserProfileService;
+      ?.dataManager
+      ?.profileManager as SqfliteUserProfileService;
 
   SqfLiteChatRoomDataBaseService? get _chatroomService => serviceLocator
       .get<ChatViewController>()
       .chatViewExtension
       ?.serviceExtension
-      ?.dataBaseService
-      ?.chatRoomDataBaseService as SqfLiteChatRoomDataBaseService;
+      ?.dataManager
+      ?.roomManager as SqfLiteChatRoomDataBaseService;
 
   ChatUser get _currentUser =>
       serviceLocator.get<ChatViewController>().currentUser;

@@ -230,7 +230,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                           valueListenable: _replyMessage,
                         ),
                         ChatUITextField(
-                          focusNode: chatController?.focusNode ??  FocusNode(),
+                          focusNode: chatController?.focusNode ?? FocusNode(),
                           chatController: widget.chatController,
                           textEditingController: _textEditingController,
                           onPressed: _onPressed,

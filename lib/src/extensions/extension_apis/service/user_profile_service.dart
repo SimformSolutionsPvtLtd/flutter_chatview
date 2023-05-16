@@ -1,7 +1,7 @@
 import '../../../models/models.dart';
 
-abstract class UserProfileService {
-  const UserProfileService();
+abstract class ProfileManager {
+  const ProfileManager();
 
   Future<ChatUser?> fetchChatUser(String id);
 

@@ -1,13 +1,6 @@
 import 'package:chatview/chatview.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
-import 'package:meta/meta.dart';
-import 'audio_message/audio_message.dart';
-import 'custom_message/custom_message.dart';
-import 'image_message/image_message.dart';
-import 'text_message/text_message.dart';
-import 'user.dart' show ChatUser;
 
 /// All possible message types.
 

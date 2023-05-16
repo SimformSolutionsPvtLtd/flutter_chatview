@@ -31,6 +31,7 @@ class TextMessageView extends StatelessWidget {
     this.outgoingChatBubbleConfig,
     this.messageReactionConfig,
     this.highlightMessage = false,
+    this.receiptsBuilderVisibility = true,
     this.highlightColor,
   }) : super(key: key);
 
@@ -58,6 +59,9 @@ class TextMessageView extends StatelessWidget {
   /// Allow user to set color of highlighted message.
   final Color? highlightColor;
 
+  /// To controll receiptsBuilderVisibility.
+  final bool receiptsBuilderVisibility;
+
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -81,74 +85,90 @@ class TextMessageView extends StatelessWidget {
               color: highlightMessage ? highlightColor : _color,
               borderRadius: _borderRadius(textMessage),
             ),
-            child: textMessage.isUrl
-                ? LinkPreview(
-                    linkPreviewConfig: _linkPreviewConfig,
-                    url: textMessage,
-                  )
-                : ParsedText(
-                    selectable: false,
-                    text: message.text,
-                    style: _textStyle ??
-                        textTheme.bodyMedium!.copyWith(
-                          color: Colors.white,
-                          fontSize: 16,
-                        ),
-                    parse: [
-                      MatchText(
-                        pattern: PatternStyle.bold.pattern,
-                        style: PatternStyle.bold.textStyle,
-                        renderText: (
-                                {required String str,
-                                required String pattern}) =>
-                            {
-                          'display': str.replaceAll(
-                            PatternStyle.bold.from,
-                            PatternStyle.bold.replace,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                textMessage.isUrl
+                    ? LinkPreview(
+                        linkPreviewConfig: _linkPreviewConfig,
+                        url: textMessage,
+                      )
+                    : ParsedText(
+                        selectable: false,
+                        text: message.text,
+                        style: _textStyle ??
+                            textTheme.bodyMedium!.copyWith(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                        parse: [
+                          MatchText(
+                            pattern: PatternStyle.bold.pattern,
+                            style: PatternStyle.bold.textStyle,
+                            renderText: (
+                                    {required String str,
+                                    required String pattern}) =>
+                                {
+                              'display': str.replaceAll(
+                                PatternStyle.bold.from,
+                                PatternStyle.bold.replace,
+                              ),
+                            },
                           ),
-                        },
-                      ),
-                      MatchText(
-                        pattern: PatternStyle.italic.pattern,
-                        style: PatternStyle.italic.textStyle,
-                        renderText: (
-                                {required String str,
-                                required String pattern}) =>
-                            {
-                          'display': str.replaceAll(
-                            PatternStyle.italic.from,
-                            PatternStyle.italic.replace,
+                          MatchText(
+                            pattern: PatternStyle.italic.pattern,
+                            style: PatternStyle.italic.textStyle,
+                            renderText: (
+                                    {required String str,
+                                    required String pattern}) =>
+                                {
+                              'display': str.replaceAll(
+                                PatternStyle.italic.from,
+                                PatternStyle.italic.replace,
+                              ),
+                            },
                           ),
-                        },
-                      ),
-                      MatchText(
-                        pattern: PatternStyle.lineThrough.pattern,
-                        style: (PatternStyle.lineThrough.textStyle),
-                        renderText: (
-                                {required String str,
-                                required String pattern}) =>
-                            {
-                          'display': str.replaceAll(
-                            PatternStyle.lineThrough.from,
-                            PatternStyle.lineThrough.replace,
+                          MatchText(
+                            pattern: PatternStyle.lineThrough.pattern,
+                            style: (PatternStyle.lineThrough.textStyle),
+                            renderText: (
+                                    {required String str,
+                                    required String pattern}) =>
+                                {
+                              'display': str.replaceAll(
+                                PatternStyle.lineThrough.from,
+                                PatternStyle.lineThrough.replace,
+                              ),
+                            },
                           ),
-                        },
-                      ),
-                      MatchText(
-                        pattern: PatternStyle.code.pattern,
-                        style: (PatternStyle.code.textStyle),
-                        renderText: (
-                                {required String str,
-                                required String pattern}) =>
-                            {
-                          'display': str.replaceAll(
-                            PatternStyle.code.from,
-                            PatternStyle.code.replace,
+                          MatchText(
+                            pattern: PatternStyle.code.pattern,
+                            style: (PatternStyle.code.textStyle),
+                            renderText: (
+                                    {required String str,
+                                    required String pattern}) =>
+                                {
+                              'display': str.replaceAll(
+                                PatternStyle.code.from,
+                                PatternStyle.code.replace,
+                              ),
+                            },
                           ),
-                        },
+                        ],
                       ),
-                    ],
-                  )),
+                if (receiptsBuilderVisibility &&
+                    isMessageBySender &&
+                    outgoingChatBubbleConfig
+                            ?.receiptsWidgetConfig?.receiptsBubblePreference ==
+                        ReceiptsBubblePreference.inside) ...[
+                  outgoingChatBubbleConfig
+                          ?.receiptsWidgetConfig?.receiptsBuilder
+                          ?.call(message) ??
+                      WhatsappStyleMessageTimeWidget(message)
+                ],
+              ],
+            )),
         if (message.reaction?.reactions.isNotEmpty ?? false)
           ReactionWidget(
             isMessageBySender: isMessageBySender,

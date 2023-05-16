@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'package:chatview/src/models/receipts_widget_config.dart';
 import 'package:flutter/material.dart';
 import '../../chatview.dart';
 

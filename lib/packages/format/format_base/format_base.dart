@@ -3,6 +3,7 @@ import 'dart:core' as core show print;
 
 // ignore: depend_on_referenced_packages
 import 'package:characters/characters.dart';
+import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 
 /// Функция форматирования строк как в Python'е.
@@ -131,7 +132,7 @@ extension StringFormat on String {
     Object? v9,
     Object? v10,
   ]) {
-    core.print(format(values, v2, v3, v4, v5, v6, v7, v8, v9, v10));
+    debugPrint(format(values, v2, v3, v4, v5, v6, v7, v8, v9, v10));
   }
 }
 

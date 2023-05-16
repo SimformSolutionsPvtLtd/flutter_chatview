@@ -12,6 +12,7 @@ class FeatureActiveConfig {
     this.enableDoubleTapToLike = true,
     this.lastSeenAgoBuilderVisibility = true,
     this.receiptsBuilderVisibility = true,
+    this.selectMultipleMessages = true,
   });
 
   /// Used for enable/disable swipe to reply.
@@ -49,4 +50,7 @@ class FeatureActiveConfig {
 
   /// Controls the visibility of the message [receiptsBuilder]
   final bool receiptsBuilderVisibility;
+
+  /// Controls to select multiple messages on tap after holding a message for a while.
+  final bool selectMultipleMessages;
 }
