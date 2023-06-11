@@ -22,12 +22,12 @@ dependencies:
   intl: ^0.18.0
   flutter_linkify: ^5.0.2
   url_launcher: ^6.1.7
-  emoji_picker_flutter: ^1.3.0
+  emoji_picker_flutter: ^1.6.0
   http: ^0.13.5
   html: ^0.15.1
   any_link_preview: ^3.0.0
   progress_indicators: ^1.0.0
-  image_picker: ^0.8.6
+  image_picker: ^0.8.8
   audio_waveforms: ^1.0.1
   # For formatting time locale in message receipts
   timeago: ^3.4.0

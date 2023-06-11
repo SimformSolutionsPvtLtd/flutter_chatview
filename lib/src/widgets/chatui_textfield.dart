@@ -221,7 +221,11 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                         if (!isRecordingValue) ...[
                           IconButton(
                             constraints: const BoxConstraints(),
-                            onPressed: () => _onIconPressed(ImageSource.camera),
+                            onPressed: () => _onIconPressed(
+                              ImageSource.camera,
+                              config: widget
+                                  .sendMessageConfig?.imagePickerConfiguration,
+                            ),
                             icon:
                                 imagePickerIconsConfig?.cameraImagePickerIcon ??
                                     Icon(
@@ -232,8 +236,11 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                           ),
                           IconButton(
                             constraints: const BoxConstraints(),
-                            onPressed: () =>
-                                _onIconPressed(ImageSource.gallery),
+                            onPressed: () => _onIconPressed(
+                              ImageSource.gallery,
+                              config: widget
+                                  .sendMessageConfig?.imagePickerConfiguration,
+                            ),
                             icon: imagePickerIconsConfig
                                     ?.galleryImagePickerIcon ??
                                 Icon(
@@ -284,10 +291,25 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
     }
   }
 
-  void _onIconPressed(ImageSource imageSource) async {
+  void _onIconPressed(
+    ImageSource imageSource, {
+    ImagePickerConfiguration? config,
+  }) async {
     try {
-      final XFile? image = await _imagePicker.pickImage(source: imageSource);
-      widget.onImageSelected(image?.path ?? '', '');
+      final XFile? image = await _imagePicker.pickImage(
+        source: imageSource,
+        maxHeight: config?.maxHeight,
+        maxWidth: config?.maxWidth,
+        imageQuality: config?.imageQuality,
+        preferredCameraDevice:
+            config?.preferredCameraDevice ?? CameraDevice.rear,
+      );
+      String? imagePath = image?.path;
+      if (config?.onImagePicked != null) {
+        String? updatedImagePath = await config?.onImagePicked!(imagePath);
+        if (updatedImagePath != null) imagePath = updatedImagePath;
+      }
+      widget.onImageSelected(imagePath ?? '', '');
     } catch (e) {
       widget.onImageSelected('', e.toString());
     }

@@ -50,6 +50,7 @@ class ChatView extends StatefulWidget {
     this.sendMessageBuilder,
     this.showTypingIndicator = false,
     this.sendMessageConfig,
+    this.onChatListTap,
     required this.chatViewState,
     ChatViewStateConfiguration? chatViewStateConfig,
     this.featureActiveConfig = const FeatureActiveConfig(),
@@ -132,6 +133,9 @@ class ChatView extends StatefulWidget {
 
   /// Provides parameter so user can assign ChatViewAppbar.
   final Widget? appBar;
+
+  /// Provides callback when user tap on chat list.
+  final VoidCallBack? onChatListTap;
 
   @override
   State<ChatView> createState() => _ChatViewState();
@@ -242,6 +246,7 @@ class _ChatViewState extends State<ChatView>
                           profileCircleConfig: widget.profileCircleConfig,
                           repliedMessageConfig: widget.repliedMessageConfig,
                           swipeToReplyConfig: widget.swipeToReplyConfig,
+                          onChatListTap: widget.onChatListTap,
                           assignReplyMessage: (message) => _sendMessageKey
                               .currentState
                               ?.assignReplyMessage(message),
