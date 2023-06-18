@@ -20,7 +20,6 @@
  * SOFTWARE.
  */
 import 'dart:io' if (kIsWeb) 'dart:html';
-import 'dart:ui';
 
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:chatview/chatview.dart';
@@ -339,7 +338,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
   double get _bottomPadding => (!kIsWeb && Platform.isIOS)
       ? (_focusNode.hasFocus
           ? bottomPadding1
-          : window.viewPadding.bottom > 0
+          : View.of(context).viewPadding.bottom > 0
               ? bottomPadding2
               : bottomPadding3)
       : bottomPadding3;
