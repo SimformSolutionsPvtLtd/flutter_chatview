@@ -1,3 +1,18 @@
+## [1.3.0]
+
+* **Feat**: [71](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/71) Added Callback
+  when a user starts/stops composing typing a message.
+* **Fix**: [78](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/78) Fix issue of
+  unmodifiable list.
+* **Feat**: [76](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/76) Message Receipts.
+* **Fix**: [81](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/81) Fix issue of
+  TypingIndicator Rebuilding ChatView.
+* **Fix**: [94](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/94) Fixed deprecated
+  `showRecentsTab` property with new `recentTabBehavior`.
+* Support for latest flutter version `3.10.5`.
+* Update dependencies `http` to version `1.1.0` and `image_picker` to version range `'>=0.8.9 <2.0.0'`.
+
+
 ## [1.2.1]
 
 * **Fix**: [60](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/60) Fix image from
