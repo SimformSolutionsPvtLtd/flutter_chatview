@@ -20,10 +20,10 @@ dependencies:
     sdk: flutter
   grouped_list: ^5.1.2
   intl: ^0.18.0
-  flutter_linkify: 6.0.0
+  flutter_linkify: ^6.0.0
   url_launcher: ^6.1.7
   emoji_picker_flutter: ^1.6.0
-  http: 1.1.0
+  http: ^1.1.0
   html: ^0.15.1
   any_link_preview: ^3.0.0
   progress_indicators: ^1.0.0
