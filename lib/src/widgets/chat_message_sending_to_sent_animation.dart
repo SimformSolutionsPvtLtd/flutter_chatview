@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:chatview/chatview.dart';
 import 'package:flutter/material.dart';
 
@@ -28,11 +29,6 @@ class _SendingMessageAnimatingWidgetState
         }
       });
     }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   @override
