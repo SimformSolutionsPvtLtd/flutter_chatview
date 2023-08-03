@@ -79,8 +79,9 @@ class _ChatScreenState extends State<ChatScreen> {
         chatController: _chatController,
         onSendTap: _onSendTap,
         featureActiveConfig: const FeatureActiveConfig(
-            lastSeenAgoBuilderVisibility: true,
-            receiptsBuilderVisibility: true),
+          lastSeenAgoBuilderVisibility: true,
+          receiptsBuilderVisibility: true,
+        ),
         chatViewState: ChatViewState.hasMessages,
         chatViewStateConfig: ChatViewStateConfiguration(
           loadingWidgetConfig: ChatViewStateWidgetConfiguration(
