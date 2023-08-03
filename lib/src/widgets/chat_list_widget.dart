@@ -50,6 +50,7 @@ class ChatListWidget extends StatefulWidget {
     this.replyPopupConfig,
     this.loadMoreData,
     this.isLastPage,
+    this.onChatListTap,
   }) : super(key: key);
 
   /// Provides controller for accessing few function for running chat.
@@ -103,6 +104,9 @@ class ChatListWidget extends StatefulWidget {
   /// Provides callback for assigning reply message when user swipe to chat
   /// bubble.
   final MessageCallBack assignReplyMessage;
+
+  /// Provides callback when user tap anywhere on whole chat.
+  final VoidCallBack? onChatListTap;
 
   @override
   State<ChatListWidget> createState() => _ChatListWidgetState();
@@ -297,7 +301,10 @@ class _ChatListWidgetState extends State<ChatListWidget>
   }
 
   void _onChatListTap() {
-    if (!kIsWeb && Platform.isIOS) FocusScope.of(context).unfocus();
+    widget.onChatListTap?.call();
+    if (!kIsWeb && (Platform.isIOS || Platform.isAndroid)) {
+      FocusScope.of(context).unfocus();
+    }
     showPopUp.value = false;
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
   }

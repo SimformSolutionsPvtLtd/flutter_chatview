@@ -23,6 +23,7 @@ import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:chatview/src/values/enumaration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 
 class SendMessageConfiguration {
   /// Used to give background color to text field.
@@ -49,6 +50,9 @@ class SendMessageConfiguration {
   /// Provides configuration of image picker functionality.
   final ImagePickerIconsConfiguration? imagePickerIconsConfig;
 
+  /// Provides configuration of image picker plugin.
+  final ImagePickerConfiguration? imagePickerConfiguration;
+
   /// Provides configuration of text field.
   final TextFieldConfiguration? textFieldConfig;
 
@@ -65,6 +69,7 @@ class SendMessageConfiguration {
     this.textFieldConfig,
     this.textFieldBackgroundColor,
     this.imagePickerIconsConfig,
+    this.imagePickerConfiguration,
     this.defaultSendButtonColor,
     this.sendButtonIcon,
     this.replyDialogColor,
@@ -158,6 +163,32 @@ class TextFieldConfiguration {
     this.compositionThresholdTime = const Duration(seconds: 1),
     this.inputFormatters,
     this.textCapitalization,
+  });
+}
+
+class ImagePickerConfiguration {
+  /// Used to give max width of image.
+  final double? maxWidth;
+
+  /// Used to give max height of image.
+  final double? maxHeight;
+
+  /// Used to give image quality.
+  final int? imageQuality;
+
+  /// Preferred camera device to pick image from.
+  final CameraDevice? preferredCameraDevice;
+
+  /// Callback when image is picked from camera or gallery,
+  ///  we can perform our task on image like adding crop options and return new image path
+  final Future<String?> Function(String? path)? onImagePicked;
+
+  const ImagePickerConfiguration({
+    this.maxWidth,
+    this.maxHeight,
+    this.imageQuality,
+    this.preferredCameraDevice,
+    this.onImagePicked,
   });
 }
 
