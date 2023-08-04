@@ -114,7 +114,7 @@ class ChatListWidget extends StatefulWidget {
 
 class _ChatListWidgetState extends State<ChatListWidget>
     with SingleTickerProviderStateMixin {
-  final ValueNotifier<bool> _isNextPageLoading = ValueNotifier(false);
+  final ValueNotifier<bool> _isNextPageLoading = ValueNotifier<bool>(false);
   ValueNotifier<bool> showPopUp = ValueNotifier(false);
   final GlobalKey<ReactionPopupState> _reactionPopupKey = GlobalKey();
 
@@ -241,7 +241,7 @@ class _ChatListWidgetState extends State<ChatListWidget>
   void _pagination() {
     if (widget.loadMoreData == null || widget.isLastPage == true) return;
     if ((scrollController.position.pixels ==
-            scrollController.position.minScrollExtent) &&
+            scrollController.position.maxScrollExtent) &&
         !_isNextPageLoading.value) {
       _isNextPageLoading.value = true;
       widget.loadMoreData!()

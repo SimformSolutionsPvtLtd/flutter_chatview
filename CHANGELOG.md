@@ -1,3 +1,11 @@
+##(Unreleased)
+
+* **Feat**: [105](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/105) Allow user 
+  to get callback when image is picked so user can perform operation like crop. Allow user to pass 
+  configuration like height, width, image quality and preferredCameraDevice.
+* **Fix**: [95](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/95) Fix issue of 
+  chat is added to bottom while `loadMoreData` callback.
+
 ## [1.3.0]
 
 * **Feat**: [71](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/71) Added Callback
