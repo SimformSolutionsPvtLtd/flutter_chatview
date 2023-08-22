@@ -369,11 +369,13 @@ ChatView(
 )
 ```
 
-14. Add image picker icon configuration.
+14. Add image picker configuration.
 ```dart
 ChatView(
   ...
   sendMessageConfig: SendMessageConfiguration(
+    enableCameraImagePicker: false,
+    enableGalleryImagePicker: true,
     imagePickerIconsConfig: ImagePickerIconsConfiguration(
       cameraIconColor: Colors.black,
       galleryIconColor: Colors.black,
