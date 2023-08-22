@@ -219,38 +219,42 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                     return Row(
                       children: [
                         if (!isRecordingValue) ...[
-                          IconButton(
-                            constraints: const BoxConstraints(),
-                            onPressed: () => _onIconPressed(
-                              ImageSource.camera,
-                              config: widget
-                                  .sendMessageConfig?.imagePickerConfiguration,
+                          if (sendMessageConfig?.enableCameraImagePicker ??
+                              true)
+                            IconButton(
+                              constraints: const BoxConstraints(),
+                              onPressed: () => _onIconPressed(
+                                ImageSource.camera,
+                                config:
+                                    sendMessageConfig?.imagePickerConfiguration,
+                              ),
+                              icon: imagePickerIconsConfig
+                                      ?.cameraImagePickerIcon ??
+                                  Icon(
+                                    Icons.camera_alt_outlined,
+                                    color:
+                                        imagePickerIconsConfig?.cameraIconColor,
+                                  ),
                             ),
-                            icon:
-                                imagePickerIconsConfig?.cameraImagePickerIcon ??
-                                    Icon(
-                                      Icons.camera_alt_outlined,
-                                      color: imagePickerIconsConfig
-                                          ?.cameraIconColor,
-                                    ),
-                          ),
-                          IconButton(
-                            constraints: const BoxConstraints(),
-                            onPressed: () => _onIconPressed(
-                              ImageSource.gallery,
-                              config: widget
-                                  .sendMessageConfig?.imagePickerConfiguration,
+                          if (sendMessageConfig?.enableGalleryImagePicker ??
+                              true)
+                            IconButton(
+                              constraints: const BoxConstraints(),
+                              onPressed: () => _onIconPressed(
+                                ImageSource.gallery,
+                                config:
+                                    sendMessageConfig?.imagePickerConfiguration,
+                              ),
+                              icon: imagePickerIconsConfig
+                                      ?.galleryImagePickerIcon ??
+                                  Icon(
+                                    Icons.image,
+                                    color: imagePickerIconsConfig
+                                        ?.galleryIconColor,
+                                  ),
                             ),
-                            icon: imagePickerIconsConfig
-                                    ?.galleryImagePickerIcon ??
-                                Icon(
-                                  Icons.image,
-                                  color:
-                                      imagePickerIconsConfig?.galleryIconColor,
-                                ),
-                          ),
                         ],
-                        if (widget.sendMessageConfig?.allowRecordingVoice ??
+                        if (sendMessageConfig?.allowRecordingVoice ??
                             true &&
                                 Platform.isIOS &&
                                 Platform.isAndroid &&
