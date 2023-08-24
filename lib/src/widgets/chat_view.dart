@@ -54,6 +54,7 @@ class ChatView extends StatefulWidget {
     required this.chatViewState,
     ChatViewStateConfiguration? chatViewStateConfig,
     this.featureActiveConfig = const FeatureActiveConfig(),
+    this.useSliverAppbar = false,
   })  : chatBackgroundConfig =
             chatBackgroundConfig ?? const ChatBackgroundConfiguration(),
         chatViewStateConfig =
@@ -137,6 +138,8 @@ class ChatView extends StatefulWidget {
   /// Provides callback when user tap on chat list.
   final VoidCallBack? onChatListTap;
 
+  final bool useSliverAppbar;
+
   @override
   State<ChatView> createState() => _ChatViewState();
 }
@@ -198,79 +201,135 @@ class _ChatViewState extends State<ChatView>
         ),
         padding: chatBackgroundConfig.padding,
         margin: chatBackgroundConfig.margin,
-        child: Column(
-          children: [
-            if (widget.appBar != null) widget.appBar!,
-            Expanded(
-              child: Stack(
+        child: widget.useSliverAppbar
+            ? Column(
                 children: [
-                  if (chatViewState.isLoading)
-                    ChatViewStateWidget(
-                      chatViewStateWidgetConfig:
-                          chatViewStateConfig?.loadingWidgetConfig,
-                      chatViewState: chatViewState,
-                    )
-                  else if (chatViewState.noMessages)
-                    ChatViewStateWidget(
-                      chatViewStateWidgetConfig:
-                          chatViewStateConfig?.noMessageWidgetConfig,
-                      chatViewState: chatViewState,
-                      onReloadButtonTap: chatViewStateConfig?.onReloadButtonTap,
-                    )
-                  else if (chatViewState.isError)
-                    ChatViewStateWidget(
-                      chatViewStateWidgetConfig:
-                          chatViewStateConfig?.errorWidgetConfig,
-                      chatViewState: chatViewState,
-                      onReloadButtonTap: chatViewStateConfig?.onReloadButtonTap,
-                    )
-                  else if (chatViewState.hasMessages)
-                    ValueListenableBuilder<ReplyMessage>(
-                      valueListenable: replyMessage,
-                      builder: (_, state, child) {
-                        return ChatListWidget(
-                          /// TODO: Remove this in future releases.
-                          // ignore: deprecated_member_use_from_same_package
-                          showTypingIndicator: widget.showTypingIndicator,
-                          replyMessage: state,
-                          chatController: widget.chatController,
-                          chatBackgroundConfig: widget.chatBackgroundConfig,
-                          reactionPopupConfig: widget.reactionPopupConfig,
-                          typeIndicatorConfig: widget.typeIndicatorConfig,
-                          chatBubbleConfig: widget.chatBubbleConfig,
-                          loadMoreData: widget.loadMoreData,
-                          isLastPage: widget.isLastPage,
-                          replyPopupConfig: widget.replyPopupConfig,
-                          loadingWidget: widget.loadingWidget,
-                          messageConfig: widget.messageConfig,
-                          profileCircleConfig: widget.profileCircleConfig,
-                          repliedMessageConfig: widget.repliedMessageConfig,
-                          swipeToReplyConfig: widget.swipeToReplyConfig,
-                          onChatListTap: widget.onChatListTap,
-                          assignReplyMessage: (message) => _sendMessageKey
-                              .currentState
-                              ?.assignReplyMessage(message),
-                        );
-                      },
+                  Expanded(
+                    child: CustomScrollView(
+                      controller: widget.chatController.scrollController,
+                      slivers: [
+                        const SliverAppBar(
+                          pinned: true,
+                          collapsedHeight: 60,
+                          expandedHeight: 200,
+                          title: Text('chat view'),
+                        ),
+                        SliverList(
+
+                          delegate: SliverChildListDelegate(
+                            [
+                              chatBody(),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                  if (featureActiveConfig.enableTextField)
-                    SendMessageWidget(
-                      key: _sendMessageKey,
-                      chatController: chatController,
-                      sendMessageBuilder: widget.sendMessageBuilder,
-                      sendMessageConfig: widget.sendMessageConfig,
-                      backgroundColor: chatBackgroundConfig.backgroundColor,
-                      onSendTap: _onSendTap,
-                      onReplyCallback: (reply) => replyMessage.value = reply,
-                      onReplyCloseCallback: () =>
-                          replyMessage.value = const ReplyMessage(),
+                  ),
+                  SendMessageWidget(
+                    key: _sendMessageKey,
+                    chatController: chatController,
+                    sendMessageBuilder: widget.sendMessageBuilder,
+                    sendMessageConfig: widget.sendMessageConfig,
+                    backgroundColor: chatBackgroundConfig.backgroundColor,
+                    onSendTap: _onSendTap,
+                    onReplyCallback: (reply) => replyMessage.value = reply,
+                    onReplyCloseCallback: () =>
+                        replyMessage.value = const ReplyMessage(),
+                  ),
+                ],
+              )
+
+            /*NestedScrollView(
+                controller: widget.chatController.scrollController,
+                headerSliverBuilder: (context, innerBoxIsScrolled) {
+                  return [
+                    const SliverAppBar(
+                      pinned: true,
+                      collapsedHeight: 60,
+                      expandedHeight: 200,
+                      title: Text('chat view'),
                     ),
+                  ];
+                },
+                body: chatBody(),
+              )*/
+            : Column(
+                children: [
+                  if (widget.appBar != null) widget.appBar!,
+                  Expanded(
+                    child: chatBody(),
+                  ),
                 ],
               ),
-            ),
-          ],
-        ),
       ),
+    );
+  }
+
+  Widget chatBody() {
+    return Stack(
+      children: [
+        if (chatViewState.isLoading)
+          ChatViewStateWidget(
+            chatViewStateWidgetConfig: chatViewStateConfig?.loadingWidgetConfig,
+            chatViewState: chatViewState,
+          )
+        else if (chatViewState.noMessages)
+          ChatViewStateWidget(
+            chatViewStateWidgetConfig:
+                chatViewStateConfig?.noMessageWidgetConfig,
+            chatViewState: chatViewState,
+            onReloadButtonTap: chatViewStateConfig?.onReloadButtonTap,
+          )
+        else if (chatViewState.isError)
+          ChatViewStateWidget(
+            chatViewStateWidgetConfig: chatViewStateConfig?.errorWidgetConfig,
+            chatViewState: chatViewState,
+            onReloadButtonTap: chatViewStateConfig?.onReloadButtonTap,
+          )
+        else if (chatViewState.hasMessages)
+          ValueListenableBuilder<ReplyMessage>(
+            valueListenable: replyMessage,
+            builder: (_, state, child) {
+              return ChatListWidget(
+                /// TODO: Remove this in future releases.
+                // ignore: deprecated_member_use_from_same_package
+                showTypingIndicator: widget.showTypingIndicator,
+                replyMessage: state,
+                chatController: widget.chatController,
+                chatBackgroundConfig: widget.chatBackgroundConfig,
+                reactionPopupConfig: widget.reactionPopupConfig,
+                typeIndicatorConfig: widget.typeIndicatorConfig,
+                chatBubbleConfig: widget.chatBubbleConfig,
+                loadMoreData: widget.loadMoreData,
+                isLastPage: widget.isLastPage,
+                replyPopupConfig: widget.replyPopupConfig,
+                loadingWidget: widget.loadingWidget,
+                messageConfig: widget.messageConfig,
+                profileCircleConfig: widget.profileCircleConfig,
+                repliedMessageConfig: widget.repliedMessageConfig,
+                swipeToReplyConfig: widget.swipeToReplyConfig,
+                onChatListTap: widget.onChatListTap,
+                assignReplyMessage: (message) =>
+                    _sendMessageKey.currentState?.assignReplyMessage(message),
+              );
+            },
+          ),
+       /* if (featureActiveConfig.enableTextField)
+          Positioned.fill(
+            bottom: 0,
+            child: SendMessageWidget(
+              key: _sendMessageKey,
+              chatController: chatController,
+              sendMessageBuilder: widget.sendMessageBuilder,
+              sendMessageConfig: widget.sendMessageConfig,
+              backgroundColor: chatBackgroundConfig.backgroundColor,
+              onSendTap: _onSendTap,
+              onReplyCallback: (reply) => replyMessage.value = reply,
+              onReplyCloseCallback: () =>
+                  replyMessage.value = const ReplyMessage(),
+            ),
+          ),*/
+      ],
     );
   }
 

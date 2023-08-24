@@ -100,6 +100,7 @@ class ReactionPopupState extends State<ReactionPopup>
     } else {
       _animationController.reverse();
     }
+    debugPrint('_yCoordinate -> $_yCoordinate');
     return showPopUp
         ? Positioned(
             top: _yCoordinate,

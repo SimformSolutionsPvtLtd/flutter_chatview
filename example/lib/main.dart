@@ -75,12 +75,40 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ChatView(
+        useSliverAppbar: true,
+        isLastPage: false,
+        loadMoreData: () async {
+          /*Data.messageList.insertAll(0, [
+            Message(
+              id: '13',
+              message: "new Hi!",
+              createdAt: DateTime.now(),
+              sendBy: '1',
+              // userId of who sends the message
+              status: MessageStatus.read,
+            ),
+            Message(
+              id: '14',
+              message: "Latest new Hi!",
+              createdAt: DateTime.now(),
+              sendBy: '2',
+              status: MessageStatus.read,
+            ),
+          ]);*/
+          debugPrint('Old message loaded');
+          setState(() {
+
+          });
+        },
         currentUser: currentUser,
         chatController: _chatController,
         onSendTap: _onSendTap,
         featureActiveConfig: const FeatureActiveConfig(
           lastSeenAgoBuilderVisibility: true,
           receiptsBuilderVisibility: true,
+          enablePagination: true,
+          enableReactionPopup: false,
+          enableDoubleTapToLike: false,
         ),
         chatViewState: ChatViewState.hasMessages,
         chatViewStateConfig: ChatViewStateConfiguration(
@@ -139,6 +167,7 @@ class _ChatScreenState extends State<ChatScreen> {
           backgroundColor: theme.backgroundColor,
         ),
         sendMessageConfig: SendMessageConfiguration(
+
           imagePickerIconsConfig: ImagePickerIconsConfiguration(
             cameraIconColor: theme.cameraIconColor,
             galleryIconColor: theme.galleryIconColor,

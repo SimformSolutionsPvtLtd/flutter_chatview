@@ -159,59 +159,52 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      reverse: true,
-      // When reaction popup is being appeared at that user should not scroll.
-      physics: showPopUp ? const NeverScrollableScrollPhysics() : null,
-      padding: EdgeInsets.only(bottom: showTypingIndicator ? 50 : 0),
-      controller: widget.scrollController,
-      child: Column(
-        children: [
-          GestureDetector(
-            onHorizontalDragUpdate: (details) => isEnableSwipeToSeeTime
-                ? showPopUp
-                    ? null
-                    : _onHorizontalDrag(details)
-                : null,
-            onHorizontalDragEnd: (details) => isEnableSwipeToSeeTime
-                ? showPopUp
-                    ? null
-                    : _animationController?.reverse()
-                : null,
-            onTap: widget.onChatListTap,
-            child: _animationController != null
-                ? AnimatedBuilder(
-                    animation: _animationController!,
-                    builder: (context, child) {
-                      return _chatStreamBuilder;
-                    },
-                  )
-                : _chatStreamBuilder,
-          ),
-          widget.showTypingIndicator
-              ? TypingIndicator(
-                  typeIndicatorConfig: widget.typeIndicatorConfig,
-                  chatBubbleConfig: chatBubbleConfig?.inComingChatBubbleConfig,
-                  showIndicator: widget.showTypingIndicator,
-                  profilePic: profileCircleConfig?.profileImageUrl,
+    return Column(
+      children: [
+        GestureDetector(
+          onHorizontalDragUpdate: (details) => isEnableSwipeToSeeTime
+              ? showPopUp
+                  ? null
+                  : _onHorizontalDrag(details)
+              : null,
+          onHorizontalDragEnd: (details) => isEnableSwipeToSeeTime
+              ? showPopUp
+                  ? null
+                  : _animationController?.reverse()
+              : null,
+          onTap: widget.onChatListTap,
+          child: _animationController != null
+              ? AnimatedBuilder(
+                  animation: _animationController!,
+                  builder: (context, child) {
+                    return _chatStreamBuilder;
+                  },
                 )
-              : ValueListenableBuilder(
-                  valueListenable: ChatViewInheritedWidget.of(context)!
-                      .chatController
-                      .typingIndicatorNotifier,
-                  builder: (context, value, child) => TypingIndicator(
-                        typeIndicatorConfig: widget.typeIndicatorConfig,
-                        chatBubbleConfig:
-                            chatBubbleConfig?.inComingChatBubbleConfig,
-                        showIndicator: value,
-                        profilePic: profileCircleConfig?.profileImageUrl,
-                      )),
-          SizedBox(
-            height: MediaQuery.of(context).size.width *
-                (widget.replyMessage.message.isNotEmpty ? 0.3 : 0.14),
-          ),
-        ],
-      ),
+              : _chatStreamBuilder,
+        ),
+        widget.showTypingIndicator
+            ? TypingIndicator(
+                typeIndicatorConfig: widget.typeIndicatorConfig,
+                chatBubbleConfig: chatBubbleConfig?.inComingChatBubbleConfig,
+                showIndicator: widget.showTypingIndicator,
+                profilePic: profileCircleConfig?.profileImageUrl,
+              )
+            : ValueListenableBuilder(
+                valueListenable: ChatViewInheritedWidget.of(context)!
+                    .chatController
+                    .typingIndicatorNotifier,
+                builder: (context, value, child) => TypingIndicator(
+                      typeIndicatorConfig: widget.typeIndicatorConfig,
+                      chatBubbleConfig:
+                          chatBubbleConfig?.inComingChatBubbleConfig,
+                      showIndicator: value,
+                      profilePic: profileCircleConfig?.profileImageUrl,
+                    )),
+        SizedBox(
+          height: MediaQuery.of(context).size.width *
+              (widget.replyMessage.message.isNotEmpty ? 0.3 : 0.14),
+        ),
+      ],
     );
   }
 

@@ -181,67 +181,67 @@ class _ChatListWidgetState extends State<ChatListWidget>
             }
           },
         ),
-        Expanded(
-          child: ValueListenableBuilder<bool>(
-            valueListenable: showPopUp,
-            builder: (_, showPopupValue, child) {
-              return Stack(
-                children: [
-                  ChatGroupedListWidget(
+        ValueListenableBuilder<bool>(
+          valueListenable: showPopUp,
+          builder: (_, showPopupValue, child) {
+            return Stack(
+              children: [
+                ChatGroupedListWidget(
+                  showPopUp: showPopupValue,
+                  showTypingIndicator: showTypingIndicator,
+                  scrollController: scrollController,
+                  isEnableSwipeToSeeTime:
+                      featureActiveConfig?.enableSwipeToSeeTime ?? true,
+                  chatBackgroundConfig: widget.chatBackgroundConfig,
+                  assignReplyMessage: widget.assignReplyMessage,
+                  replyMessage: widget.replyMessage,
+                  swipeToReplyConfig: widget.swipeToReplyConfig,
+                  repliedMessageConfig: widget.repliedMessageConfig,
+                  profileCircleConfig: widget.profileCircleConfig,
+                  messageConfig: widget.messageConfig,
+                  chatBubbleConfig: widget.chatBubbleConfig,
+                  typeIndicatorConfig: widget.typeIndicatorConfig,
+                  onChatBubbleLongPress: (yCoordinate, xCoordinate, message) {
+                    if (featureActiveConfig?.enableReactionPopup ?? false) {
+                      debugPrint(
+                          'current offset = ${scrollController.position.pixels}\n yCoordinate -> $yCoordinate');
+                      _reactionPopupKey.currentState?.refreshWidget(
+                        message: message,
+                        xCoordinate: xCoordinate,
+                        yCoordinate://scrollController.position.pixels,
+                           yCoordinate < 0 ? -(yCoordinate) - 5 : yCoordinate,
+                      );
+                      showPopUp.value = true;
+                    }
+                    if (featureActiveConfig?.enableReplySnackBar ?? false) {
+                      _showReplyPopup(
+                        message: message,
+                        sendByCurrentUser: message.sendBy == currentUser?.id,
+                      );
+                    }
+                  },
+                  onChatListTap: _onChatListTap,
+                ),
+                if (featureActiveConfig?.enableReactionPopup ?? false)
+                  ReactionPopup(
+                    key: _reactionPopupKey,
+                    reactionPopupConfig: widget.reactionPopupConfig,
+                    onTap: _onChatListTap,
                     showPopUp: showPopupValue,
-                    showTypingIndicator: showTypingIndicator,
-                    scrollController: scrollController,
-                    isEnableSwipeToSeeTime:
-                        featureActiveConfig?.enableSwipeToSeeTime ?? true,
-                    chatBackgroundConfig: widget.chatBackgroundConfig,
-                    assignReplyMessage: widget.assignReplyMessage,
-                    replyMessage: widget.replyMessage,
-                    swipeToReplyConfig: widget.swipeToReplyConfig,
-                    repliedMessageConfig: widget.repliedMessageConfig,
-                    profileCircleConfig: widget.profileCircleConfig,
-                    messageConfig: widget.messageConfig,
-                    chatBubbleConfig: widget.chatBubbleConfig,
-                    typeIndicatorConfig: widget.typeIndicatorConfig,
-                    onChatBubbleLongPress: (yCoordinate, xCoordinate, message) {
-                      if (featureActiveConfig?.enableReactionPopup ?? false) {
-                        _reactionPopupKey.currentState?.refreshWidget(
-                          message: message,
-                          xCoordinate: xCoordinate,
-                          yCoordinate: yCoordinate < 0
-                              ? -(yCoordinate) - 5
-                              : yCoordinate,
-                        );
-                        showPopUp.value = true;
-                      }
-                      if (featureActiveConfig?.enableReplySnackBar ?? false) {
-                        _showReplyPopup(
-                          message: message,
-                          sendByCurrentUser: message.sendBy == currentUser?.id,
-                        );
-                      }
-                    },
-                    onChatListTap: _onChatListTap,
                   ),
-                  if (featureActiveConfig?.enableReactionPopup ?? false)
-                    ReactionPopup(
-                      key: _reactionPopupKey,
-                      reactionPopupConfig: widget.reactionPopupConfig,
-                      onTap: _onChatListTap,
-                      showPopUp: showPopupValue,
-                    ),
-                ],
-              );
-            },
-          ),
+              ],
+            );
+          },
         ),
       ],
     );
   }
 
   void _pagination() {
+    debugPrint('current scroll-offset -> ${scrollController.position.pixels}');
     if (widget.loadMoreData == null || widget.isLastPage == true) return;
     if ((scrollController.position.pixels ==
-            scrollController.position.maxScrollExtent) &&
+            scrollController.position.minScrollExtent) &&
         !_isNextPageLoading.value) {
       _isNextPageLoading.value = true;
       widget.loadMoreData!()
