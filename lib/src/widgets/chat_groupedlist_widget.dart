@@ -274,14 +274,35 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
   }
 
   Widget get _chatStreamBuilder {
+    DateTime? lastMatchedDate;
+
     return StreamBuilder<List<Message>>(
       stream: chatController?.messageStreamController.stream,
       builder: (context, snapshot) {
         return snapshot.connectionState.isActive
-            ? GroupedListView<Message, String>(
+            ? GroupedListView<Message, DateTime>(
                 shrinkWrap: true,
                 elements: snapshot.data!,
-                groupBy: (element) => element.createdAt.getDateFromDateTime,
+                groupBy: (element) {
+                  if (lastMatchedDate == null) {
+                    lastMatchedDate = element.createdAt;
+                    return element.createdAt;
+                  }
+
+                  /// when conversation is going-on on same date we return
+                  /// same date [lastMatchedDate]
+                  else if (lastMatchedDate!.getDateFromDateTime ==
+                      element.createdAt.getDateFromDateTime) {
+                    return lastMatchedDate!;
+                  }
+
+                  /// When conversation start at new date we are assigning new
+                  /// date to [lastMatchedDate]
+                  else {
+                    lastMatchedDate = element.createdAt;
+                    return element.createdAt;
+                  }
+                },
                 itemComparator: (message1, message2) =>
                     message1.message.compareTo(message2.message),
                 physics: const NeverScrollableScrollPhysics(),
@@ -350,8 +371,8 @@ class _GroupSeparatorBuilder extends StatelessWidget {
     this.groupSeparatorBuilder,
     this.defaultGroupSeparatorConfig,
   }) : super(key: key);
-  final String separator;
-  final StringWithReturnWidget? groupSeparatorBuilder;
+  final DateTime separator;
+  final MessageGroupSeparator? groupSeparatorBuilder;
   final DefaultGroupSeparatorConfiguration? defaultGroupSeparatorConfig;
 
   @override
@@ -359,7 +380,7 @@ class _GroupSeparatorBuilder extends StatelessWidget {
     return groupSeparatorBuilder != null
         ? groupSeparatorBuilder!(separator)
         : ChatGroupHeader(
-            day: DateTime.parse(separator),
+            day: separator,
             groupSeparatorConfig: defaultGroupSeparatorConfig,
           );
   }
