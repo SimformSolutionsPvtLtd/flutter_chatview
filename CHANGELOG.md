@@ -1,3 +1,8 @@
+## [1.4.0] (UnReleased)
+
+* **Feat**: [93](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/93)Added support
+  of date-time format for the groupSeparatorBuilder of 'ChatBackgroundConfiguration' class.
+
 ## [1.3.1]
 
 * **Feat**: [105](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/105) Allow user 

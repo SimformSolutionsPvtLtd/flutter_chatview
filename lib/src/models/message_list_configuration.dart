@@ -44,7 +44,7 @@ class ChatBackgroundConfiguration {
   final double? width;
 
   /// Provides configurations of chat separator widget.
-  final StringWithReturnWidget? groupSeparatorBuilder;
+  final MessageGroupSeparator? groupSeparatorBuilder;
 
   /// Used to define the order of a [GroupedListView] or [SliverGroupedListView].
   final GroupedListOrder groupedListOrder;

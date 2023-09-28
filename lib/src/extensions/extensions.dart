@@ -31,14 +31,14 @@ import '../utils/package_strings.dart';
 extension TimeDifference on DateTime {
   String get getDay {
     final DateTime formattedDate = DateFormat(dateFormat).parse(toString());
-    final DateFormat formatter = DateFormat.yMMMMd(enUS);
+    final DateFormat formatter = DateFormat(dateFormatWithTime,enUS);
     final differenceInDays = formattedDate.difference(DateTime.now()).inDays;
     if (differenceInDays == 0) {
       return PackageStrings.today;
     } else if (differenceInDays <= 1 && differenceInDays >= -1) {
       return PackageStrings.yesterday;
     } else {
-      return formatter.format(formattedDate);
+      return formatter.format(this);
     }
   }
 

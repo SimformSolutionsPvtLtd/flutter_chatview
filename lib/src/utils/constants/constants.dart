@@ -32,6 +32,7 @@ const String emojiRegExpression =
 const String imageUrlRegExpression =
     r'(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png|jpeg)';
 const String dateFormat = "yyyy-MM-dd";
+const String dateFormatWithTime = "E, d MMM yyyy HH:mm";
 const String jpg = ".jpg";
 const String png = ".png";
 const String jpeg = ".jpeg";

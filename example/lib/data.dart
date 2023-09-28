@@ -7,14 +7,19 @@ class Data {
     Message(
       id: '1',
       message: "Hi!",
-      createdAt: DateTime.now(),
-      sendBy: '1', // userId of who sends the message
+      createdAt: DateTime.now().copyWith(
+        day: DateTime.now().day - 2,
+      ),
+      sendBy: '1',
+      // userId of who sends the message
       status: MessageStatus.read,
     ),
     Message(
       id: '2',
       message: "Hi!",
-      createdAt: DateTime.now(),
+      createdAt: DateTime.now().copyWith(
+        day: DateTime.now().day - 1,
+      ),
       sendBy: '2',
       status: MessageStatus.read,
     ),
