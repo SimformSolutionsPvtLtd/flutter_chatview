@@ -21,10 +21,12 @@
  */
 import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/utils/measure_size.dart';
+import 'package:chatview/src/utils/package_strings.dart';
 import 'package:chatview/src/widgets/reactions_bottomsheet.dart';
 import 'package:flutter/material.dart';
 
 import '../../chatview.dart';
+import '../utils/constants/constants.dart';
 
 class ReactionWidget extends StatefulWidget {
   const ReactionWidget({
@@ -65,8 +67,10 @@ class _ReactionWidgetState extends State<ReactionWidget> {
 
   @override
   Widget build(BuildContext context) {
-    //// Convert into set to remove reduntant values
+    //// Convert into set to remove redundant values
     final reactionsSet = widget.reaction.reactions.toSet();
+    final isGroupChat = widget.reaction.reactedUserIds.length > 2;
+
     return Positioned(
       bottom: 0,
       right: widget.isMessageBySender && needToExtend ? 0 : null,
@@ -103,7 +107,12 @@ class _ReactionWidgetState extends State<ReactionWidget> {
             child: Row(
               children: [
                 Text(
-                  reactionsSet.join(' '),
+                  isGroupChat
+                      ? reactionsSet
+                          .take(messageReactionConfig?.reactionCount ??
+                              messageReactionCount)
+                          .join(PackageStrings.emptyString)
+                      : reactionsSet.join(PackageStrings.emptyString),
                   style: TextStyle(
                     fontSize: messageReactionConfig?.reactionSize ?? 13,
                   ),
