@@ -471,6 +471,30 @@ ChatView(
 )
 ```
 
+19. Configure the styling & audio recording quality using `VoiceRecordingConfiguration` in sendMessageConfig.
+
+```dart
+ChatView(
+    ...
+      sendMessageConfig: SendMessageConfiguration(
+
+            voiceRecordingConfiguration: VoiceRecordingConfiguration(
+            iosEncoder: IosEncoder.kAudioFormatAMR, // default is kAudioFormatMPEG4AAC
+            androidOutputFormat: AndroidOutputFormat.aac_adts, // default is mpeg4
+            androidEncoder: AndroidEncoder.amr_nb, // default is aac, 
+            bitRate: 128000, // default is null
+            sampleRate: 44100,
+            waveStyle: WaveStyle(
+                showMiddleLine: false,
+                waveColor: theme.waveColor ?? Colors.white,
+                extendWaveform: true,
+            ),
+        ),
+    
+    ...
+  )
+)
+```
 
 
 ## How to use
