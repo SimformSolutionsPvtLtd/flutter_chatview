@@ -58,6 +58,7 @@ const double replyBorderRadius1 = 30;
 const double replyBorderRadius2 = 18;
 const double leftPadding3 = 12;
 const double textFieldBorderRadius = 27;
+const int messageReactionCount = 3;
 
 applicationDateFormatter(DateTime inputTime) {
   if (DateTime.now().difference(inputTime).inDays <= 3) {

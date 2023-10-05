@@ -34,4 +34,5 @@ class PackageStrings {
   static const String photo = "Photo";
   static const String send = "Send";
   static const String you = "You";
+  static const String emptyString = ' ';
 }

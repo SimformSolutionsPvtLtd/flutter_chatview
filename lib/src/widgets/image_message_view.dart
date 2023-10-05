@@ -74,6 +74,7 @@ class ImageMessageView extends StatelessWidget {
       children: [
         if (isMessageBySender) iconButton,
         Stack(
+          clipBehavior: Clip.none,
           children: [
             GestureDetector(
               onTap: () => imageMessageConfig?.onTap != null

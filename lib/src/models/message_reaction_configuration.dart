@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'package:chatview/src/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 class MessageReactionConfiguration {
@@ -59,6 +60,10 @@ class MessageReactionConfiguration {
   /// Used for padding to reacted user profile circle.
   final EdgeInsets? profileCirclePadding;
 
+  /// Maximum number of reaction(emoji) to be visible on a message.
+  /// Default value is 3.
+  final int reactionCount;
+
   const MessageReactionConfiguration({
     this.reactionsBottomSheetConfig,
     this.reactionCountTextStyle,
@@ -72,6 +77,7 @@ class MessageReactionConfiguration {
     this.borderWidth,
     this.profileCircleRadius,
     this.profileCirclePadding,
+    this.reactionCount = messageReactionCount,
   });
 }
 
