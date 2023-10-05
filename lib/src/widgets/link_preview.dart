@@ -20,18 +20,26 @@
  * SOFTWARE.
  */
 import 'package:any_link_preview/any_link_preview.dart';
+import 'package:chatview/chatview.dart';
 import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/models/link_preview_configuration.dart';
+import 'package:chatview/src/values/typedefs.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../utils/constants/constants.dart';
+import 'chat_view_inherited_widget.dart';
+import 'message_time_widget.dart';
 
 class LinkPreview extends StatelessWidget {
   const LinkPreview({
     Key? key,
     required this.url,
+    required this.message,
+    required this.isMessageBySender,
+    this.messageDateTimeBuilder,
     this.linkPreviewConfig,
+    this.messageTimeTextStyle,
   }) : super(key: key);
 
   /// Provides url which is passed in message.
@@ -41,8 +49,21 @@ class LinkPreview extends StatelessWidget {
   /// in message.
   final LinkPreviewConfiguration? linkPreviewConfig;
 
+  final MessageDateTimeBuilder? messageDateTimeBuilder;
+
+  final Message message;
+
+  final bool isMessageBySender;
+
+  /// Used to give text style of message's time of a chat bubble
+  final TextStyle? messageTimeTextStyle;
+
   @override
   Widget build(BuildContext context) {
+    final messageTimePositionType = ChatViewInheritedWidget.of(context)
+            ?.featureActiveConfig
+            .messageTimePositionType ??
+        MessageTimePositionType.onRightSwipe;
     return Padding(
       padding: linkPreviewConfig?.padding ??
           const EdgeInsets.symmetric(horizontal: 6, vertical: verticalPadding),
@@ -96,6 +117,16 @@ class LinkPreview extends StatelessWidget {
                   ),
             ),
           ),
+          if (messageTimePositionType.isInsideChatBubble)
+            Align(
+              alignment: Alignment.bottomRight,
+              child: messageDateTimeBuilder?.call(message.createdAt) ??
+                  MessageTimeWidget(
+                    messageTime: message.createdAt,
+                    isCurrentUser: isMessageBySender,
+                    messageTimeTextStyle: messageTimeTextStyle,
+                  ),
+            ),
         ],
       ),
     );

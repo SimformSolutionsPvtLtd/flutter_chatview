@@ -192,7 +192,7 @@ class _ChatListWidgetState extends State<ChatListWidget>
                     showTypingIndicator: showTypingIndicator,
                     scrollController: scrollController,
                     isEnableSwipeToSeeTime:
-                        featureActiveConfig?.enableSwipeToSeeTime ?? true,
+                        featureActiveConfig?.messageTimePositionType.isOnRightSwipe ?? true,
                     chatBackgroundConfig: widget.chatBackgroundConfig,
                     assignReplyMessage: widget.assignReplyMessage,
                     replyMessage: widget.replyMessage,

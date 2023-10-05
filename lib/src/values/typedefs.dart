@@ -35,3 +35,4 @@ typedef VoidCallBackWithFuture = Future<void> Function();
 typedef StringsCallBack = void Function(String emoji, String messageId);
 typedef StringWithReturnWidget = Widget Function(String separator);
 typedef DragUpdateDetailsCallback = void Function(DragUpdateDetails);
+typedef MessageDateTimeBuilder = Widget Function(DateTime date);

@@ -1,9 +1,10 @@
+import 'package:chatview/chatview.dart';
+
 class FeatureActiveConfig {
   const FeatureActiveConfig({
     this.enableSwipeToReply = true,
     this.enableReactionPopup = true,
     this.enableTextField = true,
-    this.enableSwipeToSeeTime = true,
     this.enableCurrentUserProfileAvatar = false,
     this.enableOtherUserProfileAvatar = true,
     this.enableReplySnackBar = true,
@@ -12,8 +13,8 @@ class FeatureActiveConfig {
     this.enableDoubleTapToLike = true,
     this.lastSeenAgoBuilderVisibility = true,
     this.receiptsBuilderVisibility = true,
-  });
-
+    this.messageTimePositionType = MessageTimePositionType.onRightSwipe,
+  }) ;
   /// Used for enable/disable swipe to reply.
   final bool enableSwipeToReply;
 
@@ -22,9 +23,6 @@ class FeatureActiveConfig {
 
   /// Used for enable/disable text field.
   final bool enableTextField;
-
-  /// Used for enable/disable swipe whole chat to see message created time.
-  final bool enableSwipeToSeeTime;
 
   /// Used for enable/disable current user profile circle.
   final bool enableCurrentUserProfileAvatar;
@@ -49,4 +47,8 @@ class FeatureActiveConfig {
 
   /// Controls the visibility of the message [receiptsBuilder]
   final bool receiptsBuilderVisibility;
+
+  /// Controls the Position of message created time.
+  /// default value: onRightSwipe
+  final MessageTimePositionType messageTimePositionType;
 }

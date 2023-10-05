@@ -19,9 +19,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'package:chatview/src/models/models.dart';
+import 'package:chatview/chatview.dart';
 import 'package:chatview/src/models/voice_message_configuration.dart';
 import 'package:flutter/material.dart';
+
 
 class MessageConfiguration {
   /// Provides configuration of image message appearance.
@@ -39,11 +40,19 @@ class MessageConfiguration {
   /// Configurations for voice message bubble
   final VoiceMessageConfiguration? voiceMessageConfig;
 
+  /// Allow user to set custom formatting of message time.
+  final MessageDateTimeBuilder? messageDateTimeBuilder;
+
+  /// Used to give text style of message's time of a chat bubble
+  final TextStyle? messageTimeTextStyle;
+
   const MessageConfiguration({
     this.imageMessageConfig,
     this.messageReactionConfig,
     this.emojiMessageConfig,
     this.customMessageBuilder,
     this.voiceMessageConfig,
+    this.messageDateTimeBuilder,
+    this.messageTimeTextStyle,
   });
 }

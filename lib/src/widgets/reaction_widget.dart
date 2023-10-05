@@ -24,18 +24,18 @@ import 'package:chatview/src/utils/measure_size.dart';
 import 'package:chatview/src/widgets/reactions_bottomsheet.dart';
 import 'package:flutter/material.dart';
 
-import '../../chatview.dart';
+import 'package:chatview/chatview.dart';
 
 class ReactionWidget extends StatefulWidget {
   const ReactionWidget({
     Key? key,
-    required this.reaction,
+    required this.message,
     this.messageReactionConfig,
     required this.isMessageBySender,
   }) : super(key: key);
 
   /// Provides reaction instance of message.
-  final Reaction reaction;
+  final Message message;
 
   /// Provides configuration of reaction appearance in chat bubble.
   final MessageReactionConfiguration? messageReactionConfig;
@@ -66,7 +66,8 @@ class _ReactionWidgetState extends State<ReactionWidget> {
   @override
   Widget build(BuildContext context) {
     //// Convert into set to remove reduntant values
-    final reactionsSet = widget.reaction.reactions.toSet();
+    final reactionsSet = widget.message.reaction.reactions.toSet();
+
     return Positioned(
       bottom: 0,
       right: widget.isMessageBySender && needToExtend ? 0 : null,
@@ -74,7 +75,7 @@ class _ReactionWidgetState extends State<ReactionWidget> {
         onTap: () => chatController != null
             ? ReactionsBottomSheet().show(
                 context: context,
-                reaction: widget.reaction,
+                reaction: widget.message.reaction,
                 chatController: chatController!,
                 reactionsBottomSheetConfig:
                     messageReactionConfig?.reactionsBottomSheetConfig,
@@ -91,8 +92,10 @@ class _ReactionWidgetState extends State<ReactionWidget> {
                   right: 10,
                 ),
             decoration: BoxDecoration(
-              color: messageReactionConfig?.backgroundColor ??
-                  Colors.grey.shade200,
+              color: Colors.green,
+
+              // messageReactionConfig?.backgroundColor ??
+              //     Colors.grey.shade200,
               borderRadius: messageReactionConfig?.borderRadius ??
                   BorderRadius.circular(16),
               border: Border.all(
@@ -109,12 +112,12 @@ class _ReactionWidgetState extends State<ReactionWidget> {
                   ),
                 ),
                 if ((chatController?.chatUsers.length ?? 0) > 1) ...[
-                  if (!(widget.reaction.reactedUserIds.length > 3) &&
+                  if (!(widget.message.reaction.reactedUserIds.length > 3) &&
                       !(reactionsSet.length > 1))
                     ...List.generate(
-                      widget.reaction.reactedUserIds.length,
+                      widget.message.reaction.reactedUserIds.length,
                       (reactedUserIndex) => widget
-                          .reaction.reactedUserIds[reactedUserIndex]
+                          .message.reaction.reactedUserIds[reactedUserIndex]
                           .getUserProfilePicture(
                         getChatUser: (userId) =>
                             chatController?.getUserFromId(userId),
@@ -124,12 +127,12 @@ class _ReactionWidgetState extends State<ReactionWidget> {
                             messageReactionConfig?.profileCircleRadius,
                       ),
                     ),
-                  if (widget.reaction.reactedUserIds.length > 3 &&
+                  if (widget.message.reaction.reactedUserIds.length > 3 &&
                       !(reactionsSet.length > 1))
                     Padding(
                       padding: const EdgeInsets.only(left: 2),
                       child: Text(
-                        '+${widget.reaction.reactedUserIds.length}',
+                        '+${widget.message.reaction.reactedUserIds.length}',
                         style:
                             messageReactionConfig?.reactedUserCountTextStyle ??
                                 _reactionTextStyle,
@@ -139,7 +142,8 @@ class _ReactionWidgetState extends State<ReactionWidget> {
                     Padding(
                       padding: const EdgeInsets.only(left: 2),
                       child: Text(
-                        widget.reaction.reactedUserIds.length.toString(),
+                        widget.message.reaction.reactedUserIds.length
+                            .toString(),
                         style: messageReactionConfig?.reactionCountTextStyle ??
                             _reactionTextStyle,
                       ),

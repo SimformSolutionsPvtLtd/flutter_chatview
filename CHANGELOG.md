@@ -1,27 +1,35 @@
+## [1.4.0] (UnReleased)
+
+* **Feat**: [115](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/115) Added
+  option for showing message sent/received time in message bubble. Removed 'enableSwipeToSeeTime'
+  & added 'messageTimePositionType' to FeatureActiveConfig class for changing position of message
+  time.
+
 ## [1.3.1]
 
-* **Feat**: [105](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/105) Allow user 
-  to get callback when image is picked so user can perform operation like crop. Allow user to pass 
+* **Feat**: [105](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/105) Allow user
+  to get callback when image is picked so user can perform operation like crop. Allow user to pass
   configuration like height, width, image quality and preferredCameraDevice.
-* **Fix**: [95](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/95) Fix issue of 
+* **Fix**: [95](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/95) Fix issue of
   chat is added to bottom while `loadMoreData` callback.
-* **Fix**: [109](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/109) Added 
-  support for the hiding/Un-hiding gallery and camera buttons 
- 
+* **Fix**: [109](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/109) Added
+  support for the hiding/Un-hiding gallery and camera buttons
+
 ## [1.3.0]
 
 * **Feat**: [71](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/71) Added Callback
   when a user starts/stops composing typing a message.
 * **Fix**: [78](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/78) Fix issue of
   unmodifiable list.
-* **Feat**: [76](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/76) Message Receipts.
+* **Feat**: [76](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/76) Message
+  Receipts.
 * **Fix**: [81](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/81) Fix issue of
   TypingIndicator Rebuilding ChatView.
 * **Fix**: [94](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/94) Fixed deprecated
   `showRecentsTab` property with new `recentTabBehavior`.
 * Support for latest flutter version `3.10.5`.
-* Update dependencies `http` to version `1.1.0` and `image_picker` to version range `'>=0.8.9 <2.0.0'`.
-
+* Update dependencies `http` to version `1.1.0` and `image_picker` to version
+  range `'>=0.8.9 <2.0.0'`.
 
 ## [1.2.1]
 
@@ -29,42 +37,43 @@
   file is not loaded.
 * **Fix**: [61](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/61) Fix issue of
   audio message is not working.
-* **Feat**: [65](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/65) Add callback 
+* **Feat**: [65](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/65) Add callback
   when user react on message.
-
 
 ## [1.2.0+1]
 
-* **Feat**: [42](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/42) Ability to 
+* **Feat**: [42](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/42) Ability to
   get callback on tap of profile circle avatar.
 * **Breaking**: Add `messageType` in `onSendTap` callback for encountering messages.
 * **Breaking**: Remove `onRecordingComplete` and you can get Recorded audio in `onSendTap` callback
   with `messageType`.
 * **Breaking**: Remove `onImageSelected` from `ImagePickerIconsConfiguration` and can get selected
   image in `onSendTap` callback with `messageType`.
-* **Feat**: [49](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/49) Add `onUrlDetect`
+* **Feat**: [49](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/49)
+  Add `onUrlDetect`
   callback for opening urls.
 * **Feat**: [51](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/51) Ability to
   get callback on long press of profile circle avatar.
 
 ## [1.1.0]
 
-* **Feat**: [37](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/37) Ability to 
+* **Feat**: [37](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/37) Ability to
   enable or disable specific features.
 * **Feat**: [34](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/34) Ability to
   add voice message.
 * **Breaking**: Remove `onEmojiTap` from `ReactionPopupConfiguration`, it can be handled internally.
-* **Breaking**: Remove `horizontalDragToShowMessageTime` from `ChatBackgroundConfiguration` and 
+* **Breaking**: Remove `horizontalDragToShowMessageTime` from `ChatBackgroundConfiguration` and
   add `enableSwipeToSeeTime` parameter with same feature in `FeatureActiveConfig`.
 * **Breaking**: Remove `showReceiverProfileCircle` and add `enableOtherUserProfileAvatar` parameter
   with same feature in `FeatureActiveConfig`.
-* * **Breaking**: Move `enablePagination` parameter from `ChatView` to `FeatureActiveConfig`.
+*
+    * **Breaking**: Move `enablePagination` parameter from `ChatView` to `FeatureActiveConfig`.
 
 ## [1.0.1]
 
-* **Fix**: [32](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/32) Fix issue of 
+* **Fix**: [32](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/32) Fix issue of
   while replying to image it highlights the link instead of the image.
-* **Fix**: [35](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/35) Fix issue of 
+* **Fix**: [35](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/35) Fix issue of
   removing reaction which is reacted accidentally.
 
 ## [1.0.0+1]

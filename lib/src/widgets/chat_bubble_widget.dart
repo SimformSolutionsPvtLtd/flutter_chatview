@@ -127,13 +127,16 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
     final messagedUser = chatController?.getUserFromId(widget.message.sendBy);
     return Stack(
       children: [
-        if (featureActiveConfig?.enableSwipeToSeeTime ?? true) ...[
+        if (featureActiveConfig?.messageTimePositionType.isOnRightSwipe ??
+            true) ...[
           Visibility(
             visible: widget.slideAnimation?.value.dx == 0.0 ? false : true,
             child: Positioned.fill(
               child: Align(
                 alignment: Alignment.centerRight,
                 child: MessageTimeWidget(
+                  messageDateTimeBuilder:
+                      widget.messageConfig?.messageDateTimeBuilder,
                   messageTime: widget.message.createdAt,
                   isCurrentUser: isMessageBySender,
                   messageTimeIconColor: widget.messageTimeIconColor,
@@ -297,15 +300,36 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
       crossAxisAlignment:
           isMessageBySender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       children: [
-        if ((chatController?.chatUsers.length ?? 0) > 1 && !isMessageBySender)
+        if ((chatController?.chatUsers.length ?? 0) > 1)
           Padding(
             padding:
                 widget.chatBubbleConfig?.inComingChatBubbleConfig?.padding ??
                     const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            child: Text(
-              messagedUser?.name ?? '',
-              style: widget.chatBubbleConfig?.inComingChatBubbleConfig
-                  ?.senderNameTextStyle,
+            child: Row(
+              mainAxisAlignment: isMessageBySender
+                  ? MainAxisAlignment.end
+                  : MainAxisAlignment.start,
+              children: [
+                if (!isMessageBySender)
+                  Text(
+                    messagedUser?.name ?? '',
+                    style: widget.chatBubbleConfig?.inComingChatBubbleConfig
+                        ?.senderNameTextStyle,
+                  ),
+                if (featureActiveConfig
+                        ?.messageTimePositionType.isOutSideChatBubbleAtTop ??
+                    false) ...[
+                  const SizedBox(width: 4),
+                  widget.messageConfig?.messageDateTimeBuilder
+                          ?.call(widget.message.createdAt) ??
+                      MessageTimeWidget(
+                        isCurrentUser: isMessageBySender,
+                        messageTime: widget.message.createdAt,
+                        messageTimeTextStyle:
+                            widget.messageConfig?.messageTimeTextStyle,
+                      ),
+                ]
+              ],
             ),
           ),
         if (replyMessage.isNotEmpty)
@@ -352,6 +376,7 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
                   ?.repliedMsgAutoScrollConfig.highlightScale ??
               1.1,
           onMaxDuration: _onMaxDuration,
+          profileCircleConfig: profileCircleConfig,
         ),
       ],
     );

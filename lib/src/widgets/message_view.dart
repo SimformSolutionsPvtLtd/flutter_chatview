@@ -26,6 +26,7 @@ import 'package:flutter/material.dart';
 import 'package:chatview/src/extensions/extensions.dart';
 import '../utils/constants/constants.dart';
 import 'image_message_view.dart';
+import 'message_time_widget.dart';
 import 'text_message_view.dart';
 import 'reaction_widget.dart';
 import 'voice_message_view.dart';
@@ -37,6 +38,7 @@ class MessageView extends StatefulWidget {
     required this.isMessageBySender,
     required this.onLongPress,
     required this.isLongPressEnable,
+    required this.profileCircleConfig,
     this.chatBubbleMaxWidth,
     this.inComingChatBubbleConfig,
     this.outgoingChatBubbleConfig,
@@ -93,6 +95,9 @@ class MessageView extends StatefulWidget {
   final ChatController? controller;
 
   final Function(int)? onMaxDuration;
+
+  /// Provides configuration related to user profile circle avatar.
+  final ProfileCircleConfiguration? profileCircleConfig;
 
   @override
   State<MessageView> createState() => _MessageViewState();
@@ -155,8 +160,12 @@ class _MessageViewState extends State<MessageView>
   }
 
   Widget get _messageView {
+    final messageTimePositionType =
+        provide?.featureActiveConfig.messageTimePositionType ??
+            MessageTimePositionType.onRightSwipe;
     final message = widget.message.message;
     final emojiMessageConfiguration = messageConfig?.emojiMessageConfig;
+
     return Padding(
       padding: EdgeInsets.only(
         bottom: widget.message.reaction.reactions.isNotEmpty ? 6 : 0,
@@ -177,7 +186,9 @@ class _MessageViewState extends State<MessageView>
                               leftPadding2,
                               widget.message.reaction.reactions.isNotEmpty
                                   ? 14
-                                  : 0,
+                                  : !messageTimePositionType.isOnRightSwipe
+                                      ? 20
+                                      : 0,
                             ),
                         child: Transform.scale(
                           scale: widget.shouldHighlight
@@ -192,10 +203,27 @@ class _MessageViewState extends State<MessageView>
                       ),
                       if (widget.message.reaction.reactions.isNotEmpty)
                         ReactionWidget(
-                          reaction: widget.message.reaction,
+                          message: widget.message,
                           messageReactionConfig:
                               messageConfig?.messageReactionConfig,
                           isMessageBySender: widget.isMessageBySender,
+                        ),
+                      if (!messageTimePositionType.isOnRightSwipe &&
+                          !messageTimePositionType.isDisable &&
+                          !messageTimePositionType.isOutSideChatBubbleAtTop)
+                        Positioned(
+                          bottom: widget.message.reaction.reactions.isNotEmpty
+                              ? -12
+                              : 5,
+                          right: widget.isMessageBySender ? 10 : null,
+                          left: widget.isMessageBySender ? null : 10,
+                          child: messageConfig?.messageDateTimeBuilder
+                                  ?.call(widget.message.createdAt) ??
+                              MessageTimeWidget(
+                                isCurrentUser: widget.isMessageBySender,
+                                messageTime: widget.message.createdAt,
+                                messageTimeTextStyle: messageConfig?.messageTimeTextStyle,
+                              ),
                         ),
                     ],
                   );
@@ -207,6 +235,9 @@ class _MessageViewState extends State<MessageView>
                     messageReactionConfig: messageConfig?.messageReactionConfig,
                     highlightImage: widget.shouldHighlight,
                     highlightScale: widget.highlightScale,
+                    messageDateTimeBuilder:
+                        messageConfig?.messageDateTimeBuilder,
+                    messageTimeTextStyle: messageConfig?.messageTimeTextStyle,
                   );
                 } else if (widget.message.messageType.isText) {
                   return TextMessageView(
@@ -218,6 +249,9 @@ class _MessageViewState extends State<MessageView>
                     messageReactionConfig: messageConfig?.messageReactionConfig,
                     highlightColor: widget.highlightColor,
                     highlightMessage: widget.shouldHighlight,
+                    messageDateTimeBuilder:
+                        messageConfig?.messageDateTimeBuilder,
+                    messageTimeTextStyle: messageConfig?.messageTimeTextStyle,
                   );
                 } else if (widget.message.messageType.isVoice) {
                   return VoiceMessageView(
@@ -229,6 +263,9 @@ class _MessageViewState extends State<MessageView>
                     messageReactionConfig: messageConfig?.messageReactionConfig,
                     inComingChatBubbleConfig: widget.inComingChatBubbleConfig,
                     outgoingChatBubbleConfig: widget.outgoingChatBubbleConfig,
+                    messageDateTimeBuilder:
+                        messageConfig?.messageDateTimeBuilder,
+                    messageTimeTextStyle: messageConfig?.messageTimeTextStyle,
                   );
                 } else if (widget.message.messageType.isCustom &&
                     messageConfig?.customMessageBuilder != null) {
@@ -236,31 +273,36 @@ class _MessageViewState extends State<MessageView>
                 }
               }()) ??
               const SizedBox(),
-          ValueListenableBuilder(
-            valueListenable: widget.message.statusNotifier,
-            builder: (context, value, child) {
-              if (widget.isMessageBySender &&
-                  widget.controller?.initialMessageList.last.id ==
-                      widget.message.id &&
-                  widget.message.status == MessageStatus.read) {
-                if (ChatViewInheritedWidget.of(context)
-                        ?.featureActiveConfig
-                        .lastSeenAgoBuilderVisibility ??
-                    true) {
-                  return widget.outgoingChatBubbleConfig?.receiptsWidgetConfig
-                          ?.lastSeenAgoBuilder
-                          ?.call(
-                              widget.message,
-                              applicationDateFormatter(
-                                  widget.message.createdAt)) ??
-                      lastSeenAgoBuilder(widget.message,
-                          applicationDateFormatter(widget.message.createdAt));
+          Padding(
+            padding: EdgeInsets.only(
+              top: messageTimePositionType.isOutSideChatBubbleAtBottom ? 8 : 0,
+            ),
+            child: ValueListenableBuilder(
+              valueListenable: widget.message.statusNotifier,
+              builder: (context, value, child) {
+                if (widget.isMessageBySender &&
+                    widget.controller?.initialMessageList.last.id ==
+                        widget.message.id &&
+                    widget.message.status == MessageStatus.read) {
+                  if (ChatViewInheritedWidget.of(context)
+                          ?.featureActiveConfig
+                          .lastSeenAgoBuilderVisibility ??
+                      true) {
+                    return widget.outgoingChatBubbleConfig?.receiptsWidgetConfig
+                            ?.lastSeenAgoBuilder
+                            ?.call(
+                                widget.message,
+                                applicationDateFormatter(
+                                    widget.message.createdAt)) ??
+                        lastSeenAgoBuilder(widget.message,
+                            applicationDateFormatter(widget.message.createdAt));
+                  }
+                  return const SizedBox();
                 }
                 return const SizedBox();
-              }
-              return const SizedBox();
-            },
-          )
+              },
+            ),
+          ),
         ],
       ),
     );
