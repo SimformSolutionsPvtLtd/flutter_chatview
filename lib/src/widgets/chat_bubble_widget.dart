@@ -309,15 +309,12 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
             ),
           ),
         if (replyMessage.isNotEmpty)
-          widget.repliedMessageConfig?.repliedMessageWidgetBuilder != null
-              ? widget.repliedMessageConfig!
-                  .repliedMessageWidgetBuilder!(widget.message.replyMessage)
-              : ReplyMessageWidget(
-                  message: widget.message,
-                  repliedMessageConfig: widget.repliedMessageConfig,
-                  onTap: () => widget.onReplyTap
-                      ?.call(widget.message.replyMessage.messageId),
-                ),
+          ReplyMessageWidget(
+            message: widget.message,
+            repliedMessageConfig: widget.repliedMessageConfig,
+            onTap: () =>
+                widget.onReplyTap?.call(widget.message.replyMessage.messageId),
+          ),
         MessageView(
           outgoingChatBubbleConfig:
               widget.chatBubbleConfig?.outgoingChatBubbleConfig,
