@@ -50,6 +50,19 @@ class ReplyMessageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (repliedMessageConfig?.repliedMessageWidgetBuilder != null) {
+      return GestureDetector(
+        onTap: () {
+          if (repliedMessageConfig!.onReplyTapped != null) {
+            repliedMessageConfig!.onReplyTapped!.call(message.replyMessage);
+          }
+          onTap?.call();
+        },
+        child: repliedMessageConfig!
+            .repliedMessageWidgetBuilder!(message.replyMessage),
+      );
+    }
+
     final currentUser = ChatViewInheritedWidget.of(context)?.currentUser;
     final replyBySender = message.replyMessage.replyBy == currentUser?.id;
     final textTheme = Theme.of(context).textTheme;
@@ -59,7 +72,12 @@ class ReplyMessageWidget extends StatelessWidget {
         chatController?.getUserFromId(message.replyMessage.replyBy);
     final replyBy = replyBySender ? PackageStrings.you : messagedUser?.name;
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        if (repliedMessageConfig!.onReplyTapped != null) {
+          repliedMessageConfig!.onReplyTapped!.call(message.replyMessage);
+        }
+        onTap?.call();
+      },
       child: Container(
         margin: repliedMessageConfig?.margin ??
             const EdgeInsets.only(
