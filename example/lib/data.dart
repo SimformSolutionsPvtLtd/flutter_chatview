@@ -8,7 +8,8 @@ class Data {
       id: '1',
       message: "Hi!",
       createdAt: DateTime.now(),
-      sendBy: '1', // userId of who sends the message
+      sendBy: '1',
+      // userId of who sends the message
       status: MessageStatus.read,
     ),
     Message(
@@ -113,5 +114,29 @@ class Data {
       sendBy: '2',
       status: MessageStatus.read,
     ),
+    Message(
+      id: '13',
+      message: "https://dl.espressif.com/dl/audio/ff-16b-2c-44100hz.aac",
+      createdAt: DateTime.now(),
+      sendBy: '2',
+      status: MessageStatus.read,
+      messageType: MessageType.voice,
+    ),
+    Message(
+      id: '14',
+      message: "https://dl.espressif.com/dl/audio/ff-16b-2c-44100hz.mp3",
+      createdAt: DateTime.now(),
+      sendBy: '2',
+      status: MessageStatus.read,
+      messageType: MessageType.voice,
+    ),
+    Message(
+      id: '15',
+      message: "https://dl.espressif.com/dl/audio/ff-16b-2c-44100hz.m4a",
+      createdAt: DateTime.now(),
+      sendBy: '2',
+      status: MessageStatus.read,
+      messageType: MessageType.voice,
+    )
   ];
 }

@@ -1,52 +1,50 @@
-import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/material.dart';
 
 /// A configuration model class for voice message bubble.
 class VoiceMessageConfiguration {
   const VoiceMessageConfiguration({
-    this.playerWaveStyle,
-    this.padding = const EdgeInsets.symmetric(horizontal: 8),
-    this.margin,
-    this.decoration,
-    this.animationCurve,
-    this.animationDuration,
-    this.pauseIcon,
-    this.playIcon,
-    this.waveformMargin,
-    this.waveformPadding,
-    this.enableSeekGesture = true,
+    this.backgroundColor = Colors.white,
+    this.activeSliderColor = Colors.red,
+    this.notActiveSliderColor,
+    this.circlesColor = Colors.red,
+    this.innerPadding = 10,
+    this.cornerRadius = 16,
+    this.size = 38,
+    this.circlesTextStyle = const TextStyle(
+      color: Colors.white,
+      fontSize: 10,
+      fontWeight: FontWeight.bold,
+    ),
+    this.counterTextStyle = const TextStyle(
+      fontSize: 11,
+      fontWeight: FontWeight.w500,
+    ),
   });
 
-  /// Applies style to waveform.
-  final PlayerWaveStyle? playerWaveStyle;
+  /// The background color of the voice message view.
+  final Color backgroundColor;
 
-  /// Applies padding to message bubble.
-  final EdgeInsets padding;
+  ///
+  final Color circlesColor;
 
-  /// Applies margin to message bubble.
-  final EdgeInsets? margin;
+  /// The color of the active slider.
+  final Color activeSliderColor;
 
-  /// Applies padding to waveform.
-  final EdgeInsets? waveformPadding;
+  /// The color of the not active slider.
+  final Color? notActiveSliderColor;
 
-  /// Applies padding to waveform.
-  final EdgeInsets? waveformMargin;
+  /// The text style of the circles.
+  final TextStyle circlesTextStyle;
 
-  /// BoxDecoration for voice message bubble.
-  final BoxDecoration? decoration;
+  /// The text style of the counter.
+  final TextStyle counterTextStyle;
 
-  /// Duration for grow animation for waveform. Default to 500 ms.
-  final Duration? animationDuration;
+  /// The padding between the inner content and the outer container.
+  final double innerPadding;
 
-  /// Curve for for grow animation for waveform. Default to Curve.easeIn.
-  final Curve? animationCurve;
+  /// The corner radius of the outer container.
+  final double cornerRadius;
 
-  /// Icon for playing the audio.
-  final Icon? playIcon;
-
-  /// Icon for pausing audio
-  final Icon? pauseIcon;
-
-  /// Enable/disable seeking with gestures. Enabled by default.
-  final bool enableSeekGesture;
+  /// The size of the play/pause button.
+  final double size;
 }
