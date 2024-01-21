@@ -93,13 +93,21 @@ class Message {
   factory Message.fromJson(Map<String, dynamic> json) => Message(
       id: json["id"],
       message: json["message"],
-      createdAt: json["createdAt"],
+      createdAt: (json["createdAt"] is String)
+          ? DateTime.parse(json["createdAt"])
+          : json["createdAt"],
       sendBy: json["sendBy"],
       replyMessage: ReplyMessage.fromJson(json["reply_message"]),
-      reaction: Reaction.fromJson(json["reaction"]),
-      messageType: json["message_type"],
+      reaction: (json["reaction"] != null)
+          ? Reaction.fromJson(json["reaction"])
+          : Reaction(reactions: [], reactedUserIds: []),
+      messageType: (json["message_type"] is String)
+          ? getMessageType(json["message_type"])
+          : json["message_type"],
       voiceMessageDuration: json["voice_message_duration"],
-      status: json['status']);
+      status: (json['status'] is String)
+          ? getMessageStatus(json['status'])
+          : MessageStatus.pending);
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -112,4 +120,34 @@ class Message {
         'voice_message_duration': voiceMessageDuration,
         'status': status.name
       };
+
+  static getMessageType(String? type) {
+    switch (type) {
+      case 'MessageType.text':
+        return MessageType.text;
+      case 'MessageType.image':
+        return MessageType.image;
+      case 'MessageType.video':
+        return MessageType.video;
+      case 'MessageType.audio':
+        return MessageType.voice;
+      case 'MessageType.voice':
+        return MessageType.voice;
+    }
+    return MessageType.text;
+  }
+
+  static MessageStatus getMessageStatus(String? status) {
+    switch (status) {
+      case 'pending':
+        return MessageStatus.pending;
+      case 'undelivered':
+        return MessageStatus.undelivered;
+      case 'delivered':
+        return MessageStatus.delivered;
+      case 'read':
+        return MessageStatus.read;
+    }
+    return MessageStatus.pending;
+  }
 }

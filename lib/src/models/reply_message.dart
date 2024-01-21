@@ -51,7 +51,9 @@ class ReplyMessage {
         message: json['message'].toString(),
         replyBy: json['replyBy'].toString(),
         replyTo: json['replyTo'].toString(),
-        messageType: json["message_type"],
+        messageType: (json["message_type"] is String)
+            ? getMessageType(json["message_type"])
+            : MessageType.text,
         messageId: json["id"].toString(),
         voiceMessageDuration: json["voiceMessageDuration"],
       );
@@ -64,4 +66,20 @@ class ReplyMessage {
         'id': messageId,
         'voiceMessageDuration': voiceMessageDuration,
       };
+
+  static getMessageType(String? type) {
+    switch (type) {
+      case 'MessageType.text':
+        return MessageType.text;
+      case 'MessageType.image':
+        return MessageType.image;
+      case 'MessageType.video':
+        return MessageType.video;
+      case 'MessageType.audio':
+        return MessageType.voice;
+      case 'MessageType.voice':
+        return MessageType.voice;
+    }
+    return MessageType.text;
+  }
 }
