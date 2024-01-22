@@ -104,7 +104,9 @@ class Message {
       messageType: (json["message_type"] is String)
           ? getMessageType(json["message_type"])
           : json["message_type"],
-      voiceMessageDuration: json["voice_message_duration"],
+      voiceMessageDuration: (json["voice_message_duration"] is String)
+          ? parseDuration(json["voice_message_duration"])
+          : json["voice_message_duration"],
       status: (json['status'] is String)
           ? getMessageStatus(json['status'])
           : MessageStatus.pending);
@@ -149,5 +151,24 @@ class Message {
         return MessageStatus.read;
     }
     return MessageStatus.pending;
+  }
+
+  static Duration parseDuration(String? s) {
+    if (s == null) {
+      return Duration.zero;
+    }
+
+    int hours = 0;
+    int minutes = 0;
+    int micros;
+    List<String> parts = s.split(':');
+    if (parts.length > 2) {
+      hours = int.parse(parts[parts.length - 3]);
+    }
+    if (parts.length > 1) {
+      minutes = int.parse(parts[parts.length - 2]);
+    }
+    micros = (double.parse(parts[parts.length - 1]) * 1000000).round();
+    return Duration(hours: hours, minutes: minutes, microseconds: micros);
   }
 }

@@ -55,7 +55,9 @@ class ReplyMessage {
             ? getMessageType(json["message_type"])
             : MessageType.text,
         messageId: json["id"].toString(),
-        voiceMessageDuration: json["voiceMessageDuration"],
+        voiceMessageDuration: (json["voiceMessageDuration"] is String)
+            ? parseDuration(json["voiceMessageDuration"])
+            : json["voiceMessageDuration"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -81,5 +83,24 @@ class ReplyMessage {
         return MessageType.voice;
     }
     return MessageType.text;
+  }
+
+  static Duration parseDuration(String? s) {
+    if (s == null) {
+      return Duration.zero;
+    }
+
+    int hours = 0;
+    int minutes = 0;
+    int micros;
+    List<String> parts = s.split(':');
+    if (parts.length > 2) {
+      hours = int.parse(parts[parts.length - 3]);
+    }
+    if (parts.length > 1) {
+      minutes = int.parse(parts[parts.length - 2]);
+    }
+    micros = (double.parse(parts[parts.length - 1]) * 1000000).round();
+    return Duration(hours: hours, minutes: minutes, microseconds: micros);
   }
 }
