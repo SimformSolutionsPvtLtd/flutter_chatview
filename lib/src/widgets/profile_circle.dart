@@ -19,8 +19,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chatview/src/utils/constants/constants.dart';
+import 'package:flutter/material.dart';
 
 class ProfileCircle extends StatelessWidget {
   const ProfileCircle({
@@ -53,16 +54,42 @@ class ProfileCircle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final url = imageUrl ?? profileImage;
+
+    var cacheKey = imageUrl ?? '';
+    if (cacheKey.contains('amazonaws')) {
+      cacheKey = cacheKey.split('?').first;
+    }
+
     return Padding(
-      padding: profileCirclePadding ??
-          EdgeInsets.only(left: 6.0, right: 4, bottom: bottomPadding),
+      padding: profileCirclePadding ?? EdgeInsets.only(left: 6.0, right: 4, bottom: bottomPadding),
       child: InkWell(
         onLongPress: onLongPress,
         onTap: onTap,
         child: CircleAvatar(
-          radius: circleRadius ?? 16,
-          backgroundImage: NetworkImage(imageUrl ?? profileImage),
-        ),
+            radius: circleRadius ?? 16,
+            child: CachedNetworkImage(
+              fit: BoxFit.fitHeight,
+              imageUrl: url,
+              cacheKey: cacheKey,
+              imageBuilder: (context, imageProvider) => Container(
+                  decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(circleRadius ?? 16),
+                image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+              )),
+              progressIndicatorBuilder: (context, url, loadingProgress) {
+                if (loadingProgress.totalSize == null) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                return Center(
+                  child: CircularProgressIndicator(
+                    value: loadingProgress.downloaded / (loadingProgress.totalSize ?? 0),
+                  ),
+                );
+              },
+            )),
       ),
     );
   }

@@ -57,7 +57,10 @@ class ImageMessageConfiguration {
 }
 
 class ShareIconConfiguration {
-  /// Provides callback when user press on share button.
+  /// Determine if shared button will appear in the side of message.
+  final bool? showSharedIcon;
+
+  // / Provides callback when user press on share button.
   final StringCallback? onPressed; // Returns imageURL
 
   /// Provides ability to add custom share icon.
@@ -76,6 +79,7 @@ class ShareIconConfiguration {
   final Color? defaultIconColor;
 
   ShareIconConfiguration({
+    this.showSharedIcon = true,
     this.onPressed,
     this.icon,
     this.defaultIconBackgroundColor,

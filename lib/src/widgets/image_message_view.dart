@@ -22,6 +22,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/models/models.dart';
 import 'package:flutter/material.dart';
@@ -69,21 +70,16 @@ class ImageMessageView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment:
-          isMessageBySender ? MainAxisAlignment.end : MainAxisAlignment.start,
+      mainAxisAlignment: isMessageBySender ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
-        if (isMessageBySender) iconButton,
+        if (isMessageBySender && imageMessageConfig?.shareIconConfig?.showSharedIcon == true) iconButton,
         Stack(
           children: [
             GestureDetector(
-              onTap: () => imageMessageConfig?.onTap != null
-                  ? imageMessageConfig?.onTap!(imageUrl)
-                  : null,
+              onTap: () => imageMessageConfig?.onTap != null ? imageMessageConfig?.onTap!(imageUrl) : null,
               child: Transform.scale(
                 scale: highlightImage ? highlightScale : 1.0,
-                alignment: isMessageBySender
-                    ? Alignment.centerRight
-                    : Alignment.centerLeft,
+                alignment: isMessageBySender ? Alignment.centerRight : Alignment.centerLeft,
                 child: Container(
                   padding: imageMessageConfig?.padding ?? EdgeInsets.zero,
                   margin: imageMessageConfig?.margin ??
@@ -96,30 +92,41 @@ class ImageMessageView extends StatelessWidget {
                   height: imageMessageConfig?.height ?? 200,
                   width: imageMessageConfig?.width ?? 150,
                   child: ClipRRect(
-                    borderRadius: imageMessageConfig?.borderRadius ??
-                        BorderRadius.circular(14),
+                    borderRadius: imageMessageConfig?.borderRadius ?? BorderRadius.circular(14),
                     child: (() {
                       if (imageUrl.isUrl) {
-                        return Image.network(
-                          imageUrl,
+                        var cacheKey = imageUrl ?? '';
+                        if (cacheKey.contains('amazonaws')) {
+                          cacheKey = cacheKey.split('?').first;
+                        }
+
+                        return CachedNetworkImage(
+                          height: imageMessageConfig?.height ?? 200,
+                          width: imageMessageConfig?.width ?? 150,
                           fit: BoxFit.fitHeight,
-                          loadingBuilder: (context, child, loadingProgress) {
-                            if (loadingProgress == null) return child;
+                          imageUrl: imageUrl,
+                          cacheKey: cacheKey,
+                          imageBuilder: (context, imageProvider) => Container(
+                              decoration: BoxDecoration(
+                            borderRadius: imageMessageConfig?.borderRadius ?? BorderRadius.circular(14),
+                            image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                          )),
+                          progressIndicatorBuilder: (context, url, loadingProgress) {
+                            if (loadingProgress.totalSize == null) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
                             return Center(
                               child: CircularProgressIndicator(
-                                value: loadingProgress.expectedTotalBytes !=
-                                        null
-                                    ? loadingProgress.cumulativeBytesLoaded /
-                                        loadingProgress.expectedTotalBytes!
-                                    : null,
+                                value: loadingProgress.downloaded / (loadingProgress.totalSize ?? 0),
                               ),
                             );
                           },
                         );
                       } else if (imageUrl.fromMemory) {
                         return Image.memory(
-                          base64Decode(imageUrl
-                              .substring(imageUrl.indexOf('base64') + 7)),
+                          base64Decode(imageUrl.substring(imageUrl.indexOf('base64') + 7)),
                           fit: BoxFit.fill,
                         );
                       } else {
@@ -141,7 +148,7 @@ class ImageMessageView extends StatelessWidget {
               ),
           ],
         ),
-        if (!isMessageBySender) iconButton,
+        if (!isMessageBySender && imageMessageConfig?.shareIconConfig?.showSharedIcon == true) iconButton,
       ],
     );
   }

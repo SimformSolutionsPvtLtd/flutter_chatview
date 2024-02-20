@@ -20,17 +20,15 @@
  * SOFTWARE.
  */
 import 'dart:io';
-import 'package:flutter/foundation.dart' show kIsWeb;
-
-import 'package:flutter/material.dart';
 
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/material.dart';
 
 import '../values/typedefs.dart';
 
 class EmojiPickerWidget extends StatelessWidget {
-  const EmojiPickerWidget({Key? key, required this.onSelected})
-      : super(key: key);
+  const EmojiPickerWidget({Key? key, required this.onSelected}) : super(key: key);
 
   /// Provides callback when user selects emoji.
   final StringCallback onSelected;
@@ -57,15 +55,18 @@ class EmojiPickerWidget extends StatelessWidget {
           ),
           Expanded(
             child: EmojiPicker(
-              onEmojiSelected: (Category? category, Emoji emoji) =>
-                  onSelected(emoji.emoji),
+              onEmojiSelected: (Category? category, Emoji emoji) => onSelected(emoji.emoji),
               config: Config(
-                columns: 7,
-                emojiSizeMax: 32 * ((!kIsWeb && Platform.isIOS) ? 1.30 : 1.0),
-                initCategory: Category.RECENT,
-                bgColor: Colors.white,
-                recentTabBehavior: RecentTabBehavior.NONE,
-                recentsLimit: 28,
+                emojiViewConfig: EmojiViewConfig(
+                  columns: 7,
+                  emojiSizeMax: 32 * ((!kIsWeb && Platform.isIOS) ? 1.30 : 1.0),
+                  recentsLimit: 28,
+                ),
+                categoryViewConfig: const CategoryViewConfig(
+                  initCategory: Category.RECENT,
+                  backgroundColor: Colors.white,
+                  recentTabBehavior: RecentTabBehavior.NONE,
+                ),
               ),
             ),
           ),

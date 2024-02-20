@@ -61,11 +61,11 @@ class ReplyMessage {
       );
 
   Map<String, dynamic> toJson() => {
-        'message': message,
-        'replyBy': replyBy,
-        'replyTo': replyTo,
+        'message': message ?? "",
+        'replyBy': replyBy ?? "",
+        'replyTo': replyTo ?? "",
         'message_type': messageType,
-        'id': messageId,
+        'id': messageId ?? "",
         'voiceMessageDuration': voiceMessageDuration,
       };
 
