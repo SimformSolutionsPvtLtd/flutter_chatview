@@ -193,7 +193,13 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                           const EdgeInsets.symmetric(horizontal: 6),
                       border: _outLineBorder,
                       focusedBorder: _outLineBorder,
+                      enabled: textFieldConfig?.enabled ?? true,
                       enabledBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(color: Colors.transparent),
+                        borderRadius: textFieldConfig?.borderRadius ??
+                            BorderRadius.circular(textFieldBorderRadius),
+                      ),
+                      disabledBorder: OutlineInputBorder(
                         borderSide: const BorderSide(color: Colors.transparent),
                         borderRadius: textFieldConfig?.borderRadius ??
                             BorderRadius.circular(textFieldBorderRadius),
@@ -223,11 +229,13 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                               true)
                             IconButton(
                               constraints: const BoxConstraints(),
-                              onPressed: () => _onIconPressed(
-                                ImageSource.camera,
-                                config:
-                                    sendMessageConfig?.imagePickerConfiguration,
-                              ),
+                              onPressed: () => textFieldConfig?.enabled ?? true
+                                  ? _onIconPressed(
+                                      ImageSource.camera,
+                                      config: sendMessageConfig
+                                          ?.imagePickerConfiguration,
+                                    )
+                                  : null,
                               icon: imagePickerIconsConfig
                                       ?.cameraImagePickerIcon ??
                                   Icon(
@@ -240,11 +248,13 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                               true)
                             IconButton(
                               constraints: const BoxConstraints(),
-                              onPressed: () => _onIconPressed(
-                                ImageSource.gallery,
-                                config:
-                                    sendMessageConfig?.imagePickerConfiguration,
-                              ),
+                              onPressed: () => textFieldConfig?.enabled ?? true
+                                  ? _onIconPressed(
+                                      ImageSource.gallery,
+                                      config: sendMessageConfig
+                                          ?.imagePickerConfiguration,
+                                    )
+                                  : null,
                               icon: imagePickerIconsConfig
                                       ?.galleryImagePickerIcon ??
                                   Icon(
@@ -260,7 +270,9 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                                 Platform.isAndroid &&
                                 !kIsWeb)
                           IconButton(
-                            onPressed: _recordOrStop,
+                            onPressed: textFieldConfig?.enabled ?? true
+                                ? _recordOrStop
+                                : null,
                             icon: (isRecordingValue
                                     ? voiceRecordingConfig?.micIcon
                                     : voiceRecordingConfig?.stopIcon) ??

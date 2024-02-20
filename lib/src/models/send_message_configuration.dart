@@ -156,6 +156,11 @@ class TextFieldConfiguration {
   /// Default is 1 second.
   final Duration compositionThresholdTime;
 
+  /// Used for enable or disable the text field.
+  /// [false] also will disable the buttons for send images, record audio or take picture.
+  /// Default is [true].
+  final bool enabled;
+
   const TextFieldConfiguration({
     this.contentPadding,
     this.maxLines,
@@ -171,6 +176,7 @@ class TextFieldConfiguration {
     this.compositionThresholdTime = const Duration(seconds: 1),
     this.inputFormatters,
     this.textCapitalization,
+    this.enabled = true,
   });
 }
 
