@@ -68,10 +68,7 @@ class Message {
         key = GlobalKey(),
         _status = ValueNotifier(status),
         assert(
-          (messageType.isVoice
-              ? ((defaultTargetPlatform == TargetPlatform.iOS ||
-                  defaultTargetPlatform == TargetPlatform.android))
-              : true),
+          (messageType.isVoice ? ((defaultTargetPlatform == TargetPlatform.iOS || defaultTargetPlatform == TargetPlatform.android)) : true),
           "Voice messages are only supported with android and ios platform",
         );
 
@@ -93,23 +90,14 @@ class Message {
   factory Message.fromJson(Map<String, dynamic> json) => Message(
       id: json["id"],
       message: json["message"],
-      createdAt: (json["createdAt"] is String)
-          ? DateTime.parse(json["createdAt"])
-          : json["createdAt"],
+      createdAt: (json["createdAt"] is String) ? DateTime.parse(json["createdAt"]) : json["createdAt"],
       sendBy: json["sendBy"],
       replyMessage: ReplyMessage.fromJson(json["reply_message"]),
-      reaction: (json["reaction"] != null)
-          ? Reaction.fromJson(json["reaction"])
-          : Reaction(reactions: [], reactedUserIds: []),
-      messageType: (json["message_type"] is String)
-          ? getMessageType(json["message_type"])
-          : json["message_type"],
-      voiceMessageDuration: (json["voice_message_duration"] is String)
-          ? parseDuration(json["voice_message_duration"])
-          : json["voice_message_duration"],
-      status: (json['status'] is String)
-          ? getMessageStatus(json['status'])
-          : MessageStatus.pending);
+      reaction: (json["reaction"] != null) ? Reaction.fromJson(json["reaction"]) : Reaction(reactions: [], reactedUserIds: []),
+      messageType: (json["message_type"] is String) ? getMessageType(json["message_type"]) : json["message_type"],
+      voiceMessageDuration:
+          (json["voice_message_duration"] is String) ? parseDuration(json["voice_message_duration"]) : json["voice_message_duration"],
+      status: (json['status'] is String) ? getMessageStatus(json['status']) : MessageStatus.pending);
 
   Map<String, dynamic> toJson() => {
         'id': id,
