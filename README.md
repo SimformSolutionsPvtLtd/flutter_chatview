@@ -66,7 +66,7 @@ List<Message> messageList = [
 
 6. Adding a `onSendTap`.
 ```dart
-void onSendTap(String message, ReplyMessage replyMessage, Message messageType){
+void onSendTap(String message, ReplyMessage replyMessage, MessageType messageType){
   final message = Message(
     id: '3',
     message: "How are you",
