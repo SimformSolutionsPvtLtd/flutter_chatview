@@ -23,6 +23,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../values/enumaration.dart';
 import '../models/models.dart';
 
 class ChatController {
@@ -71,6 +72,27 @@ class ChatController {
   /// Used to add message in message list.
   void addMessage(Message message) {
     initialMessageList.add(message);
+    messageStreamController.sink.add(initialMessageList);
+  }
+
+  /// Function to change status on specific chat bubble
+  void changeStatus({
+    required String messageId,
+    required MessageStatus status,
+  }) {
+    final message = initialMessageList.firstWhere((element) => element.id == messageId);
+    final indexOfMessage = initialMessageList.indexOf(message);
+    initialMessageList[indexOfMessage] = Message(
+      id: messageId,
+      message: message.message,
+      createdAt: message.createdAt,
+      sendBy: message.sendBy,
+      replyMessage: message.replyMessage,
+      reaction: message.reaction,
+      messageType: message.messageType,
+      voiceMessageDuration: message.voiceMessageDuration,
+      status: status,
+    );
     messageStreamController.sink.add(initialMessageList);
   }
 
