@@ -1,5 +1,7 @@
 ## [1.3.2] (Unreleased)
 
+* **Fix**: [134](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/134)
+  Added a reply message view for custom message type.
 * **Feat**: [157](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/157)
   Added onTap of reacted user from reacted user list
 * **Fix**: [137](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/137) Added

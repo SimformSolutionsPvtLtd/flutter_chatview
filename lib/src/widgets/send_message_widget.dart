@@ -21,11 +21,11 @@
  */
 import 'dart:io' if (kIsWeb) 'dart:html';
 
-import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:chatview/chatview.dart';
 import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/utils/package_strings.dart';
 import 'package:chatview/src/widgets/chatui_textfield.dart';
+import 'package:chatview/src/widgets/reply_message_view.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
@@ -41,6 +41,7 @@ class SendMessageWidget extends StatefulWidget {
     this.sendMessageBuilder,
     this.onReplyCallback,
     this.onReplyCloseCallback,
+    this.messageConfig,
   }) : super(key: key);
 
   /// Provides call back when user tap on send button on text field.
@@ -63,6 +64,9 @@ class SendMessageWidget extends StatefulWidget {
 
   /// Provides controller for accessing few function for running chat.
   final ChatController chatController;
+
+  /// Provides configuration of all types of messages.
+  final MessageConfiguration? messageConfig;
 
   @override
   State<SendMessageWidget> createState() => SendMessageWidgetState();
@@ -198,22 +202,14 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                                           ),
                                         ],
                                       ),
-                                      if (state.messageType.isVoice)
-                                        _voiceReplyMessageView
-                                      else if (state.messageType.isImage)
-                                        _imageReplyMessageView
-                                      else
-                                        Text(
-                                          state.message,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: widget.sendMessageConfig
-                                                    ?.replyMessageColor ??
-                                                Colors.black,
-                                          ),
-                                        ),
+                                      ReplyMessageView(
+                                        message: state,
+                                        customMessageReplyViewBuilder: widget
+                                            .messageConfig
+                                            ?.customMessageReplyViewBuilder,
+                                        sendMessageConfig:
+                                            widget.sendMessageConfig,
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -239,46 +235,6 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
               ),
             ),
           );
-  }
-
-  Widget get _voiceReplyMessageView {
-    return Row(
-      children: [
-        Icon(
-          Icons.mic,
-          color: widget.sendMessageConfig?.micIconColor,
-        ),
-        const SizedBox(width: 4),
-        if (replyMessage.voiceMessageDuration != null)
-          Text(
-            replyMessage.voiceMessageDuration!.toHHMMSS(),
-            style: TextStyle(
-              fontSize: 12,
-              color:
-                  widget.sendMessageConfig?.replyMessageColor ?? Colors.black,
-            ),
-          ),
-      ],
-    );
-  }
-
-  Widget get _imageReplyMessageView {
-    return Row(
-      children: [
-        Icon(
-          Icons.photo,
-          size: 20,
-          color: widget.sendMessageConfig?.replyMessageColor ??
-              Colors.grey.shade700,
-        ),
-        Text(
-          PackageStrings.photo,
-          style: TextStyle(
-            color: widget.sendMessageConfig?.replyMessageColor ?? Colors.black,
-          ),
-        ),
-      ],
-    );
   }
 
   void _onRecordingComplete(String? path) {

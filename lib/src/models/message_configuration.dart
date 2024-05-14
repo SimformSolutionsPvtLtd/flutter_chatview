@@ -23,6 +23,8 @@ import 'package:chatview/src/models/models.dart';
 import 'package:chatview/src/models/voice_message_configuration.dart';
 import 'package:flutter/material.dart';
 
+import '../values/typedefs.dart';
+
 class MessageConfiguration {
   /// Provides configuration of image message appearance.
   final ImageMessageConfiguration? imageMessageConfig;
@@ -39,11 +41,15 @@ class MessageConfiguration {
   /// Configurations for voice message bubble
   final VoiceMessageConfiguration? voiceMessageConfig;
 
+  /// To customize reply view for custom message type
+  final CustomMessageReplyViewBuilder? customMessageReplyViewBuilder;
+
   const MessageConfiguration({
     this.imageMessageConfig,
     this.messageReactionConfig,
     this.emojiMessageConfig,
     this.customMessageBuilder,
     this.voiceMessageConfig,
+    this.customMessageReplyViewBuilder,
   });
 }
