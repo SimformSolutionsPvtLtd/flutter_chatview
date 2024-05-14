@@ -1,5 +1,8 @@
 ## [1.3.2] (Unreleased)
 
+* **Feat**: [156](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/156)
+  Default avatar, error builder for profile image for asset and network,
+  added cached_network_image for network images
 * **Fix**: [164](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/164)
   Add flag to enable/disable chat text field.
 * **Feat**: [121](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/121)Added support

@@ -39,3 +39,13 @@ typedef MoreTapCallBack = void Function(
   Message message,
   bool sendByCurrentUser,
 );
+typedef AssetImageErrorBuilder = Widget Function(
+  BuildContext context,
+  Object error,
+  StackTrace? stackTrace,
+);
+typedef NetworkImageErrorBuilder = Widget Function(
+  BuildContext context,
+  String url,
+  Object error,
+);
