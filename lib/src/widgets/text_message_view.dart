@@ -25,6 +25,7 @@ import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/models/models.dart';
 
 import '../utils/constants/constants.dart';
+import '../values/typedefs.dart';
 import 'link_preview.dart';
 import 'reaction_widget.dart';
 
@@ -39,6 +40,7 @@ class TextMessageView extends StatelessWidget {
     this.messageReactionConfig,
     this.highlightMessage = false,
     this.highlightColor,
+    this.reactedUserCallback,
   }) : super(key: key);
 
   /// Represents current message is sent by current user.
@@ -64,6 +66,9 @@ class TextMessageView extends StatelessWidget {
 
   /// Allow user to set color of highlighted message.
   final Color? highlightColor;
+
+  /// Called when user tap on reacted user from reaction list
+  final ReactedUserCallback? reactedUserCallback;
 
   @override
   Widget build(BuildContext context) {
@@ -108,6 +113,7 @@ class TextMessageView extends StatelessWidget {
             isMessageBySender: isMessageBySender,
             reaction: message.reaction,
             messageReactionConfig: messageReactionConfig,
+            reactedUserCallback: reactedUserCallback,
           ),
       ],
     );

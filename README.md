@@ -471,6 +471,40 @@ ChatView(
 )
 ```
 
+19. Add emoji picker configuration `emojiPickerSheetConfig`, sheet background color `emojiPickerModalSheetBgColor`, callback on reacted user tap `reactedUserCallback`, 
+    top padding of text field `topPaddingOfChatField`, default avatar for profile image `defaultAvatarImage`, 
+    error builder for asset and network profile image `assetImageErrorBuilder` `networkImageErrorBuilder`, 
+    Flag for checking profile image is asset or network `isNetworkImage`.
+```dart
+
+ChatView(
+  ...
+      topPaddingOfChatField: 48,
+      reactedUserCallback: (reactedUser, reaction) {
+        debugPrint('$reactedUser');
+      },
+      emojiPickerSheetConfig: const EmojiPickerSheetConfig(
+        backgroundColor: Colors.white,
+      ),
+      emojiPickerModalSheetBgColor: Colors.white,
+      appBar: ChatViewAppBar(
+        defaultAvatarImage: defaultAvatar,
+        isNetworkImage: true,
+        networkImageErrorBuilder: (context, url, error) {
+          return Center(
+            child: Text('Error $error'),
+          );
+        },
+        assetImageErrorBuilder: (context, error, stackTrace) {
+          return Center(
+            child: Text('Error $error'),
+          );
+        },
+      ),
+  ...
+),
+```
+
 
 
 ## How to use

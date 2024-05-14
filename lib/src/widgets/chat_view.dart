@@ -25,6 +25,7 @@ import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
 import 'package:chatview/src/widgets/chatview_state_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart';
+import '../models/emoji_picker_sheet_config.dart';
 import '../values/custom_time_messages.dart';
 import 'send_message_widget.dart';
 
@@ -54,6 +55,10 @@ class ChatView extends StatefulWidget {
     required this.chatViewState,
     ChatViewStateConfiguration? chatViewStateConfig,
     this.featureActiveConfig = const FeatureActiveConfig(),
+    this.emojiPickerSheetConfig = const EmojiPickerSheetConfig(),
+    this.reactedUserCallback,
+    this.topPaddingOfChatField,
+    this.emojiPickerModalSheetBgColor,
   })  : chatBackgroundConfig =
             chatBackgroundConfig ?? const ChatBackgroundConfiguration(),
         chatViewStateConfig =
@@ -136,6 +141,18 @@ class ChatView extends StatefulWidget {
 
   /// Provides callback when user tap on chat list.
   final VoidCallBack? onChatListTap;
+
+  /// Configuration for emoji picker sheet
+  final EmojiPickerSheetConfig emojiPickerSheetConfig;
+
+  /// Called when user tap on reacted user from reaction list
+  final ReactedUserCallback? reactedUserCallback;
+
+  /// Provides top padding of chat text field
+  final double? topPaddingOfChatField;
+
+  /// Field used fot setting background color for emoji picker modal sheet
+  final Color? emojiPickerModalSheetBgColor;
 
   @override
   State<ChatView> createState() => _ChatViewState();
@@ -250,6 +267,11 @@ class _ChatViewState extends State<ChatView>
                           assignReplyMessage: (message) => _sendMessageKey
                               .currentState
                               ?.assignReplyMessage(message),
+                          emojiPickerSheetConfig: widget.emojiPickerSheetConfig,
+                          reactedUserCallback: widget.reactedUserCallback,
+                          topPaddingOfChatField: widget.topPaddingOfChatField,
+                          emojiPickerModalSheetBgColor:
+                              widget.emojiPickerModalSheetBgColor,
                         );
                       },
                     ),

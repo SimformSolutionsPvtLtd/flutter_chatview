@@ -29,6 +29,7 @@ dependencies:
   progress_indicators: ^1.0.0
   image_picker: '>=0.8.9 <2.0.0'
   audio_waveforms: ^1.0.1
+  cached_network_image: ^3.3.1
   # For formatting time locale in message receipts
   timeago: ^3.4.0
 

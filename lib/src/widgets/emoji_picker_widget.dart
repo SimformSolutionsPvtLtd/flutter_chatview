@@ -26,22 +26,41 @@ import 'package:flutter/material.dart';
 
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 
+import '../models/emoji_picker_sheet_config.dart';
 import '../values/typedefs.dart';
 
 class EmojiPickerWidget extends StatelessWidget {
-  const EmojiPickerWidget({Key? key, required this.onSelected})
-      : super(key: key);
+  const EmojiPickerWidget({
+    Key? key,
+    required this.onSelected,
+    this.emojiPickerSheetConfig = const EmojiPickerSheetConfig(),
+    this.emojiPickerModalSheetBgColor,
+  }) : super(key: key);
 
   /// Provides callback when user selects emoji.
   final StringCallback onSelected;
 
+  /// Configuration for emoji picker sheet
+  final EmojiPickerSheetConfig emojiPickerSheetConfig;
+
+  /// Field used fot setting background color for emoji picker modal sheet
+  final Color? emojiPickerModalSheetBgColor;
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(top: 10, left: 15, right: 15),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      padding: const EdgeInsets.only(
+        top: 10,
+        left: 15,
+        right: 15,
+      ),
+      decoration: BoxDecoration(
+        color: emojiPickerModalSheetBgColor ?? Colors.white,
+        borderRadius: const BorderRadius.vertical(
+          top: Radius.circular(
+            16,
+          ),
+        ),
       ),
       height: MediaQuery.of(context).size.height / 2,
       child: Column(
@@ -60,12 +79,12 @@ class EmojiPickerWidget extends StatelessWidget {
               onEmojiSelected: (Category? category, Emoji emoji) =>
                   onSelected(emoji.emoji),
               config: Config(
-                columns: 7,
-                emojiSizeMax: 32 * ((!kIsWeb && Platform.isIOS) ? 1.30 : 1.0),
-                initCategory: Category.RECENT,
-                bgColor: Colors.white,
-                recentTabBehavior: RecentTabBehavior.NONE,
-                recentsLimit: 28,
+                columns: emojiPickerSheetConfig.columns,
+                emojiSizeMax: emojiPickerSheetConfig.emojiSizeMax ??
+                    32 * ((!kIsWeb && Platform.isIOS) ? 1.30 : 1.0),
+                initCategory: emojiPickerSheetConfig.initCategory,
+                recentTabBehavior: emojiPickerSheetConfig.recentTabBehavior,
+                recentsLimit: emojiPickerSheetConfig.recentLimit,
               ),
             ),
           ),

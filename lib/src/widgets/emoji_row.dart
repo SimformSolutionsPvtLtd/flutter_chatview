@@ -23,6 +23,7 @@ import 'package:flutter/material.dart';
 import 'package:chatview/src/models/reaction_popup_configuration.dart';
 import 'package:chatview/src/utils/constants/constants.dart';
 
+import '../models/emoji_picker_sheet_config.dart';
 import '../values/typedefs.dart';
 import 'emoji_picker_widget.dart';
 
@@ -31,6 +32,8 @@ class EmojiRow extends StatelessWidget {
     Key? key,
     required this.onEmojiTap,
     this.emojiConfiguration,
+    this.emojiPickerSheetConfig = const EmojiPickerSheetConfig(),
+    this.emojiPickerModalSheetBgColor,
   }) : super(key: key);
 
   /// Provides callback when user taps on emoji in reaction pop-up.
@@ -48,6 +51,12 @@ class EmojiRow extends StatelessWidget {
     angryFace,
     thumbsUp,
   ];
+
+  /// Configuration for emoji picker sheet
+  final EmojiPickerSheetConfig emojiPickerSheetConfig;
+
+  /// Field used fot setting background color for emoji picker modal sheet
+  final Color? emojiPickerModalSheetBgColor;
 
   @override
   Widget build(BuildContext context) {
@@ -86,9 +95,13 @@ class EmojiRow extends StatelessWidget {
 
   void _showBottomSheet(BuildContext context) => showModalBottomSheet<void>(
         context: context,
-        builder: (context) => EmojiPickerWidget(onSelected: (emoji) {
-          Navigator.pop(context);
-          onEmojiTap(emoji);
-        }),
+        builder: (context) => EmojiPickerWidget(
+          emojiPickerSheetConfig: emojiPickerSheetConfig,
+          emojiPickerModalSheetBgColor: emojiPickerModalSheetBgColor,
+          onSelected: (emoji) {
+            Navigator.pop(context);
+            onEmojiTap(emoji);
+          },
+        ),
       );
 }

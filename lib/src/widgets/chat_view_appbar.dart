@@ -24,7 +24,9 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:flutter/material.dart';
 
+import '../utils/constants/constants.dart';
 import '../values/typedefs.dart';
+import 'profile_image_widget.dart';
 
 class ChatViewAppBar extends StatelessWidget {
   const ChatViewAppBar({
@@ -42,6 +44,10 @@ class ChatViewAppBar extends StatelessWidget {
     this.padding,
     this.leading,
     this.showLeading = true,
+    this.isNetworkImage = true,
+    this.defaultAvatarImage = profileImage,
+    this.assetImageErrorBuilder,
+    this.networkImageErrorBuilder,
   }) : super(key: key);
 
   /// Allow user to change colour of appbar.
@@ -83,6 +89,18 @@ class ChatViewAppBar extends StatelessWidget {
   /// Allow user to turn on/off leading icon.
   final bool showLeading;
 
+  /// Flag to check whether image is network or asset
+  final bool isNetworkImage;
+
+  /// Field to set default avatar image if profile image link not provided
+  final String defaultAvatarImage;
+
+  /// Error builder to build error widget for asset image
+  final AssetImageErrorBuilder? assetImageErrorBuilder;
+
+  /// Error builder to build error widget for network image
+  final NetworkImageErrorBuilder? networkImageErrorBuilder;
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -113,8 +131,13 @@ class ChatViewAppBar extends StatelessWidget {
                   if (profilePicture != null)
                     Padding(
                       padding: const EdgeInsets.only(right: 8.0),
-                      child: CircleAvatar(
-                          backgroundImage: NetworkImage(profilePicture!)),
+                      child: ProfileImageWidget(
+                        imageUrl: profilePicture,
+                        isNetworkImage: isNetworkImage,
+                        defaultAvatarImage: defaultAvatarImage,
+                        assetImageErrorBuilder: assetImageErrorBuilder,
+                        networkImageErrorBuilder: networkImageErrorBuilder,
+                      ),
                     ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

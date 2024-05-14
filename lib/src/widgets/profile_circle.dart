@@ -22,6 +22,9 @@
 import 'package:flutter/material.dart';
 import 'package:chatview/src/utils/constants/constants.dart';
 
+import '../values/typedefs.dart';
+import 'profile_image_widget.dart';
+
 class ProfileCircle extends StatelessWidget {
   const ProfileCircle({
     Key? key,
@@ -31,6 +34,10 @@ class ProfileCircle extends StatelessWidget {
     this.circleRadius,
     this.onTap,
     this.onLongPress,
+    this.isNetworkImage = true,
+    this.defaultAvatarImage = profileImage,
+    this.assetImageErrorBuilder,
+    this.networkImageErrorBuilder,
   }) : super(key: key);
 
   /// Allow users to give  default bottom padding according to user case.
@@ -51,6 +58,18 @@ class ProfileCircle extends StatelessWidget {
   /// Allow user to do operation when user long press on profile circle.
   final VoidCallback? onLongPress;
 
+  /// Flag to check whether image is network or asset
+  final bool isNetworkImage;
+
+  /// Field to set default avatar image if profile image link not provided
+  final String defaultAvatarImage;
+
+  /// Error builder to build error widget for asset image
+  final AssetImageErrorBuilder? assetImageErrorBuilder;
+
+  /// Error builder to build error widget for network image
+  final NetworkImageErrorBuilder? networkImageErrorBuilder;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -59,9 +78,13 @@ class ProfileCircle extends StatelessWidget {
       child: InkWell(
         onLongPress: onLongPress,
         onTap: onTap,
-        child: CircleAvatar(
-          radius: circleRadius ?? 16,
-          backgroundImage: NetworkImage(imageUrl ?? profileImage),
+        child: ProfileImageWidget(
+          circleRadius: circleRadius ?? 16,
+          imageUrl: imageUrl,
+          isNetworkImage: isNetworkImage,
+          defaultAvatarImage: defaultAvatarImage,
+          assetImageErrorBuilder: assetImageErrorBuilder,
+          networkImageErrorBuilder: networkImageErrorBuilder,
         ),
       ),
     );

@@ -1,3 +1,10 @@
+## [1.3.2] (Unreleased)
+* **Fix**: [133](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/133) Added Missing customization for chat view - default avatar, 
+  error builder for profile image for asset and network, added cached_network_image for network images, 
+  emoji picker sheet config, emoji picker sheet background color, 
+  callback on reacted user tap, top padding of text field.
+
+
 ## [1.3.1]
 
 * **Feat**: [105](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/105) Allow user 

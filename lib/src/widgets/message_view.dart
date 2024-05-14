@@ -48,6 +48,7 @@ class MessageView extends StatefulWidget {
     this.messageConfig,
     this.onMaxDuration,
     this.controller,
+    this.reactedUserCallback,
   }) : super(key: key);
 
   /// Provides message instance of chat.
@@ -93,6 +94,9 @@ class MessageView extends StatefulWidget {
   final ChatController? controller;
 
   final Function(int)? onMaxDuration;
+
+  /// Called when user tap on reacted user from reaction list
+  final ReactedUserCallback? reactedUserCallback;
 
   @override
   State<MessageView> createState() => _MessageViewState();
@@ -196,6 +200,7 @@ class _MessageViewState extends State<MessageView>
                           messageReactionConfig:
                               messageConfig?.messageReactionConfig,
                           isMessageBySender: widget.isMessageBySender,
+                          reactedUserCallback: widget.reactedUserCallback,
                         ),
                     ],
                   );
@@ -207,6 +212,7 @@ class _MessageViewState extends State<MessageView>
                     messageReactionConfig: messageConfig?.messageReactionConfig,
                     highlightImage: widget.shouldHighlight,
                     highlightScale: widget.highlightScale,
+                    reactedUserCallback: widget.reactedUserCallback,
                   );
                 } else if (widget.message.messageType.isText) {
                   return TextMessageView(
@@ -218,6 +224,7 @@ class _MessageViewState extends State<MessageView>
                     messageReactionConfig: messageConfig?.messageReactionConfig,
                     highlightColor: widget.highlightColor,
                     highlightMessage: widget.shouldHighlight,
+                    reactedUserCallback: widget.reactedUserCallback,
                   );
                 } else if (widget.message.messageType.isVoice) {
                   return VoiceMessageView(
@@ -229,6 +236,7 @@ class _MessageViewState extends State<MessageView>
                     messageReactionConfig: messageConfig?.messageReactionConfig,
                     inComingChatBubbleConfig: widget.inComingChatBubbleConfig,
                     outgoingChatBubbleConfig: widget.outgoingChatBubbleConfig,
+                    reactedUserCallback: widget.reactedUserCallback,
                   );
                 } else if (widget.message.messageType.isCustom &&
                     messageConfig?.customMessageBuilder != null) {

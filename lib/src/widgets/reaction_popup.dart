@@ -24,6 +24,7 @@ import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/widgets/glassmorphism_reaction_popup.dart';
 import 'package:flutter/material.dart';
 
+import '../models/emoji_picker_sheet_config.dart';
 import 'emoji_row.dart';
 
 class ReactionPopup extends StatefulWidget {
@@ -32,6 +33,8 @@ class ReactionPopup extends StatefulWidget {
     this.reactionPopupConfig,
     required this.onTap,
     required this.showPopUp,
+    this.emojiPickerSheetConfig = const EmojiPickerSheetConfig(),
+    this.emojiPickerModalSheetBgColor,
   }) : super(key: key);
 
   /// Provides configuration of reaction pop-up appearance.
@@ -42,6 +45,12 @@ class ReactionPopup extends StatefulWidget {
 
   /// Represents should pop-up show or not.
   final bool showPopUp;
+
+  /// Configuration for emoji picker sheet
+  final EmojiPickerSheetConfig emojiPickerSheetConfig;
+
+  /// Field used fot setting background color for emoji picker modal sheet
+  final Color? emojiPickerModalSheetBgColor;
 
   @override
   ReactionPopupState createState() => ReactionPopupState();
@@ -168,6 +177,8 @@ class ReactionPopupState extends State<ReactionPopup>
           }
         },
         emojiConfiguration: reactionPopupConfig?.emojiConfig,
+        emojiPickerSheetConfig: widget.emojiPickerSheetConfig,
+        emojiPickerModalSheetBgColor: widget.emojiPickerModalSheetBgColor,
       );
 
   void refreshWidget({

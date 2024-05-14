@@ -32,6 +32,7 @@ class ReactionWidget extends StatefulWidget {
     required this.reaction,
     this.messageReactionConfig,
     required this.isMessageBySender,
+    this.reactedUserCallback,
   }) : super(key: key);
 
   /// Provides reaction instance of message.
@@ -42,6 +43,9 @@ class ReactionWidget extends StatefulWidget {
 
   /// Represents current message is sent by current user.
   final bool isMessageBySender;
+
+  /// Called when user tap on reacted user from reaction list
+  final ReactedUserCallback? reactedUserCallback;
 
   @override
   State<ReactionWidget> createState() => _ReactionWidgetState();
@@ -78,6 +82,7 @@ class _ReactionWidgetState extends State<ReactionWidget> {
                 chatController: chatController!,
                 reactionsBottomSheetConfig:
                     messageReactionConfig?.reactionsBottomSheetConfig,
+                reactedUserCallback: widget.reactedUserCallback,
               )
             : null,
         child: MeasureSize(

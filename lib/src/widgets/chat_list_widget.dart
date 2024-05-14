@@ -28,6 +28,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
 import '../../chatview.dart';
+import '../models/emoji_picker_sheet_config.dart';
 import 'reaction_popup.dart';
 import 'reply_popup_widget.dart';
 
@@ -51,6 +52,10 @@ class ChatListWidget extends StatefulWidget {
     this.loadMoreData,
     this.isLastPage,
     this.onChatListTap,
+    this.emojiPickerSheetConfig = const EmojiPickerSheetConfig(),
+    this.reactedUserCallback,
+    this.topPaddingOfChatField,
+    this.emojiPickerModalSheetBgColor,
   }) : super(key: key);
 
   /// Provides controller for accessing few function for running chat.
@@ -107,6 +112,18 @@ class ChatListWidget extends StatefulWidget {
 
   /// Provides callback when user tap anywhere on whole chat.
   final VoidCallBack? onChatListTap;
+
+  /// Configuration for emoji picker sheet
+  final EmojiPickerSheetConfig emojiPickerSheetConfig;
+
+  /// Called when user tap on reacted user from reaction list
+  final ReactedUserCallback? reactedUserCallback;
+
+  /// Provides top padding of chat text field
+  final double? topPaddingOfChatField;
+
+  /// Field used fot setting background color for emoji picker modal sheet
+  final Color? emojiPickerModalSheetBgColor;
 
   @override
   State<ChatListWidget> createState() => _ChatListWidgetState();
@@ -221,6 +238,8 @@ class _ChatListWidgetState extends State<ChatListWidget>
                       }
                     },
                     onChatListTap: _onChatListTap,
+                    reactedUserCallback: widget.reactedUserCallback,
+                    topPaddingOfChatField: widget.topPaddingOfChatField,
                   ),
                   if (featureActiveConfig?.enableReactionPopup ?? false)
                     ReactionPopup(
@@ -228,6 +247,9 @@ class _ChatListWidgetState extends State<ChatListWidget>
                       reactionPopupConfig: widget.reactionPopupConfig,
                       onTap: _onChatListTap,
                       showPopUp: showPopupValue,
+                      emojiPickerSheetConfig: widget.emojiPickerSheetConfig,
+                      emojiPickerModalSheetBgColor:
+                          widget.emojiPickerModalSheetBgColor,
                     ),
                 ],
               );

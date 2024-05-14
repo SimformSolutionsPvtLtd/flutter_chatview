@@ -35,3 +35,17 @@ typedef VoidCallBackWithFuture = Future<void> Function();
 typedef StringsCallBack = void Function(String emoji, String messageId);
 typedef StringWithReturnWidget = Widget Function(String separator);
 typedef DragUpdateDetailsCallback = void Function(DragUpdateDetails);
+typedef AssetImageErrorBuilder = Widget Function(
+  BuildContext context,
+  Object error,
+  StackTrace? stackTrace,
+);
+typedef NetworkImageErrorBuilder = Widget Function(
+  BuildContext context,
+  String url,
+  Object error,
+);
+typedef ReactedUserCallback = void Function(
+  ChatUser reactedUser,
+  String reaction,
+);

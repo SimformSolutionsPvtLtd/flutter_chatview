@@ -18,6 +18,7 @@ class VoiceMessageView extends StatefulWidget {
     this.onMaxDuration,
     this.messageReactionConfig,
     this.config,
+    this.reactedUserCallback,
   }) : super(key: key);
 
   /// Provides configuration related to voice message.
@@ -41,6 +42,9 @@ class VoiceMessageView extends StatefulWidget {
 
   /// Provides configuration of chat bubble appearance from current user of chat.
   final ChatBubble? outgoingChatBubbleConfig;
+
+  /// Called when user tap on reacted user from reaction list
+  final ReactedUserCallback? reactedUserCallback;
 
   @override
   State<VoiceMessageView> createState() => _VoiceMessageViewState();
@@ -144,6 +148,7 @@ class _VoiceMessageViewState extends State<VoiceMessageView> {
             isMessageBySender: widget.isMessageBySender,
             reaction: widget.message.reaction,
             messageReactionConfig: widget.messageReactionConfig,
+            reactedUserCallback: widget.reactedUserCallback,
           ),
       ],
     );

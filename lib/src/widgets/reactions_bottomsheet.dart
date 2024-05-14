@@ -1,6 +1,7 @@
 import 'package:chatview/src/controller/chat_controller.dart';
 import 'package:chatview/src/models/models.dart';
 import 'package:chatview/src/utils/constants/constants.dart';
+import 'package:chatview/src/values/typedefs.dart';
 import 'package:flutter/material.dart';
 
 class ReactionsBottomSheet {
@@ -15,6 +16,9 @@ class ReactionsBottomSheet {
 
     /// Provides configuration of reaction bottom sheet appearance.
     required ReactionsBottomSheetConfiguration? reactionsBottomSheetConfig,
+
+    /// Called when user tap on reacted user from reaction list
+    ReactedUserCallback? reactedUserCallback,
   }) {
     return showModalBottomSheet<void>(
       context: context,
@@ -33,54 +37,64 @@ class ReactionsBottomSheet {
             itemBuilder: (_, index) {
               final reactedUser =
                   chatController.getUserFromId(reaction.reactedUserIds[index]);
-              return Container(
-                margin: reactionsBottomSheetConfig?.reactionWidgetMargin ??
-                    const EdgeInsets.only(bottom: 8),
-                padding: reactionsBottomSheetConfig?.reactionWidgetPadding ??
-                    const EdgeInsets.all(8),
-                decoration:
-                    reactionsBottomSheetConfig?.reactionWidgetDecoration ??
-                        BoxDecoration(
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.shade200,
-                              offset: const Offset(0, 20),
-                              blurRadius: 40,
-                            )
-                          ],
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                            radius: reactionsBottomSheetConfig
-                                    ?.profileCircleRadius ??
-                                16,
-                            backgroundImage: NetworkImage(
-                              reactedUser.profilePhoto ?? profileImage,
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Text(
-                            reactedUser.name,
-                            style: reactionsBottomSheetConfig
-                                ?.reactedUserTextStyle,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Text(
+              return GestureDetector(
+                onTap: () {
+                  if (reactedUserCallback != null) {
+                    reactedUserCallback(
+                      reactedUser,
                       reaction.reactions[index],
-                      style: TextStyle(
-                        fontSize:
-                            reactionsBottomSheetConfig?.reactionSize ?? 14,
+                    );
+                  }
+                },
+                child: Container(
+                  margin: reactionsBottomSheetConfig?.reactionWidgetMargin ??
+                      const EdgeInsets.only(bottom: 8),
+                  padding: reactionsBottomSheetConfig?.reactionWidgetPadding ??
+                      const EdgeInsets.all(8),
+                  decoration:
+                      reactionsBottomSheetConfig?.reactionWidgetDecoration ??
+                          BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.shade200,
+                                offset: const Offset(0, 20),
+                                blurRadius: 40,
+                              )
+                            ],
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              radius: reactionsBottomSheetConfig
+                                      ?.profileCircleRadius ??
+                                  16,
+                              backgroundImage: NetworkImage(
+                                reactedUser.profilePhoto ?? profileImage,
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Text(
+                              reactedUser.name,
+                              style: reactionsBottomSheetConfig
+                                  ?.reactedUserTextStyle,
+                            ),
+                          ],
+                        ),
                       ),
-                    )
-                  ],
+                      Text(
+                        reaction.reactions[index],
+                        style: TextStyle(
+                          fontSize:
+                              reactionsBottomSheetConfig?.reactionSize ?? 14,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               );
             },
