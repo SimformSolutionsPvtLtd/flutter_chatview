@@ -1,3 +1,8 @@
+## [1.3.2] (Unreleased)
+* **Fix**: [126](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/126) Added
+  flag to hide user name in chat.
+
+
 ## [1.3.1]
 
 * **Feat**: [105](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/105) Allow user 
