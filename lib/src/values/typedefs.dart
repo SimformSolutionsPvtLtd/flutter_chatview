@@ -43,3 +43,7 @@ typedef ReactionCallback = void Function(
   Message message,
   String emoji,
 );
+typedef ReactedUserCallback = void Function(
+  ChatUser reactedUser,
+  String reaction,
+);

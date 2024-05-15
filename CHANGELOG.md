@@ -1,5 +1,7 @@
 ## [1.3.2] (Unreleased)
 
+* **Feat**: [157](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/157)
+  Added onTap of reacted user from reacted user list
 * **Fix**: [137](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/137) Added
   support for cancel voice recording and field to provide cancel record icon.
 * **Feat**: [93](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/93) Added support
