@@ -32,6 +32,7 @@ class ReactionPopup extends StatefulWidget {
     this.reactionPopupConfig,
     required this.onTap,
     required this.showPopUp,
+    this.emojiPickerSheetConfig,
   }) : super(key: key);
 
   /// Provides configuration of reaction pop-up appearance.
@@ -42,6 +43,9 @@ class ReactionPopup extends StatefulWidget {
 
   /// Represents should pop-up show or not.
   final bool showPopUp;
+
+  /// Configuration for emoji picker sheet
+  final Config? emojiPickerSheetConfig;
 
   @override
   ReactionPopupState createState() => ReactionPopupState();
@@ -168,6 +172,7 @@ class ReactionPopupState extends State<ReactionPopup>
           }
         },
         emojiConfiguration: reactionPopupConfig?.emojiConfig,
+        emojiPickerSheetConfig: widget.emojiPickerSheetConfig,
       );
 
   void refreshWidget({

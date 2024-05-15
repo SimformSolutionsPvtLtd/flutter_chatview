@@ -52,6 +52,7 @@ class ChatListWidget extends StatefulWidget {
     this.isLastPage,
     this.onChatListTap,
     this.chatTextFieldTopPadding = 0,
+    this.emojiPickerSheetConfig,
   }) : super(key: key);
 
   /// Provides controller for accessing few function for running chat.
@@ -111,6 +112,9 @@ class ChatListWidget extends StatefulWidget {
 
   /// Provides top padding of chat text field
   final double chatTextFieldTopPadding;
+
+  /// Configuration for emoji picker sheet
+  final Config? emojiPickerSheetConfig;
 
   @override
   State<ChatListWidget> createState() => _ChatListWidgetState();
@@ -233,6 +237,7 @@ class _ChatListWidgetState extends State<ChatListWidget>
                       reactionPopupConfig: widget.reactionPopupConfig,
                       onTap: _onChatListTap,
                       showPopUp: showPopupValue,
+                      emojiPickerSheetConfig: widget.emojiPickerSheetConfig,
                     ),
                 ],
               );

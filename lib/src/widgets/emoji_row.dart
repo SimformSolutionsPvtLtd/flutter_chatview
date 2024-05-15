@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:chatview/src/models/reaction_popup_configuration.dart';
 import 'package:chatview/src/utils/constants/constants.dart';
@@ -31,6 +32,7 @@ class EmojiRow extends StatelessWidget {
     Key? key,
     required this.onEmojiTap,
     this.emojiConfiguration,
+    this.emojiPickerSheetConfig,
   }) : super(key: key);
 
   /// Provides callback when user taps on emoji in reaction pop-up.
@@ -48,6 +50,9 @@ class EmojiRow extends StatelessWidget {
     angryFace,
     thumbsUp,
   ];
+
+  /// Configuration for emoji picker sheet
+  final Config? emojiPickerSheetConfig;
 
   @override
   Widget build(BuildContext context) {
@@ -86,9 +91,12 @@ class EmojiRow extends StatelessWidget {
 
   void _showBottomSheet(BuildContext context) => showModalBottomSheet<void>(
         context: context,
-        builder: (context) => EmojiPickerWidget(onSelected: (emoji) {
-          Navigator.pop(context);
-          onEmojiTap(emoji);
-        }),
+        builder: (context) => EmojiPickerWidget(
+          emojiPickerSheetConfig: emojiPickerSheetConfig,
+          onSelected: (emoji) {
+            Navigator.pop(context);
+            onEmojiTap(emoji);
+          },
+        ),
       );
 }
