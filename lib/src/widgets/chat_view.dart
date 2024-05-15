@@ -54,6 +54,7 @@ class ChatView extends StatefulWidget {
     required this.chatViewState,
     ChatViewStateConfiguration? chatViewStateConfig,
     this.featureActiveConfig = const FeatureActiveConfig(),
+    this.chatTextFieldTopPadding = 0,
   })  : chatBackgroundConfig =
             chatBackgroundConfig ?? const ChatBackgroundConfiguration(),
         chatViewStateConfig =
@@ -136,6 +137,9 @@ class ChatView extends StatefulWidget {
 
   /// Provides callback when user tap on chat list.
   final VoidCallBack? onChatListTap;
+
+  /// Provides top padding of chat text field
+  final double chatTextFieldTopPadding;
 
   @override
   State<ChatView> createState() => _ChatViewState();
@@ -250,6 +254,7 @@ class _ChatViewState extends State<ChatView>
                           assignReplyMessage: (message) => _sendMessageKey
                               .currentState
                               ?.assignReplyMessage(message),
+                          chatTextFieldTopPadding: widget.chatTextFieldTopPadding,
                         );
                       },
                     ),
