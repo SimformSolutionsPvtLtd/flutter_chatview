@@ -1,6 +1,8 @@
 ## [1.3.2] (Unreleased)
 * **Fix**: [126](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/126) Added
   flag to hide user name in chat.
+* **Feat**: [161](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/161) Added
+  field to set top padding of chat text field.
 
 
 ## [1.3.1]

@@ -51,6 +51,7 @@ class ChatListWidget extends StatefulWidget {
     this.loadMoreData,
     this.isLastPage,
     this.onChatListTap,
+    this.chatTextFieldTopPadding = 0,
   }) : super(key: key);
 
   /// Provides controller for accessing few function for running chat.
@@ -107,6 +108,9 @@ class ChatListWidget extends StatefulWidget {
 
   /// Provides callback when user tap anywhere on whole chat.
   final VoidCallBack? onChatListTap;
+
+  /// Provides top padding of chat text field
+  final double chatTextFieldTopPadding;
 
   @override
   State<ChatListWidget> createState() => _ChatListWidgetState();
@@ -221,6 +225,7 @@ class _ChatListWidgetState extends State<ChatListWidget>
                       }
                     },
                     onChatListTap: _onChatListTap,
+                    chatTextFieldTopPadding: widget.chatTextFieldTopPadding,
                   ),
                   if (featureActiveConfig?.enableReactionPopup ?? false)
                     ReactionPopup(

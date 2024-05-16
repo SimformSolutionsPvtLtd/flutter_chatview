@@ -471,6 +471,16 @@ ChatView(
 )
 ```
 
+19. Added field `chatTextFieldTopPadding` to set top padding of chat text field.
+
+```dart
+ChatView(
+   ...
+      chatTextFieldTopPadding: 10,
+  ...
+ 
+)
+```
 
 19.  Flag `enableOtherUserName` to hide user name in chat.
 

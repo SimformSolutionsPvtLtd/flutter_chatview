@@ -47,6 +47,7 @@ class ChatGroupedListWidget extends StatefulWidget {
     this.swipeToReplyConfig,
     this.repliedMessageConfig,
     this.typeIndicatorConfig,
+    this.chatTextFieldTopPadding = 0,
   }) : super(key: key);
 
   /// Allow user to swipe to see time while reaction pop is not open.
@@ -91,6 +92,9 @@ class ChatGroupedListWidget extends StatefulWidget {
   /// Provide flag for turn on/off to see message crated time view when user
   /// swipe whole chat.
   final bool isEnableSwipeToSeeTime;
+
+  /// Provides top padding of chat text field
+  final double chatTextFieldTopPadding;
 
   @override
   State<ChatGroupedListWidget> createState() => _ChatGroupedListWidgetState();
@@ -207,8 +211,9 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
                         profilePic: profileCircleConfig?.profileImageUrl,
                       )),
           SizedBox(
-            height: MediaQuery.of(context).size.width *
-                (widget.replyMessage.message.isNotEmpty ? 0.3 : 0.14),
+            height: (MediaQuery.of(context).size.width *
+                    (widget.replyMessage.message.isNotEmpty ? 0.3 : 0.14)) +
+                (widget.chatTextFieldTopPadding),
           ),
         ],
       ),
