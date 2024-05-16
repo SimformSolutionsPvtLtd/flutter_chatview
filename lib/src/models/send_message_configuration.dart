@@ -19,11 +19,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 import 'package:audio_waveforms/audio_waveforms.dart';
-import 'package:chatview/src/values/enumaration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../values/enumaration.dart';
+import '../values/typedefs.dart';
 
 class SendMessageConfiguration {
   /// Used to give background color to text field.
@@ -71,6 +74,9 @@ class SendMessageConfiguration {
   /// Styling configuration for recorder widget.
   final VoiceRecordingConfiguration? voiceRecordingConfiguration;
 
+  /// Configuration for cancel voice recording
+  final CancelRecordConfiguration? cancelRecordConfiguration;
+
   const SendMessageConfiguration({
     this.textFieldConfig,
     this.textFieldBackgroundColor,
@@ -87,6 +93,7 @@ class SendMessageConfiguration {
     this.enableGalleryImagePicker = true,
     this.voiceRecordingConfiguration,
     this.micIconColor,
+    this.cancelRecordConfiguration,
   });
 }
 
@@ -268,4 +275,22 @@ class VoiceRecordingConfiguration {
 
   /// The audio output format to be used for recorded audio files on Android.
   final AndroidOutputFormat? androidOutputFormat;
+}
+
+class CancelRecordConfiguration {
+  /// Configuration for cancel voice recording
+  const CancelRecordConfiguration({
+    this.icon,
+    this.iconColor,
+    this.onCancel,
+  });
+
+  /// An icon for cancelling voice recording.
+  final Widget? icon;
+
+  /// Cancel record icon color
+  final Color? iconColor;
+
+  /// Provides callback on voice record cancel
+  final VoidCallBack? onCancel;
 }

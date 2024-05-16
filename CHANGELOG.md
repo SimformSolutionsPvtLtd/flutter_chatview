@@ -1,5 +1,7 @@
 ## [1.3.2] (Unreleased)
 
+* **Fix**: [137](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/137) Added
+  support for cancel voice recording and field to provide cancel record icon.
 * **Feat**: [93](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/93) Added support
   that provide date pattern to change chat separation.
 * **Fix**: [142](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/142) Added
