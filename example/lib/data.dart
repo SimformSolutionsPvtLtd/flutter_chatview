@@ -5,11 +5,38 @@ class Data {
       "https://raw.githubusercontent.com/SimformSolutionsPvtLtd/flutter_showcaseview/master/example/assets/simform.png";
   static final messageList = [
     Message(
+      id: '58',
+      message: "https://bit.ly/3JHS2Wl",
+      createdAt: DateTime.now(),
+      sendBy: '2',
+      reaction: Reaction(
+        reactions: ['\u{2764}', '\u{1F44D}', '\u{1F44D}'],
+        reactedUserIds: ['2', '3', '4'],
+      ),
+      status: MessageStatus.read,
+    ),
+    Message(
+      id: '88',
+      message: "https://bit.ly/3JHS2Wl",
+      createdAt: DateTime.now(),
+      sendBy: '1',
+      reaction: Reaction(
+        reactions: ['\u{2764}', '\u{1F44D}', '\u{1F44D}'],
+        reactedUserIds: ['2', '3', '4'],
+      ),
+      status: MessageStatus.read,
+    ),
+    Message(
       id: '1',
       message: "Hi!",
       createdAt: DateTime.now(),
-      sendBy: '1', // userId of who sends the message
+      sendBy: '1',
+      // userId of who sends the message
       status: MessageStatus.read,
+      reaction: Reaction(
+        reactions: ['\u{2764}', '\u{2763}', '\u{2762}', '\u{2761}'],
+        reactedUserIds: ['2', '4', '3', '1'],
+      ),
     ),
     Message(
       id: '2',
@@ -28,6 +55,14 @@ class Data {
     Message(
       id: '4',
       message: "Can you write the time and place of the meeting?",
+      createdAt: DateTime.now(),
+      sendBy: '1',
+      status: MessageStatus.read,
+    ),
+    Message(
+      id: '5',
+      message:
+          "Can you write the time and place of the meeting? Can you write the time and place of the meeting?",
       createdAt: DateTime.now(),
       sendBy: '1',
       status: MessageStatus.read,
@@ -105,12 +140,45 @@ class Data {
       sendBy: '1',
       reaction: Reaction(reactions: ['\u{2764}'], reactedUserIds: ['2']),
       status: MessageStatus.read,
+    ), Message(
+      id: '1321',
+      message: "https://miro.medium.com/max/1000/0*s7of7kWnf9fDg4XM.jpeg",
+      createdAt: DateTime.now(),
+      messageType: MessageType.image,
+      sendBy: '2',
+      reaction: Reaction(reactions: ['\u{2764}'], reactedUserIds: ['2']),
+      status: MessageStatus.read,
     ),
     Message(
       id: '12',
       message: "🤩🤩",
       createdAt: DateTime.now(),
       sendBy: '2',
+      status: MessageStatus.read,
+    ),
+    // Message(
+    //     id: '13',
+    //     message: "",
+    //     createdAt: DateTime.now(),
+    //     sendBy: '2',
+    //     status: MessageStatus.read,
+    //     messageType: MessageType.voice),
+    // Message(
+    //     id: '14',
+    //     message: "",
+    //     createdAt: DateTime.now(),
+    //     sendBy: '1',
+    //     status: MessageStatus.read,
+    //     messageType: MessageType.voice),
+    Message(
+      id: '94',
+      message: "messageMe",
+      reaction: Reaction(
+        reactions: ['\u{2764}', '\u{2761}', '\u{2763}', '\u{2762}'],
+        reactedUserIds: ['2', '4', '3', '1'],
+      ),
+      createdAt: DateTime.now(),
+      sendBy: '1',
       status: MessageStatus.read,
     ),
   ];

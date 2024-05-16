@@ -19,8 +19,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'dart:ui';
+
+import 'package:chatview/chatview.dart';
 import 'package:chatview/src/extensions/extensions.dart';
+import 'package:chatview/src/values/typedefs.dart';
 import 'package:flutter/material.dart';
+
+import 'chat_view_inherited_widget.dart';
 
 class MessageTimeWidget extends StatelessWidget {
   const MessageTimeWidget({
@@ -29,6 +35,7 @@ class MessageTimeWidget extends StatelessWidget {
     required this.isCurrentUser,
     this.messageTimeTextStyle,
     this.messageTimeIconColor,
+    this.messageDateTimeBuilder,
   }) : super(key: key);
 
   /// Provides message crated date time.
@@ -44,37 +51,58 @@ class MessageTimeWidget extends StatelessWidget {
   /// seeing message sending time
   final Color? messageTimeIconColor;
 
+  /// Allow user to set custom formatting of message time.
+  final MessageDateTimeBuilder? messageDateTimeBuilder;
+
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerRight,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(2),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: messageTimeIconColor ?? Colors.black,
+    final messageTimePositionType = ChatViewInheritedWidget.of(context)
+            ?.featureActiveConfig
+            .messageTimePositionType ??
+        MessageTimePositionType.onRightSwipe;
+    return !messageTimePositionType.isOnRightSwipe
+        ? Text(
+            messageTime.getTimeFromDateTime,
+            style: messageTimeTextStyle ??
+                TextStyle(
+                  fontSize: 14,
+                  color: Colors.black.withOpacity(0.6),
                 ),
-              ),
-              child: Icon(
-                isCurrentUser ? Icons.arrow_forward : Icons.arrow_back,
-                size: 10,
-                color: messageTimeIconColor ?? Colors.black,
-              ),
-            ),
-            const SizedBox(width: 4),
-            Text(
-              messageTime.getTimeFromDateTime,
-              style: messageTimeTextStyle ?? const TextStyle(fontSize: 12),
-            ),
-          ],
-        ),
-      ),
-    );
+          )
+        : Align(
+            alignment: Alignment.centerRight,
+            child: messageDateTimeBuilder?.call(messageTime) ??
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(2),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: messageTimeIconColor ?? Colors.black,
+                          ),
+                        ),
+                        child: Icon(
+                          isCurrentUser
+                              ? Icons.arrow_forward
+                              : Icons.arrow_back,
+                          size: 10,
+                          color: messageTimeIconColor ?? Colors.black,
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        messageTime.getTimeFromDateTime,
+                        style: messageTimeTextStyle ??
+                            const TextStyle(fontSize: 12),
+                      ),
+                    ],
+                  ),
+                ),
+          );
   }
 }

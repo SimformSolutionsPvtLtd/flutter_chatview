@@ -22,10 +22,12 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:chatview/chatview.dart';
 import 'package:chatview/src/extensions/extensions.dart';
-import 'package:chatview/src/models/models.dart';
+import 'package:chatview/src/widgets/message_time_widget.dart';
 import 'package:flutter/material.dart';
 
+import 'chat_view_inherited_widget.dart';
 import 'reaction_widget.dart';
 import 'share_icon.dart';
 
@@ -38,6 +40,8 @@ class ImageMessageView extends StatelessWidget {
     this.messageReactionConfig,
     this.highlightImage = false,
     this.highlightScale = 1.2,
+    this.messageDateTimeBuilder,
+    this.messageTimeTextStyle,
   }) : super(key: key);
 
   /// Provides message instance of chat.
@@ -58,6 +62,12 @@ class ImageMessageView extends StatelessWidget {
   /// Provides scale of highlighted image when user taps on replied image.
   final double highlightScale;
 
+  /// Allow user to set custom formatting of message time.
+  final MessageDateTimeBuilder? messageDateTimeBuilder;
+
+  /// Used to give text style of message's time of a chat bubble
+  final TextStyle? messageTimeTextStyle;
+
   String get imageUrl => message.message;
 
   Widget get iconButton => ShareIcon(
@@ -67,6 +77,10 @@ class ImageMessageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final messageTimePositionType = ChatViewInheritedWidget.of(context)
+            ?.featureActiveConfig
+            .messageTimePositionType ??
+        MessageTimePositionType.onRightSwipe;
     return Row(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment:
@@ -88,7 +102,9 @@ class ImageMessageView extends StatelessWidget {
                   padding: imageMessageConfig?.padding ?? EdgeInsets.zero,
                   margin: imageMessageConfig?.margin ??
                       EdgeInsets.only(
-                        top: 6,
+                        top: messageTimePositionType.isOutSideChatBubbleAtTop
+                            ? 0
+                            : 6,
                         right: isMessageBySender ? 6 : 0,
                         left: isMessageBySender ? 0 : 6,
                         bottom: message.reaction.reactions.isNotEmpty ? 15 : 0,
@@ -136,8 +152,23 @@ class ImageMessageView extends StatelessWidget {
             if (message.reaction.reactions.isNotEmpty)
               ReactionWidget(
                 isMessageBySender: isMessageBySender,
-                reaction: message.reaction,
+                message: message,
                 messageReactionConfig: messageReactionConfig,
+              ),
+            if (!messageTimePositionType.isOnRightSwipe &&
+                !messageTimePositionType.isDisable &&
+                !messageTimePositionType.isOutSideChatBubbleAtTop)
+              Positioned(
+                right: message.reaction.reactions.isNotEmpty ? 16 : 18,
+                bottom: messageTimePositionType.isOutSideChatBubbleAtBottom
+                    ? 0
+                    : 20,
+                child: messageDateTimeBuilder?.call(message.createdAt) ??
+                    MessageTimeWidget(
+                      isCurrentUser: isMessageBySender,
+                      messageTime: message.createdAt,
+                      messageTimeTextStyle: messageTimeTextStyle,
+                    ),
               ),
           ],
         ),

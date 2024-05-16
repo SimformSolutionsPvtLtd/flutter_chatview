@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:chatview/chatview.dart';
 import 'package:example/data.dart';
 import 'package:example/models/theme.dart';
@@ -81,6 +83,8 @@ class _ChatScreenState extends State<ChatScreen> {
         featureActiveConfig: const FeatureActiveConfig(
           lastSeenAgoBuilderVisibility: true,
           receiptsBuilderVisibility: true,
+          enableOtherUserProfileAvatar: true,
+          messageTimePositionType: MessageTimePositionType.onRightSwipe,
         ),
         chatViewState: ChatViewState.hasMessages,
         chatViewStateConfig: ChatViewStateConfiguration(
@@ -212,6 +216,11 @@ class _ChatScreenState extends State<ChatScreen> {
           backgroundColor: theme.reactionPopupColor,
         ),
         messageConfig: MessageConfiguration(
+          messageTimeTextStyle: TextStyle(
+            color: theme.messageTimeTextColor,
+            fontWeight: FontWeight.bold,
+            fontSize: 12,
+          ),
           messageReactionConfig: MessageReactionConfiguration(
             backgroundColor: theme.messageReactionBackGroundColor,
             borderColor: theme.messageReactionBackGroundColor,
@@ -238,7 +247,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ),
           imageMessageConfig: ImageMessageConfiguration(
-            margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
+            margin: const EdgeInsets.fromLTRB(12, 0, 12, 15),
             shareIconConfig: ShareIconConfiguration(
               defaultIconBackgroundColor: theme.shareIconBackgroundColor,
               defaultIconColor: theme.shareIconColor,
