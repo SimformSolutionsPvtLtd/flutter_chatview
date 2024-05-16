@@ -71,28 +71,47 @@ class ReplyPopupWidget extends StatelessWidget {
                 color: topBorderColor ?? Colors.grey.shade400, width: 1)),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          InkWell(
-            onTap: onReplyTap,
-            child: Text(
-              PackageStrings.reply,
-              style: textStyle,
-            ),
-          ),
-          if (sendByCurrentUser)
-            InkWell(
-              onTap: onUnsendTap,
+          Expanded(
+            child: InkWell(
+              onTap: onReplyTap,
               child: Text(
-                PackageStrings.unsend,
+                PackageStrings.reply,
+                textAlign: TextAlign.center,
                 style: textStyle,
               ),
             ),
-          InkWell(
-            onTap: onMoreTap,
-            child: Text(
-              PackageStrings.more,
-              style: textStyle,
+          ),
+          if (sendByCurrentUser)
+            Expanded(
+              child: InkWell(
+                onTap: onUnsendTap,
+                child: Text(
+                  PackageStrings.unsend,
+                  textAlign: TextAlign.center,
+                  style: textStyle,
+                ),
+              ),
+            ),
+          if (!sendByCurrentUser)
+            Expanded(
+              child: InkWell(
+                onTap: onReportTap,
+                child: Text(
+                  PackageStrings.report,
+                  textAlign: TextAlign.center,
+                  style: textStyle,
+                ),
+              ),
+            ),
+          Expanded(
+            child: InkWell(
+              onTap: onMoreTap,
+              child: Text(
+                PackageStrings.more,
+                textAlign: TextAlign.center,
+                style: textStyle,
+              ),
             ),
           ),
         ],

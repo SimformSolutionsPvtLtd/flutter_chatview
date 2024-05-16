@@ -39,10 +39,10 @@ class ReplyPopupConfiguration {
   final MessageCallBack? onReplyTap;
 
   /// Provides callback on onReport button.
-  final VoidCallBack? onReportTap;
+  final MessageCallBack? onReportTap;
 
   /// Provides callback on onMore button.
-  final VoidCallBack? onMoreTap;
+  final MoreTapCallBack? onMoreTap;
 
   /// Used to give text style of button text.
   final TextStyle? buttonTextStyle;

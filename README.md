@@ -482,7 +482,7 @@ ChatView(
 )
 ```
 
-19.  Flag `enableOtherUserName` to hide user name in chat.
+20.  Flag `enableOtherUserName` to hide user name in chat.
 
 ```dart
 ChatView(
@@ -492,6 +492,23 @@ ChatView(
       ),
    ...
 
+)
+```
+
+21. Added report button for receiver message and update `onMoreTap` and `onReportTap` callbacks.
+
+```dart
+ChatView(
+   ...
+      replyPopupConfig: ReplyPopupConfiguration(
+        onReportTap: (Message message) {
+          debugPrint('Message: $message');
+        },
+        onMoreTap: (Message message, bool sendByCurrentUser) {
+          debugPrint('Message : $message');
+        },
+      ),
+   ...
 )
 ```
 

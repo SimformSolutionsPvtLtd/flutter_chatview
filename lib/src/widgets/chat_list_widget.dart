@@ -271,21 +271,22 @@ class _ChatListWidgetState extends State<ChatListWidget>
                     topBorderColor: replyPopup?.topBorderColor,
                     onMoreTap: () {
                       _onChatListTap();
-                      if (replyPopup?.onMoreTap != null) {
-                        replyPopup?.onMoreTap!();
-                      }
+                      replyPopup?.onMoreTap?.call(
+                        message,
+                        sendByCurrentUser,
+                      );
                     },
                     onReportTap: () {
                       _onChatListTap();
-                      if (replyPopup?.onReportTap != null) {
-                        replyPopup?.onReportTap!();
-                      }
+                      replyPopup?.onReportTap?.call(
+                        message,
+                      );
                     },
                     onUnsendTap: () {
                       _onChatListTap();
-                      if (replyPopup?.onUnsendTap != null) {
-                        replyPopup?.onUnsendTap!(message);
-                      }
+                      replyPopup?.onUnsendTap?.call(
+                        message,
+                      );
                     },
                     onReplyTap: () {
                       widget.assignReplyMessage(message);
