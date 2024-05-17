@@ -1,5 +1,7 @@
 ## [1.3.2] (Unreleased)
 
+* **Fix**: [142](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/142) Added
+  field to provide base64 string data for profile picture.
 * **Fix**: [165](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/165) Fix issue
   of user reaction callback provides incorrect message object when user react on any message
   with double or from reaction sheet.

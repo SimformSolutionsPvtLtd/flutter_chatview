@@ -574,6 +574,32 @@ ChatView(
  
 )
 ```
+25. Added flag `isProfilePhotoInBase64` that defines whether provided image is url or base64 data.
+
+```dart
+final chatController = ChatController(
+  ...
+    chatUsers: [
+      ChatUser(
+        id: '1',
+        name: 'Simform',
+        isProfilePhotoInBase64: false,
+        profilePhoto: 'ImageNetworkUrl',
+      ),
+    ],
+  ...
+);
+
+ChatView(
+   ...
+      profileCircleConfig: const ProfileCircleConfiguration(
+        isProfilePhotoInBase64: false,
+        profileImageUrl: 'ImageNetworkUrl',
+      ),
+   ...
+)
+```
+
 
 
 ## How to use
