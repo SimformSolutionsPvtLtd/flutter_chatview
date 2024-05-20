@@ -55,6 +55,7 @@ class ChatView extends StatefulWidget {
     ChatViewStateConfiguration? chatViewStateConfig,
     this.featureActiveConfig = const FeatureActiveConfig(),
     this.chatTextFieldTopPadding = 0,
+    this.emojiPickerSheetConfig,
   })  : chatBackgroundConfig =
             chatBackgroundConfig ?? const ChatBackgroundConfiguration(),
         chatViewStateConfig =
@@ -140,6 +141,9 @@ class ChatView extends StatefulWidget {
 
   /// Provides top padding of chat text field
   final double chatTextFieldTopPadding;
+
+  /// Configuration for emoji picker sheet
+  final Config? emojiPickerSheetConfig;
 
   @override
   State<ChatView> createState() => _ChatViewState();
@@ -256,6 +260,7 @@ class _ChatViewState extends State<ChatView>
                               ?.assignReplyMessage(message),
                           chatTextFieldTopPadding:
                               widget.chatTextFieldTopPadding,
+                          emojiPickerSheetConfig: widget.emojiPickerSheetConfig,
                         );
                       },
                     ),

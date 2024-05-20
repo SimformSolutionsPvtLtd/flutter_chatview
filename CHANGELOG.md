@@ -1,5 +1,7 @@
 ## [1.3.2] (Unreleased)
 
+* **Fix**: [160](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/160) Added
+  configuration for emoji picker sheet.
 * **Fix**: [130](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/130) Added
   report button for receiver message and update onMoreTap, onReportTap callback.
 * **Fix**: [126](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/126) Added
