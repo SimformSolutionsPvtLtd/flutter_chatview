@@ -254,7 +254,8 @@ class _ChatViewState extends State<ChatView>
                           assignReplyMessage: (message) => _sendMessageKey
                               .currentState
                               ?.assignReplyMessage(message),
-                          chatTextFieldTopPadding: widget.chatTextFieldTopPadding,
+                          chatTextFieldTopPadding:
+                              widget.chatTextFieldTopPadding,
                         );
                       },
                     ),

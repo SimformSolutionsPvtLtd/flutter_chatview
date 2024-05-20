@@ -7,30 +7,23 @@ repository: https://github.com/SimformSolutionsPvtLtd/flutter_chatview
 platforms:
   android:
   ios:
-  linux:
-  macos:
-  web:
-  windows:
 
 environment:
   sdk: '>=3.0.3 <4.0.0'
+  flutter: '>=3.10.3'
 
 dependencies:
   flutter:
     sdk: flutter
   grouped_list: ^5.1.2
   intl: ^0.19.0
-  flutter_linkify: ^6.0.0
-  url_launcher: ^6.1.7
-  emoji_picker_flutter: ^1.6.0
-  http: ^1.1.0
-  html: ^0.15.1
-  any_link_preview: ^3.0.0
-  progress_indicators: ^1.0.0
+  url_launcher: ^6.1.14
+  emoji_picker_flutter: ^2.1.1
+  any_link_preview: ^3.0.1
   image_picker: '>=0.8.9 <2.0.0'
-  audio_waveforms: ^1.0.1
+  audio_waveforms: ^1.0.5
   # For formatting time locale in message receipts
-  timeago: ^3.4.0
+  timeago: ^3.6.1
 
 dev_dependencies:
   flutter_test:
