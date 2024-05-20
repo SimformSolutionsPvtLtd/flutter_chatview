@@ -19,7 +19,7 @@ dependencies:
   flutter:
     sdk: flutter
   grouped_list: ^5.1.2
-  intl: ^0.18.0
+  intl: ^0.19.0
   flutter_linkify: ^6.0.0
   url_launcher: ^6.1.7
   emoji_picker_flutter: ^1.6.0
