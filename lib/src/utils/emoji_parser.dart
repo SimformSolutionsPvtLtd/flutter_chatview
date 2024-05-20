@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
-import 'package:http/http.dart' as http;
 
 /// This is code is take from the https://github.com/petehouston/flutter-emoji/blob/master/lib/flutter_emoji.dart
 /// All Credit of below class goes to @petehouston flutter_emoji
@@ -135,11 +134,6 @@ class EmojiParser {
 
   void initLocalData() {
     _init(jsonEmoji);
-  }
-
-  Future<void> initServerData() async {
-    final response = await http.get(Uri.parse(emojiSource));
-    _init(response.body);
   }
 
   void _init(String dataset) {

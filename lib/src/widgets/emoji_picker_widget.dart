@@ -37,13 +37,15 @@ class EmojiPickerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.sizeOf(context);
     return Container(
       padding: const EdgeInsets.only(top: 10, left: 15, right: 15),
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
-      height: MediaQuery.of(context).size.height / 2,
+      height: size.height * 0.6,
+      width: size.width,
       child: Column(
         children: [
           Container(
@@ -60,12 +62,24 @@ class EmojiPickerWidget extends StatelessWidget {
               onEmojiSelected: (Category? category, Emoji emoji) =>
                   onSelected(emoji.emoji),
               config: Config(
-                columns: 7,
-                emojiSizeMax: 32 * ((!kIsWeb && Platform.isIOS) ? 1.30 : 1.0),
-                initCategory: Category.RECENT,
-                bgColor: Colors.white,
-                recentTabBehavior: RecentTabBehavior.NONE,
-                recentsLimit: 28,
+                emojiViewConfig: EmojiViewConfig(
+                  columns: 7,
+                  emojiSizeMax: 32 * ((!kIsWeb && Platform.isIOS) ? 1.30 : 1.0),
+                  recentsLimit: 28,
+                  backgroundColor: Colors.white,
+                ),
+                searchViewConfig: const SearchViewConfig(
+                  buttonIconColor: Colors.black,
+                ),
+                categoryViewConfig: const CategoryViewConfig(
+                  initCategory: Category.RECENT,
+                  recentTabBehavior: RecentTabBehavior.NONE,
+                ),
+                bottomActionBarConfig: const BottomActionBarConfig(
+                  backgroundColor: Colors.white,
+                  buttonIconColor: Colors.black,
+                  buttonColor: Colors.white,
+                ),
               ),
             ),
           ),
