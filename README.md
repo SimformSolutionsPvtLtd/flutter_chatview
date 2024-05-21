@@ -601,6 +601,22 @@ ChatView(
 ```
 
 
+25. Added `chatSeparatorDatePattern` in `DefaultGroupSeparatorConfiguration` to separate chats with provided pattern.
+
+```dart
+ChatView(
+    ...
+      chatBackgroundConfig: ChatBackgroundConfiguration(
+        ...
+          defaultGroupSeparatorConfig: DefaultGroupSeparatorConfiguration(
+            chatSeparatorDatePattern: 'MMM dd, yyyy'
+          ),
+        ...
+      ),
+    ...
+)
+```
+
 
 ## How to use
 

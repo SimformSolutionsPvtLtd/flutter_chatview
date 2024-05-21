@@ -283,14 +283,27 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
   }
 
   Widget get _chatStreamBuilder {
+    DateTime lastMatchedDate = DateTime.now();
     return StreamBuilder<List<Message>>(
       stream: chatController?.messageStreamController.stream,
       builder: (context, snapshot) {
         return snapshot.connectionState.isActive
-            ? GroupedListView<Message, String>(
+            ? GroupedListView<Message, DateTime>(
                 shrinkWrap: true,
                 elements: snapshot.data!,
-                groupBy: (element) => element.createdAt.getDateFromDateTime,
+                groupBy: (message) {
+                  /// If the conversation is ongoing on the same date,
+                  /// return the same date [lastMatchedDate].
+
+                  /// When the conversation starts on a new date,
+                  /// we assign the new date [message.createdAt]
+                  /// to [lastMatchedDate].
+                  return lastMatchedDate =
+                      lastMatchedDate.getDateFromDateTime ==
+                              message.createdAt.getDateFromDateTime
+                          ? lastMatchedDate
+                          : message.createdAt;
+                },
                 itemComparator: (message1, message2) =>
                     message1.message.compareTo(message2.message),
                 physics: const NeverScrollableScrollPhysics(),
@@ -359,16 +372,16 @@ class _GroupSeparatorBuilder extends StatelessWidget {
     this.groupSeparatorBuilder,
     this.defaultGroupSeparatorConfig,
   }) : super(key: key);
-  final String separator;
+  final DateTime separator;
   final StringWithReturnWidget? groupSeparatorBuilder;
   final DefaultGroupSeparatorConfiguration? defaultGroupSeparatorConfig;
 
   @override
   Widget build(BuildContext context) {
     return groupSeparatorBuilder != null
-        ? groupSeparatorBuilder!(separator)
+        ? groupSeparatorBuilder!(separator.toString())
         : ChatGroupHeader(
-            day: DateTime.parse(separator),
+            day: separator,
             groupSeparatorConfig: defaultGroupSeparatorConfig,
           );
   }

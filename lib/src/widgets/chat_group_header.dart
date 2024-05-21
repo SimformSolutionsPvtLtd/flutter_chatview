@@ -23,6 +23,8 @@ import 'package:flutter/material.dart';
 import 'package:chatview/src/models/models.dart';
 import 'package:chatview/src/extensions/extensions.dart';
 
+import '../utils/constants/constants.dart';
+
 class ChatGroupHeader extends StatelessWidget {
   const ChatGroupHeader({
     Key? key,
@@ -42,7 +44,10 @@ class ChatGroupHeader extends StatelessWidget {
       padding: groupSeparatorConfig?.padding ??
           const EdgeInsets.symmetric(vertical: 12),
       child: Text(
-        day.getDay,
+        day.getDay(
+          groupSeparatorConfig?.chatSeparatorDatePattern ??
+              defaultChatSeparatorDatePattern,
+        ),
         textAlign: TextAlign.center,
         style: groupSeparatorConfig?.textStyle ?? const TextStyle(fontSize: 17),
       ),
