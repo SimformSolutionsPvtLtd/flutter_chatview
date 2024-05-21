@@ -29,7 +29,12 @@ export 'src/values/enumaration.dart';
 export 'src/controller/chat_controller.dart';
 export 'src/values/typedefs.dart';
 export 'package:audio_waveforms/audio_waveforms.dart'
-    show WaveStyle, PlayerWaveStyle;
+    show
+        WaveStyle,
+        PlayerWaveStyle,
+        AndroidEncoder,
+        IosEncoder,
+        AndroidOutputFormat;
 export 'src/models/receipts_widget_config.dart';
 export 'src/extensions/extensions.dart' show MessageTypes;
-export'package:emoji_picker_flutter/emoji_picker_flutter.dart';
+export 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
