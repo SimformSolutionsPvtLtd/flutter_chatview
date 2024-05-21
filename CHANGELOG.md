@@ -1,5 +1,7 @@
 ## [1.3.2] (Unreleased)
 
+* **Fix**: [131](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/131)
+  Fix unsupported operation while running on the web.
 * **Fix**: [160](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/160) Added
   configuration for emoji picker sheet.
 * **Fix**: [130](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/130) Added

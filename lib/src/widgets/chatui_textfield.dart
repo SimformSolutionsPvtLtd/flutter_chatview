@@ -254,11 +254,9 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                                   ),
                             ),
                         ],
-                        if (sendMessageConfig?.allowRecordingVoice ??
-                            true &&
-                                Platform.isIOS &&
-                                Platform.isAndroid &&
-                                !kIsWeb)
+                        if ((sendMessageConfig?.allowRecordingVoice ?? false) &&
+                            !kIsWeb &&
+                            (Platform.isIOS || Platform.isAndroid))
                           IconButton(
                             onPressed: _recordOrStop,
                             icon: (isRecordingValue
