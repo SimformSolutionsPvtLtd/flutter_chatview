@@ -558,6 +558,23 @@ ChatView(
 )
 ```
 
+24. Added `enabled` to enable/disable chat text field.
+
+```dart
+ChatView(
+   ...
+      sendMessageConfig: SendMessageConfiguration(
+      ...
+        textFieldConfig: TextFieldConfig(
+          enabled: true // [false] to disable text field.
+        ),
+      ...
+      ),
+  ...
+ 
+)
+```
+
 
 ## How to use
 

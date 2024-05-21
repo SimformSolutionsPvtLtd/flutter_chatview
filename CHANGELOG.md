@@ -1,5 +1,7 @@
 ## [1.3.2] (Unreleased)
 
+* **Fix**: [164](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/164)
+  Add flag to enable/disable chat text field.
 * **Feat**: [121](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/121)Added support
   for configuring the audio recording quality.
 * **Fix**: [131](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/131)
