@@ -22,6 +22,7 @@
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 
+import '../utils/constants/constants.dart';
 import '../values/typedefs.dart';
 
 class ChatBackgroundConfiguration {
@@ -95,8 +96,14 @@ class DefaultGroupSeparatorConfiguration {
   /// Used for giving text style of chat separator widget.
   final TextStyle? textStyle;
 
+  /// Provides pattern to separate chat
+  /// Defaults to ['MMM dd, yyyy']
+  /// e.g. May 21, 2024
+  final String chatSeparatorDatePattern;
+
   const DefaultGroupSeparatorConfiguration({
     this.padding,
     this.textStyle,
+    this.chatSeparatorDatePattern = defaultChatSeparatorDatePattern,
   });
 }

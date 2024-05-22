@@ -26,7 +26,6 @@ import 'package:timeago/timeago.dart' as timeago;
 import '../../../chatview.dart';
 import '../../widgets/chat_message_sending_to_sent_animation.dart';
 
-const String enUS = "en_US";
 const String emojiRegExpression =
     r'(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])';
 const String imageUrlRegExpression =
@@ -58,6 +57,7 @@ const double replyBorderRadius1 = 30;
 const double replyBorderRadius2 = 18;
 const double leftPadding3 = 12;
 const double textFieldBorderRadius = 27;
+const String defaultChatSeparatorDatePattern = 'MMM dd, yyyy';
 
 applicationDateFormatter(DateTime inputTime) {
   if (DateTime.now().difference(inputTime).inDays <= 3) {

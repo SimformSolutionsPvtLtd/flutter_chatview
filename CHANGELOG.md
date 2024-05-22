@@ -1,5 +1,7 @@
 ## [1.3.2] (Unreleased)
 
+* **Feat**: [93](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/93) Added support
+  that provide date pattern to change chat separation.
 * **Fix**: [142](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/142) Added
   field to provide base64 string data for profile picture.
 * **Fix**: [165](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/165) Fix issue
