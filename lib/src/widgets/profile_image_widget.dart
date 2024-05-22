@@ -20,50 +20,33 @@
  * SOFTWARE.
  */
 
-import 'package:chatview/src/utils/constants/constants.dart';
+import 'dart:convert';
+
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:chatview/chatview.dart';
 import 'package:flutter/material.dart';
 
-import '../values/enumaration.dart';
-import '../values/typedefs.dart';
-import 'profile_image_widget.dart';
+import '../utils/constants/constants.dart';
 
-class ProfileCircle extends StatelessWidget {
-  const ProfileCircle({
-    Key? key,
-    required this.bottomPadding,
+class ProfileImageWidget extends StatelessWidget {
+  const ProfileImageWidget({
+    super.key,
     this.imageUrl,
-    this.profileCirclePadding,
-    this.circleRadius,
-    this.onTap,
-    this.onLongPress,
     this.defaultAvatarImage = profileImage,
+    this.circleRadius,
     this.assetImageErrorBuilder,
     this.networkImageErrorBuilder,
     this.imageType = ImageType.network,
-  }) : super(key: key);
-
-  /// Allow users to give  default bottom padding according to user case.
-  final double bottomPadding;
-
-  /// Allow user to pass image url, asset image of user's profile.
-  /// Or
-  /// Allow user to pass image data of user's profile picture in base64.
-  final String? imageUrl;
-
-  /// Field to define image type [network, asset or base64]
-  final ImageType? imageType;
-
-  /// Allow user to set whole padding of profile circle view.
-  final EdgeInsetsGeometry? profileCirclePadding;
+  });
 
   /// Allow user to set radius of circle avatar.
   final double? circleRadius;
 
-  /// Allow user to do operation when user tap on profile circle.
-  final VoidCallback? onTap;
+  /// Allow user to pass image url of user's profile picture.
+  final String? imageUrl;
 
-  /// Allow user to do operation when user long press on profile circle.
-  final VoidCallback? onLongPress;
+  /// Flag to check whether image is network or asset
+  final ImageType? imageType;
 
   /// Field to set default avatar image if profile image link not provided
   final String defaultAvatarImage;
@@ -76,20 +59,46 @@ class ProfileCircle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: profileCirclePadding ??
-          EdgeInsets.only(left: 6.0, right: 4, bottom: bottomPadding),
-      child: InkWell(
-        onLongPress: onLongPress,
-        onTap: onTap,
-        child: ProfileImageWidget(
-          circleRadius: circleRadius ?? 16,
-          imageUrl: imageUrl,
-          defaultAvatarImage: defaultAvatarImage,
-          assetImageErrorBuilder: assetImageErrorBuilder,
-          networkImageErrorBuilder: networkImageErrorBuilder,
-          imageType: imageType,
-        ),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(circleRadius ?? 20),
+      child: ((imageType?.isBase64 ?? false) && imageUrl != null)
+          ? Image.memory(
+              base64Decode(imageUrl!),
+              height: (circleRadius ?? 20) * 2,
+              width: (circleRadius ?? 20) * 2,
+              fit: BoxFit.cover,
+            )
+          : (imageType?.isNetwork ?? true)
+              ? CachedNetworkImage(
+                  imageUrl: imageUrl ?? defaultAvatarImage,
+                  height: (circleRadius ?? 20) * 2,
+                  width: (circleRadius ?? 20) * 2,
+                  fit: BoxFit.cover,
+                  errorWidget:
+                      networkImageErrorBuilder ?? _networkImageErrorWidget,
+                )
+              : Image.asset(
+                  imageUrl ?? '',
+                  height: (circleRadius ?? 20) * 2,
+                  width: (circleRadius ?? 20) * 2,
+                  fit: BoxFit.cover,
+                  errorBuilder: assetImageErrorBuilder ?? _errorWidget,
+                ),
+    );
+  }
+
+  Widget _networkImageErrorWidget(context, url, error) {
+    return const Center(
+      child: Icon(
+        Icons.error_outline,
+      ),
+    );
+  }
+
+  Widget _errorWidget(context, error, stackTrace) {
+    return const Center(
+      child: Icon(
+        Icons.error_outline,
       ),
     );
   }

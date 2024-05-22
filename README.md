@@ -679,6 +679,30 @@ ChatView(
   ...
 ),
 ```
+29. Add default avatar for profile image `defaultAvatarImage`,
+    error builder for asset and network profile image `assetImageErrorBuilder` `networkImageErrorBuilder`,
+    Enum `ImageType` to define image as asset, network or base64 data.
+```dart
+ChatView(
+  ...
+      appBar: ChatViewAppBar(
+        defaultAvatarImage: defaultAvatar,
+        imageType: ImageType.network,
+        networkImageErrorBuilder: (context, url, error) {
+          return Center(
+            child: Text('Error $error'),
+          );
+        },
+        assetImageErrorBuilder: (context, error, stackTrace) {
+          return Center(
+            child: Text('Error $error'),
+          );
+        },
+      ),
+  ...
+),
+```
+
 
 29. Added a `customMessageReplyViewBuilder` to customize reply message view for custom type message.
 

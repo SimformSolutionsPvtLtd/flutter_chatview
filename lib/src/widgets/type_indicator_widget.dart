@@ -34,20 +34,31 @@ class TypingIndicator extends StatefulWidget {
     this.profilePic,
     this.chatBubbleConfig,
     this.typeIndicatorConfig,
-    this.isProfilePhotoInBase64,
+    this.imageType = ImageType.network,
+    this.defaultAvatarImage = profileImage,
+    this.networkImageErrorBuilder,
+    this.assetImageErrorBuilder,
   }) : super(key: key);
 
   /// Allow user to turn on/off typing indicator.
   final bool showIndicator;
 
-  /// Represents profile picture url of user.
+  /// Represents profile picture url as network or asset of user.
   /// Or
   /// Provides profile picture's data in base64 string.
-  /// This will be determined by [isProfilePhotoInBase64].
   final String? profilePic;
 
-  /// Provides profile picture's data in base64 string
-  final bool? isProfilePhotoInBase64;
+  /// Field to define image type [network, asset or base64]
+  final ImageType? imageType;
+
+  /// Field to set default avatar image if profile image link not provided
+  final String defaultAvatarImage;
+
+  /// Error builder to build error widget for asset image
+  final AssetImageErrorBuilder? assetImageErrorBuilder;
+
+  /// Error builder to build error widget for network image
+  final NetworkImageErrorBuilder? networkImageErrorBuilder;
 
   /// Provides configurations related to chat bubble such as padding, margin, max
   /// width etc.
@@ -244,7 +255,10 @@ class _TypingIndicatorState extends State<TypingIndicator>
             ProfileCircle(
               bottomPadding: 0,
               imageUrl: widget.profilePic,
-              isProfilePhotoInBase64: widget.isProfilePhotoInBase64,
+              imageType: widget.imageType,
+              assetImageErrorBuilder: widget.assetImageErrorBuilder,
+              networkImageErrorBuilder: widget.networkImageErrorBuilder,
+              defaultAvatarImage: widget.defaultAvatarImage,
             ),
             bubble,
           ],

@@ -67,3 +67,13 @@ typedef CustomViewForReplyMessage = Widget Function(
   ReplyMessage state,
 );
 typedef GetMessageSeparator = (Map<int, DateTime>, DateTime);
+typedef AssetImageErrorBuilder = Widget Function(
+  BuildContext context,
+  Object error,
+  StackTrace? stackTrace,
+);
+typedef NetworkImageErrorBuilder = Widget Function(
+  BuildContext context,
+  String url,
+  Object error,
+);

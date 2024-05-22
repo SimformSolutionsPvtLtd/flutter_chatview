@@ -197,8 +197,7 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
                   chatBubbleConfig: chatBubbleConfig?.inComingChatBubbleConfig,
                   showIndicator: widget.showTypingIndicator,
                   profilePic: profileCircleConfig?.profileImageUrl,
-                  isProfilePhotoInBase64:
-                      profileCircleConfig?.isProfilePhotoInBase64,
+                  imageType: profileCircleConfig?.imageType,
                 )
               : ValueListenableBuilder(
                   valueListenable: ChatViewInheritedWidget.of(context)!
@@ -210,8 +209,7 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
                             chatBubbleConfig?.inComingChatBubbleConfig,
                         showIndicator: value,
                         profilePic: profileCircleConfig?.profileImageUrl,
-                        isProfilePhotoInBase64:
-                            profileCircleConfig?.isProfilePhotoInBase64,
+                        imageType: profileCircleConfig?.imageType,
                       )),
           SizedBox(
             height: (MediaQuery.of(context).size.width *

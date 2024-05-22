@@ -43,6 +43,16 @@ enum ChatViewState { hasMessages, noData, loading, error }
 
 enum ShowReceiptsIn { all, lastMessage }
 
+enum ImageType { asset, network, base64 }
+
+extension ImageTypeExtension on ImageType {
+  bool get isNetwork => this == ImageType.network;
+
+  bool get isAsset => this == ImageType.asset;
+
+  bool get isBase64 => this == ImageType.base64;
+}
+
 extension ChatViewStateExtension on ChatViewState {
   bool get hasMessages => this == ChatViewState.hasMessages;
 
