@@ -1,5 +1,7 @@
 ## [2.0.0] (Unreleased)
 
+* **Fix**: [177](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/177) Fixed
+  json serializable of models and added copyWith method (Message, Reaction and Reply Message).
 * **Fix**: [182](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/182) Fix
   send message not working when user start texting after newLine.
 * **Feat**: [156](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/156) Added
@@ -40,7 +42,6 @@
   flag to hide user name in chat.
 * **Feat**: [161](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/161) Added
   field to set top padding of chat text field.
-
 
 ## [1.3.1]
 

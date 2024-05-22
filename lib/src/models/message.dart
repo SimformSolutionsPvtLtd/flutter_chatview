@@ -91,25 +91,47 @@ class Message {
   }
 
   factory Message.fromJson(Map<String, dynamic> json) => Message(
-      id: json["id"],
-      message: json["message"],
-      createdAt: json["createdAt"],
-      sendBy: json["sendBy"],
-      replyMessage: ReplyMessage.fromJson(json["reply_message"]),
-      reaction: Reaction.fromJson(json["reaction"]),
-      messageType: json["message_type"],
-      voiceMessageDuration: json["voice_message_duration"],
-      status: json['status']);
+        id: json['id']?.toString() ?? '',
+        message: json['message']?.toString() ?? '',
+        createdAt:
+            DateTime.tryParse(json['createdAt'].toString()) ?? DateTime.now(),
+        sendBy: json['sendBy']?.toString() ?? '',
+        replyMessage: json['reply_message'] == null
+            ? const ReplyMessage()
+            : ReplyMessage.fromJson(
+                json['reply_message'] is Map<String, dynamic>
+                    ? json['reply_message'] as Map<String, dynamic>
+                    : <String, dynamic>{},
+              ),
+        reaction: json['reaction'] == null
+            ? null
+            : Reaction.fromJson(
+                json['reaction'] is Map<String, dynamic>
+                    ? json['reaction'] as Map<String, dynamic>
+                    : <String, dynamic>{},
+              ),
+        messageType: MessageType.tryParse(json['message_type']?.toString()) ??
+            MessageType.text,
+        voiceMessageDuration: json['voice_message_duration'] == null
+            ? null
+            : Duration(
+                microseconds:
+                    int.tryParse(json['voice_message_duration'].toString()) ??
+                        0,
+              ),
+        status: MessageStatus.tryParse(json['status']?.toString()) ??
+            MessageStatus.pending,
+      );
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'message': message,
-        'createdAt': createdAt,
+        'createdAt': createdAt.toIso8601String(),
         'sendBy': sendBy,
         'reply_message': replyMessage.toJson(),
         'reaction': reaction.toJson(),
-        'message_type': messageType,
-        'voice_message_duration': voiceMessageDuration,
-        'status': status.name
+        'message_type': messageType.name,
+        'voice_message_duration': voiceMessageDuration?.inMicroseconds,
+        'status': status.name,
       };
 }
