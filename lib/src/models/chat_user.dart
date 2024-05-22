@@ -27,23 +27,32 @@ class ChatUser {
   final String name;
 
   /// Provides profile picture URL of user.
+  /// Or
+  /// Provides profile picture's data in base64 string.
+  /// This will be determined by [isProfilePhotoInBase64].
   final String? profilePhoto;
+
+  /// To check whether profile photo is in base64 or network url.
+  final bool? isProfilePhotoInBase64;
 
   ChatUser({
     required this.id,
     required this.name,
     this.profilePhoto,
+    this.isProfilePhotoInBase64,
   });
 
   factory ChatUser.fromJson(Map<String, dynamic> json) => ChatUser(
         id: json["id"],
         name: json["name"],
         profilePhoto: json["profilePhoto"],
+        isProfilePhotoInBase64: json["isProfilePhotoInBase64"],
       );
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,
         'profilePhoto': profilePhoto,
+        'isProfilePhotoInBase64': isProfilePhotoInBase64,
       };
 }
