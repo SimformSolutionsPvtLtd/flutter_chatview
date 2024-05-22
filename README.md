@@ -601,7 +601,7 @@ ChatView(
 ```
 
 
-25. Added `chatSeparatorDatePattern` in `DefaultGroupSeparatorConfiguration` to separate chats with provided pattern.
+26. Added `chatSeparatorDatePattern` in `DefaultGroupSeparatorConfiguration` to separate chats with provided pattern.
 
 ```dart
 ChatView(
@@ -614,6 +614,29 @@ ChatView(
         ...
       ),
     ...
+)
+```
+
+27. Field `cancelRecordConfiguration` to provide an configuration to cancel voice record message.
+
+```dart
+ChatView(
+   ...
+      sendMessageConfig: SendMessageConfiguration(
+        ...
+           cancelRecordConfiguration: CancelRecordConfiguration(
+            icon: const Icon(
+              Icons.cancel_outlined,
+            ),
+            onCancel: () {
+              debugPrint('Voice recording cancelled');
+            },
+            iconColor: Colors.black,
+           ),
+        ...
+      ),
+   ...
+
 )
 ```
 
