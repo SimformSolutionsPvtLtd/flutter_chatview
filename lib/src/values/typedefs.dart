@@ -39,3 +39,7 @@ typedef MoreTapCallBack = void Function(
   Message message,
   bool sendByCurrentUser,
 );
+typedef ReactionCallback = void Function(
+  Message message,
+  String emoji,
+);

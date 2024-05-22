@@ -1,5 +1,8 @@
 ## [1.3.2] (Unreleased)
 
+* **Fix**: [165](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/165) Fix issue
+  of user reaction callback provides incorrect message object when user react on any message
+  with double or from reaction sheet.
 * **Fix**: [164](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/164)
   Add flag to enable/disable chat text field.
 * **Feat**: [121](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/121)Added support

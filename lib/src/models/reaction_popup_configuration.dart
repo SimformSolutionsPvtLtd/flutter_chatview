@@ -21,7 +21,7 @@
  */
 import 'package:flutter/material.dart';
 
-import 'models.dart';
+import '../values/typedefs.dart';
 
 class ReactionPopupConfiguration {
   /// Used for background color in reaction pop-up.
@@ -52,7 +52,7 @@ class ReactionPopupConfiguration {
   final GlassMorphismConfiguration? glassMorphismConfig;
 
   /// Provides callback when user react on message.
-  final void Function(Message message, String emoji)? userReactionCallback;
+  final ReactionCallback? userReactionCallback;
 
   const ReactionPopupConfiguration({
     this.userReactionCallback,
