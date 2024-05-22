@@ -87,7 +87,7 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
 
   OutlineInputBorder get _outLineBorder => OutlineInputBorder(
         borderSide: const BorderSide(color: Colors.transparent),
-        borderRadius: textFieldConfig?.borderRadius ??
+        borderRadius: widget.sendMessageConfig?.textFieldConfig?.borderRadius ??
             BorderRadius.circular(textFieldBorderRadius),
       );
 
@@ -128,6 +128,7 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
 
   @override
   Widget build(BuildContext context) {
+    final outlineBorder = _outLineBorder;
     return Container(
       padding:
           textFieldConfig?.padding ?? const EdgeInsets.symmetric(horizontal: 6),
@@ -174,6 +175,7 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                     keyboardType: textFieldConfig?.textInputType,
                     inputFormatters: textFieldConfig?.inputFormatters,
                     onChanged: _onChanged,
+                    enabled: textFieldConfig?.enabled,
                     textCapitalization: textFieldConfig?.textCapitalization ??
                         TextCapitalization.sentences,
                     decoration: InputDecoration(
@@ -191,13 +193,10 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                           ),
                       contentPadding: textFieldConfig?.contentPadding ??
                           const EdgeInsets.symmetric(horizontal: 6),
-                      border: _outLineBorder,
-                      focusedBorder: _outLineBorder,
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.transparent),
-                        borderRadius: textFieldConfig?.borderRadius ??
-                            BorderRadius.circular(textFieldBorderRadius),
-                      ),
+                      border: outlineBorder,
+                      focusedBorder: outlineBorder,
+                      enabledBorder: outlineBorder,
+                      disabledBorder: outlineBorder,
                     ),
                   ),
                 ),
@@ -208,10 +207,12 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                     return IconButton(
                       color: sendMessageConfig?.defaultSendButtonColor ??
                           Colors.green,
-                      onPressed: () {
-                        widget.onPressed();
-                        _inputText.value = '';
-                      },
+                      onPressed: (textFieldConfig?.enabled ?? true)
+                          ? () {
+                              widget.onPressed();
+                              _inputText.value = '';
+                            }
+                          : null,
                       icon: sendMessageConfig?.sendButtonIcon ??
                           const Icon(Icons.send),
                     );
@@ -223,11 +224,13 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                               true)
                             IconButton(
                               constraints: const BoxConstraints(),
-                              onPressed: () => _onIconPressed(
-                                ImageSource.camera,
-                                config:
-                                    sendMessageConfig?.imagePickerConfiguration,
-                              ),
+                              onPressed: (textFieldConfig?.enabled ?? true)
+                                  ? () => _onIconPressed(
+                                        ImageSource.camera,
+                                        config: sendMessageConfig
+                                            ?.imagePickerConfiguration,
+                                      )
+                                  : null,
                               icon: imagePickerIconsConfig
                                       ?.cameraImagePickerIcon ??
                                   Icon(
@@ -240,11 +243,13 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                               true)
                             IconButton(
                               constraints: const BoxConstraints(),
-                              onPressed: () => _onIconPressed(
-                                ImageSource.gallery,
-                                config:
-                                    sendMessageConfig?.imagePickerConfiguration,
-                              ),
+                              onPressed: (textFieldConfig?.enabled ?? true)
+                                  ? () => _onIconPressed(
+                                        ImageSource.gallery,
+                                        config: sendMessageConfig
+                                            ?.imagePickerConfiguration,
+                                      )
+                                  : null,
                               icon: imagePickerIconsConfig
                                       ?.galleryImagePickerIcon ??
                                   Icon(
@@ -258,12 +263,17 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                             !kIsWeb &&
                             (Platform.isIOS || Platform.isAndroid))
                           IconButton(
-                            onPressed: _recordOrStop,
+                            onPressed: (textFieldConfig?.enabled ?? true)
+                                ? _recordOrStop
+                                : null,
                             icon: (isRecordingValue
                                     ? voiceRecordingConfig?.micIcon
                                     : voiceRecordingConfig?.stopIcon) ??
-                                Icon(isRecordingValue ? Icons.stop : Icons.mic),
-                            color: voiceRecordingConfig?.recorderIconColor,
+                                Icon(
+                                  isRecordingValue ? Icons.stop : Icons.mic,
+                                  color:
+                                      voiceRecordingConfig?.recorderIconColor,
+                                ),
                           )
                       ],
                     );
