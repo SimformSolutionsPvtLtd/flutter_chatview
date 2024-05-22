@@ -21,6 +21,8 @@
  */
 import 'package:flutter/material.dart';
 
+import '../values/typedefs.dart';
+
 class MessageReactionConfiguration {
   /// Used for giving size of reaction on message.
   final double? reactionSize;
@@ -85,6 +87,7 @@ class ReactionsBottomSheetConfiguration {
     this.reactedUserTextStyle,
     this.profileCircleRadius,
     this.reactionSize,
+    this.reactedUserCallback,
   });
 
   /// Used for giving padding of bottom sheet.
@@ -110,4 +113,7 @@ class ReactionsBottomSheetConfiguration {
 
   /// Used for giving size of reaction in bottom sheet.
   final double? reactionSize;
+
+  /// Called when user tap on reacted user from reaction list
+  final ReactedUserCallback? reactedUserCallback;
 }

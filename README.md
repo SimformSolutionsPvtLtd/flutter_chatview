@@ -600,7 +600,6 @@ ChatView(
 )
 ```
 
-
 26. Added `chatSeparatorDatePattern` in `DefaultGroupSeparatorConfiguration` to separate chats with provided pattern.
 
 ```dart
@@ -638,6 +637,26 @@ ChatView(
    ...
 
 )
+```
+
+28. Added callback of onTap on list of reacted users in reaction sheet `reactedUserCallback`.
+```dart
+
+ChatView(
+   ...
+      messageConfig: MessageConfiguration(
+      ...
+        messageReactionConfig: MessageReactionConfiguration(
+          reactionsBottomSheetConfig: ReactionsBottomSheetConfiguration(
+            reactedUserCallback: (reactedUser, reaction) {
+              debugPrint(reaction);
+            },
+          ),
+        ),
+      ...
+      ),
+  ...
+),
 ```
 
 
