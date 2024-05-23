@@ -48,6 +48,7 @@ class ChatViewAppBar extends StatelessWidget {
     this.assetImageErrorBuilder,
     this.networkImageErrorBuilder,
     this.imageType = ImageType.network,
+    this.networkImageProgressIndicatorBuilder,
   }) : super(key: key);
 
   /// Allow user to change colour of appbar.
@@ -101,6 +102,10 @@ class ChatViewAppBar extends StatelessWidget {
   /// Field to define image type [network, asset or base64]
   final ImageType imageType;
 
+  /// Progress indicator builder for network image
+  final NetworkImageProgressIndicatorBuilder?
+  networkImageProgressIndicatorBuilder;
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -137,6 +142,7 @@ class ChatViewAppBar extends StatelessWidget {
                         assetImageErrorBuilder: assetImageErrorBuilder,
                         networkImageErrorBuilder: networkImageErrorBuilder,
                         imageType: imageType,
+                        networkImageProgressIndicatorBuilder: networkImageProgressIndicatorBuilder,
                       ),
                     ),
                   Column(

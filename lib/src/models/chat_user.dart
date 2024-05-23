@@ -19,7 +19,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import '../values/enumaration.dart';
+
+import '../utils/constants/constants.dart';
+import '../values/enumeration.dart';
+import '../values/typedefs.dart';
 
 class ChatUser {
   /// Provides id of user.
@@ -33,14 +36,31 @@ class ChatUser {
   /// Provides profile picture's data in base64 string.
   final String? profilePhoto;
 
+  /// Field to set default image if network url for profile image not provided
+  final String defaultAvatarImage;
+
   /// Field to define image type [network, asset or base64]
   final ImageType imageType;
+
+  /// Error builder to build error widget for asset image
+  final AssetImageErrorBuilder? assetImageErrorBuilder;
+
+  /// Error builder to build error widget for network image
+  final NetworkImageErrorBuilder? networkImageErrorBuilder;
+
+  /// Progress indicator builder for network image
+  final NetworkImageProgressIndicatorBuilder?
+      networkImageProgressIndicatorBuilder;
 
   ChatUser({
     required this.id,
     required this.name,
     this.profilePhoto,
+    this.defaultAvatarImage = profileImage,
     this.imageType = ImageType.network,
+    this.assetImageErrorBuilder,
+    this.networkImageErrorBuilder,
+    this.networkImageProgressIndicatorBuilder,
   });
 
   factory ChatUser.fromJson(Map<String, dynamic> json) => ChatUser(
@@ -48,6 +68,7 @@ class ChatUser {
         name: json["name"],
         profilePhoto: json["profilePhoto"],
         imageType: json["imageType"],
+        defaultAvatarImage: json["defaultAvatarImage"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -55,5 +76,6 @@ class ChatUser {
         'name': name,
         'profilePhoto': profilePhoto,
         'imageType': imageType,
+        'defaultAvatarImage': defaultAvatarImage,
       };
 }

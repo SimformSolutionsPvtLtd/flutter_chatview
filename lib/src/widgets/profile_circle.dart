@@ -20,10 +20,10 @@
  * SOFTWARE.
  */
 
-import 'package:chatview/src/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
 
-import '../values/enumaration.dart';
+import '../utils/constants/constants.dart';
+import '../values/enumeration.dart';
 import '../values/typedefs.dart';
 import 'profile_image_widget.dart';
 
@@ -40,6 +40,7 @@ class ProfileCircle extends StatelessWidget {
     this.assetImageErrorBuilder,
     this.networkImageErrorBuilder,
     this.imageType = ImageType.network,
+    this.networkImageProgressIndicatorBuilder,
   }) : super(key: key);
 
   /// Allow users to give  default bottom padding according to user case.
@@ -74,6 +75,10 @@ class ProfileCircle extends StatelessWidget {
   /// Error builder to build error widget for network image
   final NetworkImageErrorBuilder? networkImageErrorBuilder;
 
+  /// Progress indicator builder for network image
+  final NetworkImageProgressIndicatorBuilder?
+      networkImageProgressIndicatorBuilder;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -89,6 +94,8 @@ class ProfileCircle extends StatelessWidget {
           assetImageErrorBuilder: assetImageErrorBuilder,
           networkImageErrorBuilder: networkImageErrorBuilder,
           imageType: imageType,
+          networkImageProgressIndicatorBuilder:
+              networkImageProgressIndicatorBuilder,
         ),
       ),
     );

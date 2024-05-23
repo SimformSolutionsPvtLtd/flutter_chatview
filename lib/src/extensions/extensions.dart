@@ -75,12 +75,18 @@ extension ValidateString on String {
     double? profileCircleRadius,
     EdgeInsets? profileCirclePadding,
   }) {
+    final user = getChatUser(this);
     return Padding(
       padding: profileCirclePadding ?? const EdgeInsets.only(left: 4),
       child: ProfileImageWidget(
-        imageUrl: getChatUser(this)?.profilePhoto,
-        imageType: getChatUser(this)?.imageType,
+        imageUrl: user?.profilePhoto,
+        imageType: user?.imageType,
+        defaultAvatarImage: user?.defaultAvatarImage ?? profileImage,
         circleRadius: profileCircleRadius ?? 8,
+        assetImageErrorBuilder: user?.assetImageErrorBuilder,
+        networkImageErrorBuilder: user?.networkImageErrorBuilder,
+        networkImageProgressIndicatorBuilder:
+            user?.networkImageProgressIndicatorBuilder,
       ),
     );
   }

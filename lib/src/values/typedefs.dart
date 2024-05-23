@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chatview/chatview.dart';
 import 'package:flutter/material.dart';
 
@@ -76,4 +77,9 @@ typedef NetworkImageErrorBuilder = Widget Function(
   BuildContext context,
   String url,
   Object error,
+);
+typedef NetworkImageProgressIndicatorBuilder = Widget Function(
+  BuildContext context,
+  String url,
+  DownloadProgress progress,
 );

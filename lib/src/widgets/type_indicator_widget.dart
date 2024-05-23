@@ -20,45 +20,24 @@
  * SOFTWARE.
  */
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 
-import 'package:chatview/src/widgets/profile_circle.dart';
-
-import '../../chatview.dart';
+import '../models/models.dart';
+import '../extensions/extensions.dart';
 import '../utils/constants/constants.dart';
+import 'profile_circle.dart';
 
 class TypingIndicator extends StatefulWidget {
   const TypingIndicator({
     Key? key,
     this.showIndicator = false,
-    this.profilePic,
     this.chatBubbleConfig,
     this.typeIndicatorConfig,
-    this.imageType = ImageType.network,
-    this.defaultAvatarImage = profileImage,
-    this.networkImageErrorBuilder,
-    this.assetImageErrorBuilder,
   }) : super(key: key);
 
   /// Allow user to turn on/off typing indicator.
   final bool showIndicator;
-
-  /// Represents profile picture url as network or asset of user.
-  /// Or
-  /// Provides profile picture's data in base64 string.
-  final String? profilePic;
-
-  /// Field to define image type [network, asset or base64]
-  final ImageType? imageType;
-
-  /// Field to set default avatar image if profile image link not provided
-  final String defaultAvatarImage;
-
-  /// Error builder to build error widget for asset image
-  final AssetImageErrorBuilder? assetImageErrorBuilder;
-
-  /// Error builder to build error widget for network image
-  final NetworkImageErrorBuilder? networkImageErrorBuilder;
 
   /// Provides configurations related to chat bubble such as padding, margin, max
   /// width etc.
@@ -88,6 +67,8 @@ class _TypingIndicatorState extends State<TypingIndicator>
 
   final List<AnimationController> _jumpControllers = [];
   final List<Animation> _jumpAnimations = [];
+
+  ProfileCircleConfiguration? profileCircleConfiguration;
 
   ChatBubble? get chatBubbleConfig => widget.chatBubbleConfig;
 
@@ -180,6 +161,14 @@ class _TypingIndicatorState extends State<TypingIndicator>
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (provide != null) {
+      profileCircleConfiguration = provide!.profileCircleConfiguration;
+    }
+  }
+
+  @override
   void dispose() {
     _appearanceController.dispose();
     _repeatingController.dispose();
@@ -254,11 +243,17 @@ class _TypingIndicatorState extends State<TypingIndicator>
           children: [
             ProfileCircle(
               bottomPadding: 0,
-              imageUrl: widget.profilePic,
-              imageType: widget.imageType,
-              assetImageErrorBuilder: widget.assetImageErrorBuilder,
-              networkImageErrorBuilder: widget.networkImageErrorBuilder,
-              defaultAvatarImage: widget.defaultAvatarImage,
+              imageUrl: profileCircleConfiguration?.profileImageUrl,
+              imageType: profileCircleConfiguration?.imageType,
+              assetImageErrorBuilder:
+                  profileCircleConfiguration?.assetImageErrorBuilder,
+              networkImageErrorBuilder:
+                  profileCircleConfiguration?.networkImageErrorBuilder,
+              defaultAvatarImage:
+                  profileCircleConfiguration?.defaultAvatarImage ??
+                      profileImage,
+              networkImageProgressIndicatorBuilder: profileCircleConfiguration
+                  ?.networkImageProgressIndicatorBuilder,
             ),
             bubble,
           ],
