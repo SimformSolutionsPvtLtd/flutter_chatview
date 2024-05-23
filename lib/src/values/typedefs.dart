@@ -47,3 +47,4 @@ typedef ReactedUserCallback = void Function(
   ChatUser reactedUser,
   String reaction,
 );
+typedef CustomMessageReplyViewBuilder = Widget Function(ReplyMessage state);

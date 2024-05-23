@@ -275,6 +275,7 @@ class _ChatViewState extends State<ChatView>
                       onReplyCallback: (reply) => replyMessage.value = reply,
                       onReplyCloseCallback: () =>
                           replyMessage.value = const ReplyMessage(),
+                      messageConfig: widget.messageConfig,
                     ),
                 ],
               ),

@@ -659,6 +659,29 @@ ChatView(
 ),
 ```
 
+29. Added a `customMessageReplyViewBuilder` to customize reply message view for custom type message.
+
+```dart
+ChatView(
+  ...
+    messageConfig: MessageConfiguration(
+      customMessageBuilder: (ReplyMessage state) {
+        return Text(
+        state.message,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: const TextStyle(
+          fontSize: 12,
+          color: Colors.black,
+          ),
+        );
+      },
+    ),
+  ...
+)
+```
+
+
 
 ## How to use
 
