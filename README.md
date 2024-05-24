@@ -766,6 +766,22 @@ ChatView(
 ```
 
 
+30. Added callback `messageSorter` to sort message in `ChatBackgroundConfiguration`.
+```dart
+
+ChatView(
+   ...
+      chatBackgroundConfig: ChatBackgroundConfiguration(
+      ...
+        messageSorter: (message1, message2) {
+          return message1.createdAt.compareTo(message2.createdAt);
+        }
+      ...
+     ),
+  ...
+),
+```
+
 
 ## How to use
 

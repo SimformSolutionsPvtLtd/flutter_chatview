@@ -25,7 +25,7 @@ import 'package:flutter/material.dart';
 
 import '../models/models.dart';
 import '../utils/package_strings.dart';
-import '../values/enumaration.dart';
+import '../values/enumeration.dart';
 import '../values/typedefs.dart';
 
 class ReplyMessageView extends StatelessWidget {

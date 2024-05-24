@@ -52,3 +52,11 @@ extension ChatViewStateExtension on ChatViewState {
 
   bool get noMessages => this == ChatViewState.noData;
 }
+
+enum GroupedListOrder { asc, desc }
+
+extension GroupedListOrderExtension on GroupedListOrder {
+  bool get isAsc => this == GroupedListOrder.asc;
+
+  bool get isDesc => this == GroupedListOrder.desc;
+}
