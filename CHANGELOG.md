@@ -1,11 +1,13 @@
 ## [1.3.2] (Unreleased)
 
+* **Fix**: [139](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/139) Added
+  support to customize view for the reply of any message.
 * **Fix**: [174](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/174) Fix
   wrong username shown while replying to any messages.
 * **Fix**: [134](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/134)
   Added a reply message view for custom message type.
 * **Feat**: [157](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/157)
-  Added onTap of reacted user from reacted user list
+  Added onTap of reacted user from reacted user list.
 * **Fix**: [137](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/137) Added
   support for cancel voice recording and field to provide cancel record icon.
 * **Feat**: [93](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/93) Added support
