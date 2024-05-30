@@ -1,5 +1,7 @@
 ## [1.3.2] (Unreleased)
 
+* **Fix**: [174](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/174) Fix
+  wrong username shown while replying to any messages.
 * **Fix**: [134](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/134)
   Added a reply message view for custom message type.
 * **Feat**: [157](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/157)

@@ -100,7 +100,6 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final replyTitle = "${PackageStrings.replyTo} $_replyTo";
     return widget.sendMessageBuilder != null
         ? Positioned(
             right: 0,
@@ -136,6 +135,8 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                       children: [
                         ValueListenableBuilder<ReplyMessage>(
                           builder: (_, state, child) {
+                            final replyTitle =
+                                "${PackageStrings.replyTo} $_replyTo";
                             if (state.message.isNotEmpty) {
                               return Container(
                                 decoration: BoxDecoration(
