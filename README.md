@@ -681,6 +681,69 @@ ChatView(
 )
 ```
 
+30. Added a `replyMessageBuilder` to customize view for the reply.
+
+```dart
+ChatView(
+  ...
+    replyMessageBuilder: (context, state) {
+      return Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(14),
+          ),
+        ),
+        margin: const EdgeInsets.only(
+          bottom: 17,
+          right: 0.4,
+          left: 0.4,
+        ),
+        padding: const EdgeInsets.fromLTRB(10, 10, 10, 30),
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 6,
+            ),
+            decoration: BoxDecoration(
+              color: Colors.grey.shade200,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text( 
+                        state.message,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      constraints: const BoxConstraints(),
+                      padding: EdgeInsets.zero,
+                      icon: const Icon(
+                        Icons.close,
+                        size: 16,
+                      ),
+                      onPressed: () => ChatView.closeReplyMessageView(context),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+    },
+  ...
+)
+```
+
 
 
 ## How to use

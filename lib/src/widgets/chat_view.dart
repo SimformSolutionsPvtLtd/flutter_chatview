@@ -56,6 +56,7 @@ class ChatView extends StatefulWidget {
     this.featureActiveConfig = const FeatureActiveConfig(),
     this.chatTextFieldTopPadding = 0,
     this.emojiPickerSheetConfig,
+    this.replyMessageBuilder,
   })  : chatBackgroundConfig =
             chatBackgroundConfig ?? const ChatBackgroundConfiguration(),
         chatViewStateConfig =
@@ -144,6 +145,16 @@ class ChatView extends StatefulWidget {
 
   /// Configuration for emoji picker sheet
   final Config? emojiPickerSheetConfig;
+
+  /// Provides a callback for the view when replying to message
+  final CustomViewForReplyMessage? replyMessageBuilder;
+
+  static void closeReplyMessageView(BuildContext context) {
+    final state = context.findAncestorStateOfType<_ChatViewState>();
+    if (state == null) return;
+
+    state.replyMessageViewClose();
+  }
 
   @override
   State<ChatView> createState() => _ChatViewState();
@@ -276,6 +287,7 @@ class _ChatViewState extends State<ChatView>
                       onReplyCloseCallback: () =>
                           replyMessage.value = const ReplyMessage(),
                       messageConfig: widget.messageConfig,
+                      replyMessageBuilder: widget.replyMessageBuilder,
                     ),
                 ],
               ),
@@ -299,6 +311,8 @@ class _ChatViewState extends State<ChatView>
     }
     chatController.scrollToLastMessage();
   }
+
+  void replyMessageViewClose() => _sendMessageKey.currentState?.onCloseTap();
 
   void _assignReplyMessage() {
     if (replyMessage.value.message.isNotEmpty) {
