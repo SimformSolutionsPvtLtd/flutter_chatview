@@ -1,5 +1,7 @@
-## [1.3.2] (Unreleased)
+## [2.0.0] (Unreleased)
 
+* **Fix**: [181](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/181) Removed
+  deprecated field `showTypingIndicator` from ChatView.
 * **Fix**: [139](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/139) Added
   support to customize view for the reply of any message.
 * **Fix**: [174](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/174) Fix
