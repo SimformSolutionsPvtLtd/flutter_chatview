@@ -1,47 +1,49 @@
 ## [2.0.0] (Unreleased)
 
+* **Breaking**: [173](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/173) Added
+  callback to sort message in chat.
 * **Breaking**: [177](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/177) Fixed
   json serializable of models and added copyWith method (Message, Reaction and Reply Message).
-* **Fix**: [182](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/182) Fix
-  send message not working when user start texting after newLine.
+* **Breaking**: [181](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/181) Removed
+  deprecated field `showTypingIndicator` from ChatView.
+* **Feat**: [179](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/179) Added reply
+  suggestions functionality
+* **Feat**: [157](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/157) Added onTap
+  of reacted user from reacted user list.
 * **Feat**: [156](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/156) Added
   default avatar, error builder for asset, network and base64 profile image and
   cached_network_image for network images.
-* **Breaking**: [173](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/173) Added
-  callback to sort message in chat.
-* **Fix**: [181](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/181) Removed
-  deprecated field `showTypingIndicator` from ChatView.
-* **Fix**: [139](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/139) Added
-  support to customize view for the reply of any message.
-* **Fix**: [174](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/174) Fix
-  wrong username shown while replying to any messages.
-* **Fix**: [134](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/134)
-  Added a reply message view for custom message type.
-* **Feat**: [157](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/157)
-  Added onTap of reacted user from reacted user list.
-* **Fix**: [137](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/137) Added
-  support for cancel voice recording and field to provide cancel record icon.
+* **Feat**: [121](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/121) Added support
+  for configuring the audio recording quality.
 * **Feat**: [93](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/93) Added support
   that provide date pattern to change chat separation.
-* **Fix**: [142](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/142) Added
-  field to provide base64 string data for profile picture.
-* **Fix**: [165](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/165) Fix issue
-  of user reaction callback provides incorrect message object when user react on any message
-  with double or from reaction sheet.
-* **Fix**: [164](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/164)
-  Add flag to enable/disable chat text field.
-* **Feat**: [121](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/121)Added support
-  for configuring the audio recording quality.
-* **Fix**: [131](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/131)
-  Fix unsupported operation while running on the web.
+* **Fix**: [139](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/139) Added
+  support to customize view for the reply of any message.
+* **Fix**: [174](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/174) Fix wrong
+  username shown while replying to any messages.
+* **Fix**: [134](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/134) Added a
+  reply message view for custom message type.
+* **Fix**: [137](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/137) Added
+  support for cancel voice recording and field to provide cancel record icon.
+* **Fix**: [142](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/142) Added field
+  to provide base64 string data for profile picture.
+* **Fix**: [161](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/161) Added field
+  to set top padding of chat text field.
+* **Fix**: [165](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/165) Fix issue of
+  user reaction callback provides incorrect message object when user react on any message with
+  double or from reaction sheet.
+* **Fix**: [164](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/164) Add flag to
+  enable/disable chat text field.
+* **Fix**: [131](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/131) Fix
+  unsupported operation while running on the web.
 * **Fix**: [160](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/160) Added
   configuration for emoji picker sheet.
-* **Fix**: [130](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/130) Added
-  report button for receiver message and update onMoreTap, onReportTap callback.
-* **Fix**: [126](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/126) Added
-  flag to hide user name in chat.
-* **Feat**: [161](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/161) Added
-  field to set top padding of chat text field.
+* **Fix**: [130](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/130) Added report
+  button for receiver message and update onMoreTap, onReportTap callback.
+* **Fix**: [126](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/126) Added flag
+  to hide user name in chat.
+* **Fix**: [182](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/182) Fix
+  send message not working when user start texting after newLine.
 
 ## [1.3.1]
 

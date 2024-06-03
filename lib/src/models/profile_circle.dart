@@ -59,7 +59,7 @@ class ProfileCircleConfiguration {
 
   /// Progress indicator builder for network image
   final NetworkImageProgressIndicatorBuilder?
-  networkImageProgressIndicatorBuilder;
+      networkImageProgressIndicatorBuilder;
 
   const ProfileCircleConfiguration({
     this.onAvatarTap,

@@ -20,9 +20,11 @@
  * SOFTWARE.
  */
 import 'package:chatview/chatview.dart';
+import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/widgets/chat_list_widget.dart';
 import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
 import 'package:chatview/src/widgets/chatview_state_widget.dart';
+import 'package:chatview/src/widgets/suggestions/suggestions_config_inherited_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart';
 import '../values/custom_time_messages.dart';
@@ -53,9 +55,9 @@ class ChatView extends StatefulWidget {
     required this.chatViewState,
     ChatViewStateConfiguration? chatViewStateConfig,
     this.featureActiveConfig = const FeatureActiveConfig(),
-    this.chatTextFieldTopPadding = 0,
     this.emojiPickerSheetConfig,
     this.replyMessageBuilder,
+    this.replySuggestionsConfig,
   })  : chatBackgroundConfig =
             chatBackgroundConfig ?? const ChatBackgroundConfiguration(),
         chatViewStateConfig =
@@ -134,11 +136,11 @@ class ChatView extends StatefulWidget {
   /// Provides callback when user tap on chat list.
   final VoidCallBack? onChatListTap;
 
-  /// Provides top padding of chat text field
-  final double chatTextFieldTopPadding;
-
   /// Configuration for emoji picker sheet
   final Config? emojiPickerSheetConfig;
+
+  /// Suggestion Item Config
+  final ReplySuggestionsConfig? replySuggestionsConfig;
 
   /// Provides a callback for the view when replying to message
   final CustomViewForReplyMessage? replyMessageBuilder;
@@ -194,97 +196,113 @@ class _ChatViewState extends State<ChatView>
       featureActiveConfig: featureActiveConfig,
       currentUser: widget.currentUser,
       profileCircleConfiguration: widget.profileCircleConfig,
-      child: Container(
-        height:
-            chatBackgroundConfig.height ?? MediaQuery.of(context).size.height,
-        width: chatBackgroundConfig.width ?? MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          color: chatBackgroundConfig.backgroundColor ?? Colors.white,
-          image: chatBackgroundConfig.backgroundImage != null
-              ? DecorationImage(
-                  fit: BoxFit.fill,
-                  image: NetworkImage(chatBackgroundConfig.backgroundImage!),
-                )
-              : null,
-        ),
-        padding: chatBackgroundConfig.padding,
-        margin: chatBackgroundConfig.margin,
-        child: Column(
-          children: [
-            if (widget.appBar != null) widget.appBar!,
-            Expanded(
-              child: Stack(
-                children: [
-                  if (chatViewState.isLoading)
-                    ChatViewStateWidget(
-                      chatViewStateWidgetConfig:
-                          chatViewStateConfig?.loadingWidgetConfig,
-                      chatViewState: chatViewState,
+      child: SuggestionsConfigIW(
+        suggestionsConfig: widget.replySuggestionsConfig,
+        child: Builder(builder: (context) {
+          return Container(
+            height: chatBackgroundConfig.height ??
+                MediaQuery.of(context).size.height,
+            width:
+                chatBackgroundConfig.width ?? MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+              color: chatBackgroundConfig.backgroundColor ?? Colors.white,
+              image: chatBackgroundConfig.backgroundImage != null
+                  ? DecorationImage(
+                      fit: BoxFit.fill,
+                      image:
+                          NetworkImage(chatBackgroundConfig.backgroundImage!),
                     )
-                  else if (chatViewState.noMessages)
-                    ChatViewStateWidget(
-                      chatViewStateWidgetConfig:
-                          chatViewStateConfig?.noMessageWidgetConfig,
-                      chatViewState: chatViewState,
-                      onReloadButtonTap: chatViewStateConfig?.onReloadButtonTap,
-                    )
-                  else if (chatViewState.isError)
-                    ChatViewStateWidget(
-                      chatViewStateWidgetConfig:
-                          chatViewStateConfig?.errorWidgetConfig,
-                      chatViewState: chatViewState,
-                      onReloadButtonTap: chatViewStateConfig?.onReloadButtonTap,
-                    )
-                  else if (chatViewState.hasMessages)
-                    ValueListenableBuilder<ReplyMessage>(
-                      valueListenable: replyMessage,
-                      builder: (_, state, child) {
-                        return ChatListWidget(
-                          showTypingIndicator:
-                              chatController.showTypingIndicator,
-                          replyMessage: state,
-                          chatController: widget.chatController,
-                          chatBackgroundConfig: widget.chatBackgroundConfig,
-                          reactionPopupConfig: widget.reactionPopupConfig,
-                          typeIndicatorConfig: widget.typeIndicatorConfig,
-                          chatBubbleConfig: widget.chatBubbleConfig,
-                          loadMoreData: widget.loadMoreData,
-                          isLastPage: widget.isLastPage,
-                          replyPopupConfig: widget.replyPopupConfig,
-                          loadingWidget: widget.loadingWidget,
-                          messageConfig: widget.messageConfig,
-                          profileCircleConfig: widget.profileCircleConfig,
-                          repliedMessageConfig: widget.repliedMessageConfig,
-                          swipeToReplyConfig: widget.swipeToReplyConfig,
-                          onChatListTap: widget.onChatListTap,
-                          assignReplyMessage: (message) => _sendMessageKey
-                              .currentState
-                              ?.assignReplyMessage(message),
-                          chatTextFieldTopPadding:
-                              widget.chatTextFieldTopPadding,
-                          emojiPickerSheetConfig: widget.emojiPickerSheetConfig,
-                        );
-                      },
-                    ),
-                  if (featureActiveConfig.enableTextField)
-                    SendMessageWidget(
-                      key: _sendMessageKey,
-                      chatController: chatController,
-                      sendMessageBuilder: widget.sendMessageBuilder,
-                      sendMessageConfig: widget.sendMessageConfig,
-                      backgroundColor: chatBackgroundConfig.backgroundColor,
-                      onSendTap: _onSendTap,
-                      onReplyCallback: (reply) => replyMessage.value = reply,
-                      onReplyCloseCallback: () =>
-                          replyMessage.value = const ReplyMessage(),
-                      messageConfig: widget.messageConfig,
-                      replyMessageBuilder: widget.replyMessageBuilder,
-                    ),
-                ],
-              ),
+                  : null,
             ),
-          ],
-        ),
+            padding: chatBackgroundConfig.padding,
+            margin: chatBackgroundConfig.margin,
+            child: Column(
+              children: [
+                if (widget.appBar != null) widget.appBar!,
+                Expanded(
+                  child: Stack(
+                    children: [
+                      if (chatViewState.isLoading)
+                        ChatViewStateWidget(
+                          chatViewStateWidgetConfig:
+                              chatViewStateConfig?.loadingWidgetConfig,
+                          chatViewState: chatViewState,
+                        )
+                      else if (chatViewState.noMessages)
+                        ChatViewStateWidget(
+                          chatViewStateWidgetConfig:
+                              chatViewStateConfig?.noMessageWidgetConfig,
+                          chatViewState: chatViewState,
+                          onReloadButtonTap:
+                              chatViewStateConfig?.onReloadButtonTap,
+                        )
+                      else if (chatViewState.isError)
+                        ChatViewStateWidget(
+                          chatViewStateWidgetConfig:
+                              chatViewStateConfig?.errorWidgetConfig,
+                          chatViewState: chatViewState,
+                          onReloadButtonTap:
+                              chatViewStateConfig?.onReloadButtonTap,
+                        )
+                      else if (chatViewState.hasMessages)
+                        ValueListenableBuilder<ReplyMessage>(
+                          valueListenable: replyMessage,
+                          builder: (_, state, child) {
+                            return ChatListWidget(
+                              showTypingIndicator:
+                                  chatController.showTypingIndicator,
+                              replyMessage: state,
+                              chatController: widget.chatController,
+                              chatBackgroundConfig: widget.chatBackgroundConfig,
+                              reactionPopupConfig: widget.reactionPopupConfig,
+                              typeIndicatorConfig: widget.typeIndicatorConfig,
+                              chatBubbleConfig: widget.chatBubbleConfig,
+                              loadMoreData: widget.loadMoreData,
+                              isLastPage: widget.isLastPage,
+                              replyPopupConfig: widget.replyPopupConfig,
+                              loadingWidget: widget.loadingWidget,
+                              messageConfig: widget.messageConfig,
+                              profileCircleConfig: widget.profileCircleConfig,
+                              repliedMessageConfig: widget.repliedMessageConfig,
+                              swipeToReplyConfig: widget.swipeToReplyConfig,
+                              onChatListTap: widget.onChatListTap,
+                              assignReplyMessage: (message) => _sendMessageKey
+                                  .currentState
+                                  ?.assignReplyMessage(message),
+                              emojiPickerSheetConfig:
+                                  widget.emojiPickerSheetConfig,
+                            );
+                          },
+                        ),
+                      if (featureActiveConfig.enableTextField)
+                        SendMessageWidget(
+                          key: _sendMessageKey,
+                          chatController: chatController,
+                          sendMessageBuilder: widget.sendMessageBuilder,
+                          sendMessageConfig: widget.sendMessageConfig,
+                          backgroundColor: chatBackgroundConfig.backgroundColor,
+                          onSendTap: (message, replyMessage, messageType) {
+                            if (context.suggestionsConfig
+                                    ?.autoDismissOnSelection ??
+                                true) {
+                              chatController.removeReplySuggestions();
+                            }
+                            _onSendTap(message, replyMessage, messageType);
+                          },
+                          onReplyCallback: (reply) =>
+                              replyMessage.value = reply,
+                          onReplyCloseCallback: () =>
+                              replyMessage.value = const ReplyMessage(),
+                          messageConfig: widget.messageConfig,
+                          replyMessageBuilder: widget.replyMessageBuilder,
+                        ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        }),
       ),
     );
   }

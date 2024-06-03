@@ -22,6 +22,7 @@
 import 'package:chatview/chatview.dart';
 import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
+import 'package:chatview/src/widgets/suggestions/suggestion_list.dart';
 import 'package:chatview/src/widgets/type_indicator_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -46,7 +47,6 @@ class ChatGroupedListWidget extends StatefulWidget {
     this.swipeToReplyConfig,
     this.repliedMessageConfig,
     this.typeIndicatorConfig,
-    this.chatTextFieldTopPadding = 0,
   }) : super(key: key);
 
   /// Allow user to swipe to see time while reaction pop is not open.
@@ -92,9 +92,6 @@ class ChatGroupedListWidget extends StatefulWidget {
   /// swipe whole chat.
   final bool isEnableSwipeToSeeTime;
 
-  /// Provides top padding of chat text field
-  final double chatTextFieldTopPadding;
-
   @override
   State<ChatGroupedListWidget> createState() => _ChatGroupedListWidgetState();
 }
@@ -124,10 +121,29 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
 
   bool get isEnableSwipeToSeeTime => widget.isEnableSwipeToSeeTime;
 
+  double height = 0;
+
   @override
   void initState() {
     super.initState();
     _initializeAnimation();
+    updateChatTextFieldHeight();
+  }
+
+  @override
+  void didUpdateWidget(covariant ChatGroupedListWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    updateChatTextFieldHeight();
+  }
+
+  void updateChatTextFieldHeight() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      setState(() {
+        height =
+            provide?.chatTextFieldViewKey.currentContext?.size?.height ?? 10;
+      });
+    });
   }
 
   void _initializeAnimation() {
@@ -162,6 +178,8 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
 
   @override
   Widget build(BuildContext context) {
+    final suggestionsListConfig =
+        suggestionsConfig?.listConfig ?? const SuggestionListConfig();
     return SingleChildScrollView(
       reverse: true,
       // When reaction popup is being appeared at that user should not scroll.
@@ -169,6 +187,7 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
       padding: EdgeInsets.only(bottom: showTypingIndicator ? 50 : 0),
       controller: widget.scrollController,
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           GestureDetector(
             onHorizontalDragUpdate: (details) => isEnableSwipeToSeeTime
@@ -202,16 +221,31 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
                       .chatController
                       .typingIndicatorNotifier,
                   builder: (context, value, child) => TypingIndicator(
-                        typeIndicatorConfig: widget.typeIndicatorConfig,
-                        chatBubbleConfig:
-                            chatBubbleConfig?.inComingChatBubbleConfig,
-                        showIndicator: value,
-                      )),
-          SizedBox(
-            height: (MediaQuery.of(context).size.width *
-                    (widget.replyMessage.message.isNotEmpty ? 0.3 : 0.14)) +
-                (widget.chatTextFieldTopPadding),
+                    typeIndicatorConfig: widget.typeIndicatorConfig,
+                    chatBubbleConfig:
+                        chatBubbleConfig?.inComingChatBubbleConfig,
+                    showIndicator: value,
+                  ),
+                ),
+          Flexible(
+            child: Align(
+              alignment: suggestionsListConfig.axisAlignment.alignment,
+              child: ValueListenableBuilder(
+                valueListenable: ChatViewInheritedWidget.of(context)!
+                    .chatController
+                    .newSuggestions,
+                builder: (context, value, child) {
+                  return SuggestionList(
+                    suggestions: value,
+                  );
+                },
+              ),
+            ),
           ),
+
+          // Adds bottom space to the message list, ensuring it is displayed
+          // above the message text field.
+          const SizedBox(height: 100),
         ],
       ),
     );

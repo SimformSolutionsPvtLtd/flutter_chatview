@@ -21,6 +21,9 @@
  */
 
 // Different types Message of ChatView
+
+import 'package:flutter/material.dart';
+
 enum MessageType {
   image,
   text,
@@ -101,6 +104,16 @@ enum ImageType {
     }
     return null;
   }
+}
+
+enum SuggestionListAlignment {
+  left(Alignment.bottomLeft),
+  center(Alignment.bottomCenter),
+  right(Alignment.bottomRight);
+
+  const SuggestionListAlignment(this.alignment);
+
+  final Alignment alignment;
 }
 
 extension ChatViewStateExtension on ChatViewState {

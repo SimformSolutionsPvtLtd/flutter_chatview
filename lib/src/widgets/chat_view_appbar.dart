@@ -104,7 +104,7 @@ class ChatViewAppBar extends StatelessWidget {
 
   /// Progress indicator builder for network image
   final NetworkImageProgressIndicatorBuilder?
-  networkImageProgressIndicatorBuilder;
+      networkImageProgressIndicatorBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -142,7 +142,8 @@ class ChatViewAppBar extends StatelessWidget {
                         assetImageErrorBuilder: assetImageErrorBuilder,
                         networkImageErrorBuilder: networkImageErrorBuilder,
                         imageType: imageType,
-                        networkImageProgressIndicatorBuilder: networkImageProgressIndicatorBuilder,
+                        networkImageProgressIndicatorBuilder:
+                            networkImageProgressIndicatorBuilder,
                       ),
                     ),
                   Column(

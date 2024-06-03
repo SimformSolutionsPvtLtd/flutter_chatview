@@ -71,6 +71,23 @@ class _ChatScreenState extends State<ChatScreen> {
     _chatController.setTypingIndicator = !_chatController.showTypingIndicator;
   }
 
+  void receiveMessage() async {
+    _chatController.addMessage(
+      Message(
+        id: DateTime.now().toString(),
+        message: 'I will schedule the meeting.',
+        createdAt: DateTime.now(),
+        sendBy: '2',
+      ),
+    );
+    await Future.delayed(const Duration(milliseconds: 500));
+    _chatController.addReplySuggestions([
+      const SuggestionItemData(text: 'Thanks.'),
+      const SuggestionItemData(text: 'Thank you very much.'),
+      const SuggestionItemData(text: 'Great.')
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,6 +139,14 @@ class _ChatScreenState extends State<ChatScreen> {
               onPressed: _showHideTypingIndicator,
               icon: Icon(
                 Icons.keyboard,
+                color: theme.themeIconColor,
+              ),
+            ),
+            IconButton(
+              tooltip: 'Simulate Message receive',
+              onPressed: receiveMessage,
+              icon: Icon(
+                Icons.supervised_user_circle,
                 color: theme.themeIconColor,
               ),
             ),
@@ -266,6 +291,22 @@ class _ChatScreenState extends State<ChatScreen> {
         swipeToReplyConfig: SwipeToReplyConfiguration(
           replyIconColor: theme.swipeToReplyIconColor,
         ),
+        replySuggestionsConfig: ReplySuggestionsConfig(
+          itemConfig: SuggestionItemConfig(
+            decoration: BoxDecoration(
+              color: theme.textFieldBackgroundColor,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: theme.outgoingChatBubbleColor ?? Colors.white,
+              ),
+            ),
+            textStyle: TextStyle(
+              color: isDarkTheme ? Colors.white : Colors.black,
+            ),
+          ),
+          onTap: (item) =>
+              _onSendTap(item.text, const ReplyMessage(), MessageType.text),
+        ),
       ),
     );
   }
@@ -275,10 +316,9 @@ class _ChatScreenState extends State<ChatScreen> {
     ReplyMessage replyMessage,
     MessageType messageType,
   ) {
-    final id = int.parse(Data.messageList.last.id) + 1;
     _chatController.addMessage(
       Message(
-        id: id.toString(),
+        id: DateTime.now().toString(),
         createdAt: DateTime.now(),
         message: message,
         sendBy: currentUser.id,

@@ -104,19 +104,17 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.sendMessageBuilder != null
-        ? Positioned(
-            right: 0,
-            left: 0,
-            bottom: 0,
-            child: widget.sendMessageBuilder!(replyMessage),
-          )
-        : Align(
-            alignment: Alignment.bottomCenter,
-            child: SizedBox(
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: widget.sendMessageBuilder != null
+          ? widget.sendMessageBuilder!(replyMessage)
+          : SizedBox(
               width: MediaQuery.of(context).size.width,
               child: Stack(
                 children: [
+                  // This has been added to prevent messages from being
+                  // displayed below the text field
+                  // when the user scrolls the message list.
                   Positioned(
                     right: 0,
                     left: 0,
@@ -128,6 +126,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                     ),
                   ),
                   Padding(
+                    key: provide?.chatTextFieldViewKey,
                     padding: EdgeInsets.fromLTRB(
                       bottomPadding4,
                       bottomPadding4,
@@ -249,7 +248,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                 ],
               ),
             ),
-          );
+    );
   }
 
   void _onRecordingComplete(String? path) {

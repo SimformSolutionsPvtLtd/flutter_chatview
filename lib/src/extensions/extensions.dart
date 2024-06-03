@@ -22,6 +22,7 @@
 import 'package:chatview/chatview.dart';
 import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
 import 'package:chatview/src/widgets/profile_image_widget.dart';
+import 'package:chatview/src/widgets/suggestions/suggestions_config_inherited_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../utils/constants/constants.dart';
@@ -129,4 +130,15 @@ extension ChatViewStateTitleExtension on String? {
 /// Extension on State for accessing inherited widget.
 extension StatefulWidgetExtension on State {
   ChatViewInheritedWidget? get provide => ChatViewInheritedWidget.of(context);
+
+  ReplySuggestionsConfig? get suggestionsConfig =>
+      SuggestionsConfigIW.of(context)?.suggestionsConfig;
+}
+
+/// Extension on State for accessing inherited widget.
+extension BuildContextExtension on BuildContext {
+  ChatViewInheritedWidget? get provide => ChatViewInheritedWidget.of(this);
+
+  ReplySuggestionsConfig? get suggestionsConfig =>
+      SuggestionsConfigIW.of(this)?.suggestionsConfig;
 }
