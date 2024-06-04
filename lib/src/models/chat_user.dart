@@ -19,6 +19,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+import '../utils/constants/constants.dart';
+import '../values/enumeration.dart';
+import '../values/typedefs.dart';
+
 class ChatUser {
   /// Provides id of user.
   final String id;
@@ -26,33 +31,51 @@ class ChatUser {
   /// Provides name of user.
   final String name;
 
-  /// Provides profile picture URL of user.
+  /// Provides profile picture as network URL or asset of user.
   /// Or
   /// Provides profile picture's data in base64 string.
-  /// This will be determined by [isProfilePhotoInBase64].
   final String? profilePhoto;
 
-  /// To check whether profile photo is in base64 or network url.
-  final bool? isProfilePhotoInBase64;
+  /// Field to set default image if network url for profile image not provided
+  final String defaultAvatarImage;
+
+  /// Field to define image type [network, asset or base64]
+  final ImageType imageType;
+
+  /// Error builder to build error widget for asset image
+  final AssetImageErrorBuilder? assetImageErrorBuilder;
+
+  /// Error builder to build error widget for network image
+  final NetworkImageErrorBuilder? networkImageErrorBuilder;
+
+  /// Progress indicator builder for network image
+  final NetworkImageProgressIndicatorBuilder?
+      networkImageProgressIndicatorBuilder;
 
   ChatUser({
     required this.id,
     required this.name,
     this.profilePhoto,
-    this.isProfilePhotoInBase64,
+    this.defaultAvatarImage = profileImage,
+    this.imageType = ImageType.network,
+    this.assetImageErrorBuilder,
+    this.networkImageErrorBuilder,
+    this.networkImageProgressIndicatorBuilder,
   });
 
   factory ChatUser.fromJson(Map<String, dynamic> json) => ChatUser(
         id: json["id"],
         name: json["name"],
         profilePhoto: json["profilePhoto"],
-        isProfilePhotoInBase64: json["isProfilePhotoInBase64"],
+        imageType: json["imageType"],
+        defaultAvatarImage: json["defaultAvatarImage"],
       );
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,
         'profilePhoto': profilePhoto,
-        'isProfilePhotoInBase64': isProfilePhotoInBase64,
+        'imageType': imageType,
+        'defaultAvatarImage': defaultAvatarImage,
       };
 }

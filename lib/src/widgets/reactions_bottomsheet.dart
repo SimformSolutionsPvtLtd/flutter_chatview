@@ -1,7 +1,8 @@
-import 'package:chatview/src/controller/chat_controller.dart';
-import 'package:chatview/src/models/models.dart';
-import 'package:chatview/src/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
+
+import '../controller/chat_controller.dart';
+import '../models/models.dart';
+import 'profile_image_widget.dart';
 
 class ReactionsBottomSheet {
   Future<void> show({
@@ -64,13 +65,19 @@ class ReactionsBottomSheet {
                           ),
                   child: Row(
                     children: [
-                      CircleAvatar(
-                        radius:
+                      ProfileImageWidget(
+                        circleRadius:
                             reactionsBottomSheetConfig?.profileCircleRadius ??
                                 16,
-                        backgroundImage: NetworkImage(
-                          reactedUser.profilePhoto ?? profileImage,
-                        ),
+                        imageUrl: reactedUser.profilePhoto,
+                        imageType: reactedUser.imageType,
+                        defaultAvatarImage: reactedUser.defaultAvatarImage,
+                        assetImageErrorBuilder:
+                            reactedUser.assetImageErrorBuilder,
+                        networkImageErrorBuilder:
+                            reactedUser.networkImageErrorBuilder,
+                        networkImageProgressIndicatorBuilder:
+                            reactedUser.networkImageProgressIndicatorBuilder,
                       ),
                       const SizedBox(width: 12),
                       Expanded(

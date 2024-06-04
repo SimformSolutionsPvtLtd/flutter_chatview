@@ -193,6 +193,7 @@ class _ChatViewState extends State<ChatView>
       chatController: chatController,
       featureActiveConfig: featureActiveConfig,
       currentUser: widget.currentUser,
+      profileCircleConfiguration: widget.profileCircleConfig,
       child: Container(
         height:
             chatBackgroundConfig.height ?? MediaQuery.of(context).size.height,

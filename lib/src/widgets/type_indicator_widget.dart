@@ -20,34 +20,24 @@
  * SOFTWARE.
  */
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 
-import 'package:chatview/src/widgets/profile_circle.dart';
-
-import '../../chatview.dart';
+import '../models/models.dart';
+import '../extensions/extensions.dart';
 import '../utils/constants/constants.dart';
+import 'profile_circle.dart';
 
 class TypingIndicator extends StatefulWidget {
   const TypingIndicator({
     Key? key,
     this.showIndicator = false,
-    this.profilePic,
     this.chatBubbleConfig,
     this.typeIndicatorConfig,
-    this.isProfilePhotoInBase64,
   }) : super(key: key);
 
   /// Allow user to turn on/off typing indicator.
   final bool showIndicator;
-
-  /// Represents profile picture url of user.
-  /// Or
-  /// Provides profile picture's data in base64 string.
-  /// This will be determined by [isProfilePhotoInBase64].
-  final String? profilePic;
-
-  /// Provides profile picture's data in base64 string
-  final bool? isProfilePhotoInBase64;
 
   /// Provides configurations related to chat bubble such as padding, margin, max
   /// width etc.
@@ -77,6 +67,8 @@ class _TypingIndicatorState extends State<TypingIndicator>
 
   final List<AnimationController> _jumpControllers = [];
   final List<Animation> _jumpAnimations = [];
+
+  ProfileCircleConfiguration? profileCircleConfiguration;
 
   ChatBubble? get chatBubbleConfig => widget.chatBubbleConfig;
 
@@ -169,6 +161,14 @@ class _TypingIndicatorState extends State<TypingIndicator>
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (provide != null) {
+      profileCircleConfiguration = provide!.profileCircleConfiguration;
+    }
+  }
+
+  @override
   void dispose() {
     _appearanceController.dispose();
     _repeatingController.dispose();
@@ -243,8 +243,17 @@ class _TypingIndicatorState extends State<TypingIndicator>
           children: [
             ProfileCircle(
               bottomPadding: 0,
-              imageUrl: widget.profilePic,
-              isProfilePhotoInBase64: widget.isProfilePhotoInBase64,
+              imageUrl: profileCircleConfiguration?.profileImageUrl,
+              imageType: profileCircleConfiguration?.imageType,
+              assetImageErrorBuilder:
+                  profileCircleConfiguration?.assetImageErrorBuilder,
+              networkImageErrorBuilder:
+                  profileCircleConfiguration?.networkImageErrorBuilder,
+              defaultAvatarImage:
+                  profileCircleConfiguration?.defaultAvatarImage ??
+                      profileImage,
+              networkImageProgressIndicatorBuilder: profileCircleConfiguration
+                  ?.networkImageProgressIndicatorBuilder,
             ),
             bubble,
           ],

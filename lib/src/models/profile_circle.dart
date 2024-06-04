@@ -22,15 +22,15 @@
 import 'package:flutter/material.dart';
 
 import '../../chatview.dart';
+import '../utils/constants/constants.dart';
 
 class ProfileCircleConfiguration {
   /// Used to give padding to profile circle.
   final EdgeInsetsGeometry? padding;
 
-  /// Provides image url of user.
+  /// Provides image url as network or asset of user.
   /// Or
   /// Provides image data of user in base64
-  /// This will be determined by [isProfilePhotoInBase64].
   final String? profileImageUrl;
 
   /// Used for give bottom padding to profile circle
@@ -45,8 +45,21 @@ class ProfileCircleConfiguration {
   /// Provides callback when user long press on profile circle.
   final void Function(ChatUser)? onAvatarLongPress;
 
-  /// To check whether profile photo is in base64 or network url.
-  final bool? isProfilePhotoInBase64;
+  /// Field to define image type [network, asset or base64]
+  final ImageType imageType;
+
+  /// Field to set default avatar image if profile image link not provided
+  final String defaultAvatarImage;
+
+  /// Error builder to build error widget for asset image
+  final AssetImageErrorBuilder? assetImageErrorBuilder;
+
+  /// Error builder to build error widget for network image
+  final NetworkImageErrorBuilder? networkImageErrorBuilder;
+
+  /// Progress indicator builder for network image
+  final NetworkImageProgressIndicatorBuilder?
+  networkImageProgressIndicatorBuilder;
 
   const ProfileCircleConfiguration({
     this.onAvatarTap,
@@ -55,6 +68,10 @@ class ProfileCircleConfiguration {
     this.bottomPadding,
     this.circleRadius,
     this.onAvatarLongPress,
-    this.isProfilePhotoInBase64,
+    this.imageType = ImageType.network,
+    this.defaultAvatarImage = profileImage,
+    this.networkImageErrorBuilder,
+    this.assetImageErrorBuilder,
+    this.networkImageProgressIndicatorBuilder,
   });
 }

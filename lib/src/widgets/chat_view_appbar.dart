@@ -24,7 +24,9 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:flutter/material.dart';
 
-import '../values/typedefs.dart';
+import '../../chatview.dart';
+import '../utils/constants/constants.dart';
+import 'profile_image_widget.dart';
 
 class ChatViewAppBar extends StatelessWidget {
   const ChatViewAppBar({
@@ -42,6 +44,11 @@ class ChatViewAppBar extends StatelessWidget {
     this.padding,
     this.leading,
     this.showLeading = true,
+    this.defaultAvatarImage = profileImage,
+    this.assetImageErrorBuilder,
+    this.networkImageErrorBuilder,
+    this.imageType = ImageType.network,
+    this.networkImageProgressIndicatorBuilder,
   }) : super(key: key);
 
   /// Allow user to change colour of appbar.
@@ -83,6 +90,22 @@ class ChatViewAppBar extends StatelessWidget {
   /// Allow user to turn on/off leading icon.
   final bool showLeading;
 
+  /// Field to set default image if network url for profile image not provided
+  final String defaultAvatarImage;
+
+  /// Error builder to build error widget for asset image
+  final AssetImageErrorBuilder? assetImageErrorBuilder;
+
+  /// Error builder to build error widget for network image
+  final NetworkImageErrorBuilder? networkImageErrorBuilder;
+
+  /// Field to define image type [network, asset or base64]
+  final ImageType imageType;
+
+  /// Progress indicator builder for network image
+  final NetworkImageProgressIndicatorBuilder?
+  networkImageProgressIndicatorBuilder;
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -113,8 +136,14 @@ class ChatViewAppBar extends StatelessWidget {
                   if (profilePicture != null)
                     Padding(
                       padding: const EdgeInsets.only(right: 8.0),
-                      child: CircleAvatar(
-                          backgroundImage: NetworkImage(profilePicture!)),
+                      child: ProfileImageWidget(
+                        imageUrl: profilePicture,
+                        defaultAvatarImage: defaultAvatarImage,
+                        assetImageErrorBuilder: assetImageErrorBuilder,
+                        networkImageErrorBuilder: networkImageErrorBuilder,
+                        imageType: imageType,
+                        networkImageProgressIndicatorBuilder: networkImageProgressIndicatorBuilder,
+                      ),
                     ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

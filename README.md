@@ -702,7 +702,54 @@ ChatView(
 )
 ```
 
-30. Added a `replyMessageBuilder` to customize view for the reply.
+30. Add default avatar for profile image `defaultAvatarImage`,
+    error builder for asset and network profile image `assetImageErrorBuilder` `networkImageErrorBuilder`,
+    Enum `ImageType` to define image as asset, network or base64 data.
+```dart
+ChatView(
+  ...
+      appBar: ChatViewAppBar(
+        defaultAvatarImage: defaultAvatar,
+        imageType: ImageType.network,
+        networkImageErrorBuilder: (context, url, error) {
+          return Center(
+            child: Text('Error $error'),
+          );
+        },
+        assetImageErrorBuilder: (context, error, stackTrace) {
+          return Center(
+            child: Text('Error $error'),
+          );
+        },
+      ),
+  ...
+),
+```
+
+
+31. Added a `customMessageReplyViewBuilder` to customize reply message view for custom type message.
+
+```dart
+ChatView(
+  ...
+    messageConfig: MessageConfiguration(
+      customMessageBuilder: (ReplyMessage state) {
+        return Text(
+        state.message,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: const TextStyle(
+          fontSize: 12,
+          color: Colors.black,
+          ),
+        );
+      },
+    ),
+  ...
+)
+```
+
+32. Added a `replyMessageBuilder` to customize view for the reply.
 
 ```dart
 ChatView(
@@ -766,7 +813,7 @@ ChatView(
 ```
 
 
-30. Added callback `messageSorter` to sort message in `ChatBackgroundConfiguration`.
+33. Added callback `messageSorter` to sort message in `ChatBackgroundConfiguration`.
 ```dart
 
 ChatView(

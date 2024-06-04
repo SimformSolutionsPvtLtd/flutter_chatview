@@ -21,6 +21,7 @@
  */
 import 'package:chatview/chatview.dart';
 import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
+import 'package:chatview/src/widgets/profile_image_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../utils/constants/constants.dart';
@@ -74,12 +75,18 @@ extension ValidateString on String {
     double? profileCircleRadius,
     EdgeInsets? profileCirclePadding,
   }) {
+    final user = getChatUser(this);
     return Padding(
       padding: profileCirclePadding ?? const EdgeInsets.only(left: 4),
-      child: CircleAvatar(
-        radius: profileCircleRadius ?? 8,
-        backgroundImage:
-            NetworkImage(getChatUser(this)?.profilePhoto ?? profileImage),
+      child: ProfileImageWidget(
+        imageUrl: user?.profilePhoto,
+        imageType: user?.imageType,
+        defaultAvatarImage: user?.defaultAvatarImage ?? profileImage,
+        circleRadius: profileCircleRadius ?? 8,
+        assetImageErrorBuilder: user?.assetImageErrorBuilder,
+        networkImageErrorBuilder: user?.networkImageErrorBuilder,
+        networkImageProgressIndicatorBuilder:
+            user?.networkImageProgressIndicatorBuilder,
       ),
     );
   }

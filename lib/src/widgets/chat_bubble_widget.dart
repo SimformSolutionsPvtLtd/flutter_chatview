@@ -172,7 +172,13 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
                   : profileCircleConfig?.bottomPadding ?? 2,
               profileCirclePadding: profileCircleConfig?.padding,
               imageUrl: messagedUser?.profilePhoto,
-              isProfilePhotoInBase64: messagedUser?.isProfilePhotoInBase64,
+              imageType: messagedUser?.imageType,
+              defaultAvatarImage:
+                  messagedUser?.defaultAvatarImage ?? profileImage,
+              networkImageProgressIndicatorBuilder:
+                  messagedUser?.networkImageProgressIndicatorBuilder,
+              assetImageErrorBuilder: messagedUser?.assetImageErrorBuilder,
+              networkImageErrorBuilder: messagedUser?.networkImageErrorBuilder,
               circleRadius: profileCircleConfig?.circleRadius,
               onTap: () => _onAvatarTap(messagedUser),
               onLongPress: () => _onAvatarLongPress(messagedUser),
@@ -232,7 +238,13 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
                   : profileCircleConfig?.bottomPadding ?? 2,
               profileCirclePadding: profileCircleConfig?.padding,
               imageUrl: currentUser?.profilePhoto,
-              isProfilePhotoInBase64: currentUser?.isProfilePhotoInBase64,
+              imageType: currentUser?.imageType,
+              defaultAvatarImage:
+                  currentUser?.defaultAvatarImage ?? profileImage,
+              networkImageProgressIndicatorBuilder:
+                  currentUser?.networkImageProgressIndicatorBuilder,
+              networkImageErrorBuilder: currentUser?.networkImageErrorBuilder,
+              assetImageErrorBuilder: currentUser?.assetImageErrorBuilder,
               circleRadius: profileCircleConfig?.circleRadius,
               onTap: () => _onAvatarTap(messagedUser),
               onLongPress: () => _onAvatarLongPress(messagedUser),
