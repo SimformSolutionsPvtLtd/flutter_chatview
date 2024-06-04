@@ -274,16 +274,16 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
   }
 
   void _onPressed() {
-    if (_textEditingController.text.isNotEmpty &&
-        !_textEditingController.text.startsWith('\n')) {
-      widget.onSendTap.call(
-        _textEditingController.text.trim(),
-        replyMessage,
-        MessageType.text,
-      );
-      _assignRepliedMessage();
-      _textEditingController.clear();
-    }
+    final messageText = _textEditingController.text.trim();
+    _textEditingController.clear();
+    if (messageText.isEmpty) return;
+
+    widget.onSendTap.call(
+      messageText.trim(),
+      replyMessage,
+      MessageType.text,
+    );
+    _assignRepliedMessage();
   }
 
   void assignReplyMessage(Message message) {
