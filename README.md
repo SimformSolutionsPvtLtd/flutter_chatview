@@ -13,6 +13,27 @@ visit [Chat View Example](https://chat-view-8f1b5.web.app/#/).
 
 ![The example app running in iOS](https://raw.githubusercontent.com/SimformSolutionsPvtLtd/flutter_chat_ui/main/preview/chatview.gif)
 
+## Migration guide for release 2.0.0
+Removed `showTypingIndicator` field from `ChatView` and replaced it with `ChatController.showTypingIndicator`.
+
+Before:
+```dart
+ChatView(
+  showTypingIndicator:false,
+),
+```
+
+After:
+```dart
+/// use it with your [ChatController] instance.
+_chatContoller.setTypingIndicator = true; // for showing indicator
+_chatContoller.setTypingIndicator = false; // for hiding indicator
+
+ChatView(
+  chatController: _chatController,
+),
+```
+
 ## Installing   
 
 1.  Add dependency to `pubspec.yaml`

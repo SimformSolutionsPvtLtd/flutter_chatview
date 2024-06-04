@@ -48,7 +48,6 @@ class ChatView extends StatefulWidget {
     ChatBackgroundConfiguration? chatBackgroundConfig,
     this.typeIndicatorConfig,
     this.sendMessageBuilder,
-    this.showTypingIndicator = false,
     this.sendMessageConfig,
     this.onChatListTap,
     required this.chatViewState,
@@ -107,11 +106,6 @@ class ChatView extends StatefulWidget {
 
   /// Provides builder which helps you to make custom text field and functionality.
   final ReplyMessageWithReturnWidget? sendMessageBuilder;
-
-  @Deprecated('Use [ChatController.setTypingIndicator]  instead')
-
-  /// Allow user to show typing indicator.
-  final bool showTypingIndicator;
 
   /// Allow user to giving customisation typing indicator.
   final TypeIndicatorConfiguration? typeIndicatorConfig;
@@ -191,11 +185,8 @@ class _ChatViewState extends State<ChatView>
   @override
   Widget build(BuildContext context) {
     // Scroll to last message on in hasMessages state.
-    // TODO: Remove this in new versions.
-    // ignore: deprecated_member_use_from_same_package
-    if (widget.showTypingIndicator ||
-        widget.chatController.showTypingIndicator &&
-            chatViewState.hasMessages) {
+    if (widget.chatController.showTypingIndicator &&
+        chatViewState.hasMessages) {
       chatController.scrollToLastMessage();
     }
     return ChatViewInheritedWidget(
@@ -248,9 +239,8 @@ class _ChatViewState extends State<ChatView>
                       valueListenable: replyMessage,
                       builder: (_, state, child) {
                         return ChatListWidget(
-                          /// TODO: Remove this in future releases.
-                          // ignore: deprecated_member_use_from_same_package
-                          showTypingIndicator: widget.showTypingIndicator,
+                          showTypingIndicator:
+                              chatController.showTypingIndicator,
                           replyMessage: state,
                           chatController: widget.chatController,
                           chatBackgroundConfig: widget.chatBackgroundConfig,
