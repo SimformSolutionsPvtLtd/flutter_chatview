@@ -1,5 +1,7 @@
 ## [2.0.0] (Unreleased)
 
+* **Fix**: [182](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/182) Fix
+  send message not working when user start texting after newLine.
 * **Feat**: [156](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/156) Added
   default avatar, error builder for asset, network and base64 profile image and
   cached_network_image for network images.
