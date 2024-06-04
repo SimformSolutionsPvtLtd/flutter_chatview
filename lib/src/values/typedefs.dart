@@ -24,9 +24,13 @@ import 'package:flutter/material.dart';
 
 typedef StringCallback = void Function(String);
 typedef StringMessageCallBack = void Function(
-    String message, ReplyMessage replyMessage, MessageType messageType);
+  String message,
+  ReplyMessage replyMessage,
+  MessageType messageType,
+);
 typedef ReplyMessageWithReturnWidget = Widget Function(
-    ReplyMessage? replyMessage);
+  ReplyMessage? replyMessage,
+);
 typedef ReplyMessageCallBack = void Function(ReplyMessage replyMessage);
 typedef VoidCallBack = void Function();
 typedef DoubleCallBack = void Function(double, double);
@@ -49,10 +53,17 @@ typedef ReactedUserCallback = void Function(
 );
 
 /// customMessageType view for a reply of custom message type
-typedef CustomMessageReplyViewBuilder = Widget Function(ReplyMessage state);
+typedef CustomMessageReplyViewBuilder = Widget Function(
+  ReplyMessage state,
+);
+typedef MessageSorter = int Function(
+  Message message1,
+  Message message2,
+);
 
 /// customView for replying to any message
 typedef CustomViewForReplyMessage = Widget Function(
   BuildContext context,
   ReplyMessage state,
 );
+typedef GetMessageSeparator = (Map<int, DateTime>, DateTime);

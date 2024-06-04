@@ -1,5 +1,7 @@
 ## [2.0.0] (Unreleased)
 
+* **Breaking**: [173](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/173) Added
+  callback to sort message in chat.
 * **Fix**: [181](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/181) Removed
   deprecated field `showTypingIndicator` from ChatView.
 * **Fix**: [139](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/139) Added

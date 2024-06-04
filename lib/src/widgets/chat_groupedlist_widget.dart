@@ -24,7 +24,6 @@ import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
 import 'package:chatview/src/widgets/type_indicator_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:grouped_list/grouped_list.dart';
 
 import 'chat_bubble_widget.dart';
 import 'chat_group_header.dart';
@@ -287,81 +286,172 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
     return StreamBuilder<List<Message>>(
       stream: chatController?.messageStreamController.stream,
       builder: (context, snapshot) {
-        return snapshot.connectionState.isActive
-            ? GroupedListView<Message, DateTime>(
-                shrinkWrap: true,
-                elements: snapshot.data!,
-                groupBy: (message) {
-                  /// If the conversation is ongoing on the same date,
-                  /// return the same date [lastMatchedDate].
+        if (!snapshot.connectionState.isActive) {
+          return Center(
+            child: chatBackgroundConfig.loadingWidget ??
+                const CircularProgressIndicator(),
+          );
+        } else {
+          final messages = widget.chatBackgroundConfig.sortEnable
+              ? sortMessage(snapshot.data!)
+              : snapshot.data!;
 
-                  /// When the conversation starts on a new date,
-                  /// we assign the new date [message.createdAt]
-                  /// to [lastMatchedDate].
-                  return lastMatchedDate =
-                      lastMatchedDate.getDateFromDateTime ==
-                              message.createdAt.getDateFromDateTime
-                          ? lastMatchedDate
-                          : message.createdAt;
-                },
-                itemComparator: (message1, message2) =>
-                    message1.message.compareTo(message2.message),
-                physics: const NeverScrollableScrollPhysics(),
-                order: chatBackgroundConfig.groupedListOrder,
-                sort: chatBackgroundConfig.sortEnable,
-                groupSeparatorBuilder: (separator) =>
-                    featureActiveConfig?.enableChatSeparator ?? false
-                        ? _GroupSeparatorBuilder(
-                            separator: separator,
-                            defaultGroupSeparatorConfig: chatBackgroundConfig
-                                .defaultGroupSeparatorConfig,
-                            groupSeparatorBuilder:
-                                chatBackgroundConfig.groupSeparatorBuilder,
-                          )
-                        : const SizedBox.shrink(),
-                indexedItemBuilder: (context, message, index) {
-                  return ValueListenableBuilder<String?>(
-                    valueListenable: _replyId,
-                    builder: (context, state, child) {
-                      return ChatBubbleWidget(
-                        key: message.key,
-                        messageTimeTextStyle:
-                            chatBackgroundConfig.messageTimeTextStyle,
-                        messageTimeIconColor:
-                            chatBackgroundConfig.messageTimeIconColor,
-                        message: message,
-                        messageConfig: widget.messageConfig,
-                        chatBubbleConfig: chatBubbleConfig,
-                        profileCircleConfig: profileCircleConfig,
-                        swipeToReplyConfig: widget.swipeToReplyConfig,
-                        repliedMessageConfig: widget.repliedMessageConfig,
-                        slideAnimation: _slideAnimation,
-                        onLongPress: (yCoordinate, xCoordinate) =>
-                            widget.onChatBubbleLongPress(
-                          yCoordinate,
-                          xCoordinate,
-                          message,
-                        ),
-                        onSwipe: widget.assignReplyMessage,
-                        shouldHighlight: state == message.id,
-                        onReplyTap: widget
-                                    .repliedMessageConfig
-                                    ?.repliedMsgAutoScrollConfig
-                                    .enableScrollToRepliedMsg ??
-                                false
-                            ? (replyId) => _onReplyTap(replyId, snapshot.data)
-                            : null,
-                      );
-                    },
+          final enableSeparator =
+              featureActiveConfig?.enableChatSeparator ?? false;
+
+          Map<int, DateTime> messageSeparator = {};
+
+          if (enableSeparator) {
+            /// Get separator when date differ for two messages
+            (messageSeparator, lastMatchedDate) = _getMessageSeparator(
+              messages,
+              lastMatchedDate,
+            );
+          }
+
+          /// [count] that indicates how many separators
+          /// needs to be display in chat
+          var count = 0;
+
+          return ListView.builder(
+            key: widget.key,
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: (enableSeparator
+                ? messages.length + messageSeparator.length
+                : messages.length),
+            itemBuilder: (context, index) {
+              /// By removing [count] from [index] will get actual index
+              /// to display message in chat
+              var newIndex = index - count;
+
+              /// Check [messageSeparator] contains group separator for [index]
+              if (enableSeparator && messageSeparator.containsKey(index)) {
+                /// Increase counter each time
+                /// after separating messages with separator
+                count++;
+                return _groupSeparator(
+                  messageSeparator[index]!,
+                );
+              }
+
+              return ValueListenableBuilder<String?>(
+                valueListenable: _replyId,
+                builder: (context, state, child) {
+                  final message = messages[newIndex];
+                  return ChatBubbleWidget(
+                    key: message.key,
+                    messageTimeTextStyle:
+                        chatBackgroundConfig.messageTimeTextStyle,
+                    messageTimeIconColor:
+                        chatBackgroundConfig.messageTimeIconColor,
+                    message: message,
+                    messageConfig: widget.messageConfig,
+                    chatBubbleConfig: chatBubbleConfig,
+                    profileCircleConfig: profileCircleConfig,
+                    swipeToReplyConfig: widget.swipeToReplyConfig,
+                    repliedMessageConfig: widget.repliedMessageConfig,
+                    slideAnimation: _slideAnimation,
+                    onLongPress: (yCoordinate, xCoordinate) =>
+                        widget.onChatBubbleLongPress(
+                      yCoordinate,
+                      xCoordinate,
+                      message,
+                    ),
+                    onSwipe: widget.assignReplyMessage,
+                    shouldHighlight: state == message.id,
+                    onReplyTap: widget
+                                .repliedMessageConfig
+                                ?.repliedMsgAutoScrollConfig
+                                .enableScrollToRepliedMsg ??
+                            false
+                        ? (replyId) => _onReplyTap(replyId, snapshot.data)
+                        : null,
                   );
                 },
-              )
-            : Center(
-                child: chatBackgroundConfig.loadingWidget ??
-                    const CircularProgressIndicator(),
               );
+            },
+          );
+        }
       },
     );
+  }
+
+  List<Message> sortMessage(List<Message> messages) {
+    final elements = [...messages];
+
+    elements.sort(
+      widget.chatBackgroundConfig.messageSorter ??
+          (a, b) => a.createdAt.compareTo(b.createdAt),
+    );
+    if (widget.chatBackgroundConfig.groupedListOrder.isAsc) {
+      return elements.toList();
+    } else {
+      return elements.reversed.toList();
+    }
+  }
+
+  /// return DateTime by checking lastMatchedDate and message created DateTime
+  DateTime _groupBy(
+    Message message,
+    DateTime lastMatchedDate,
+  ) {
+    /// If the conversation is ongoing on the same date,
+    /// return the same date [lastMatchedDate].
+
+    /// When the conversation starts on a new date,
+    /// we are returning new date [message.createdAt].
+    return lastMatchedDate.getDateFromDateTime ==
+            message.createdAt.getDateFromDateTime
+        ? lastMatchedDate
+        : message.createdAt;
+  }
+
+  Widget _groupSeparator(DateTime createdAt) {
+    return featureActiveConfig?.enableChatSeparator ?? false
+        ? _GroupSeparatorBuilder(
+            separator: createdAt,
+            defaultGroupSeparatorConfig:
+                chatBackgroundConfig.defaultGroupSeparatorConfig,
+            groupSeparatorBuilder: chatBackgroundConfig.groupSeparatorBuilder,
+          )
+        : const SizedBox.shrink();
+  }
+
+  GetMessageSeparator _getMessageSeparator(
+    List<Message> messages,
+    DateTime lastDate,
+  ) {
+    final messageSeparator = <int, DateTime>{};
+    var lastMatchedDate = lastDate;
+    var counter = 0;
+
+    /// Holds index and separator mapping to display in chat
+    for (var i = 0; i < messages.length; i++) {
+      if (messageSeparator.isEmpty) {
+        /// Separator for initial message
+        messageSeparator[0] = messages[0].createdAt;
+        continue;
+      }
+      lastMatchedDate = _groupBy(
+        messages[i],
+        lastMatchedDate,
+      );
+      var previousDate = _groupBy(
+        messages[i - 1],
+        lastMatchedDate,
+      );
+
+      if (previousDate != lastMatchedDate) {
+        /// Group separator when previous message and
+        /// current message time differ
+        counter++;
+
+        messageSeparator[i + counter] = messages[i].createdAt;
+      }
+    }
+
+    return (messageSeparator, lastMatchedDate);
   }
 }
 

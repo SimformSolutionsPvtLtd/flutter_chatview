@@ -25,7 +25,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../values/enumaration.dart';
+import '../values/enumeration.dart';
 import '../values/typedefs.dart';
 
 class SendMessageConfiguration {

@@ -20,9 +20,9 @@
  * SOFTWARE.
  */
 import 'package:flutter/material.dart';
-import 'package:grouped_list/grouped_list.dart';
 
 import '../utils/constants/constants.dart';
+import '../values/enumeration.dart';
 import '../values/typedefs.dart';
 
 class ChatBackgroundConfiguration {
@@ -71,6 +71,9 @@ class ChatBackgroundConfiguration {
   /// message.
   final Curve messageTimeAnimationCurve;
 
+  /// Provides callback to sort message
+  final MessageSorter? messageSorter;
+
   const ChatBackgroundConfiguration({
     this.defaultGroupSeparatorConfig,
     this.backgroundColor,
@@ -78,7 +81,7 @@ class ChatBackgroundConfiguration {
     this.height,
     this.width,
     this.groupSeparatorBuilder,
-    this.groupedListOrder = GroupedListOrder.ASC,
+    this.groupedListOrder = GroupedListOrder.asc,
     this.sortEnable = false,
     this.padding,
     this.margin,
@@ -86,6 +89,7 @@ class ChatBackgroundConfiguration {
     this.messageTimeIconColor,
     this.loadingWidget,
     this.messageTimeAnimationCurve = Curves.decelerate,
+    this.messageSorter,
   });
 }
 
