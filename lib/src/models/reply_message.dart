@@ -48,20 +48,45 @@ class ReplyMessage {
   });
 
   factory ReplyMessage.fromJson(Map<String, dynamic> json) => ReplyMessage(
-        message: json['message'],
-        replyBy: json['replyBy'],
-        replyTo: json['replyTo'],
-        messageType: json["message_type"],
-        messageId: json["id"],
-        voiceMessageDuration: json["voiceMessageDuration"],
+        message: json['message']?.toString() ?? '',
+        replyBy: json['replyBy']?.toString() ?? '',
+        replyTo: json['replyTo']?.toString() ?? '',
+        messageType: MessageType.tryParse(json['message_type']?.toString()) ??
+            MessageType.text,
+        messageId: json['id']?.toString() ?? '',
+        voiceMessageDuration: Duration(
+          microseconds:
+              int.tryParse(json['voiceMessageDuration'].toString()) ?? 0,
+        ),
       );
 
   Map<String, dynamic> toJson() => {
         'message': message,
         'replyBy': replyBy,
         'replyTo': replyTo,
-        'message_type': messageType,
+        'message_type': messageType.name,
         'id': messageId,
-        'voiceMessageDuration': voiceMessageDuration,
+        'voiceMessageDuration': voiceMessageDuration?.inMicroseconds,
       };
+
+  ReplyMessage copyWith({
+    String? messageId,
+    String? message,
+    String? replyTo,
+    String? replyBy,
+    MessageType? messageType,
+    Duration? voiceMessageDuration,
+    bool forceNullValue = false,
+  }) {
+    return ReplyMessage(
+      messageId: messageId ?? this.messageId,
+      message: message ?? this.message,
+      replyTo: replyTo ?? this.replyTo,
+      replyBy: replyBy ?? this.replyBy,
+      messageType: messageType ?? this.messageType,
+      voiceMessageDuration: forceNullValue
+          ? voiceMessageDuration
+          : voiceMessageDuration ?? this.voiceMessageDuration,
+    );
+  }
 }

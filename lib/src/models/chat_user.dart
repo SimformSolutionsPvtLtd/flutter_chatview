@@ -67,7 +67,8 @@ class ChatUser {
         id: json["id"],
         name: json["name"],
         profilePhoto: json["profilePhoto"],
-        imageType: json["imageType"],
+        imageType: ImageType.tryParse(json['imageType']?.toString()) ??
+            ImageType.network,
         defaultAvatarImage: json["defaultAvatarImage"],
       );
 
@@ -75,7 +76,25 @@ class ChatUser {
         'id': id,
         'name': name,
         'profilePhoto': profilePhoto,
-        'imageType': imageType,
+        'imageType': imageType.name,
         'defaultAvatarImage': defaultAvatarImage,
       };
+
+  ChatUser copyWith({
+    String? id,
+    String? name,
+    String? profilePhoto,
+    ImageType? imageType,
+    String? defaultAvatarImage,
+    bool forceNullValue = false,
+  }) {
+    return ChatUser(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      imageType: imageType ?? this.imageType,
+      profilePhoto:
+          forceNullValue ? profilePhoto : profilePhoto ?? this.profilePhoto,
+      defaultAvatarImage: defaultAvatarImage ?? this.defaultAvatarImage,
+    );
+  }
 }

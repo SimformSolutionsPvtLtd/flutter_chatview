@@ -91,25 +91,64 @@ class Message {
   }
 
   factory Message.fromJson(Map<String, dynamic> json) => Message(
-      id: json["id"],
-      message: json["message"],
-      createdAt: json["createdAt"],
-      sendBy: json["sendBy"],
-      replyMessage: ReplyMessage.fromJson(json["reply_message"]),
-      reaction: Reaction.fromJson(json["reaction"]),
-      messageType: json["message_type"],
-      voiceMessageDuration: json["voice_message_duration"],
-      status: json['status']);
+        id: json['id']?.toString() ?? '',
+        message: json['message']?.toString() ?? '',
+        createdAt:
+            DateTime.tryParse(json['createdAt'].toString()) ?? DateTime.now(),
+        sendBy: json['sendBy']?.toString() ?? '',
+        replyMessage: json['reply_message'] is Map<String, dynamic>
+            ? ReplyMessage.fromJson(json['reply_message'])
+            : const ReplyMessage(),
+        reaction: json['reaction'] is Map<String, dynamic>
+            ? Reaction.fromJson(json['reaction'])
+            : null,
+        messageType: MessageType.tryParse(json['message_type']?.toString()) ??
+            MessageType.text,
+        voiceMessageDuration: Duration(
+          microseconds:
+              int.tryParse(json['voice_message_duration'].toString()) ?? 0,
+        ),
+        status: MessageStatus.tryParse(json['status']?.toString()) ??
+            MessageStatus.pending,
+      );
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'message': message,
-        'createdAt': createdAt,
+        'createdAt': createdAt.toIso8601String(),
         'sendBy': sendBy,
         'reply_message': replyMessage.toJson(),
         'reaction': reaction.toJson(),
-        'message_type': messageType,
-        'voice_message_duration': voiceMessageDuration,
-        'status': status.name
+        'message_type': messageType.name,
+        'voice_message_duration': voiceMessageDuration?.inMicroseconds,
+        'status': status.name,
       };
+
+  Message copyWith({
+    String? id,
+    GlobalKey? key,
+    String? message,
+    DateTime? createdAt,
+    String? sendBy,
+    ReplyMessage? replyMessage,
+    Reaction? reaction,
+    MessageType? messageType,
+    Duration? voiceMessageDuration,
+    MessageStatus? status,
+    bool forceNullValue = false,
+  }) {
+    return Message(
+      id: id ?? this.message,
+      message: message ?? this.message,
+      createdAt: createdAt ?? this.createdAt,
+      sendBy: sendBy ?? this.sendBy,
+      messageType: messageType ?? this.messageType,
+      voiceMessageDuration: forceNullValue
+          ? voiceMessageDuration
+          : voiceMessageDuration ?? this.voiceMessageDuration,
+      reaction: reaction ?? this.reaction,
+      replyMessage: replyMessage ?? this.replyMessage,
+      status: status ?? this.status,
+    );
+  }
 }
