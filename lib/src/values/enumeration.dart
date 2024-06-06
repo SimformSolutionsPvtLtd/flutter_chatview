@@ -88,6 +88,19 @@ enum ImageType {
   bool get isAsset => this == ImageType.asset;
 
   bool get isBase64 => this == ImageType.base64;
+
+  static ImageType? tryParse(String? value) {
+    final type = value?.trim().toLowerCase();
+    if (type?.isEmpty ?? true) return null;
+    if (type == asset.name) {
+      return asset;
+    } else if (type == network.name) {
+      return network;
+    } else if (type == base64.name) {
+      return base64;
+    }
+    return null;
+  }
 }
 
 extension ChatViewStateExtension on ChatViewState {

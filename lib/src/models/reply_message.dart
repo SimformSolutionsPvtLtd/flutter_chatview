@@ -54,12 +54,10 @@ class ReplyMessage {
         messageType: MessageType.tryParse(json['message_type']?.toString()) ??
             MessageType.text,
         messageId: json['id']?.toString() ?? '',
-        voiceMessageDuration: json['voiceMessageDuration'] == null
-            ? null
-            : Duration(
-                microseconds:
-                    int.tryParse(json['voiceMessageDuration'].toString()) ?? 0,
-              ),
+        voiceMessageDuration: Duration(
+          microseconds:
+              int.tryParse(json['voiceMessageDuration'].toString()) ?? 0,
+        ),
       );
 
   Map<String, dynamic> toJson() => {
@@ -70,4 +68,25 @@ class ReplyMessage {
         'id': messageId,
         'voiceMessageDuration': voiceMessageDuration?.inMicroseconds,
       };
+
+  ReplyMessage copyWith({
+    String? messageId,
+    String? message,
+    String? replyTo,
+    String? replyBy,
+    MessageType? messageType,
+    Duration? voiceMessageDuration,
+    bool forceNullValue = false,
+  }) {
+    return ReplyMessage(
+      messageId: messageId ?? this.messageId,
+      message: message ?? this.message,
+      replyTo: replyTo ?? this.replyTo,
+      replyBy: replyBy ?? this.replyBy,
+      messageType: messageType ?? this.messageType,
+      voiceMessageDuration: forceNullValue
+          ? voiceMessageDuration
+          : voiceMessageDuration ?? this.voiceMessageDuration,
+    );
+  }
 }

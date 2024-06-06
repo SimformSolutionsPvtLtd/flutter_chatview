@@ -1,6 +1,6 @@
 ## [2.0.0] (Unreleased)
 
-* **Fix**: [177](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/177) Fixed
+* **Breaking**: [177](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/177) Fixed
   json serializable of models and added copyWith method (Message, Reaction and Reply Message).
 * **Fix**: [182](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/182) Fix
   send message not working when user start texting after newLine.
