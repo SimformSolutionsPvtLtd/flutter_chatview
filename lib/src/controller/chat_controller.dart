@@ -89,7 +89,9 @@ class ChatController {
   /// Used to add message in message list.
   void addMessage(Message message) {
     initialMessageList.add(message);
-    messageStreamController.sink.add(initialMessageList);
+    if (!messageStreamController.isClosed) {
+      messageStreamController.sink.add(initialMessageList);
+    }
   }
 
   /// Used to add reply suggestions.
@@ -134,24 +136,31 @@ class ChatController {
       messageType: message.messageType,
       status: message.status,
     );
-    messageStreamController.sink.add(initialMessageList);
+    if (!messageStreamController.isClosed) {
+      messageStreamController.sink.add(initialMessageList);
+    }
   }
 
   /// Function to scroll to last messages in chat view
   void scrollToLastMessage() => Timer(
         const Duration(milliseconds: 300),
-        () => scrollController.animateTo(
-          scrollController.position.minScrollExtent,
-          curve: Curves.easeIn,
-          duration: const Duration(milliseconds: 300),
-        ),
+        () {
+          if (!scrollController.hasClients) return;
+          scrollController.animateTo(
+            scrollController.position.minScrollExtent,
+            curve: Curves.easeIn,
+            duration: const Duration(milliseconds: 300),
+          );
+        },
       );
 
   /// Function for loading data while pagination.
   void loadMoreData(List<Message> messageList) {
     /// Here, we have passed 0 index as we need to add data before first data
     initialMessageList.insertAll(0, messageList);
-    messageStreamController.sink.add(initialMessageList);
+    if (!messageStreamController.isClosed) {
+      messageStreamController.sink.add(initialMessageList);
+    }
   }
 
   /// Function for getting ChatUser object from user id

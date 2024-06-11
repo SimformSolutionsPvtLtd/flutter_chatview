@@ -50,6 +50,8 @@
   send message not working when user start texting after newLine.
 * **Fix**: [191](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/191) Fix
   error when using `BuildContext` or `State` extensions when not mounted.
+* **Fix**: [192](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/192) Fix
+  send to closed socket or animate on `ScrollController` without clients.
 
 ## [1.3.1]
 
