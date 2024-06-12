@@ -40,9 +40,9 @@ class ChatGroupedListWidget extends StatefulWidget {
     required this.onChatListTap,
     required this.onChatBubbleLongPress,
     required this.isEnableSwipeToSeeTime,
+    required this.profileCircleConfig,
     this.messageConfig,
     this.chatBubbleConfig,
-    this.profileCircleConfig,
     this.swipeToReplyConfig,
     this.repliedMessageConfig,
     this.typeIndicatorConfig,
@@ -65,7 +65,7 @@ class ChatGroupedListWidget extends StatefulWidget {
   final ChatBubbleConfiguration? chatBubbleConfig;
 
   /// Allow user to giving customisation to profile circle
-  final ProfileCircleConfiguration? profileCircleConfig;
+  final ProfileCircleConfiguration profileCircleConfig;
 
   /// Allow user to giving customisation to swipe to reply
   final SwipeToReplyConfiguration? swipeToReplyConfig;
@@ -106,10 +106,10 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
 
   ChatBubbleConfiguration? get chatBubbleConfig => widget.chatBubbleConfig;
 
-  ProfileCircleConfiguration? get profileCircleConfig =>
+  ProfileCircleConfiguration get profileCircleConfig =>
       widget.profileCircleConfig;
-  AnimationController? _animationController;
-  Animation<Offset>? _slideAnimation;
+
+  ValueNotifier<double>? valueListener;
 
   FeatureActiveConfig? featureActiveConfig;
 
@@ -117,48 +117,16 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
 
   bool get isEnableSwipeToSeeTime => widget.isEnableSwipeToSeeTime;
 
-  double height = 0;
-
   @override
   void initState() {
     super.initState();
     _initializeAnimation();
-    updateChatTextFieldHeight();
-  }
-
-  @override
-  void didUpdateWidget(covariant ChatGroupedListWidget oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    updateChatTextFieldHeight();
-  }
-
-  void updateChatTextFieldHeight() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      setState(() {
-        height =
-            provide?.chatTextFieldViewKey.currentContext?.size?.height ?? 10;
-      });
-    });
   }
 
   void _initializeAnimation() {
-    // When this flag is on at that time only animation controllers will be
-    // initialized.
+    // When this flag is on, prepare swiping the whole chat
     if (isEnableSwipeToSeeTime) {
-      _animationController = AnimationController(
-        vsync: this,
-        duration: const Duration(milliseconds: 250),
-      );
-      _slideAnimation = Tween<Offset>(
-        begin: const Offset(0.0, 0.0),
-        end: const Offset(0.0, 0.0),
-      ).animate(
-        CurvedAnimation(
-          curve: Curves.decelerate,
-          parent: _animationController!,
-        ),
-      );
+      valueListener = ValueNotifier(0);
     }
   }
 
@@ -185,6 +153,7 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
         mainAxisSize: MainAxisSize.min,
         children: [
           GestureDetector(
+            behavior: HitTestBehavior.translucent,
             onHorizontalDragUpdate: (details) => isEnableSwipeToSeeTime
                 ? showPopUp
                     ? null
@@ -193,17 +162,10 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
             onHorizontalDragEnd: (details) => isEnableSwipeToSeeTime
                 ? showPopUp
                     ? null
-                    : _animationController?.reverse()
+                    : valueListener?.value = 0
                 : null,
             onTap: widget.onChatListTap,
-            child: _animationController != null
-                ? AnimatedBuilder(
-                    animation: _animationController!,
-                    builder: (context, child) {
-                      return _chatStreamBuilder;
-                    },
-                  )
-                : _chatStreamBuilder,
+            child: _chatStreamBuilder,
           ),
           ValueListenableBuilder(
             valueListenable: ChatViewInheritedWidget.of(context)!
@@ -272,24 +234,14 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
 
   /// When user swipe at that time only animation is assigned with value.
   void _onHorizontalDrag(DragUpdateDetails details) {
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0.0, 0.0),
-      end: const Offset(-0.2, 0.0),
-    ).animate(
-      CurvedAnimation(
-        curve: chatBackgroundConfig.messageTimeAnimationCurve,
-        parent: _animationController!,
-      ),
-    );
-
-    details.delta.dx > 1
-        ? _animationController?.reverse()
-        : _animationController?.forward();
+    if (valueListener == null) return;
+    valueListener!.value =
+        (valueListener!.value + (details.delta.dx / context.size!.width) * 5)
+            .clamp(-1.0, 0.0);
   }
 
   @override
   void dispose() {
-    _animationController?.dispose();
     _replyId.dispose();
     super.dispose();
   }
@@ -364,14 +316,14 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
                     profileCircleConfig: profileCircleConfig,
                     swipeToReplyConfig: widget.swipeToReplyConfig,
                     repliedMessageConfig: widget.repliedMessageConfig,
-                    slideAnimation: _slideAnimation,
+                    slideValueListener: valueListener,
                     onLongPress: (yCoordinate, xCoordinate) =>
                         widget.onChatBubbleLongPress(
                       yCoordinate,
                       xCoordinate,
                       message,
                     ),
-                    onSwipe: widget.assignReplyMessage,
+                    onInitReplyToMessage: widget.assignReplyMessage,
                     shouldHighlight: state == message.id,
                     onReplyTap: widget
                                 .repliedMessageConfig

@@ -38,11 +38,11 @@ class ChatListWidget extends StatefulWidget {
     required this.chatBackgroundConfig,
     required this.assignReplyMessage,
     required this.replyMessage,
+    required this.profileCircleConfig,
     this.loadingWidget,
     this.reactionPopupConfig,
     this.messageConfig,
     this.chatBubbleConfig,
-    this.profileCircleConfig,
     this.swipeToReplyConfig,
     this.repliedMessageConfig,
     this.typeIndicatorConfig,
@@ -73,7 +73,7 @@ class ChatListWidget extends StatefulWidget {
   final ChatBubbleConfiguration? chatBubbleConfig;
 
   /// Provides configuration for profile circle avatar of user.
-  final ProfileCircleConfiguration? profileCircleConfig;
+  final ProfileCircleConfiguration profileCircleConfig;
 
   /// Provides configuration for when user swipe to chat bubble.
   final SwipeToReplyConfiguration? swipeToReplyConfig;

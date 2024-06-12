@@ -35,6 +35,12 @@ class ChatBubbleConfiguration {
   /// Used for giving maximum width of chat bubble.
   final double? maxWidth;
 
+  /// Used for insetting the messages from the bottom according to text field height.
+  final double? additionalBottomInsetIfMessageIsLast;
+
+  /// Used for insetting the messages from the bottom more if the user is about to reply to another message.
+  final double? additionalBottomInsetIfReplyHeaderIsThere;
+
   /// Provides callback when user long press on chat bubble.
   final Duration? longPressAnimationDuration;
 
@@ -53,6 +59,8 @@ class ChatBubbleConfiguration {
     this.padding,
     this.margin,
     this.maxWidth,
+    this.additionalBottomInsetIfMessageIsLast,
+    this.additionalBottomInsetIfReplyHeaderIsThere,
     this.longPressAnimationDuration,
     this.inComingChatBubbleConfig,
     this.outgoingChatBubbleConfig,

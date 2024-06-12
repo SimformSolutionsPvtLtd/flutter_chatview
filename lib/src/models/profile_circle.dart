@@ -37,7 +37,7 @@ class ProfileCircleConfiguration {
   final double? bottomPadding;
 
   /// Used for give circle radius to profile circle
-  final double? circleRadius;
+  final double circleRadius;
 
   /// Provides callback when user tap on profile circle.
   final void Function(ChatUser)? onAvatarTap;
@@ -62,11 +62,11 @@ class ProfileCircleConfiguration {
       networkImageProgressIndicatorBuilder;
 
   const ProfileCircleConfiguration({
+    this.circleRadius = 12,
     this.onAvatarTap,
     this.padding,
     this.profileImageUrl,
     this.bottomPadding,
-    this.circleRadius,
     this.onAvatarLongPress,
     this.imageType = ImageType.network,
     this.defaultAvatarImage = profileImage,

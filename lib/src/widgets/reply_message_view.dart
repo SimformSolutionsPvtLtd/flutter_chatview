@@ -83,8 +83,11 @@ class ReplyMessageView extends StatelessWidget {
           message.message,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontSize: 12,
+          style: (Theme.of(context).textTheme.bodySmall ??
+                  const TextStyle(
+                    fontSize: 12,
+                  ))
+              .copyWith(
             color: sendMessageConfig?.replyMessageColor ?? Colors.black,
           ),
         ),

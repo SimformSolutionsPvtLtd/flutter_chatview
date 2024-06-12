@@ -21,30 +21,47 @@
  */
 import 'package:chatview/src/models/models.dart';
 import 'package:chatview/src/models/voice_message_configuration.dart';
+import 'package:chatview/src/widgets/message_view.dart';
 import 'package:flutter/material.dart';
 
 import '../values/typedefs.dart';
 
 class MessageConfiguration {
-  /// Provides configuration of image message appearance.
-  final ImageMessageConfiguration? imageMessageConfig;
-
-  /// Provides configuration of image message appearance.
+  /// Provides configuration of message reaction.
   final MessageReactionConfiguration? messageReactionConfig;
 
   /// Provides configuration of emoji messages appearance.
   final EmojiMessageConfiguration? emojiMessageConfig;
 
-  /// Provides builder to create view for custom messages.
-  final Widget Function(Message)? customMessageBuilder;
+  /// Provides configuration of image message appearance.
+  final ImageMessageConfiguration? imageMessageConfig;
 
   /// Configurations for voice message bubble
   final VoiceMessageConfiguration? voiceMessageConfig;
+
+  /// Provides builder to create view for emoji messages.
+  final Widget Function(MessageView)? emojiMessageBuilder;
+
+  /// Provides builder to create view for image messages.
+  final Widget Function(MessageView)? imageMessageBuilder;
+
+  /// Provides builder to create view for text messages.
+  final Widget Function(MessageView)? textMessageBuilder;
+
+  /// Provides builder to create view for voice messages.
+  final Widget Function(MessageView)? voiceMessageBuilder;
+
+  /// Provides builder to create view for custom messages.
+  final Widget Function(MessageView)? customMessageBuilder;
 
   /// To customize reply view for custom message type
   final CustomMessageReplyViewBuilder? customMessageReplyViewBuilder;
 
   const MessageConfiguration({
+    this.imageMessageBuilder,
+    this.textMessageBuilder,
+    this.emojiMessageBuilder,
+    this.voiceMessageBuilder,
     this.imageMessageConfig,
     this.messageReactionConfig,
     this.emojiMessageConfig,
