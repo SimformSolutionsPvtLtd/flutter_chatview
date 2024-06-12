@@ -306,6 +306,12 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
                   final message = messages[newIndex];
                   return ChatBubbleWidget(
                     key: message.key,
+                    previousMessage: (index > 0)
+                        ? snapshot.data!.elementAtOrNull(index - 1)
+                        : null,
+                    nextMessage: (index < snapshot.data!.length - 1)
+                        ? snapshot.data!.elementAtOrNull(index + 1)
+                        : null,
                     messageTimeTextStyle:
                         chatBackgroundConfig.messageTimeTextStyle,
                     messageTimeIconColor:

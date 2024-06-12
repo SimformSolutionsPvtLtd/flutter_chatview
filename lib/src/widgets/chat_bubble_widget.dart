@@ -119,28 +119,18 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
   bool get isLastMessage =>
       chatController?.initialMessageList.last.id == widget.message.id;
 
-  bool get swipeLeftShouldShowTime =>
-      featureActiveConfig?.enableSwipeToSeeTime ?? true;
+  bool get swipeLeftShouldShowTime => featureActiveConfig.enableSwipeToSeeTime;
 
-  bool get enableSwipeToReply =>
-      featureActiveConfig?.enableSwipeToReply ?? true;
+  bool get enableSwipeToReply => featureActiveConfig.enableSwipeToReply;
 
   ProfileCircleConfiguration? get profileCircleConfig =>
       widget.profileCircleConfig;
-  FeatureActiveConfig? featureActiveConfig;
-  ChatController? chatController;
-  ChatUser? currentUser;
-  int? maxDuration;
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (provide != null) {
-      featureActiveConfig = provide!.featureActiveConfig;
-      chatController = provide!.chatController;
-      currentUser = provide!.currentUser;
-    }
-  }
+  FeatureActiveConfig get featureActiveConfig =>
+      provide?.featureActiveConfig ?? const FeatureActiveConfig();
+  ChatController? get chatController => provide?.chatController;
+  ChatUser? get currentUser => provide?.currentUser;
+  int? maxDuration;
 
   @override
   Widget build(BuildContext context) {
@@ -199,7 +189,7 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           if (!(isMessageBySender || isMessageLastFromSender) &&
-              (featureActiveConfig?.enableOtherUserProfileAvatar ?? true))
+              (featureActiveConfig.enableOtherUserProfileAvatar))
             ProfileCircle(
               bottomPadding: widget.message.reaction.reactions.isNotEmpty
                   ? profileCircleConfig?.bottomPadding ?? 15
@@ -240,7 +230,7 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
           ),
           if (isMessageBySender) ...[getReciept()],
           if (isMessageBySender &&
-              (featureActiveConfig?.enableCurrentUserProfileAvatar ?? true))
+              (featureActiveConfig.enableCurrentUserProfileAvatar))
             ProfileCircle(
               bottomPadding: widget.message.reaction.reactions.isNotEmpty
                   ? profileCircleConfig?.bottomPadding ?? 15
@@ -334,7 +324,7 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
         if (!isMessageBySameSenderAsPrevious &&
             (chatController?.chatUsers.length ?? 0) > 1 &&
             !isMessageBySender &&
-            (featureActiveConfig?.enableOtherUserName ?? true))
+            (featureActiveConfig.enableOtherUserName))
           Padding(
             padding:
                 widget.chatBubbleConfig?.inComingChatBubbleConfig?.padding ??
@@ -358,9 +348,8 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
         MessageView(
           outgoingChatBubbleConfig:
               widget.chatBubbleConfig?.outgoingChatBubbleConfig,
-          isLongPressEnable:
-              (featureActiveConfig?.enableReactionPopup ?? true) ||
-                  (featureActiveConfig?.enableReplySnackBar ?? true),
+          isLongPressEnable: (featureActiveConfig.enableReactionPopup) ||
+              (featureActiveConfig.enableReplySnackBar),
           inComingChatBubbleConfig:
               widget.chatBubbleConfig?.inComingChatBubbleConfig,
           message: widget.message,
@@ -370,7 +359,7 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
           chatBubbleMaxWidth: widget.chatBubbleConfig?.maxWidth,
           longPressAnimationDuration:
               widget.chatBubbleConfig?.longPressAnimationDuration,
-          onDoubleTap: featureActiveConfig?.enableDoubleTapToLike ?? false
+          onDoubleTap: featureActiveConfig.enableDoubleTapToLike
               ? widget.chatBubbleConfig?.onDoubleTap ??
                   (message) => currentUser != null
                       ? chatController?.setReaction(
