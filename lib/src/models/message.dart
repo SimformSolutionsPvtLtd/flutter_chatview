@@ -37,7 +37,7 @@ class Message {
   final DateTime createdAt;
 
   /// Provides id of sender of message.
-  final String sendBy;
+  final String sentBy;
 
   /// Provides reply message if user triggers any reply on any message.
   final ReplyMessage replyMessage;
@@ -58,7 +58,7 @@ class Message {
     this.id = '',
     required this.message,
     required this.createdAt,
-    required this.sendBy,
+    required this.sentBy,
     this.replyMessage = const ReplyMessage(),
     Reaction? reaction,
     this.messageType = MessageType.text,
@@ -95,7 +95,7 @@ class Message {
         message: json['message']?.toString() ?? '',
         createdAt:
             DateTime.tryParse(json['createdAt'].toString()) ?? DateTime.now(),
-        sendBy: json['sendBy']?.toString() ?? '',
+        sentBy: json['sentBy']?.toString() ?? '',
         replyMessage: json['reply_message'] is Map<String, dynamic>
             ? ReplyMessage.fromJson(json['reply_message'])
             : const ReplyMessage(),
@@ -116,7 +116,7 @@ class Message {
         'id': id,
         'message': message,
         'createdAt': createdAt.toIso8601String(),
-        'sendBy': sendBy,
+        'sentBy': sentBy,
         'reply_message': replyMessage.toJson(),
         'reaction': reaction.toJson(),
         'message_type': messageType.name,
@@ -129,7 +129,7 @@ class Message {
     GlobalKey? key,
     String? message,
     DateTime? createdAt,
-    String? sendBy,
+    String? sentBy,
     ReplyMessage? replyMessage,
     Reaction? reaction,
     MessageType? messageType,
@@ -141,7 +141,7 @@ class Message {
       id: id ?? this.message,
       message: message ?? this.message,
       createdAt: createdAt ?? this.createdAt,
-      sendBy: sendBy ?? this.sendBy,
+      sentBy: sentBy ?? this.sentBy,
       messageType: messageType ?? this.messageType,
       voiceMessageDuration: forceNullValue
           ? voiceMessageDuration

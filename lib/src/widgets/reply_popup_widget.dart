@@ -28,7 +28,7 @@ import '../values/typedefs.dart';
 class ReplyPopupWidget extends StatelessWidget {
   const ReplyPopupWidget({
     Key? key,
-    required this.sendByCurrentUser,
+    required this.sentByCurrentUser,
     required this.onUnsendTap,
     required this.onReplyTap,
     required this.onReportTap,
@@ -38,7 +38,7 @@ class ReplyPopupWidget extends StatelessWidget {
   }) : super(key: key);
 
   /// Represents message is sent by current user or not.
-  final bool sendByCurrentUser;
+  final bool sentByCurrentUser;
 
   /// Provides call back when user tap on unsend button.
   final VoidCallBack onUnsendTap;
@@ -82,7 +82,7 @@ class ReplyPopupWidget extends StatelessWidget {
               ),
             ),
           ),
-          if (sendByCurrentUser)
+          if (sentByCurrentUser)
             Expanded(
               child: InkWell(
                 onTap: onUnsendTap,
@@ -93,7 +93,7 @@ class ReplyPopupWidget extends StatelessWidget {
                 ),
               ),
             ),
-          if (!sendByCurrentUser)
+          if (!sentByCurrentUser)
             Expanded(
               child: InkWell(
                 onTap: onReportTap,

@@ -34,6 +34,8 @@ ChatView(
 ),
 ```
 
+Renamed `sendBy` field to `sentBy` in `Message` class.
+
 Updated `ChatUser`, `Message` and `ReplyMessage` Data Model's `fromJson` and `toJson` methods:
 
 in `ChatUser.fromJson`:
@@ -222,13 +224,13 @@ List<Message> messageList = [
     id: '1',
     message: "Hi",
     createdAt: createdAt,
-    sendBy: userId,
+    sentBy: userId,
   ),
   Message(
     id: '2',
     message: "Hello",
     createdAt: createdAt,
-    sendBy: userId,
+    sentBy: userId,
   ),
 ];
 ```
@@ -240,7 +242,7 @@ void onSendTap(String message, ReplyMessage replyMessage, MessageType messageTyp
     id: '3',
     message: "How are you",
     createdAt: DateTime.now(),
-    sendBy: currentUser.id,
+    senBy: currentUser.id,
     replyMessage: replyMessage,
     messageType: messageType,
   );
@@ -389,10 +391,10 @@ ChatView(
 ChatView(
   ...
   swipeToReplyConfig: SwipeToReplyConfiguration(
-    onLeftSwipe: (message, sendBy){
+    onLeftSwipe: (message, sentBy){
         // Your code goes here
     },
-    onRightSwipe: (message, sendBy){
+    onRightSwipe: (message, sentBy){
         // Your code goes here
     },              
   ),
@@ -658,7 +660,7 @@ ChatView(
         onReportTap: (Message message) {
           debugPrint('Message: $message');
         },
-        onMoreTap: (Message message, bool sendByCurrentUser) {
+        onMoreTap: (Message message, bool sentByCurrentUser) {
           debugPrint('Message : $message');
         },
       ),
