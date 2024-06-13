@@ -14,174 +14,174 @@ visit [Chat View Example](https://chat-view-8f1b5.web.app/#/).
 ![The example app running in iOS](https://raw.githubusercontent.com/SimformSolutionsPvtLtd/flutter_chat_ui/main/preview/chatview.gif)
 
 ## Migration guide for release 2.0.0
-Removed `showTypingIndicator` field from `ChatView` and replaced it with `ChatController.showTypingIndicator`.
 
-Before:
-```dart
-ChatView(
-  showTypingIndicator:false,
-),
-```
+- Renamed `sendBy` field to `sentBy` in `Message` class.
 
-After:
-```dart
-/// use it with your [ChatController] instance.
-_chatContoller.setTypingIndicator = true; // for showing indicator
-_chatContoller.setTypingIndicator = false; // for hiding indicator
+- Renamed `chatUsers` field to `otherUsers` in `ChatController` class.
 
-ChatView(
-  chatController: _chatController,
-),
-```
+- Moved `currentUser` field from `ChatView` widget to `ChatController` class
 
-Renamed `sendBy` field to `sentBy` in `Message` class.
+- Removed `showTypingIndicator` field from `ChatView` and replaced it with `ChatController.showTypingIndicator`.
 
-Updated `ChatUser`, `Message` and `ReplyMessage` Data Model's `fromJson` and `toJson` methods:
+  Before:
+    ```dart
+    ChatView(
+      showTypingIndicator:false,
+    ),
+    ```
 
-in `ChatUser.fromJson`:
+  After:
+    ```dart
+    /// use it with your [ChatController] instance.
+    _chatContoller.setTypingIndicator = true; // for showing indicator
+    _chatContoller.setTypingIndicator = false; // for hiding indicator
+    ```
 
-Before:
-```dart
-ChatUser.fromJson(
-  { 
-    ...
-    'imageType': ImageType.asset,
-    ...
-  },
-),
-```
+- Updated `ChatUser`, `Message` and `ReplyMessage` Data Model's `fromJson` and `toJson` methods:
 
-After:
-```dart
-ChatUser.fromJson(
-  {
-    ...
-    'imageType': 'asset',
-    ...
-  },
-),
-```
+  ##### in `ChatUser.fromJson`:
 
-in `ChatUser.toJson`:
+  Before:
+    ```dart
+    ChatUser.fromJson(
+      { 
+        ...
+        'imageType': ImageType.asset,
+        ...
+      },
+    ),
+    ```
 
-Before:
-```dart
-{
-  ...
-  imageType: ImageType.asset,
-  ...
-}
-```
+  After:
+    ```dart
+    ChatUser.fromJson(
+      {
+        ...
+        'imageType': 'asset',
+        ...
+      },
+    ),
+    ```
 
-After:
-```dart
-{
-  ...
-  imageType: asset,
-  ...
-}
-```
+  ##### in `ChatUser.toJson`:
 
-in `Message.fromJson`:
+  Before:
+    ```dart
+    {
+      ...
+      imageType: ImageType.asset,
+      ...
+    }
+    ```
 
-Before:
-```dart
-Message.fromJson(
-  {
-    ...
-    'createdAt': DateTime.now(),
-    'message_type': MessageType.text,
-    'voice_message_duration': Duration(seconds: 5),
-    ...
-  }
-)
-```
+  After:
+    ```dart
+    {
+      ...
+      imageType: asset,
+      ...
+    }
+    ```
 
-After:
-```dart
-Message.fromJson(
-  {
-    ...
-    'createdAt': '2024-06-13T17:32:19.586412',
-    'message_type': 'text',
-    'voice_message_duration': '5000000',
-    ...
-  }
-)
-```
+  ##### in `Message.fromJson`:
 
-in `Message.toJson`:
+  Before:
+    ```dart
+    Message.fromJson(
+      {
+        ...
+        'createdAt': DateTime.now(),
+        'message_type': MessageType.text,
+        'voice_message_duration': Duration(seconds: 5),
+        ...
+      }
+    )
+    ```
 
-Before:
-```dart
-{
-  ...
-  createdAt: 2024-06-13 17:23:19.454789,
-  message_type: MessageType.text,
-  voice_message_duration: 0:00:05.000000,
-  ...
-}
-```
+  After:
+    ```dart
+    Message.fromJson(
+      {
+        ...
+        'createdAt': '2024-06-13T17:32:19.586412',
+        'message_type': 'text',
+        'voice_message_duration': '5000000',
+        ...
+      }
+    )
+    ```
 
-After:
-```dart
-{
-  ...
-  createdAt: 2024-06-13T17:32:19.586412,
-  message_type: text,
-  voice_message_duration: 5000000,
-  ...
-}
-```
+  ##### in `Message.toJson`:
 
-in `ReplyMessage.fromJson`:
+  Before:
+    ```dart
+    {
+      ...
+      createdAt: 2024-06-13 17:23:19.454789,
+      message_type: MessageType.text,
+      voice_message_duration: 0:00:05.000000,
+      ...
+    }
+    ```
 
-Before:
-```dart
-ReplyMessage.fromJson(
-  {
-    ...
-    'message_type': MessageType.text,  
-    'voiceMessageDuration': Duration(seconds: 5),
-    ...
-  }
-)
-```
+  After:
+    ```dart
+    {
+      ...
+      createdAt: 2024-06-13T17:32:19.586412,
+      message_type: text,
+      voice_message_duration: 5000000,
+      ...
+    }
+    ```
 
-After:
-```dart
-ReplyMessage.fromJson(
-  {
-    ...
-    'message_type': 'text',  
-    'voiceMessageDuration': '5000000',
-    ...
-  }
-)
-```
+  ##### in `ReplyMessage.fromJson`:
 
-in `ReplyMessage.toJson`:
+  Before:
+    ```dart
+    ReplyMessage.fromJson(
+      {
+        ...
+        'message_type': MessageType.text,  
+        'voiceMessageDuration': Duration(seconds: 5),
+        ...
+      }
+    )
+    ```
 
-Before:
-```dart
-{
-  ...
-  message_type: MessageType.text,
-  voiceMessageDuration: 0:00:05.000000,
-  ...
-}
-```
+  After:
+    ```dart
+    ReplyMessage.fromJson(
+      {
+        ...
+        'message_type': 'text',  
+        'voiceMessageDuration': '5000000',
+        ...
+      }
+    )
+    ```
 
-After:
-```dart
-{
-  ...
-  message_type: text,
-  voiceMessageDuration: 5000000,
-  ...
-}
-```
+  in `ReplyMessage.toJson`:
 
+  Before:
+    ```dart
+    {
+      ...
+      message_type: MessageType.text,
+      voiceMessageDuration: 0:00:05.000000,
+      ...
+    }
+    ```
+
+  After:
+    ```dart
+    {
+      ...
+      message_type: text,
+      voiceMessageDuration: 5000000,
+      ...
+    }
+    ```
 
 ## Installing
 
@@ -203,14 +203,14 @@ import 'package:chatview/chatview.dart';
 final chatController = ChatController(
   initialMessageList: messageList,
   scrollController: ScrollController(),
-  chatUsers: [ChatUser(id: '2', name: 'Simform')],
+  currentUser: ChatUser(id: '1', name: 'Flutter'),
+  otherUsers: [ChatUser(id: '2', name: 'Simform')],
 );
 ```
 
 4. Adding a `ChatView` widget.
 ```dart
 ChatView(
-  currentUser: ChatUser(id: '1', name: 'Flutter'),
   chatController: chatController,
   onSendTap: onSendTap,
   chatViewState: ChatViewState.hasMessages, // Add this state once data is available.
@@ -960,7 +960,7 @@ _chatController.addReplySuggestions([
 ```dart
 _chatController.removeReplySuggestions();
 ```
-* Update Sugestions Config
+* Update suggestions Config
 ```dart
 replySuggestionsConfig: ReplySuggestionsConfig(
     itemConfig: SuggestionItemConfig(
@@ -982,8 +982,8 @@ replySuggestionsConfig: ReplySuggestionsConfig(
 ```
 
 34. Added callback `messageSorter` to sort message in `ChatBackgroundConfiguration`.
-```dart
 
+```dart
 ChatView(
    ...
       chatBackgroundConfig: ChatBackgroundConfiguration(
@@ -996,7 +996,6 @@ ChatView(
   ...
 ),
 ```
-
 
 ## How to use
 

@@ -68,12 +68,16 @@ class ChatController {
   set setTypingIndicator(bool value) => _showTypingIndicator.value = value;
 
   /// Represents list of chat users
-  List<ChatUser> chatUsers;
+  List<ChatUser> otherUsers;
+
+  /// Provides current user which is sending messages.
+  final ChatUser currentUser;
 
   ChatController({
     required this.initialMessageList,
     required this.scrollController,
-    required this.chatUsers,
+    required this.otherUsers,
+    required this.currentUser,
   });
 
   /// Represents message stream of chat
@@ -151,6 +155,7 @@ class ChatController {
   }
 
   /// Function for getting ChatUser object from user id
-  ChatUser getUserFromId(String userId) =>
-      chatUsers.firstWhere((element) => element.id == userId);
+  ChatUser getUserFromId(String userId) => userId == currentUser.id
+      ? currentUser
+      : otherUsers.firstWhere((element) => element.id == userId);
 }

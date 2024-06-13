@@ -91,7 +91,7 @@ class ReactionPopupState extends State<ReactionPopup>
     super.didChangeDependencies();
     if (provide != null) {
       chatController = provide!.chatController;
-      currentUser = provide!.currentUser;
+      currentUser = chatController?.currentUser;
     }
   }
 
