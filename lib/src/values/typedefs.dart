@@ -83,3 +83,7 @@ typedef NetworkImageProgressIndicatorBuilder = Widget Function(
   String url,
   DownloadProgress progress,
 );
+typedef SuggestionItemBuilder = Widget Function(
+  int index,
+  SuggestionItemData suggestionItemData,
+);

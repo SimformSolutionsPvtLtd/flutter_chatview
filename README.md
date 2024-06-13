@@ -1,7 +1,7 @@
 ![Banner](https://raw.githubusercontent.com/SimformSolutionsPvtLtd/flutter_chat_ui/main/preview/banner.png)
 
 # ChatView
- [![chatview](https://img.shields.io/pub/v/chatview?label=chatview)](https://pub.dev/packages/chatview)
+[![chatview](https://img.shields.io/pub/v/chatview?label=chatview)](https://pub.dev/packages/chatview)
 
 A Flutter package that allows you to integrate Chat View with highly customization options such as one on one
 chat, group chat, message reactions, reply messages, link preview and configurations for overall view.
@@ -34,7 +34,7 @@ ChatView(
 ),
 ```
 
-## Installing   
+## Installing
 
 1.  Add dependency to `pubspec.yaml`
 
@@ -434,7 +434,7 @@ ChatView(
 ```
 
 17.  Callback when a user starts/stops typing in `TextFieldConfiguration`
-    
+
 ```dart
 ChatView(
     ...
@@ -459,7 +459,7 @@ ChatView(
 ```
 
 18.  Passing customReceipts builder or handling stuffs related receipts see `ReceiptsWidgetConfig` in  outgoingChatBubbleConfig.
-    
+
 ```dart
 ChatView(
    ...
@@ -492,18 +492,7 @@ ChatView(
 )
 ```
 
-19. Added field `chatTextFieldTopPadding` to set top padding of chat text field.
-
-```dart
-ChatView(
-   ...
-      chatTextFieldTopPadding: 10,
-  ...
- 
-)
-```
-
-20.  Flag `enableOtherUserName` to hide user name in chat.
+19. Flag `enableOtherUserName` to hide user name in chat.
 
 ```dart
 ChatView(
@@ -516,7 +505,7 @@ ChatView(
 )
 ```
 
-21. Added report button for receiver message and update `onMoreTap` and `onReportTap` callbacks.
+20. Added report button for receiver message and update `onMoreTap` and `onReportTap` callbacks.
 
 ```dart
 ChatView(
@@ -533,7 +522,7 @@ ChatView(
 )
 ```
 
-22. Added `emojiPickerSheetConfig` for configuration of emoji picker sheet.
+21. Added `emojiPickerSheetConfig` for configuration of emoji picker sheet.
 
 ```dart
 ChatView(
@@ -554,7 +543,7 @@ ChatView(
 )
 ```
 
-23. Configure the styling & audio recording quality using `VoiceRecordingConfiguration` in sendMessageConfig.
+22. Configure the styling & audio recording quality using `VoiceRecordingConfiguration` in sendMessageConfig.
 
 ```dart
 ChatView(
@@ -579,7 +568,7 @@ ChatView(
 )
 ```
 
-24. Added `enabled` to enable/disable chat text field.
+23. Added `enabled` to enable/disable chat text field.
 
 ```dart
 ChatView(
@@ -595,7 +584,7 @@ ChatView(
  
 )
 ```
-25. Added flag `isProfilePhotoInBase64` that defines whether provided image is url or base64 data.
+24. Added flag `isProfilePhotoInBase64` that defines whether provided image is url or base64 data.
 
 ```dart
 final chatController = ChatController(
@@ -621,7 +610,7 @@ ChatView(
 )
 ```
 
-26. Added `chatSeparatorDatePattern` in `DefaultGroupSeparatorConfiguration` to separate chats with provided pattern.
+25. Added `chatSeparatorDatePattern` in `DefaultGroupSeparatorConfiguration` to separate chats with provided pattern.
 
 ```dart
 ChatView(
@@ -637,7 +626,7 @@ ChatView(
 )
 ```
 
-27. Field `cancelRecordConfiguration` to provide an configuration to cancel voice record message.
+26. Field `cancelRecordConfiguration` to provide an configuration to cancel voice record message.
 
 ```dart
 ChatView(
@@ -660,7 +649,7 @@ ChatView(
 )
 ```
 
-28. Added callback of onTap on list of reacted users in reaction sheet `reactedUserCallback`.
+27. Added callback of onTap on list of reacted users in reaction sheet `reactedUserCallback`.
 ```dart
 
 ChatView(
@@ -680,7 +669,7 @@ ChatView(
 ),
 ```
 
-29. Added a `customMessageReplyViewBuilder` to customize reply message view for custom type message.
+28. Added a `customMessageReplyViewBuilder` to customize reply message view for custom type message.
 
 ```dart
 ChatView(
@@ -702,7 +691,7 @@ ChatView(
 )
 ```
 
-30. Add default avatar for profile image `defaultAvatarImage`,
+29. Add default avatar for profile image `defaultAvatarImage`,
     error builder for asset and network profile image `assetImageErrorBuilder` `networkImageErrorBuilder`,
     Enum `ImageType` to define image as asset, network or base64 data.
 ```dart
@@ -727,7 +716,7 @@ ChatView(
 ```
 
 
-31. Added a `customMessageReplyViewBuilder` to customize reply message view for custom type message.
+30. Added a `customMessageReplyViewBuilder` to customize reply message view for custom type message.
 
 ```dart
 ChatView(
@@ -812,8 +801,42 @@ ChatView(
 )
 ```
 
+33. Reply Suggestions functionalities.
 
-33. Added callback `messageSorter` to sort message in `ChatBackgroundConfiguration`.
+* Add reply suggestions
+```dart
+_chatController.addReplySuggestions([
+      SuggestionItemData(text: 'Thanks.'),
+      SuggestionItemData(text: 'Thank you very much.'),
+      SuggestionItemData(text: 'Great.')
+    ]);
+```
+* Remove reply suggestions
+```dart
+_chatController.removeReplySuggestions();
+```
+* Update Sugestions Config
+```dart
+replySuggestionsConfig: ReplySuggestionsConfig(
+    itemConfig: SuggestionItemConfig(
+        decoration: BoxDecoration(),
+        textStyle: TextStyle(),
+        padding: EdgetInsets.all(8),
+        customItemBuilder: (index, suggestionItemData) => Container()
+    ),
+    listConfig: SuggestionListConfig(
+        decoration: BoxDecoration(),
+        padding: EdgetInsets.all(8),
+        itemSeparatorWidth: 8,
+        axisAlignment: SuggestionListAlignment.left
+    )
+    onTap: (item) =>
+        _onSendTap(item.text, const ReplyMessage(), MessageType.text),
+    autoDismissOnSelection: true
+),
+```
+
+34. Added callback `messageSorter` to sort message in `ChatBackgroundConfiguration`.
 ```dart
 
 ChatView(
@@ -832,7 +855,7 @@ ChatView(
 
 ## How to use
 
-Check out [blog](https://medium.com/simform-engineering/chatview-a-cutting-edge-chat-ui-solution-7367b1f9d772) for better understanding and basic implementation. 
+Check out [blog](https://medium.com/simform-engineering/chatview-a-cutting-edge-chat-ui-solution-7367b1f9d772) for better understanding and basic implementation.
 
 Also, for whole example, check out the **example** app in the [example](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/tree/main/example) directory or the 'Example' tab on pub.dartlang.org for a more complete example.
 
@@ -844,6 +867,8 @@ Also, for whole example, check out the **example** app in the [example](https://
     <td align="center"><a href="https://github.com/vatsaltanna"><img src="https://avatars.githubusercontent.com/u/25323183?s=100" width="100px;" alt=""/><br /><sub><b>Vatsal Tanna</b></sub></a></td>
     <td align="center"><a href="https://github.com/DhvanitVaghani"><img src="https://avatars.githubusercontent.com/u/64645989?v=4" width="100px;" alt=""/><br /><sub><b>Dhvanit Vaghani</b></sub></a></td>
     <td align="center"><a href="https://github.com/Ujas-Majithiya"><img src="https://avatars.githubusercontent.com/u/56400956?v=4" width="100px;" alt=""/><br /><sub><b>Ujas Majithiya</b></sub></a></td>
+    <td align="center"><a href="https://github.com/apurva780"><img src="https://avatars.githubusercontent.com/u/65003381?v=4" width="100px;" alt=""/><br /><sub><b>Apurva Kanthraviya</b></sub></a></td>
+
   </tr>
 </table>
 <br/>

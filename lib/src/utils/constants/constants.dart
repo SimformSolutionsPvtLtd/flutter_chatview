@@ -86,3 +86,5 @@ Widget lastSeenAgoBuilder(Message message, String formattedDate) {
     ),
   );
 }
+
+const suggestionListAnimationDuration = Duration(milliseconds: 200);

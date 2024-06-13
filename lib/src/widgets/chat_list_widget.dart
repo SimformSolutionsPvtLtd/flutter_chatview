@@ -51,7 +51,6 @@ class ChatListWidget extends StatefulWidget {
     this.loadMoreData,
     this.isLastPage,
     this.onChatListTap,
-    this.chatTextFieldTopPadding = 0,
     this.emojiPickerSheetConfig,
   }) : super(key: key);
 
@@ -109,9 +108,6 @@ class ChatListWidget extends StatefulWidget {
 
   /// Provides callback when user tap anywhere on whole chat.
   final VoidCallBack? onChatListTap;
-
-  /// Provides top padding of chat text field
-  final double chatTextFieldTopPadding;
 
   /// Configuration for emoji picker sheet
   final Config? emojiPickerSheetConfig;
@@ -229,7 +225,6 @@ class _ChatListWidgetState extends State<ChatListWidget>
                       }
                     },
                     onChatListTap: _onChatListTap,
-                    chatTextFieldTopPadding: widget.chatTextFieldTopPadding,
                   ),
                   if (featureActiveConfig?.enableReactionPopup ?? false)
                     ReactionPopup(

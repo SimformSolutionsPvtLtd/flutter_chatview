@@ -41,3 +41,7 @@ export 'chat_view_states_configuration.dart';
 export 'reaction.dart';
 export 'replied_msg_auto_scroll_config.dart';
 export 'feature_active_config.dart';
+export 'suggestion_item_data.dart';
+export 'reply_suggestions_config.dart';
+export 'suggestion_list_config.dart';
+export 'suggestion_item_config.dart';

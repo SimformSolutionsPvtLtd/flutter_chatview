@@ -21,6 +21,7 @@
  */
 import 'dart:async';
 
+import 'package:chatview/src/widgets/suggestions/suggestion_list.dart';
 import 'package:flutter/material.dart';
 
 import '../models/models.dart';
@@ -41,6 +42,19 @@ class ChatController {
   ///  ```
   /// For more functionalities see [ValueNotifier].
   ValueNotifier<bool> get typingIndicatorNotifier => _showTypingIndicator;
+
+  /// Allow user to add reply suggestions defaults to empty.
+  final ValueNotifier<List<SuggestionItemData>> _replySuggestion =
+      ValueNotifier([]);
+
+  /// newSuggestions as [ValueNotifier] for [SuggestionList] widget's [ValueListenableBuilder].
+  ///  Use this to listen when suggestion gets added
+  ///   ```dart
+  ///    chatcontroller.newSuggestions.addListener((){});
+  ///  ```
+  /// For more functionalities see [ValueNotifier].
+  ValueNotifier<List<SuggestionItemData>> get newSuggestions =>
+      _replySuggestion;
 
   /// Getter for typingIndicator value instead of accessing [_showTypingIndicator.value]
   /// for better accessibility.
@@ -72,6 +86,16 @@ class ChatController {
   void addMessage(Message message) {
     initialMessageList.add(message);
     messageStreamController.sink.add(initialMessageList);
+  }
+
+  /// Used to add reply suggestions.
+  void addReplySuggestions(List<SuggestionItemData> suggestions) {
+    _replySuggestion.value = suggestions;
+  }
+
+  /// Used to remove reply suggestions.
+  void removeReplySuggestions() {
+    _replySuggestion.value = [];
   }
 
   /// Function for setting reaction on specific chat bubble
