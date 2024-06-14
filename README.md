@@ -34,6 +34,153 @@ ChatView(
 ),
 ```
 
+Updated `ChatUser`, `Message` and `ReplyMessage` Data Model's `fromJson` and `toJson` methods:
+
+in `ChatUser.fromJson`:
+
+Before:
+```dart
+ChatUser.fromJson(
+  { 
+    ...
+    'imageType': ImageType.asset,
+    ...
+  },
+),
+```
+
+After:
+```dart
+ChatUser.fromJson(
+  {
+    ...
+    'imageType': 'asset',
+    ...
+  },
+),
+```
+
+in `ChatUser.toJson`:
+
+Before:
+```dart
+{
+  ...
+  imageType: ImageType.asset,
+  ...
+}
+```
+
+After:
+```dart
+{
+  ...
+  imageType: asset,
+  ...
+}
+```
+
+in `Message.fromJson`:
+
+Before:
+```dart
+Message.fromJson(
+  {
+    ...
+    'createdAt': DateTime.now(),
+    'message_type': MessageType.text,
+    'voice_message_duration': Duration(seconds: 5),
+    ...
+  }
+)
+```
+
+After:
+```dart
+Message.fromJson(
+  {
+    ...
+    'createdAt': '2024-06-13T17:32:19.586412',
+    'message_type': 'text',
+    'voice_message_duration': '5000000',
+    ...
+  }
+)
+```
+
+in `Message.toJson`:
+
+Before:
+```dart
+{
+  ...
+  createdAt: 2024-06-13 17:23:19.454789,
+  message_type: MessageType.text,
+  voice_message_duration: 0:00:05.000000,
+  ...
+}
+```
+
+After:
+```dart
+{
+  ...
+  createdAt: 2024-06-13T17:32:19.586412,
+  message_type: text,
+  voice_message_duration: 5000000,
+  ...
+}
+```
+
+in `ReplyMessage.fromJson`:
+
+Before:
+```dart
+ReplyMessage.fromJson(
+  {
+    ...
+    'message_type': MessageType.text,  
+    'voiceMessageDuration': Duration(seconds: 5),
+    ...
+  }
+)
+```
+
+After:
+```dart
+ReplyMessage.fromJson(
+  {
+    ...
+    'message_type': 'text',  
+    'voiceMessageDuration': '5000000',
+    ...
+  }
+)
+```
+
+in `ReplyMessage.toJson`:
+
+Before:
+```dart
+{
+  ...
+  message_type: MessageType.text,
+  voiceMessageDuration: 0:00:05.000000,
+  ...
+}
+```
+
+After:
+```dart
+{
+  ...
+  message_type: text,
+  voiceMessageDuration: 5000000,
+  ...
+}
+```
+
+
 ## Installing
 
 1.  Add dependency to `pubspec.yaml`
@@ -48,6 +195,7 @@ dependencies:
 ```dart
 import 'package:chatview/chatview.dart';
 ```
+
 3. Adding a chat controller.
 ```dart
 final chatController = ChatController(
@@ -339,6 +487,7 @@ ChatView(
   ),
   ...
 )
+
 ```
 12. For showing hiding typeIndicatorwidget use `ChatController.setTypingIndicaor`, for more info see `ChatController`.
 ```dart
@@ -346,9 +495,6 @@ ChatView(
 _chatContoller.setTypingIndicator = true; // for showing indicator
 _chatContoller.setTypingIndicator = false; // for hiding indicator
 ```
-
-
-
 
 13. Adding linkpreview configuration with `LinkPreviewConfiguration` class.
 ```dart
@@ -375,9 +521,7 @@ ChatView(
 )
 ```
 
-
-
-13. Adding pagination.
+14. Adding pagination.
 ```dart
 ChatView(
   ...
@@ -390,7 +534,7 @@ ChatView(
 )
 ```
 
-14. Add image picker configuration.
+15. Add image picker configuration.
 ```dart
 ChatView(
   ...
@@ -406,7 +550,7 @@ ChatView(
 )
 ```
 
-15. Add `ChatViewState` customisations.
+16. Add `ChatViewState` customisations.
 ```dart
 ChatView(
   ...
@@ -420,7 +564,7 @@ ChatView(
 )
 ```
 
-16. Setting auto scroll and highlight config with `RepliedMsgAutoScrollConfig` class.
+17. Setting auto scroll and highlight config with `RepliedMsgAutoScrollConfig` class.
 ```dart
 ChatView(
     ...
@@ -433,7 +577,7 @@ ChatView(
 )
 ```
 
-17.  Callback when a user starts/stops typing in `TextFieldConfiguration`
+18. Callback when a user starts/stops typing in `TextFieldConfiguration`
 
 ```dart
 ChatView(
@@ -458,7 +602,7 @@ ChatView(
 )
 ```
 
-18.  Passing customReceipts builder or handling stuffs related receipts see `ReceiptsWidgetConfig` in  outgoingChatBubbleConfig.
+19. Passing customReceipts builder or handling stuffs related receipts see `ReceiptsWidgetConfig` in  outgoingChatBubbleConfig.
 
 ```dart
 ChatView(
@@ -492,7 +636,7 @@ ChatView(
 )
 ```
 
-19. Flag `enableOtherUserName` to hide user name in chat.
+20. Flag `enableOtherUserName` to hide user name in chat.
 
 ```dart
 ChatView(
@@ -505,7 +649,7 @@ ChatView(
 )
 ```
 
-20. Added report button for receiver message and update `onMoreTap` and `onReportTap` callbacks.
+21. Added report button for receiver message and update `onMoreTap` and `onReportTap` callbacks.
 
 ```dart
 ChatView(
@@ -522,7 +666,7 @@ ChatView(
 )
 ```
 
-21. Added `emojiPickerSheetConfig` for configuration of emoji picker sheet.
+22. Added `emojiPickerSheetConfig` for configuration of emoji picker sheet.
 
 ```dart
 ChatView(
@@ -543,7 +687,7 @@ ChatView(
 )
 ```
 
-22. Configure the styling & audio recording quality using `VoiceRecordingConfiguration` in sendMessageConfig.
+23. Configure the styling & audio recording quality using `VoiceRecordingConfiguration` in sendMessageConfig.
 
 ```dart
 ChatView(
@@ -568,7 +712,7 @@ ChatView(
 )
 ```
 
-23. Added `enabled` to enable/disable chat text field.
+24. Added `enabled` to enable/disable chat text field.
 
 ```dart
 ChatView(
@@ -584,7 +728,7 @@ ChatView(
  
 )
 ```
-24. Added flag `isProfilePhotoInBase64` that defines whether provided image is url or base64 data.
+25. Added flag `isProfilePhotoInBase64` that defines whether provided image is url or base64 data.
 
 ```dart
 final chatController = ChatController(
@@ -610,7 +754,7 @@ ChatView(
 )
 ```
 
-25. Added `chatSeparatorDatePattern` in `DefaultGroupSeparatorConfiguration` to separate chats with provided pattern.
+26. Added `chatSeparatorDatePattern` in `DefaultGroupSeparatorConfiguration` to separate chats with provided pattern.
 
 ```dart
 ChatView(
@@ -626,7 +770,7 @@ ChatView(
 )
 ```
 
-26. Field `cancelRecordConfiguration` to provide an configuration to cancel voice record message.
+27. Field `cancelRecordConfiguration` to provide an configuration to cancel voice record message.
 
 ```dart
 ChatView(
@@ -649,7 +793,7 @@ ChatView(
 )
 ```
 
-27. Added callback of onTap on list of reacted users in reaction sheet `reactedUserCallback`.
+28. Added callback of onTap on list of reacted users in reaction sheet `reactedUserCallback`.
 ```dart
 
 ChatView(
@@ -669,7 +813,7 @@ ChatView(
 ),
 ```
 
-28. Added a `customMessageReplyViewBuilder` to customize reply message view for custom type message.
+29. Added a `customMessageReplyViewBuilder` to customize reply message view for custom type message.
 
 ```dart
 ChatView(
@@ -691,7 +835,7 @@ ChatView(
 )
 ```
 
-29. Add default avatar for profile image `defaultAvatarImage`,
+30. Add default avatar for profile image `defaultAvatarImage`,
     error builder for asset and network profile image `assetImageErrorBuilder` `networkImageErrorBuilder`,
     Enum `ImageType` to define image as asset, network or base64 data.
 ```dart
@@ -715,8 +859,7 @@ ChatView(
 ),
 ```
 
-
-30. Added a `customMessageReplyViewBuilder` to customize reply message view for custom type message.
+31. Added a `customMessageReplyViewBuilder` to customize reply message view for custom type message.
 
 ```dart
 ChatView(
