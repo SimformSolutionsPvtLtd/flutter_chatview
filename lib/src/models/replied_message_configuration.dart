@@ -75,6 +75,10 @@ class RepliedMessageConfiguration {
   /// Color for microphone icon.
   final Color? micIconColor;
 
+  /// Customize what happens when user tap a reply message.
+  /// The default behaviour is to scroll to the message if [repliedMsgAutoScrollConfig] is enabled
+  final ReplyMessageCallBack? onReplyTapped;
+
   const RepliedMessageConfiguration({
     this.verticalBarColor,
     this.backgroundColor,
@@ -92,5 +96,6 @@ class RepliedMessageConfiguration {
     this.opacity,
     this.repliedMsgAutoScrollConfig = const RepliedMsgAutoScrollConfig(),
     this.micIconColor,
+    this.onReplyTapped,
   });
 }
