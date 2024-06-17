@@ -31,10 +31,16 @@ class _SuggestionListState extends State<SuggestionList>
       vsync: this,
     );
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
       final newSuggestions = provide?.chatController.newSuggestions;
       newSuggestions?.addListener(animateSuggestionList);
     });
+  }
+
+  @override
+  void activate() {
+    super.activate();
+    final newSuggestions = provide?.chatController.newSuggestions;
+    newSuggestions?.addListener(animateSuggestionList);
   }
 
   void animateSuggestionList() {
@@ -91,10 +97,15 @@ class _SuggestionListState extends State<SuggestionList>
   }
 
   @override
-  void dispose() {
-    _controller.dispose();
+  void deactivate() {
     final newSuggestions = provide?.chatController.newSuggestions;
     newSuggestions?.removeListener(animateSuggestionList);
+    super.deactivate();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
     super.dispose();
   }
 }
