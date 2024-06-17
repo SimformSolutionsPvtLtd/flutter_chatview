@@ -22,6 +22,7 @@ class _SuggestionListState extends State<SuggestionList>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
+  ValueNotifier<List<SuggestionItemData>>? newSuggestions;
   @override
   void initState() {
     super.initState();
@@ -32,15 +33,15 @@ class _SuggestionListState extends State<SuggestionList>
     );
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      final newSuggestions = provide?.chatController.newSuggestions;
+      newSuggestions = provide?.chatController.newSuggestions;
       newSuggestions?.addListener(animateSuggestionList);
     });
   }
 
   void animateSuggestionList() {
-    final newSuggestions = provide?.chatController.newSuggestions;
+    newSuggestions = provide?.chatController.newSuggestions;
     if (newSuggestions != null) {
-      newSuggestions.value.isEmpty
+      newSuggestions!.value.isEmpty
           ? _controller.reverse()
           : _controller.forward();
     }
@@ -93,7 +94,6 @@ class _SuggestionListState extends State<SuggestionList>
   @override
   void dispose() {
     _controller.dispose();
-    final newSuggestions = provide?.chatController.newSuggestions;
     newSuggestions?.removeListener(animateSuggestionList);
     super.dispose();
   }
