@@ -30,7 +30,7 @@ import '../values/typedefs.dart';
 
 class SendMessageConfiguration {
   /// Used to give background color to text field.
-  final Color? textFieldBackgroundColor;
+  final Color textFieldBackgroundColor;
 
   /// Used to give color to send button.
   final Color? defaultSendButtonColor;
@@ -39,16 +39,16 @@ class SendMessageConfiguration {
   final Widget? sendButtonIcon;
 
   /// Used to give reply dialog color.
-  final Color? replyDialogColor;
+  final Color replyDialogColor;
 
   /// Used to give color to title of reply pop-up.
-  final Color? replyTitleColor;
+  final Color replyTitleColor;
 
   /// Used to give color to reply message.
-  final Color? replyMessageColor;
+  final Color replyMessageColor;
 
   /// Used to give color to close icon in reply pop-up.
-  final Color? closeIconColor;
+  final Color closeIconColor;
 
   /// Provides configuration of image picker functionality.
   final ImagePickerIconsConfiguration? imagePickerIconsConfig;
@@ -57,7 +57,7 @@ class SendMessageConfiguration {
   final ImagePickerConfiguration? imagePickerConfiguration;
 
   /// Provides configuration of text field.
-  final TextFieldConfiguration? textFieldConfig;
+  final TextFieldConfiguration textFieldConfig;
 
   /// Enable/disable voice recording. Enabled by default.
   final bool allowRecordingVoice;
@@ -77,20 +77,23 @@ class SendMessageConfiguration {
   /// Configuration for cancel voice recording
   final CancelRecordConfiguration? cancelRecordConfiguration;
 
+  bool get allowImageSending =>
+      enableCameraImagePicker || enableGalleryImagePicker;
+
   const SendMessageConfiguration({
-    this.textFieldConfig,
-    this.textFieldBackgroundColor,
+    this.textFieldConfig = const TextFieldConfiguration(),
+    this.textFieldBackgroundColor = Colors.white,
     this.imagePickerIconsConfig,
     this.imagePickerConfiguration,
     this.defaultSendButtonColor,
     this.sendButtonIcon,
-    this.replyDialogColor,
-    this.replyTitleColor,
-    this.replyMessageColor,
-    this.closeIconColor,
+    this.replyDialogColor = const Color.fromRGBO(238, 238, 238, 1),
+    this.replyTitleColor = Colors.deepPurple,
+    this.replyMessageColor = Colors.black,
+    this.closeIconColor = Colors.black,
     this.allowRecordingVoice = true,
-    this.enableCameraImagePicker = true,
     this.enableGalleryImagePicker = true,
+    this.enableCameraImagePicker = true,
     this.voiceRecordingConfiguration,
     this.micIconColor,
     this.cancelRecordConfiguration,
@@ -118,6 +121,32 @@ class ImagePickerIconsConfiguration {
   });
 }
 
+class ImagePickerConfiguration {
+  /// Used to give max width of image.
+  final double? maxWidth;
+
+  /// Used to give max height of image.
+  final double? maxHeight;
+
+  /// Used to give image quality.
+  final int? imageQuality;
+
+  /// Preferred camera device to pick image from.
+  final CameraDevice? preferredCameraDevice;
+
+  /// Callback when image is picked from camera or gallery,
+  ///  we can perform our task on image like adding crop options and return new image path
+  final Future<String?> Function(String? path)? onImagePicked;
+
+  const ImagePickerConfiguration({
+    this.maxWidth,
+    this.maxHeight,
+    this.imageQuality,
+    this.preferredCameraDevice,
+    this.onImagePicked,
+  });
+}
+
 class TextFieldConfiguration {
   /// Used to give max lines in text field.
   final int? maxLines;
@@ -139,6 +168,9 @@ class TextFieldConfiguration {
 
   /// Used to give text style of actual text in text field.
   final TextStyle? textStyle;
+
+  /// Used to give a border to the text field.
+  final BoxBorder? border;
 
   /// Used to give border radius in text field.
   final BorderRadius? borderRadius;
@@ -171,6 +203,7 @@ class TextFieldConfiguration {
   const TextFieldConfiguration({
     this.contentPadding,
     this.maxLines,
+    this.border,
     this.borderRadius,
     this.hintText,
     this.hintStyle,
@@ -184,32 +217,6 @@ class TextFieldConfiguration {
     this.inputFormatters,
     this.textCapitalization,
     this.enabled = true,
-  });
-}
-
-class ImagePickerConfiguration {
-  /// Used to give max width of image.
-  final double? maxWidth;
-
-  /// Used to give max height of image.
-  final double? maxHeight;
-
-  /// Used to give image quality.
-  final int? imageQuality;
-
-  /// Preferred camera device to pick image from.
-  final CameraDevice? preferredCameraDevice;
-
-  /// Callback when image is picked from camera or gallery,
-  ///  we can perform our task on image like adding crop options and return new image path
-  final Future<String?> Function(String? path)? onImagePicked;
-
-  const ImagePickerConfiguration({
-    this.maxWidth,
-    this.maxHeight,
-    this.imageQuality,
-    this.preferredCameraDevice,
-    this.onImagePicked,
   });
 }
 

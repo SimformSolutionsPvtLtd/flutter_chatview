@@ -30,10 +30,10 @@ import '../values/typedefs.dart';
 
 class EmojiPickerWidget extends StatelessWidget {
   const EmojiPickerWidget({
-    Key? key,
+    super.key,
     required this.onSelected,
     this.emojiPickerSheetConfig,
-  }) : super(key: key);
+  });
 
   /// Provides callback when user selects emoji.
   final StringCallback onSelected;

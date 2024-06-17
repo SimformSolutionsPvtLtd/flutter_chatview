@@ -19,25 +19,57 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'reply_icon.dart';
 
+enum SwipeToReplyType {
+  leftRight,
+  inwardsOutwards,
+}
+
 class SwipeToReply extends StatefulWidget {
   const SwipeToReply({
     Key? key,
-    this.onLeftSwipe,
     required this.child,
+    required this.isMessageBySender,
     this.replyIconColor,
-    this.onRightSwipe,
-    this.swipeToReplyAnimationDuration,
-  }) : super(key: key);
+    this.onSwipeOutwards,
+    this.onSwipeInwards,
+    this.onSwipeLeft,
+    this.onSwipeRight,
+  })  : assert(
+          (onSwipeInwards == null &&
+                  onSwipeOutwards == null &&
+                  onSwipeLeft == null &&
+                  onSwipeRight == null) ||
+              ((onSwipeInwards != null || onSwipeOutwards != null) &&
+                  onSwipeLeft == null &&
+                  onSwipeRight == null) ||
+              ((onSwipeLeft != null || onSwipeRight != null) &&
+                  onSwipeInwards == null &&
+                  onSwipeOutwards == null),
+          'You can either set onSwipeLeft and/or onSwipeRight,'
+          'but onSwipeInwards and onSwipeOutwards have to be null or'
+          'the other way around; or all swipe actions have to be null',
+        ),
+        super(key: key);
 
-  /// Provides callback when user swipes chat bubble from right side.
-  final VoidCallback? onRightSwipe;
+  /// Provides callback when user swipes chat bubble into the middle.
+  final VoidCallback? onSwipeInwards;
 
-  /// Provides callback when user swipes chat bubble from left side.
-  final VoidCallback? onLeftSwipe;
+  /// Provides callback when user swipes chat bubble to the edge of the view.
+  final VoidCallback? onSwipeOutwards;
+
+  /// Provides callback when user swipes chat bubble to the left.
+  final VoidCallback? onSwipeLeft;
+
+  /// Provides callback when user swipes chat bubble to the right.
+  final VoidCallback? onSwipeRight;
+
+  /// Handles message mirrored if true compared to if false
+  final bool isMessageBySender;
 
   /// Allow user to set widget which is showed while user swipes chat bubble.
   final Widget child;
@@ -45,8 +77,10 @@ class SwipeToReply extends StatefulWidget {
   /// Allow user to change colour of reply icon which is showed while user swipes.
   final Color? replyIconColor;
 
-  /// Allow user to set duration of animation of icon.
-  final Duration? swipeToReplyAnimationDuration;
+  SwipeToReplyType get swipeToReplyType =>
+      (onSwipeLeft != null || onSwipeRight != null)
+          ? SwipeToReplyType.leftRight
+          : SwipeToReplyType.inwardsOutwards;
 
   @override
   State<SwipeToReply> createState() => _SwipeToReplyState();
@@ -54,115 +88,129 @@ class SwipeToReply extends StatefulWidget {
 
 class _SwipeToReplyState extends State<SwipeToReply>
     with SingleTickerProviderStateMixin {
-  late final AnimationController _controller;
-  late Animation<double> _leftScaleAnimation;
-  late Animation<double> _rightScaleAnimation;
-  late Animation<Offset> _slideAnimation;
+  ValueNotifier<double> valueListener = ValueNotifier(0);
+
+  double clampLower = -0.25;
+  double clampUpper = 1.0;
+
+  double get clampOuter => widget.onSwipeOutwards != null ? clampLower : 0;
+  double get clampInner => widget.onSwipeInwards != null ? clampUpper : 0;
+
+  double innerBoundThreshold = 0.7;
+  double outerBoundThreshold = 0.8;
+
+  double get innerBound =>
+      (widget.isMessageBySender ? -clampLower : clampUpper) *
+      innerBoundThreshold;
+  double get outerBound =>
+      (widget.isMessageBySender ? -clampUpper : clampLower) *
+      outerBoundThreshold;
+
+  bool get isInwardsOutwardsSwiper =>
+      widget.swipeToReplyType == SwipeToReplyType.inwardsOutwards;
 
   @override
   void initState() {
     super.initState();
-    _initializeAnimationControllers();
-  }
-
-  void _initializeAnimationControllers() {
-    _controller = AnimationController(
-      vsync: this,
-      duration: widget.swipeToReplyAnimationDuration ??
-          const Duration(milliseconds: 250),
-    );
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0.0, 0.0),
-      end: const Offset(0.0, 0.0),
-    ).animate(CurvedAnimation(curve: Curves.decelerate, parent: _controller));
-    _leftScaleAnimation = _controller.drive(
-      Tween<double>(begin: 0.0, end: 0.0),
-    );
-    _rightScaleAnimation = _controller.drive(
-      Tween<double>(begin: 0.0, end: 0.0),
-    );
+    if (widget.isMessageBySender && isInwardsOutwardsSwiper) {
+      var tmp = clampLower;
+      clampLower = -clampUpper;
+      clampUpper = -tmp;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onHorizontalDragUpdate: _onHorizontalDragUpdate,
+      onHorizontalDragEnd: (details) {
+        if (kDebugMode) {
+          print('valueListener.value on release: ${valueListener.value}');
+        }
+
+        if (isInwardsOutwardsSwiper) {
+          // Handle inwards and outwards
+          final valueOnRelease =
+              valueListener.value * (widget.isMessageBySender ? -1 : 1);
+
+          if (valueOnRelease < 0 && valueOnRelease < outerBound) {
+            widget.onSwipeOutwards?.call();
+          } else if (valueOnRelease > 0 && valueOnRelease > innerBound) {
+            widget.onSwipeInwards?.call();
+          }
+        } else {
+          // Handle left and right
+          if (valueListener.value < 0 && valueListener.value < clampLower / 2) {
+            widget.onSwipeLeft?.call();
+          } else if (valueListener.value > 0 &&
+              valueListener.value > clampUpper / 2) {
+            widget.onSwipeRight?.call();
+          }
+        }
+        valueListener.value = 0;
+      },
+      onHorizontalDragUpdate: (details) {
+        valueListener.value = (valueListener.value +
+                (details.delta.dx / context.size!.width) * 4.5)
+            .clamp(clampLower, clampUpper);
+      },
       child: AnimatedBuilder(
-        animation: _controller,
+        animation: valueListener,
         builder: (context, child) {
+          var dragValue = valueListener.value *
+              ((widget.isMessageBySender && isInwardsOutwardsSwiper) ? -1 : 1);
+
+          // This widget is handling right and inwards swiping
+          final inwardsWidget = Visibility(
+            visible:
+                ((isInwardsOutwardsSwiper && widget.onSwipeInwards != null) ||
+                        widget.onSwipeRight != null) &&
+                    dragValue > 0,
+            child: ReplyIcon(
+              scaleValue: dragValue,
+              replyIconColor: widget.replyIconColor,
+            ),
+          );
+
+          // This widget is handling left and outwards swiping
+          final outwardsWidget = Visibility(
+            visible:
+                ((isInwardsOutwardsSwiper && widget.onSwipeOutwards != null) ||
+                        widget.onSwipeLeft != null) &&
+                    dragValue < 0,
+            child: ReplyIcon(
+              scaleValue: dragValue,
+              replyIconColor: widget.replyIconColor,
+            ),
+          );
+
+          final actionIndicators = [inwardsWidget, outwardsWidget];
           return Stack(
             alignment: Alignment.center,
             fit: StackFit.passthrough,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Visibility(
-                    visible: widget.onRightSwipe != null,
-                    child: ReplyIcon(
-                      scaleAnimation: _leftScaleAnimation,
-                      slideAnimation: _slideAnimation,
-                      replyIconColor: widget.replyIconColor,
-                    ),
-                  ),
-                  Visibility(
-                    visible: widget.onLeftSwipe != null,
-                    child: ReplyIcon(
-                      scaleAnimation: _rightScaleAnimation,
-                      slideAnimation: _slideAnimation,
-                      replyIconColor: widget.replyIconColor,
-                    ),
-                  ),
-                ],
+                children: widget.isMessageBySender && isInwardsOutwardsSwiper
+                    ? actionIndicators.reversed.toList()
+                    : actionIndicators,
               ),
-              SlideTransition(
-                position: _slideAnimation,
-                child: widget.child,
+              Align(
+                alignment: widget.isMessageBySender
+                    ? Alignment.centerRight
+                    : Alignment.centerLeft,
+                child: Transform.translate(
+                  offset: Offset(valueListener.value * 35, 0),
+                  child: Container(
+                    color: Colors.transparent,
+                    constraints: const BoxConstraints(minWidth: 150),
+                    child: widget.child,
+                  ),
+                ),
               ),
             ],
           );
         },
       ),
     );
-  }
-
-  void _onHorizontalDragUpdate(DragUpdateDetails details) {
-    if (widget.onRightSwipe != null && details.delta.dx > 1) {
-      _runAnimation(onRight: true);
-    }
-    if (widget.onLeftSwipe != null && details.delta.dx < -1) {
-      _runAnimation(onRight: false);
-    }
-  }
-
-  void _runAnimation({required bool onRight}) {
-    _slideAnimation = Tween(
-      begin: const Offset(0.0, 0.0),
-      end: Offset(onRight ? 0.1 : -0.1, 0.0),
-    ).animate(CurvedAnimation(curve: Curves.decelerate, parent: _controller));
-    if (onRight) {
-      _leftScaleAnimation = Tween(begin: 0.0, end: 1.0).animate(
-          CurvedAnimation(curve: Curves.decelerate, parent: _controller));
-    } else {
-      _rightScaleAnimation = Tween(begin: 0.0, end: 1.0).animate(
-          CurvedAnimation(curve: Curves.decelerate, parent: _controller));
-    }
-    _controller.forward().whenComplete(() {
-      _controller.reverse().whenComplete(() {
-        if (onRight) {
-          _leftScaleAnimation = _controller.drive(Tween(begin: 0.0, end: 0.0));
-          if (widget.onRightSwipe != null) widget.onRightSwipe!();
-        } else {
-          _rightScaleAnimation = _controller.drive(Tween(begin: 0.0, end: 0.0));
-          if (widget.onLeftSwipe != null) widget.onLeftSwipe!();
-        }
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 }

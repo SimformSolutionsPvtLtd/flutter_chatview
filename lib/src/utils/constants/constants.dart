@@ -47,7 +47,6 @@ const double bottomPadding1 = 10;
 const double bottomPadding2 = 22;
 const double bottomPadding3 = 12;
 const double bottomPadding4 = 6;
-const double leftPadding = 9;
 const double maxWidth = 350;
 const int opacity = 18;
 const double verticalPadding = 4.0;

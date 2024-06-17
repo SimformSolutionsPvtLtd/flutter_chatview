@@ -22,6 +22,7 @@
 import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/utils/constants/constants.dart';
 import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../chatview.dart';
@@ -36,8 +37,10 @@ class ChatBubbleWidget extends StatefulWidget {
     required GlobalKey key,
     required this.message,
     required this.onLongPress,
-    required this.slideAnimation,
-    required this.onSwipe,
+    required this.slideValueListener,
+    required this.onInitReplyToMessage,
+    this.previousMessage,
+    this.nextMessage,
     this.profileCircleConfig,
     this.chatBubbleConfig,
     this.repliedMessageConfig,
@@ -51,6 +54,12 @@ class ChatBubbleWidget extends StatefulWidget {
 
   /// Represent current instance of message.
   final Message message;
+
+  /// Represent message sent before that one.
+  final Message? previousMessage;
+
+  /// Represent message sent after that one.
+  final Message? nextMessage;
 
   /// Give callback once user long press on chat bubble.
   final DoubleCallBack onLongPress;
@@ -77,14 +86,14 @@ class ChatBubbleWidget extends StatefulWidget {
   /// whole chat.
   final Color? messageTimeIconColor;
 
-  /// Provides slide animation when user swipe whole chat.
-  final Animation<Offset>? slideAnimation;
+  /// Provides slide value when user swipe whole chat.
+  final ValueListenable<double>? slideValueListener;
 
   /// Provides configuration of all types of messages.
   final MessageConfiguration? messageConfig;
 
   /// Provides callback of when user swipe chat bubble for reply.
-  final MessageCallBack onSwipe;
+  final MessageCallBack onInitReplyToMessage;
 
   /// Provides callback when user tap on replied message upon chat bubble.
   final Function(String)? onReplyTap;
@@ -101,55 +110,62 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
 
   bool get isMessageBySender => widget.message.sendBy == currentUser?.id;
 
+  bool get isMessageBySameSenderAsPrevious =>
+      widget.previousMessage?.sendBy == widget.message.sendBy;
+
+  bool get isMessageLastFromSender =>
+      widget.nextMessage?.sendBy == widget.message.sendBy;
+
   bool get isLastMessage =>
       chatController?.initialMessageList.last.id == widget.message.id;
 
+  bool get swipeLeftShouldShowTime => featureActiveConfig.enableSwipeToSeeTime;
+
+  bool get enableSwipeToReply => featureActiveConfig.enableSwipeToReply;
+
   ProfileCircleConfiguration? get profileCircleConfig =>
       widget.profileCircleConfig;
-  FeatureActiveConfig? featureActiveConfig;
-  ChatController? chatController;
-  ChatUser? currentUser;
-  int? maxDuration;
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (provide != null) {
-      featureActiveConfig = provide!.featureActiveConfig;
-      chatController = provide!.chatController;
-      currentUser = provide!.currentUser;
-    }
-  }
+  FeatureActiveConfig get featureActiveConfig =>
+      provide?.featureActiveConfig ?? const FeatureActiveConfig();
+  ChatController? get chatController => provide?.chatController;
+  ChatUser? get currentUser => provide?.currentUser;
+  int? maxDuration;
 
   @override
   Widget build(BuildContext context) {
     // Get user from id.
     final messagedUser = chatController?.getUserFromId(widget.message.sendBy);
-    return Stack(
-      children: [
-        if (featureActiveConfig?.enableSwipeToSeeTime ?? true) ...[
-          Visibility(
-            visible: widget.slideAnimation?.value.dx == 0.0 ? false : true,
-            child: Positioned.fill(
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: MessageTimeWidget(
-                  messageTime: widget.message.createdAt,
-                  isCurrentUser: isMessageBySender,
-                  messageTimeIconColor: widget.messageTimeIconColor,
-                  messageTimeTextStyle: widget.messageTimeTextStyle,
+    if (swipeLeftShouldShowTime && widget.slideValueListener != null) {
+      return ValueListenableBuilder<double>(
+        valueListenable: widget.slideValueListener!,
+        builder: (context, slideValue, child) => Stack(
+          children: [
+            Visibility(
+              visible: widget.slideValueListener!.value == 0.0 ? false : true,
+              child: Positioned.fill(
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: MessageTimeWidget(
+                    messageTime: widget.message.createdAt,
+                    isCurrentUser: isMessageBySender,
+                    messageTimeIconColor: widget.messageTimeIconColor,
+                    messageTimeTextStyle: widget.messageTimeTextStyle,
+                  ),
                 ),
               ),
             ),
-          ),
-          SlideTransition(
-            position: widget.slideAnimation!,
-            child: _chatBubbleWidget(messagedUser),
-          ),
-        ] else
-          _chatBubbleWidget(messagedUser),
-      ],
-    );
+            Transform.translate(
+              offset: Offset(widget.slideValueListener!.value * 50, 0),
+              child: child!,
+            ),
+          ],
+        ),
+        child: _chatBubbleWidget(messagedUser),
+      );
+    }
+
+    return _chatBubbleWidget(messagedUser);
   }
 
   Widget _chatBubbleWidget(ChatUser? messagedUser) {
@@ -157,15 +173,23 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
       padding:
           widget.chatBubbleConfig?.padding ?? const EdgeInsets.only(left: 5.0),
       margin:
-          widget.chatBubbleConfig?.margin ?? const EdgeInsets.only(bottom: 10),
+          (widget.chatBubbleConfig?.margin ?? const EdgeInsets.only(bottom: 10))
+              .add(
+        isLastMessage
+            ? EdgeInsets.only(
+                bottom: widget.chatBubbleConfig
+                        ?.additionalBottomInsetIfMessageIsLast ??
+                    16)
+            : const EdgeInsets.all(0),
+      ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment:
             isMessageBySender ? MainAxisAlignment.end : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          if (!isMessageBySender &&
-              (featureActiveConfig?.enableOtherUserProfileAvatar ?? true))
+          if (!(isMessageBySender || isMessageLastFromSender) &&
+              (featureActiveConfig.enableOtherUserProfileAvatar))
             ProfileCircle(
               bottomPadding: widget.message.reaction.reactions.isNotEmpty
                   ? profileCircleConfig?.bottomPadding ?? 15
@@ -182,56 +206,31 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
               circleRadius: profileCircleConfig?.circleRadius,
               onTap: () => _onAvatarTap(messagedUser),
               onLongPress: () => _onAvatarLongPress(messagedUser),
+            )
+          else
+            SizedBox(
+              width: profileCircleConfig == null
+                  ? 10
+                  : (profileCircleConfig!.circleRadius * 2 +
+                      (profileCircleConfig?.padding?.collapsedSize.width ??
+                          12)),
             ),
           Expanded(
-            child: isMessageBySender
-                ? SwipeToReply(
-                    onLeftSwipe: featureActiveConfig?.enableSwipeToReply ?? true
-                        ? () {
-                            if (maxDuration != null) {
-                              widget.message.voiceMessageDuration =
-                                  Duration(milliseconds: maxDuration!);
-                            }
-                            if (widget.swipeToReplyConfig?.onLeftSwipe !=
-                                null) {
-                              widget.swipeToReplyConfig?.onLeftSwipe!(
-                                  widget.message.message,
-                                  widget.message.sendBy);
-                            }
-                            widget.onSwipe(widget.message);
-                          }
-                        : null,
-                    replyIconColor: widget.swipeToReplyConfig?.replyIconColor,
-                    swipeToReplyAnimationDuration:
-                        widget.swipeToReplyConfig?.animationDuration,
-                    child: _messagesWidgetColumn(messagedUser),
-                  )
-                : SwipeToReply(
-                    onRightSwipe:
-                        featureActiveConfig?.enableSwipeToReply ?? true
-                            ? () {
-                                if (maxDuration != null) {
-                                  widget.message.voiceMessageDuration =
-                                      Duration(milliseconds: maxDuration!);
-                                }
-                                if (widget.swipeToReplyConfig?.onRightSwipe !=
-                                    null) {
-                                  widget.swipeToReplyConfig?.onRightSwipe!(
-                                      widget.message.message,
-                                      widget.message.sendBy);
-                                }
-                                widget.onSwipe(widget.message);
-                              }
-                            : null,
-                    replyIconColor: widget.swipeToReplyConfig?.replyIconColor,
-                    swipeToReplyAnimationDuration:
-                        widget.swipeToReplyConfig?.animationDuration,
-                    child: _messagesWidgetColumn(messagedUser),
-                  ),
+            child: SwipeToReply(
+              isMessageBySender: isMessageBySender,
+              onSwipeInwards: (enableSwipeToReply && !swipeLeftShouldShowTime)
+                  ? _initReplyToMessage
+                  : null,
+              onSwipeRight: (enableSwipeToReply && swipeLeftShouldShowTime)
+                  ? _initReplyToMessage
+                  : null,
+              replyIconColor: widget.swipeToReplyConfig?.replyIconColor,
+              child: _messagesWidgetColumn(messagedUser),
+            ),
           ),
           if (isMessageBySender) ...[getReciept()],
           if (isMessageBySender &&
-              (featureActiveConfig?.enableCurrentUserProfileAvatar ?? true))
+              (featureActiveConfig.enableCurrentUserProfileAvatar))
             ProfileCircle(
               bottomPadding: widget.message.reaction.reactions.isNotEmpty
                   ? profileCircleConfig?.bottomPadding ?? 15
@@ -257,6 +256,23 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
   void _onAvatarTap(ChatUser? user) {
     if (profileCircleConfig?.onAvatarTap != null && user != null) {
       profileCircleConfig?.onAvatarTap!(user);
+    }
+  }
+
+  void _onAvatarLongPress(ChatUser? user) {
+    if (profileCircleConfig?.onAvatarLongPress != null && user != null) {
+      profileCircleConfig?.onAvatarLongPress!(user);
+    }
+  }
+
+  void _initReplyToMessage() {
+    if (maxDuration != null) {
+      widget.message.voiceMessageDuration =
+          Duration(milliseconds: maxDuration!);
+    }
+    if (widget.swipeToReplyConfig?.onInitReply == null ||
+        (widget.swipeToReplyConfig?.onInitReply!(widget.message) ?? true)) {
+      widget.onInitReplyToMessage(widget.message);
     }
   }
 
@@ -300,20 +316,15 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
     return const SizedBox();
   }
 
-  void _onAvatarLongPress(ChatUser? user) {
-    if (profileCircleConfig?.onAvatarLongPress != null && user != null) {
-      profileCircleConfig?.onAvatarLongPress!(user);
-    }
-  }
-
   Widget _messagesWidgetColumn(ChatUser? messagedUser) {
     return Column(
       crossAxisAlignment:
           isMessageBySender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       children: [
-        if ((chatController?.chatUsers.length ?? 0) > 1 &&
+        if (!isMessageBySameSenderAsPrevious &&
+            (chatController?.chatUsers.length ?? 0) > 1 &&
             !isMessageBySender &&
-            (featureActiveConfig?.enableOtherUserName ?? true))
+            (featureActiveConfig.enableOtherUserName))
           Padding(
             padding:
                 widget.chatBubbleConfig?.inComingChatBubbleConfig?.padding ??
@@ -337,9 +348,8 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
         MessageView(
           outgoingChatBubbleConfig:
               widget.chatBubbleConfig?.outgoingChatBubbleConfig,
-          isLongPressEnable:
-              (featureActiveConfig?.enableReactionPopup ?? true) ||
-                  (featureActiveConfig?.enableReplySnackBar ?? true),
+          isLongPressEnable: (featureActiveConfig.enableReactionPopup) ||
+              (featureActiveConfig.enableReplySnackBar),
           inComingChatBubbleConfig:
               widget.chatBubbleConfig?.inComingChatBubbleConfig,
           message: widget.message,
@@ -349,7 +359,7 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
           chatBubbleMaxWidth: widget.chatBubbleConfig?.maxWidth,
           longPressAnimationDuration:
               widget.chatBubbleConfig?.longPressAnimationDuration,
-          onDoubleTap: featureActiveConfig?.enableDoubleTapToLike ?? false
+          onDoubleTap: featureActiveConfig.enableDoubleTapToLike
               ? widget.chatBubbleConfig?.onDoubleTap ??
                   (message) => currentUser != null
                       ? chatController?.setReaction(

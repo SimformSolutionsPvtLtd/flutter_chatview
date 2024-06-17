@@ -80,12 +80,17 @@ class ChatController {
   StreamController<List<Message>> messageStreamController = StreamController();
 
   /// Used to dispose stream.
-  void dispose() => messageStreamController.close();
+  void dispose() {
+    _replySuggestion.dispose();
+    messageStreamController.close();
+  }
 
   /// Used to add message in message list.
   void addMessage(Message message) {
     initialMessageList.add(message);
-    messageStreamController.sink.add(initialMessageList);
+    if (!messageStreamController.isClosed) {
+      messageStreamController.sink.add(initialMessageList);
+    }
   }
 
   /// Used to add reply suggestions.
@@ -136,11 +141,14 @@ class ChatController {
   /// Function to scroll to last messages in chat view
   void scrollToLastMessage() => Timer(
         const Duration(milliseconds: 300),
-        () => scrollController.animateTo(
-          scrollController.position.minScrollExtent,
-          curve: Curves.easeIn,
-          duration: const Duration(milliseconds: 300),
-        ),
+        () {
+          if (!scrollController.hasClients) return;
+          scrollController.animateTo(
+            scrollController.position.minScrollExtent,
+            curve: Curves.easeIn,
+            duration: const Duration(milliseconds: 300),
+          );
+        },
       );
 
   /// Function for loading data while pagination.

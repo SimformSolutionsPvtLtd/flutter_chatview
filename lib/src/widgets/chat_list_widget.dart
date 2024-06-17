@@ -36,14 +36,13 @@ class ChatListWidget extends StatefulWidget {
     Key? key,
     required this.chatController,
     required this.chatBackgroundConfig,
-    required this.showTypingIndicator,
     required this.assignReplyMessage,
     required this.replyMessage,
+    required this.profileCircleConfig,
     this.loadingWidget,
     this.reactionPopupConfig,
     this.messageConfig,
     this.chatBubbleConfig,
-    this.profileCircleConfig,
     this.swipeToReplyConfig,
     this.repliedMessageConfig,
     this.typeIndicatorConfig,
@@ -63,9 +62,6 @@ class ChatListWidget extends StatefulWidget {
   /// Provides widget for loading view while pagination is enabled.
   final Widget? loadingWidget;
 
-  /// Provides flag for turn on/off typing indicator.
-  final bool showTypingIndicator;
-
   /// Provides configuration for reaction pop up appearance.
   final ReactionPopupConfiguration? reactionPopupConfig;
 
@@ -77,7 +73,7 @@ class ChatListWidget extends StatefulWidget {
   final ChatBubbleConfiguration? chatBubbleConfig;
 
   /// Provides configuration for profile circle avatar of user.
-  final ProfileCircleConfiguration? profileCircleConfig;
+  final ProfileCircleConfiguration profileCircleConfig;
 
   /// Provides configuration for when user swipe to chat bubble.
   final SwipeToReplyConfiguration? swipeToReplyConfig;
@@ -127,8 +123,6 @@ class _ChatListWidgetState extends State<ChatListWidget>
   List<Message> get messageList => chatController.initialMessageList;
 
   ScrollController get scrollController => chatController.scrollController;
-
-  bool get showTypingIndicator => widget.showTypingIndicator;
 
   ChatBackgroundConfiguration get chatBackgroundConfig =>
       widget.chatBackgroundConfig;
@@ -193,7 +187,6 @@ class _ChatListWidgetState extends State<ChatListWidget>
                 children: [
                   ChatGroupedListWidget(
                     showPopUp: showPopupValue,
-                    showTypingIndicator: showTypingIndicator,
                     scrollController: scrollController,
                     isEnableSwipeToSeeTime:
                         featureActiveConfig?.enableSwipeToSeeTime ?? true,

@@ -20,6 +20,7 @@
  * SOFTWARE.
  */
 import 'package:chatview/chatview.dart';
+import 'package:chatview/src/models/voice_message_configuration.dart';
 import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -166,6 +167,9 @@ class _MessageViewState extends State<MessageView>
         children: [
           (() {
                 if (message.isAllEmoji) {
+                  if (messageConfig?.emojiMessageBuilder != null) {
+                    return messageConfig!.emojiMessageBuilder!(widget);
+                  }
                   return Stack(
                     clipBehavior: Clip.none,
                     children: [
@@ -200,6 +204,9 @@ class _MessageViewState extends State<MessageView>
                     ],
                   );
                 } else if (widget.message.messageType.isImage) {
+                  if (messageConfig?.imageMessageBuilder != null) {
+                    return messageConfig!.imageMessageBuilder!(widget);
+                  }
                   return ImageMessageView(
                     message: widget.message,
                     isMessageBySender: widget.isMessageBySender,
@@ -209,6 +216,9 @@ class _MessageViewState extends State<MessageView>
                     highlightScale: widget.highlightScale,
                   );
                 } else if (widget.message.messageType.isText) {
+                  if (messageConfig?.textMessageBuilder != null) {
+                    return messageConfig!.textMessageBuilder!(widget);
+                  }
                   return TextMessageView(
                     inComingChatBubbleConfig: widget.inComingChatBubbleConfig,
                     outgoingChatBubbleConfig: widget.outgoingChatBubbleConfig,
@@ -220,10 +230,14 @@ class _MessageViewState extends State<MessageView>
                     highlightMessage: widget.shouldHighlight,
                   );
                 } else if (widget.message.messageType.isVoice) {
+                  if (messageConfig?.voiceMessageBuilder != null) {
+                    return messageConfig!.voiceMessageBuilder!(widget);
+                  }
                   return VoiceMessageView(
                     screenWidth: MediaQuery.of(context).size.width,
                     message: widget.message,
-                    config: messageConfig?.voiceMessageConfig,
+                    config: messageConfig?.voiceMessageConfig ??
+                        const VoiceMessageConfiguration(),
                     onMaxDuration: widget.onMaxDuration,
                     isMessageBySender: widget.isMessageBySender,
                     messageReactionConfig: messageConfig?.messageReactionConfig,
@@ -232,7 +246,7 @@ class _MessageViewState extends State<MessageView>
                   );
                 } else if (widget.message.messageType.isCustom &&
                     messageConfig?.customMessageBuilder != null) {
-                  return messageConfig?.customMessageBuilder!(widget.message);
+                  return messageConfig?.customMessageBuilder!(widget);
                 }
               }()) ??
               const SizedBox(),
@@ -240,7 +254,7 @@ class _MessageViewState extends State<MessageView>
             valueListenable: widget.message.statusNotifier,
             builder: (context, value, child) {
               if (widget.isMessageBySender &&
-                  widget.controller?.initialMessageList.last.id ==
+                  widget.controller?.initialMessageList.lastOrNull?.id ==
                       widget.message.id &&
                   widget.message.status == MessageStatus.read) {
                 if (ChatViewInheritedWidget.of(context)

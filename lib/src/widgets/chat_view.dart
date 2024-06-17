@@ -36,7 +36,7 @@ class ChatView extends StatefulWidget {
     required this.chatController,
     required this.currentUser,
     this.onSendTap,
-    this.profileCircleConfig,
+    this.profileCircleConfig = const ProfileCircleConfiguration(),
     this.chatBubbleConfig,
     this.repliedMessageConfig,
     this.swipeToReplyConfig,
@@ -50,7 +50,7 @@ class ChatView extends StatefulWidget {
     ChatBackgroundConfiguration? chatBackgroundConfig,
     this.typeIndicatorConfig,
     this.sendMessageBuilder,
-    this.sendMessageConfig,
+    this.sendMessageConfig = const SendMessageConfiguration(),
     this.onChatListTap,
     required this.chatViewState,
     ChatViewStateConfiguration? chatViewStateConfig,
@@ -65,7 +65,7 @@ class ChatView extends StatefulWidget {
         super(key: key);
 
   /// Provides configuration related to user profile circle avatar.
-  final ProfileCircleConfiguration? profileCircleConfig;
+  final ProfileCircleConfiguration profileCircleConfig;
 
   /// Provides configurations related to chat bubble such as padding, margin, max
   /// width etc.
@@ -116,7 +116,7 @@ class ChatView extends StatefulWidget {
   final ChatController chatController;
 
   /// Provides configuration of default text field in chat.
-  final SendMessageConfiguration? sendMessageConfig;
+  final SendMessageConfiguration sendMessageConfig;
 
   /// Provides current state of chat.
   final ChatViewState chatViewState;
@@ -220,85 +220,84 @@ class _ChatViewState extends State<ChatView>
               children: [
                 if (widget.appBar != null) widget.appBar!,
                 Expanded(
-                  child: Stack(
-                    children: [
-                      if (chatViewState.isLoading)
-                        ChatViewStateWidget(
-                          chatViewStateWidgetConfig:
-                              chatViewStateConfig?.loadingWidgetConfig,
-                          chatViewState: chatViewState,
-                        )
-                      else if (chatViewState.noMessages)
-                        ChatViewStateWidget(
-                          chatViewStateWidgetConfig:
-                              chatViewStateConfig?.noMessageWidgetConfig,
-                          chatViewState: chatViewState,
-                          onReloadButtonTap:
-                              chatViewStateConfig?.onReloadButtonTap,
-                        )
-                      else if (chatViewState.isError)
-                        ChatViewStateWidget(
-                          chatViewStateWidgetConfig:
-                              chatViewStateConfig?.errorWidgetConfig,
-                          chatViewState: chatViewState,
-                          onReloadButtonTap:
-                              chatViewStateConfig?.onReloadButtonTap,
-                        )
-                      else if (chatViewState.hasMessages)
-                        ValueListenableBuilder<ReplyMessage>(
-                          valueListenable: replyMessage,
-                          builder: (_, state, child) {
-                            return ChatListWidget(
-                              showTypingIndicator:
-                                  chatController.showTypingIndicator,
-                              replyMessage: state,
-                              chatController: widget.chatController,
-                              chatBackgroundConfig: widget.chatBackgroundConfig,
-                              reactionPopupConfig: widget.reactionPopupConfig,
-                              typeIndicatorConfig: widget.typeIndicatorConfig,
-                              chatBubbleConfig: widget.chatBubbleConfig,
-                              loadMoreData: widget.loadMoreData,
-                              isLastPage: widget.isLastPage,
-                              replyPopupConfig: widget.replyPopupConfig,
-                              loadingWidget: widget.loadingWidget,
-                              messageConfig: widget.messageConfig,
-                              profileCircleConfig: widget.profileCircleConfig,
-                              repliedMessageConfig: widget.repliedMessageConfig,
-                              swipeToReplyConfig: widget.swipeToReplyConfig,
-                              onChatListTap: widget.onChatListTap,
-                              assignReplyMessage: (message) => _sendMessageKey
-                                  .currentState
-                                  ?.assignReplyMessage(message),
-                              emojiPickerSheetConfig:
-                                  widget.emojiPickerSheetConfig,
-                            );
-                          },
-                        ),
-                      if (featureActiveConfig.enableTextField)
-                        SendMessageWidget(
-                          key: _sendMessageKey,
-                          chatController: chatController,
-                          sendMessageBuilder: widget.sendMessageBuilder,
-                          sendMessageConfig: widget.sendMessageConfig,
-                          backgroundColor: chatBackgroundConfig.backgroundColor,
-                          onSendTap: (message, replyMessage, messageType) {
-                            if (context.suggestionsConfig
-                                    ?.autoDismissOnSelection ??
-                                true) {
-                              chatController.removeReplySuggestions();
-                            }
-                            _onSendTap(message, replyMessage, messageType);
-                          },
-                          onReplyCallback: (reply) =>
-                              replyMessage.value = reply,
-                          onReplyCloseCallback: () =>
-                              replyMessage.value = const ReplyMessage(),
-                          messageConfig: widget.messageConfig,
-                          replyMessageBuilder: widget.replyMessageBuilder,
-                        ),
-                    ],
-                  ),
+                  child: [
+                    if (chatViewState.isLoading)
+                      ChatViewStateWidget(
+                        chatViewStateWidgetConfig:
+                            chatViewStateConfig?.loadingWidgetConfig,
+                        chatViewState: chatViewState,
+                      )
+                    else if (chatViewState.noMessages)
+                      ChatViewStateWidget(
+                        chatViewStateWidgetConfig:
+                            chatViewStateConfig?.noMessageWidgetConfig,
+                        chatViewState: chatViewState,
+                        onReloadButtonTap:
+                            chatViewStateConfig?.onReloadButtonTap,
+                      )
+                    else if (chatViewState.isError)
+                      ChatViewStateWidget(
+                        chatViewStateWidgetConfig:
+                            chatViewStateConfig?.errorWidgetConfig,
+                        chatViewState: chatViewState,
+                        onReloadButtonTap:
+                            chatViewStateConfig?.onReloadButtonTap,
+                      )
+                    else if (chatViewState.hasMessages)
+                      ValueListenableBuilder<ReplyMessage>(
+                        valueListenable: replyMessage,
+                        builder: (_, state, child) {
+                          return ChatListWidget(
+                            replyMessage: state,
+                            chatController: widget.chatController,
+                            chatBackgroundConfig: widget.chatBackgroundConfig,
+                            reactionPopupConfig: widget.reactionPopupConfig,
+                            typeIndicatorConfig: widget.typeIndicatorConfig,
+                            chatBubbleConfig: widget.chatBubbleConfig,
+                            loadMoreData: widget.loadMoreData,
+                            isLastPage: widget.isLastPage,
+                            replyPopupConfig: widget.replyPopupConfig,
+                            loadingWidget: widget.loadingWidget,
+                            messageConfig: widget.messageConfig,
+                            profileCircleConfig: widget.profileCircleConfig,
+                            repliedMessageConfig: widget.repliedMessageConfig,
+                            swipeToReplyConfig: widget.swipeToReplyConfig,
+                            onChatListTap: widget.onChatListTap,
+                            assignReplyMessage: (message) => _sendMessageKey
+                                .currentState
+                                ?.assignReplyMessage(message),
+                            emojiPickerSheetConfig:
+                                widget.emojiPickerSheetConfig,
+                          );
+                        },
+                      ),
+                  ][0],
                 ),
+                if (featureActiveConfig.enableTextField)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: SendMessageWidget(
+                      key: _sendMessageKey,
+                      enabled:
+                          chatViewState.hasMessages || chatViewState.noMessages,
+                      chatController: chatController,
+                      sendMessageBuilder: widget.sendMessageBuilder,
+                      sendMessageConfig: widget.sendMessageConfig,
+                      backgroundColor: chatBackgroundConfig.backgroundColor,
+                      onSendTap: (message, replyMessage, messageType) {
+                        if (context.suggestionsConfig?.autoDismissOnSelection ??
+                            true) {
+                          chatController.removeReplySuggestions();
+                        }
+                        _onSendTap(message, replyMessage, messageType);
+                      },
+                      onReplyCallback: (reply) => replyMessage.value = reply,
+                      onReplyCloseCallback: () =>
+                          replyMessage.value = const ReplyMessage(),
+                      messageConfig: widget.messageConfig,
+                      replyMessageBuilder: widget.replyMessageBuilder,
+                    ),
+                  ),
               ],
             ),
           );
