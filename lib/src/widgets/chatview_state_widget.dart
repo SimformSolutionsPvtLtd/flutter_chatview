@@ -6,6 +6,7 @@ class ChatViewStateWidget extends StatelessWidget {
   const ChatViewStateWidget({
     Key? key,
     this.chatViewStateWidgetConfig,
+    required this.fallbackTitle,
     required this.chatViewState,
     this.onReloadButtonTap,
   }) : super(key: key);
@@ -16,6 +17,9 @@ class ChatViewStateWidget extends StatelessWidget {
 
   /// Provides current state of chat view.
   final ChatViewState chatViewState;
+
+  /// Fallback if no title is given via config.
+  final String fallbackTitle;
 
   /// Provides callback when user taps on reload button in error and no messages
   /// state.
@@ -31,7 +35,8 @@ class ChatViewStateWidget extends StatelessWidget {
             children: [
               Text(
                 (chatViewStateWidgetConfig?.title
-                    .getChatViewStateTitle(chatViewState))!,
+                        .getChatViewStateTitle(chatViewState)) ??
+                    fallbackTitle,
                 style: chatViewStateWidgetConfig?.titleTextStyle ??
                     const TextStyle(
                       fontSize: 22,
