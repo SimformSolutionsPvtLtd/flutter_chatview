@@ -44,6 +44,8 @@
   to hide user name in chat.
 * **Fix**: [182](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/182) Fix
   send message not working when user start texting after newLine.
+* **Fix**: [191](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/191) Fix
+  error when using `BuildContext` or `State` extensions when not mounted.
 
 ## [1.3.1]
 

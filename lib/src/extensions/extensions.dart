@@ -129,16 +129,18 @@ extension ChatViewStateTitleExtension on String? {
 
 /// Extension on State for accessing inherited widget.
 extension StatefulWidgetExtension on State {
-  ChatViewInheritedWidget? get provide => ChatViewInheritedWidget.of(context);
+  ChatViewInheritedWidget? get provide =>
+      mounted ? ChatViewInheritedWidget.of(context) : null;
 
   ReplySuggestionsConfig? get suggestionsConfig =>
-      SuggestionsConfigIW.of(context)?.suggestionsConfig;
+      mounted ? SuggestionsConfigIW.of(context)?.suggestionsConfig : null;
 }
 
 /// Extension on State for accessing inherited widget.
 extension BuildContextExtension on BuildContext {
-  ChatViewInheritedWidget? get provide => ChatViewInheritedWidget.of(this);
+  ChatViewInheritedWidget? get provide =>
+      mounted ? ChatViewInheritedWidget.of(this) : null;
 
   ReplySuggestionsConfig? get suggestionsConfig =>
-      SuggestionsConfigIW.of(this)?.suggestionsConfig;
+      mounted ? SuggestionsConfigIW.of(this)?.suggestionsConfig : null;
 }

@@ -6,3 +6,4 @@
 4.  Make sure your code lints.
 5.  Push your work back up to your fork.
 6.  Create the pull request!
+7.  Include the PR in the CHANGELOG.md
