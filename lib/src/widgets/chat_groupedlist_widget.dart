@@ -225,18 +225,12 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
                 valueListenable: ChatViewInheritedWidget.of(context)!
                     .chatController
                     .newSuggestions,
-                builder: (context, value, child) {
-                  return SuggestionList(
-                    suggestions: value,
-                  );
-                },
+                builder: (context, value, child) => SuggestionList(
+                  suggestions: value,
+                ),
               ),
             ),
           ),
-
-          // Adds bottom space to the message list, ensuring it is displayed
-          // above the message text field.
-          const SizedBox(height: 100),
         ],
       ),
     );
