@@ -33,7 +33,6 @@ class ChatGroupedListWidget extends StatefulWidget {
   const ChatGroupedListWidget({
     Key? key,
     required this.showPopUp,
-    required this.showTypingIndicator,
     required this.scrollController,
     required this.chatBackgroundConfig,
     required this.replyMessage,
@@ -52,8 +51,7 @@ class ChatGroupedListWidget extends StatefulWidget {
   /// Allow user to swipe to see time while reaction pop is not open.
   final bool showPopUp;
 
-  /// Allow user to show typing indicator.
-  final bool showTypingIndicator;
+  /// Pass scroll controller
   final ScrollController scrollController;
 
   /// Allow user to give customisation to background of chat
@@ -102,8 +100,6 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
       widget.chatBackgroundConfig;
 
   bool get showPopUp => widget.showPopUp;
-
-  bool get showTypingIndicator => widget.showTypingIndicator;
 
   bool highlightMessage = false;
   final ValueNotifier<String?> _replyId = ValueNotifier(null);
@@ -184,7 +180,6 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
       reverse: true,
       // When reaction popup is being appeared at that user should not scroll.
       physics: showPopUp ? const NeverScrollableScrollPhysics() : null,
-      padding: EdgeInsets.only(bottom: showTypingIndicator ? 50 : 0),
       controller: widget.scrollController,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -210,23 +205,19 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
                   )
                 : _chatStreamBuilder,
           ),
-          widget.showTypingIndicator
-              ? TypingIndicator(
-                  typeIndicatorConfig: widget.typeIndicatorConfig,
-                  chatBubbleConfig: chatBubbleConfig?.inComingChatBubbleConfig,
-                  showIndicator: widget.showTypingIndicator,
-                )
-              : ValueListenableBuilder(
-                  valueListenable: ChatViewInheritedWidget.of(context)!
-                      .chatController
-                      .typingIndicatorNotifier,
-                  builder: (context, value, child) => TypingIndicator(
+          ValueListenableBuilder(
+            valueListenable: ChatViewInheritedWidget.of(context)!
+                .chatController
+                .typingIndicatorNotifier,
+            builder: (context, value, child) => value
+                ? TypingIndicator(
                     typeIndicatorConfig: widget.typeIndicatorConfig,
                     chatBubbleConfig:
                         chatBubbleConfig?.inComingChatBubbleConfig,
                     showIndicator: value,
-                  ),
-                ),
+                  )
+                : Container(),
+          ),
           Flexible(
             child: Align(
               alignment: suggestionsListConfig.axisAlignment.alignment,
