@@ -22,6 +22,7 @@
 import 'dart:async';
 
 import 'package:chatview/src/widgets/suggestions/suggestion_list.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../models/models.dart';
@@ -41,7 +42,7 @@ class ChatController {
   ///    chatcontroller.typingIndicatorNotifier.addListener((){});
   ///  ```
   /// For more functionalities see [ValueNotifier].
-  ValueNotifier<bool> get typingIndicatorNotifier => _showTypingIndicator;
+  ValueListenable<bool> get typingIndicatorNotifier => _showTypingIndicator;
 
   /// Allow user to add reply suggestions defaults to empty.
   final ValueNotifier<List<SuggestionItemData>> _replySuggestion =
@@ -53,7 +54,7 @@ class ChatController {
   ///    chatcontroller.newSuggestions.addListener((){});
   ///  ```
   /// For more functionalities see [ValueNotifier].
-  ValueNotifier<List<SuggestionItemData>> get newSuggestions =>
+  ValueListenable<List<SuggestionItemData>> get newSuggestions =>
       _replySuggestion;
 
   /// Getter for typingIndicator value instead of accessing [_showTypingIndicator.value]
@@ -83,8 +84,13 @@ class ChatController {
   /// Represents message stream of chat
   StreamController<List<Message>> messageStreamController = StreamController();
 
-  /// Used to dispose stream.
-  void dispose() => messageStreamController.close();
+  /// Used to dispose ValueNotifiers and Streams.
+  void dispose() {
+    _showTypingIndicator.dispose();
+    _replySuggestion.dispose();
+    scrollController.dispose();
+    messageStreamController.close();
+  }
 
   /// Used to add message in message list.
   void addMessage(Message message) {

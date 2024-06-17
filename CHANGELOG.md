@@ -52,6 +52,8 @@
   error when using `BuildContext` or `State` extensions when not mounted.
 * **Fix**: [192](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/192) Fix
   send to closed socket or animate on `ScrollController` without clients.
+* **Fix**: [194](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/194) Dispose
+  all `ValueNotifier`s and `ScrollController`s in `ChatController`.
 
 ## [1.3.1]
 
