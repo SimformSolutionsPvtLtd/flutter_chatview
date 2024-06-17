@@ -160,8 +160,6 @@ class _ChatViewState extends State<ChatView>
 
   ChatController get chatController => widget.chatController;
 
-  // bool get showTypingIndicator => widget.showTypingIndicator;
-
   ChatBackgroundConfiguration get chatBackgroundConfig =>
       widget.chatBackgroundConfig;
 
@@ -242,8 +240,6 @@ class _ChatViewState extends State<ChatView>
                           valueListenable: replyMessage,
                           builder: (_, state, child) {
                             return ChatListWidget(
-                              showTypingIndicator:
-                                  chatController.showTypingIndicator,
                               replyMessage: state,
                               chatController: widget.chatController,
                               chatBackgroundConfig: widget.chatBackgroundConfig,

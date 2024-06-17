@@ -36,7 +36,6 @@ class ChatListWidget extends StatefulWidget {
     Key? key,
     required this.chatController,
     required this.chatBackgroundConfig,
-    required this.showTypingIndicator,
     required this.assignReplyMessage,
     required this.replyMessage,
     this.loadingWidget,
@@ -62,9 +61,6 @@ class ChatListWidget extends StatefulWidget {
 
   /// Provides widget for loading view while pagination is enabled.
   final Widget? loadingWidget;
-
-  /// Provides flag for turn on/off typing indicator.
-  final bool showTypingIndicator;
 
   /// Provides configuration for reaction pop up appearance.
   final ReactionPopupConfiguration? reactionPopupConfig;
@@ -127,8 +123,6 @@ class _ChatListWidgetState extends State<ChatListWidget>
   List<Message> get messageList => chatController.initialMessageList;
 
   ScrollController get scrollController => chatController.scrollController;
-
-  bool get showTypingIndicator => widget.showTypingIndicator;
 
   ChatBackgroundConfiguration get chatBackgroundConfig =>
       widget.chatBackgroundConfig;
@@ -193,7 +187,6 @@ class _ChatListWidgetState extends State<ChatListWidget>
                 children: [
                   ChatGroupedListWidget(
                     showPopUp: showPopupValue,
-                    showTypingIndicator: showTypingIndicator,
                     scrollController: scrollController,
                     isEnableSwipeToSeeTime:
                         featureActiveConfig?.enableSwipeToSeeTime ?? true,
