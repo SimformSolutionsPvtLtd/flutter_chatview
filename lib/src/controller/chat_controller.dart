@@ -80,7 +80,10 @@ class ChatController {
   StreamController<List<Message>> messageStreamController = StreamController();
 
   /// Used to dispose stream.
-  void dispose() => messageStreamController.close();
+  void dispose() {
+    _replySuggestion.dispose();
+    messageStreamController.close();
+  }
 
   /// Used to add message in message list.
   void addMessage(Message message) {
