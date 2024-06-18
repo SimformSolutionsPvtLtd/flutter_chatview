@@ -121,7 +121,7 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
 
   bool get isEnableSwipeToSeeTime => widget.isEnableSwipeToSeeTime;
 
-  double height = 0;
+  double chatTextFieldHeight = 0;
 
   @override
   void initState() {
@@ -140,7 +140,7 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       setState(() {
-        height =
+        chatTextFieldHeight =
             provide?.chatTextFieldViewKey.currentContext?.size?.height ?? 10;
       });
     });
@@ -245,7 +245,9 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
 
           // Adds bottom space to the message list, ensuring it is displayed
           // above the message text field.
-          const SizedBox(height: 100),
+          SizedBox(
+            height: chatTextFieldHeight,
+          ),
         ],
       ),
     );
