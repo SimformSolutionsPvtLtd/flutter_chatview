@@ -77,7 +77,7 @@ class _ChatScreenState extends State<ChatScreen> {
         id: DateTime.now().toString(),
         message: 'I will schedule the meeting.',
         createdAt: DateTime.now(),
-        sendBy: '2',
+        sentBy: '2',
       ),
     );
     await Future.delayed(const Duration(milliseconds: 500));
@@ -321,7 +321,7 @@ class _ChatScreenState extends State<ChatScreen> {
         id: DateTime.now().toString(),
         createdAt: DateTime.now(),
         message: message,
-        sendBy: currentUser.id,
+        sentBy: currentUser.id,
         replyMessage: replyMessage,
         messageType: messageType,
       ),

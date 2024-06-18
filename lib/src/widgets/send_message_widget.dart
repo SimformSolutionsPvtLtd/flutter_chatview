@@ -290,7 +290,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
       _replyMessage.value = ReplyMessage(
         message: message.message,
         replyBy: currentUser!.id,
-        replyTo: message.sendBy,
+        replyTo: message.sentBy,
         messageType: message.messageType,
         messageId: message.id,
         voiceMessageDuration: message.voiceMessageDuration,

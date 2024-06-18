@@ -124,7 +124,7 @@ class ChatController {
       id: messageId,
       message: message.message,
       createdAt: message.createdAt,
-      sendBy: message.sendBy,
+      sentBy: message.sentBy,
       replyMessage: message.replyMessage,
       reaction: message.reaction,
       messageType: message.messageType,

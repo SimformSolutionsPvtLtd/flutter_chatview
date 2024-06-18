@@ -42,7 +42,7 @@ typedef StringWithReturnWidget = Widget Function(String separator);
 typedef DragUpdateDetailsCallback = void Function(DragUpdateDetails);
 typedef MoreTapCallBack = void Function(
   Message message,
-  bool sendByCurrentUser,
+  bool sentByCurrentUser,
 );
 typedef ReactionCallback = void Function(
   Message message,

@@ -220,7 +220,7 @@ class _ChatListWidgetState extends State<ChatListWidget>
                       if (featureActiveConfig?.enableReplySnackBar ?? false) {
                         _showReplyPopup(
                           message: message,
-                          sendByCurrentUser: message.sendBy == currentUser?.id,
+                          sentByCurrentUser: message.sentBy == currentUser?.id,
                         );
                       }
                     },
@@ -256,7 +256,7 @@ class _ChatListWidgetState extends State<ChatListWidget>
 
   void _showReplyPopup({
     required Message message,
-    required bool sendByCurrentUser,
+    required bool sentByCurrentUser,
   }) {
     final replyPopup = widget.replyPopupConfig;
     ScaffoldMessenger.of(context)
@@ -265,7 +265,7 @@ class _ChatListWidgetState extends State<ChatListWidget>
             duration: const Duration(hours: 1),
             backgroundColor: replyPopup?.backgroundColor ?? Colors.white,
             content: replyPopup?.replyPopupBuilder != null
-                ? replyPopup!.replyPopupBuilder!(message, sendByCurrentUser)
+                ? replyPopup!.replyPopupBuilder!(message, sentByCurrentUser)
                 : ReplyPopupWidget(
                     buttonTextStyle: replyPopup?.buttonTextStyle,
                     topBorderColor: replyPopup?.topBorderColor,
@@ -273,7 +273,7 @@ class _ChatListWidgetState extends State<ChatListWidget>
                       _onChatListTap();
                       replyPopup?.onMoreTap?.call(
                         message,
-                        sendByCurrentUser,
+                        sentByCurrentUser,
                       );
                     },
                     onReportTap: () {
@@ -298,7 +298,7 @@ class _ChatListWidgetState extends State<ChatListWidget>
                         replyPopup?.onReplyTap!(message);
                       }
                     },
-                    sendByCurrentUser: sendByCurrentUser,
+                    sentByCurrentUser: sentByCurrentUser,
                   ),
             padding: EdgeInsets.zero,
           ),

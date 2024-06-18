@@ -6,6 +6,8 @@
   json serializable of models and added copyWith method (Message, Reaction and Reply Message).
 * **Breaking**: [181](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/181) Removed
   deprecated field `showTypingIndicator` from ChatView.
+* **Breaking**: [187](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/187) update sendBy
+    parameter name of Message class to sentBy
 * **Feat**: [179](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/179) Added reply
   suggestions functionality
 * **Feat**: [157](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/157) Added onTap
