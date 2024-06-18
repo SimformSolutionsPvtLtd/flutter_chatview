@@ -50,11 +50,11 @@ class ReplyMessageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentUser = ChatViewInheritedWidget.of(context)?.currentUser;
+    final chatController = ChatViewInheritedWidget.of(context)?.chatController;
+    final currentUser = chatController?.currentUser;
     final replyBySender = message.replyMessage.replyBy == currentUser?.id;
     final textTheme = Theme.of(context).textTheme;
     final replyMessage = message.replyMessage.message;
-    final chatController = ChatViewInheritedWidget.of(context)?.chatController;
     final messagedUser =
         chatController?.getUserFromId(message.replyMessage.replyBy);
     final replyBy = replyBySender ? PackageStrings.you : messagedUser?.name;

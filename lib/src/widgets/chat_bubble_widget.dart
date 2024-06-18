@@ -117,7 +117,7 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
     if (provide != null) {
       featureActiveConfig = provide!.featureActiveConfig;
       chatController = provide!.chatController;
-      currentUser = provide!.currentUser;
+      currentUser = chatController?.currentUser;
     }
   }
 
@@ -311,7 +311,7 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
       crossAxisAlignment:
           isMessageBySender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       children: [
-        if ((chatController?.chatUsers.length ?? 0) > 1 &&
+        if ((chatController?.otherUsers.isNotEmpty ?? false) &&
             !isMessageBySender &&
             (featureActiveConfig?.enableOtherUserName ?? true))
           Padding(

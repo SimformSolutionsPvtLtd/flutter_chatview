@@ -98,7 +98,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (provide != null) {
-      currentUser = provide!.currentUser;
+      currentUser = provide!.chatController.currentUser;
     }
   }
 

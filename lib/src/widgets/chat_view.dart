@@ -34,7 +34,6 @@ class ChatView extends StatefulWidget {
   const ChatView({
     Key? key,
     required this.chatController,
-    required this.currentUser,
     this.onSendTap,
     this.profileCircleConfig,
     this.chatBubbleConfig,
@@ -124,9 +123,6 @@ class ChatView extends StatefulWidget {
   /// Provides configuration for chat view state appearance and functionality.
   final ChatViewStateConfiguration? chatViewStateConfig;
 
-  /// Provides current user which is sending messages.
-  final ChatUser currentUser;
-
   /// Provides configuration for turn on/off specific features.
   final FeatureActiveConfig featureActiveConfig;
 
@@ -180,8 +176,6 @@ class _ChatViewState extends State<ChatView>
   void initState() {
     super.initState();
     setLocaleMessages('en', ReceiptsCustomMessages());
-    // Adds current user in users list.
-    chatController.chatUsers.add(widget.currentUser);
   }
 
   @override
@@ -194,7 +188,6 @@ class _ChatViewState extends State<ChatView>
     return ChatViewInheritedWidget(
       chatController: chatController,
       featureActiveConfig: featureActiveConfig,
-      currentUser: widget.currentUser,
       profileCircleConfiguration: widget.profileCircleConfig,
       child: SuggestionsConfigIW(
         suggestionsConfig: widget.replySuggestionsConfig,

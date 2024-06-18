@@ -147,7 +147,7 @@ class _ChatListWidgetState extends State<ChatListWidget>
     super.didChangeDependencies();
     if (provide != null) {
       featureActiveConfig = provide!.featureActiveConfig;
-      currentUser = provide!.currentUser;
+      currentUser = provide!.chatController.currentUser;
     }
     if (featureActiveConfig?.enablePagination ?? false) {
       // When flag is on then it will include pagination logic to scroll

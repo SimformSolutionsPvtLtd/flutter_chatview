@@ -108,7 +108,7 @@ class _ReactionWidgetState extends State<ReactionWidget> {
                     fontSize: messageReactionConfig?.reactionSize ?? 13,
                   ),
                 ),
-                if ((chatController?.chatUsers.length ?? 0) > 1) ...[
+                if (chatController?.otherUsers.isNotEmpty ?? false) ...[
                   if (!(widget.reaction.reactedUserIds.length > 3) &&
                       !(reactionsSet.length > 1))
                     ...List.generate(
