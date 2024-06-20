@@ -184,6 +184,7 @@ class _ChatListWidgetState extends State<ChatListWidget>
             valueListenable: showPopUp,
             builder: (_, showPopupValue, child) {
               return Stack(
+                clipBehavior: Clip.none,
                 children: [
                   ChatGroupedListWidget(
                     showPopUp: showPopupValue,

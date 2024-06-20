@@ -22,6 +22,7 @@
 import 'package:chatview/chatview.dart';
 import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
+import 'package:chatview/src/widgets/custom_scroll_behavior.dart';
 import 'package:chatview/src/widgets/suggestions/suggestion_list.dart';
 import 'package:chatview/src/widgets/type_indicator_widget.dart';
 import 'package:flutter/material.dart';
@@ -117,29 +118,10 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
 
   bool get isEnableSwipeToSeeTime => widget.isEnableSwipeToSeeTime;
 
-  double chatTextFieldHeight = 0;
-
   @override
   void initState() {
     super.initState();
     _initializeAnimation();
-    updateChatTextFieldHeight();
-  }
-
-  @override
-  void didUpdateWidget(covariant ChatGroupedListWidget oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    updateChatTextFieldHeight();
-  }
-
-  void updateChatTextFieldHeight() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      setState(() {
-        chatTextFieldHeight =
-            provide?.chatTextFieldViewKey.currentContext?.size?.height ?? 10;
-      });
-    });
   }
 
   void _initializeAnimation() {
@@ -176,65 +158,71 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
   Widget build(BuildContext context) {
     final suggestionsListConfig =
         suggestionsConfig?.listConfig ?? const SuggestionListConfig();
-    return SingleChildScrollView(
-      reverse: true,
-      // When reaction popup is being appeared at that user should not scroll.
-      physics: showPopUp ? const NeverScrollableScrollPhysics() : null,
-      controller: widget.scrollController,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          GestureDetector(
-            onHorizontalDragUpdate: (details) => isEnableSwipeToSeeTime
-                ? showPopUp
-                    ? null
-                    : _onHorizontalDrag(details)
-                : null,
-            onHorizontalDragEnd: (details) => isEnableSwipeToSeeTime
-                ? showPopUp
-                    ? null
-                    : _animationController?.reverse()
-                : null,
-            onTap: widget.onChatListTap,
-            child: _animationController != null
-                ? AnimatedBuilder(
-                    animation: _animationController!,
-                    builder: (context, child) {
-                      return _chatStreamBuilder;
-                    },
-                  )
-                : _chatStreamBuilder,
-          ),
-          if (chatController != null)
-            ValueListenableBuilder(
-              valueListenable: chatController!.typingIndicatorNotifier,
-              builder: (context, value, child) => TypingIndicator(
-                typeIndicatorConfig: widget.typeIndicatorConfig,
-                chatBubbleConfig: chatBubbleConfig?.inComingChatBubbleConfig,
-                showIndicator: value,
-              ),
+    return ScrollConfiguration(
+      behavior: CustomScrollBehavior(
+        bottomPadding: MediaQuery.of(context).size.height,
+      ),
+      child: SingleChildScrollView(
+        reverse: true,
+
+        // When reaction popup is being appeared at that user should not scroll.
+        physics: showPopUp ? const NeverScrollableScrollPhysics() : null,
+        controller: widget.scrollController,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            GestureDetector(
+              onHorizontalDragUpdate: (details) => isEnableSwipeToSeeTime
+                  ? showPopUp
+                      ? null
+                      : _onHorizontalDrag(details)
+                  : null,
+              onHorizontalDragEnd: (details) => isEnableSwipeToSeeTime
+                  ? showPopUp
+                      ? null
+                      : _animationController?.reverse()
+                  : null,
+              onTap: widget.onChatListTap,
+              child: _animationController != null
+                  ? AnimatedBuilder(
+                      animation: _animationController!,
+                      builder: (context, child) {
+                        return _chatStreamBuilder;
+                      },
+                    )
+                  : _chatStreamBuilder,
             ),
-          if (chatController != null)
-            Flexible(
-              child: Align(
-                alignment: suggestionsListConfig.axisAlignment.alignment,
-                child: ValueListenableBuilder(
-                  valueListenable: chatController!.newSuggestions,
-                  builder: (context, value, child) {
-                    return SuggestionList(
-                      suggestions: value,
-                    );
-                  },
+            if (chatController != null)
+              ValueListenableBuilder(
+                valueListenable: chatController!.typingIndicatorNotifier,
+                builder: (context, value, child) => TypingIndicator(
+                  typeIndicatorConfig: widget.typeIndicatorConfig,
+                  chatBubbleConfig: chatBubbleConfig?.inComingChatBubbleConfig,
+                  showIndicator: value,
                 ),
               ),
-            ),
+            if (chatController != null)
+              Flexible(
+                child: Align(
+                  alignment: suggestionsListConfig.axisAlignment.alignment,
+                  child: ValueListenableBuilder(
+                    valueListenable: chatController!.newSuggestions,
+                    builder: (context, value, child) {
+                      return SuggestionList(
+                        suggestions: value,
+                      );
+                    },
+                  ),
+                ),
+              ),
 
-          // Adds bottom space to the message list, ensuring it is displayed
-          // above the message text field.
-          SizedBox(
-            height: chatTextFieldHeight,
-          ),
-        ],
+            // Adds bottom space to the message list, ensuring it is displayed
+            // above the message text field.
+            SizedBox(
+              height: MediaQuery.of(context).size.height,
+            ),
+          ],
+        ),
       ),
     );
   }
