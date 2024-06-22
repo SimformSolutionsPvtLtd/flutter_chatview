@@ -232,7 +232,7 @@ class _MessageViewState extends State<MessageView>
                   );
                 } else if (widget.message.messageType.isCustom &&
                     messageConfig?.customMessageBuilder != null) {
-                  return messageConfig?.customMessageBuilder!(widget.message);
+                  return messageConfig?.customMessageBuilder!(widget.message, messageConfig);
                 }
               }()) ??
               const SizedBox(),
