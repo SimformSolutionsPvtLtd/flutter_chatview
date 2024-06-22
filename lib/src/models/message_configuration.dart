@@ -36,7 +36,7 @@ class MessageConfiguration {
   final EmojiMessageConfiguration? emojiMessageConfig;
 
   /// Provides builder to create view for custom messages.
-  final Widget Function(Message, MessageConfiguration?)? customMessageBuilder;
+  final Widget Function(Message, MessageConfiguration?, bool, bool, double)? customMessageBuilder;
 
   /// Configurations for voice message bubble
   final VoiceMessageConfiguration? voiceMessageConfig;
