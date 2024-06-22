@@ -183,6 +183,12 @@ visit [Chat View Example](https://chat-view-8f1b5.web.app/#/).
     }
     ```
 
+- Add MessageConfiguration, isMessageBySender, highlightImage, highlightScale to customMessageBuilder wherever you use it.
+ex:
+  ```dart
+    
+  ```
+
 ## Installing
 
 1.  Add dependency to `pubspec.yaml`
