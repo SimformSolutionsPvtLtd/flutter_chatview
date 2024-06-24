@@ -1,4 +1,4 @@
-## [2.0.0] (Unreleased)
+## [2.0.0]
 
 * **Breaking**: [203](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/203) Dart  
   Minimum Version 3.2.0
