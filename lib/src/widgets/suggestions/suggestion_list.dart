@@ -68,6 +68,8 @@ class _SuggestionListState extends State<SuggestionList>
       padding:
           suggestionsListConfig.padding ?? const EdgeInsets.only(left: 8.0),
       margin: suggestionsListConfig.margin,
+      // TODO: Switch to SizeTransition once support for
+      // `fixedCrossAxisSizeFactor` is provided.
       child: ClipRect(
         child: AnimatedBuilder(
           animation: _controller,

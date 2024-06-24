@@ -2,7 +2,7 @@
 
 * **Breaking**: [173](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/173) Added
   callback to sort message in chat.
-* **Breaking**: [177](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/177) Fixed
+* **Breaking**: [178](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/178) Fixed
   json serializable of models and added copyWith method (Message, Reaction and Reply Message).
 * **Breaking**: [181](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/181) Removed
   deprecated field `showTypingIndicator` from ChatView.
@@ -10,7 +10,7 @@
   sendBy parameter name of Message class to sentBy
 * **Breaking**: [190](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/190) Move
   currentUser into ChatController from ChatView widget and rename chatUsers to otherUsers
-* **Feat**: [179](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/179) Added reply
+* **Feat**: [184](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/184) Added reply
   suggestions functionality
 * **Feat**: [157](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/157) Added onTap
   of reacted user from reacted user list.
@@ -54,6 +54,8 @@
   send to closed socket or animate on `ScrollController` without clients.
 * **Fix**: [194](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/194) Dispose
   all `ValueNotifier`s and `ScrollController`s in `ChatController`.
+* **chore**: [168](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/168) Update 
+  intl to version 0.19.0.
 
 ## [1.3.1]
 
