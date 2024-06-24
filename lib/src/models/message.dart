@@ -138,7 +138,7 @@ class Message {
     bool forceNullValue = false,
   }) {
     return Message(
-      id: id ?? this.message,
+      id: id ?? this.id,
       message: message ?? this.message,
       createdAt: createdAt ?? this.createdAt,
       sentBy: sentBy ?? this.sentBy,
