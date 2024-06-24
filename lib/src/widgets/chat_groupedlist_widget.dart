@@ -324,6 +324,7 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
           return ListView.builder(
             key: widget.key,
             physics: const NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.zero,
             shrinkWrap: true,
             itemCount: (enableSeparator
                 ? messages.length + messageSeparator.length
