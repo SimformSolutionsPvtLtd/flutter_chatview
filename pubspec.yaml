@@ -9,14 +9,13 @@ platforms:
   ios:
 
 environment:
-  sdk: '>=3.0.3 <4.0.0'
-  flutter: '>=3.10.3'
+  sdk: '>=3.2.0 <4.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
   intl: ^0.19.0
-  url_launcher: ^6.1.14
+  url_launcher: ^6.3.0
   emoji_picker_flutter: ^2.1.1
   any_link_preview: ^3.0.1
   image_picker: '>=0.8.9 <2.0.0'

@@ -1,5 +1,7 @@
 ## [2.0.0] (Unreleased)
 
+* **Breaking**: [203](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/203) Dart  
+  Minimum Version 3.2.0
 * **Breaking**: [202](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/202) 
   Message copyWith id value fix.
 * **Breaking**: [173](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/173) Added
