@@ -25,6 +25,8 @@
   for configuring the audio recording quality.
 * **Feat**: [93](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/93) Added support
   that provide date pattern to change chat separation.
+* **Fix**: [200](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/200) ChatView 
+  iOS Padding Issue Fix
 * **Fix**: [139](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/139) Added
   support to customize view for the reply of any message.
 * **Fix**: [174](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/174) Fix wrong
