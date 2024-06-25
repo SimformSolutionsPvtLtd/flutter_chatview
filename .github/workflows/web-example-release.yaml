@@ -40,7 +40,7 @@ jobs:
       - name: Project Clean Up
         run: flutter clean && flutter pub get
       - name: Build Web App
-        run: cd example && flutter build web
+        run: cd example && flutter build web --base-href="/flutter_chatview/"
       - name: Upload Web Artifact
         uses: actions/upload-pages-artifact@v3.0.1
         with:
