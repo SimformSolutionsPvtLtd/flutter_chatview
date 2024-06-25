@@ -6,12 +6,11 @@
 A Flutter package that allows you to integrate Chat View with highly customization options such as one on one
 chat, group chat, message reactions, reply messages, link preview and configurations for overall view.
 
-For web demo
-visit [Chat View Example](https://chat-view-8f1b5.web.app/#/).
+For web demo visit [Chat View Example](https://simformsolutionspvtltd.github.io/flutter_chatview/).
 
 ## Preview
 
-![The example app running in iOS](https://raw.githubusercontent.com/SimformSolutionsPvtLtd/flutter_chat_ui/main/preview/chatview.gif)
+![The example app running in iOS](https://raw.githubusercontent.com/SimformSolutionsPvtLtd/flutter_chatview/main/preview/chatview.gif)
 
 ## Migration guide for release 2.0.0
 
@@ -1020,7 +1019,7 @@ Also, for whole example, check out the **example** app in the [example](https://
     <td align="center"><a href="https://github.com/DhvanitVaghani"><img src="https://avatars.githubusercontent.com/u/64645989?v=4" width="100px;" alt=""/><br /><sub><b>Dhvanit Vaghani</b></sub></a></td>
     <td align="center"><a href="https://github.com/Ujas-Majithiya"><img src="https://avatars.githubusercontent.com/u/56400956?v=4" width="100px;" alt=""/><br /><sub><b>Ujas Majithiya</b></sub></a></td>
     <td align="center"><a href="https://github.com/apurva780"><img src="https://avatars.githubusercontent.com/u/65003381?v=4" width="100px;" alt=""/><br /><sub><b>Apurva Kanthraviya</b></sub></a></td>
-
+    <td align="center"><a href="https://github.com/aditya-chavda"><img src="https://avatars.githubusercontent.com/u/41247722?v=4" width="100px;" alt=""/><br /><sub><b>Aditya Chavda</b></sub></a></td>
   </tr>
 </table>
 <br/>
