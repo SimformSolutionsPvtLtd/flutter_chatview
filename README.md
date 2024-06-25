@@ -21,6 +21,8 @@ visit [Chat View Example](https://chat-view-8f1b5.web.app/#/).
 
 - Moved `currentUser` field from `ChatView` widget to `ChatController` class
 
+- Updated `id` value in `copyWith` method of `Message` to have correct value.
+
 - Removed `showTypingIndicator` field from `ChatView` and replaced it with `ChatController.showTypingIndicator`.
 
   Before:

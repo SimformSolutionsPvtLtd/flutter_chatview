@@ -21,7 +21,6 @@
  */
 import 'package:chatview/chatview.dart';
 import 'package:chatview/src/extensions/extensions.dart';
-import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
 import 'package:chatview/src/widgets/suggestions/suggestion_list.dart';
 import 'package:chatview/src/widgets/type_indicator_widget.dart';
 import 'package:flutter/material.dart';
@@ -218,14 +217,7 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
             Flexible(
               child: Align(
                 alignment: suggestionsListConfig.axisAlignment.alignment,
-                child: ValueListenableBuilder(
-                  valueListenable: chatController!.newSuggestions,
-                  builder: (context, value, child) {
-                    return SuggestionList(
-                      suggestions: value,
-                    );
-                  },
-                ),
+                child: const SuggestionList(),
               ),
             ),
 
@@ -332,6 +324,7 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
           return ListView.builder(
             key: widget.key,
             physics: const NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.zero,
             shrinkWrap: true,
             itemCount: (enableSeparator
                 ? messages.length + messageSeparator.length
