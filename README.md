@@ -10,7 +10,7 @@ For web demo visit [Chat View Example](https://simformsolutionspvtltd.github.io/
 
 ## Preview
 
-![The example app running in iOS](https://raw.githubusercontent.com/SimformSolutionsPvtLtd/flutter_chat_ui/main/preview/chatview.gif)
+![The example app running in iOS](https://raw.githubusercontent.com/SimformSolutionsPvtLtd/flutter_chatview/main/preview/chatview.gif)
 
 ## Migration guide for release 2.0.0
 
