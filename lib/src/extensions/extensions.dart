@@ -20,6 +20,7 @@
  * SOFTWARE.
  */
 import 'package:chatview/chatview.dart';
+import 'package:chatview/src/inherited_widgets/configurations_inherited_widgets.dart';
 import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
 import 'package:chatview/src/widgets/profile_image_widget.dart';
 import 'package:chatview/src/widgets/suggestions/suggestions_config_inherited_widget.dart';
@@ -129,18 +130,34 @@ extension ChatViewStateTitleExtension on String? {
 
 /// Extension on State for accessing inherited widget.
 extension StatefulWidgetExtension on State {
-  ChatViewInheritedWidget? get provide =>
+  ChatViewInheritedWidget? get chatViewIW =>
       mounted ? ChatViewInheritedWidget.of(context) : null;
 
   ReplySuggestionsConfig? get suggestionsConfig =>
       mounted ? SuggestionsConfigIW.of(context)?.suggestionsConfig : null;
+
+  ConfigurationsInheritedWidget get chatListConfig =>
+      mounted && ConfigurationsInheritedWidget.of(context) != null
+          ? ConfigurationsInheritedWidget.of(context)!
+          : const ConfigurationsInheritedWidget(
+              chatBackgroundConfig: ChatBackgroundConfiguration(),
+              child: SizedBox.shrink(),
+            );
 }
 
 /// Extension on State for accessing inherited widget.
 extension BuildContextExtension on BuildContext {
-  ChatViewInheritedWidget? get provide =>
+  ChatViewInheritedWidget? get chatViewIW =>
       mounted ? ChatViewInheritedWidget.of(this) : null;
 
   ReplySuggestionsConfig? get suggestionsConfig =>
       mounted ? SuggestionsConfigIW.of(this)?.suggestionsConfig : null;
+
+  ConfigurationsInheritedWidget get chatListConfig =>
+      mounted && ConfigurationsInheritedWidget.of(this) != null
+          ? ConfigurationsInheritedWidget.of(this)!
+          : const ConfigurationsInheritedWidget(
+              chatBackgroundConfig: ChatBackgroundConfiguration(),
+              child: SizedBox.shrink(),
+            );
 }

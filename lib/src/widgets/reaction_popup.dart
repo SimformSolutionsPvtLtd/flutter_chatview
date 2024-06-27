@@ -29,14 +29,9 @@ import 'emoji_row.dart';
 class ReactionPopup extends StatefulWidget {
   const ReactionPopup({
     Key? key,
-    this.reactionPopupConfig,
     required this.onTap,
     required this.showPopUp,
-    this.emojiPickerSheetConfig,
   }) : super(key: key);
-
-  /// Provides configuration of reaction pop-up appearance.
-  final ReactionPopupConfiguration? reactionPopupConfig;
 
   /// Provides call back when user taps on reaction pop-up.
   final VoidCallBack onTap;
@@ -44,20 +39,26 @@ class ReactionPopup extends StatefulWidget {
   /// Represents should pop-up show or not.
   final bool showPopUp;
 
-  /// Configuration for emoji picker sheet
-  final Config? emojiPickerSheetConfig;
-
   @override
   ReactionPopupState createState() => ReactionPopupState();
 }
 
 class ReactionPopupState extends State<ReactionPopup>
     with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _scaleAnimation;
+  late final AnimationController _animationController = AnimationController(
+    vsync: this,
+    duration: reactionPopupConfig?.animationDuration ??
+        const Duration(milliseconds: 180),
+  );
+
+  late final Animation<double> _scaleAnimation = CurvedAnimation(
+    parent: _animationController,
+    curve: Curves.easeIn,
+    reverseCurve: Curves.easeInOutSine,
+  );
 
   ReactionPopupConfiguration? get reactionPopupConfig =>
-      widget.reactionPopupConfig;
+      chatListConfig.reactionPopupConfig;
 
   bool get showPopUp => widget.showPopUp;
   double _yCoordinate = 0.0;
@@ -70,27 +71,13 @@ class ReactionPopupState extends State<ReactionPopup>
   @override
   void initState() {
     super.initState();
-    _initializeAnimationControllers();
-  }
-
-  void _initializeAnimationControllers() {
-    _animationController = AnimationController(
-      vsync: this,
-      duration: widget.reactionPopupConfig?.animationDuration ??
-          const Duration(milliseconds: 180),
-    );
-    _scaleAnimation = CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeIn,
-      reverseCurve: Curves.easeInOutSine,
-    );
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (provide != null) {
-      chatController = provide!.chatController;
+    if (chatViewIW != null) {
+      chatController = chatViewIW!.chatController;
       currentUser = chatController?.currentUser;
     }
   }
@@ -171,8 +158,6 @@ class ReactionPopupState extends State<ReactionPopup>
             );
           }
         },
-        emojiConfiguration: reactionPopupConfig?.emojiConfig,
-        emojiPickerSheetConfig: widget.emojiPickerSheetConfig,
       );
 
   void refreshWidget({
