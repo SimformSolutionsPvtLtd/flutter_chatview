@@ -189,50 +189,50 @@ class _ChatListWidgetState extends State<ChatListWidget>
   }) {
     final replyPopup = chatListConfig.replyPopupConfig;
     ScaffoldMessenger.of(context)
-        .showSnackBar(
-          SnackBar(
-            duration: const Duration(hours: 1),
-            backgroundColor: replyPopup?.backgroundColor ?? Colors.white,
-            content: replyPopup?.replyPopupBuilder != null
-                ? replyPopup!.replyPopupBuilder!(message, sentByCurrentUser)
-                : ReplyPopupWidget(
-                    buttonTextStyle: replyPopup?.buttonTextStyle,
-                    topBorderColor: replyPopup?.topBorderColor,
-                    onMoreTap: () {
-                      _onChatListTap();
-                      replyPopup?.onMoreTap?.call(
-                        message,
-                        sentByCurrentUser,
-                      );
-                    },
-                    onReportTap: () {
-                      _onChatListTap();
-                      replyPopup?.onReportTap?.call(
-                        message,
-                      );
-                    },
-                    onUnsendTap: () {
-                      _onChatListTap();
-                      replyPopup?.onUnsendTap?.call(
-                        message,
-                      );
-                    },
-                    onReplyTap: () {
-                      widget.assignReplyMessage(message);
-                      if (featureActiveConfig?.enableReactionPopup ?? false) {
-                        chatViewIW?.showPopUp.value = false;
-                      }
-                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                      if (replyPopup?.onReplyTap != null) {
-                        replyPopup?.onReplyTap!(message);
-                      }
-                    },
-                    sentByCurrentUser: sentByCurrentUser,
-                  ),
-            padding: EdgeInsets.zero,
-          ),
-        )
-        .closed;
+      ..clearSnackBars()
+      ..showSnackBar(
+        SnackBar(
+          duration: const Duration(hours: 1),
+          backgroundColor: replyPopup?.backgroundColor ?? Colors.white,
+          content: replyPopup?.replyPopupBuilder != null
+              ? replyPopup!.replyPopupBuilder!(message, sentByCurrentUser)
+              : ReplyPopupWidget(
+                  buttonTextStyle: replyPopup?.buttonTextStyle,
+                  topBorderColor: replyPopup?.topBorderColor,
+                  onMoreTap: () {
+                    _onChatListTap();
+                    replyPopup?.onMoreTap?.call(
+                      message,
+                      sentByCurrentUser,
+                    );
+                  },
+                  onReportTap: () {
+                    _onChatListTap();
+                    replyPopup?.onReportTap?.call(
+                      message,
+                    );
+                  },
+                  onUnsendTap: () {
+                    _onChatListTap();
+                    replyPopup?.onUnsendTap?.call(
+                      message,
+                    );
+                  },
+                  onReplyTap: () {
+                    widget.assignReplyMessage(message);
+                    if (featureActiveConfig?.enableReactionPopup ?? false) {
+                      chatViewIW?.showPopUp.value = false;
+                    }
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                    if (replyPopup?.onReplyTap != null) {
+                      replyPopup?.onReplyTap!(message);
+                    }
+                  },
+                  sentByCurrentUser: sentByCurrentUser,
+                ),
+          padding: EdgeInsets.zero,
+        ),
+      ).closed;
   }
 
   void _onChatListTap() {
