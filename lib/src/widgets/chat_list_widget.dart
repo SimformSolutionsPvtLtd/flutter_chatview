@@ -28,7 +28,6 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
 import '../../chatview.dart';
-import 'reaction_popup.dart';
 import 'reply_popup_widget.dart';
 
 class ChatListWidget extends StatefulWidget {
@@ -73,8 +72,6 @@ class ChatListWidget extends StatefulWidget {
 class _ChatListWidgetState extends State<ChatListWidget>
     with SingleTickerProviderStateMixin {
   final ValueNotifier<bool> _isNextPageLoading = ValueNotifier<bool>(false);
-  ValueNotifier<bool> showPopUp = ValueNotifier(false);
-  final GlobalKey<ReactionPopupState> _reactionPopupKey = GlobalKey();
 
   ChatController get chatController => widget.chatController;
 
@@ -136,7 +133,7 @@ class _ChatListWidgetState extends State<ChatListWidget>
         ),
         Expanded(
           child: ValueListenableBuilder<bool>(
-            valueListenable: showPopUp,
+            valueListenable: chatViewIW!.showPopUp,
             builder: (_, showPopupValue, child) {
               return Stack(
                 children: [
@@ -149,14 +146,12 @@ class _ChatListWidgetState extends State<ChatListWidget>
                     replyMessage: widget.replyMessage,
                     onChatBubbleLongPress: (yCoordinate, xCoordinate, message) {
                       if (featureActiveConfig?.enableReactionPopup ?? false) {
-                        _reactionPopupKey.currentState?.refreshWidget(
+                        chatViewIW?.reactionPopupKey.currentState?.refreshWidget(
                           message: message,
                           xCoordinate: xCoordinate,
-                          yCoordinate: yCoordinate < 0
-                              ? -(yCoordinate) - 5
-                              : yCoordinate,
+                          yCoordinate: yCoordinate,
                         );
-                        showPopUp.value = true;
+                        chatViewIW?.showPopUp.value = true;
                       }
                       if (featureActiveConfig?.enableReplySnackBar ?? false) {
                         _showReplyPopup(
@@ -167,12 +162,7 @@ class _ChatListWidgetState extends State<ChatListWidget>
                     },
                     onChatListTap: _onChatListTap,
                   ),
-                  if (featureActiveConfig?.enableReactionPopup ?? false)
-                    ReactionPopup(
-                      key: _reactionPopupKey,
-                      onTap: _onChatListTap,
-                      showPopUp: showPopupValue,
-                    ),
+
                 ],
               );
             },
@@ -230,7 +220,7 @@ class _ChatListWidgetState extends State<ChatListWidget>
                     onReplyTap: () {
                       widget.assignReplyMessage(message);
                       if (featureActiveConfig?.enableReactionPopup ?? false) {
-                        showPopUp.value = false;
+                        chatViewIW?.showPopUp.value = false;
                       }
                       ScaffoldMessenger.of(context).hideCurrentSnackBar();
                       if (replyPopup?.onReplyTap != null) {
@@ -250,7 +240,7 @@ class _ChatListWidgetState extends State<ChatListWidget>
     if (!kIsWeb && (Platform.isIOS || Platform.isAndroid)) {
       FocusScope.of(context).unfocus();
     }
-    showPopUp.value = false;
+    chatViewIW?.showPopUp.value = false;
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
   }
 
@@ -259,7 +249,6 @@ class _ChatListWidgetState extends State<ChatListWidget>
     chatViewIW?.chatController.messageStreamController.close();
     scrollController.dispose();
     _isNextPageLoading.dispose();
-    showPopUp.dispose();
     super.dispose();
   }
 }
