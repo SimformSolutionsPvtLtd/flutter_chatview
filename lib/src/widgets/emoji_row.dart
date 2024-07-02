@@ -19,9 +19,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
+import 'package:chatview/src/extensions/extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:chatview/src/models/reaction_popup_configuration.dart';
 import 'package:chatview/src/utils/constants/constants.dart';
 
 import '../values/typedefs.dart';
@@ -31,15 +30,10 @@ class EmojiRow extends StatelessWidget {
   EmojiRow({
     Key? key,
     required this.onEmojiTap,
-    this.emojiConfiguration,
-    this.emojiPickerSheetConfig,
   }) : super(key: key);
 
   /// Provides callback when user taps on emoji in reaction pop-up.
   final StringCallback onEmojiTap;
-
-  /// Provides configuration of emoji's appearance in reaction pop-up.
-  final EmojiConfiguration? emojiConfiguration;
 
   /// These are default emojis.
   final List<String> _emojiUnicodes = [
@@ -51,13 +45,11 @@ class EmojiRow extends StatelessWidget {
     thumbsUp,
   ];
 
-  /// Configuration for emoji picker sheet
-  final Config? emojiPickerSheetConfig;
-
   @override
   Widget build(BuildContext context) {
-    final emojiList = emojiConfiguration?.emojiList ?? _emojiUnicodes;
-    final size = emojiConfiguration?.size;
+    final emojiConfig = context.chatListConfig.reactionPopupConfig?.emojiConfig;
+    final emojiList = emojiConfig?.emojiList ?? _emojiUnicodes;
+    final size = emojiConfig?.size;
     return Row(
       children: [
         Expanded(
@@ -91,10 +83,10 @@ class EmojiRow extends StatelessWidget {
 
   void _showBottomSheet(BuildContext context) => showModalBottomSheet<void>(
         context: context,
-        builder: (context) => EmojiPickerWidget(
-          emojiPickerSheetConfig: emojiPickerSheetConfig,
+        builder: (newContext) => EmojiPickerWidget(
+          emojiPickerSheetConfig: context.chatListConfig.emojiPickerSheetConfig,
           onSelected: (emoji) {
-            Navigator.pop(context);
+            Navigator.pop(newContext);
             onEmojiTap(emoji);
           },
         ),

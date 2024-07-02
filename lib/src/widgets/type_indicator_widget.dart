@@ -163,8 +163,8 @@ class _TypingIndicatorState extends State<TypingIndicator>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (provide != null) {
-      profileCircleConfiguration = provide!.profileCircleConfiguration;
+    if (chatViewIW != null) {
+      profileCircleConfiguration = chatViewIW!.profileCircleConfiguration;
     }
   }
 

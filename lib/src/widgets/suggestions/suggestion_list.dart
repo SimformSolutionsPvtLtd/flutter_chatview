@@ -29,7 +29,7 @@ class _SuggestionListState extends State<SuggestionList>
       vsync: this,
     )..addListener(updateSuggestionsOnAnimation);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final newSuggestions = provide?.chatController.newSuggestions;
+      final newSuggestions = chatViewIW?.chatController.newSuggestions;
       newSuggestions?.addListener(animateSuggestionList);
     });
   }
@@ -37,21 +37,21 @@ class _SuggestionListState extends State<SuggestionList>
   void updateSuggestionsOnAnimation() {
     if (isSuggestionListEmpty && _controller.value == 0) {
       suggestions = [];
-    } else if (provide?.chatController.newSuggestions.value.isNotEmpty ??
+    } else if (chatViewIW?.chatController.newSuggestions.value.isNotEmpty ??
         false) {
-      suggestions = provide?.chatController.newSuggestions.value ?? [];
+      suggestions = chatViewIW?.chatController.newSuggestions.value ?? [];
     }
   }
 
   @override
   void activate() {
     super.activate();
-    final newSuggestions = provide?.chatController.newSuggestions;
+    final newSuggestions = chatViewIW?.chatController.newSuggestions;
     newSuggestions?.addListener(animateSuggestionList);
   }
 
   void animateSuggestionList() {
-    final newSuggestions = provide?.chatController.newSuggestions;
+    final newSuggestions = chatViewIW?.chatController.newSuggestions;
     if (newSuggestions != null) {
       isSuggestionListEmpty = newSuggestions.value.isEmpty;
       isSuggestionListEmpty ? _controller.reverse() : _controller.forward();
@@ -113,7 +113,7 @@ class _SuggestionListState extends State<SuggestionList>
 
   @override
   void deactivate() {
-    final newSuggestions = provide?.chatController.newSuggestions;
+    final newSuggestions = chatViewIW?.chatController.newSuggestions;
     newSuggestions?.removeListener(animateSuggestionList);
     super.deactivate();
   }
