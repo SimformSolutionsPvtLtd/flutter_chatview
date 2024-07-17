@@ -27,6 +27,9 @@ class ImageMessageConfiguration {
   /// Provides configuration of share button while image message is appeared.
   final ShareIconConfiguration? shareIconConfig;
 
+  /// Hide share icon in image view.
+  final bool hideShareIcon;
+
   /// Provides callback when user taps on image message.
   final StringCallback? onTap;
 
@@ -46,6 +49,7 @@ class ImageMessageConfiguration {
   final BorderRadius? borderRadius;
 
   const ImageMessageConfiguration({
+    this.hideShareIcon = false,
     this.shareIconConfig,
     this.onTap,
     this.height,

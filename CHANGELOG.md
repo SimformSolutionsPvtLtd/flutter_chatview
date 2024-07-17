@@ -2,6 +2,8 @@
 
 * **Fix**: [217](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/217) fixed y
   position of reaction popup
+* **Feat** [223](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/223) ability to
+  hide share icon in image view
 
 ## [2.0.0]
 
