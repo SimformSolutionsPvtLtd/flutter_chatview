@@ -165,10 +165,14 @@ class ReactionPopupState extends State<ReactionPopup>
     required double xCoordinate,
     required double yCoordinate,
   }) {
-    setState(() {
-      _message = message;
-      _xCoordinate = xCoordinate;
-      _yCoordinate = yCoordinate;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        final yPosition = yCoordinate -
+            (chatViewIW!.reactionPopupKey.currentContext?.size?.height ?? 0);
+        _message = message;
+        _xCoordinate = xCoordinate;
+        _yCoordinate = yPosition < 0 ? 0 : yPosition;
+      });
     });
   }
 
