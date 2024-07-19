@@ -1,5 +1,7 @@
 ## [2.0.1]
 
+* **Fix**: [226](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/226) micIcon and
+  stopIcon misplacement
 * **Fix**: [217](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/217) fixed y
   position of reaction popup
 * **Feat** [223](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/223) ability to
