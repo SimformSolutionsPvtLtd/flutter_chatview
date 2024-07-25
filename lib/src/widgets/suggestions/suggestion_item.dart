@@ -20,7 +20,7 @@ class SuggestionItem extends StatelessWidget {
       onTap: () {
         suggestionsConfig.onTap?.call(suggestionItemData);
         if (suggestionsConfig.autoDismissOnSelection) {
-          context.provide?.chatController.removeReplySuggestions();
+          context.chatViewIW?.chatController.removeReplySuggestions();
         }
       },
       child: Container(

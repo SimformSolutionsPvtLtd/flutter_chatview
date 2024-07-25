@@ -58,8 +58,8 @@ class _ReactionWidgetState extends State<ReactionWidget> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (provide != null) {
-      chatController = provide!.chatController;
+    if (chatViewIW != null) {
+      chatController = chatViewIW!.chatController;
     }
   }
 

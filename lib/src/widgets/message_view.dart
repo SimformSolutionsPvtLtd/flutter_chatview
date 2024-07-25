@@ -269,7 +269,7 @@ class _MessageViewState extends State<MessageView>
   void _onLongPressStart(LongPressStartDetails details) async {
     await _animationController?.forward();
     widget.onLongPress(
-      details.globalPosition.dy - 120 - 64,
+      details.globalPosition.dy,
       details.globalPosition.dx,
     );
   }

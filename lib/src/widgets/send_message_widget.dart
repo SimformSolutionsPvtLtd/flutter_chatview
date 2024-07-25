@@ -35,9 +35,7 @@ class SendMessageWidget extends StatefulWidget {
   const SendMessageWidget({
     Key? key,
     required this.onSendTap,
-    required this.chatController,
     this.sendMessageConfig,
-    this.backgroundColor,
     this.sendMessageBuilder,
     this.onReplyCallback,
     this.onReplyCloseCallback,
@@ -51,8 +49,6 @@ class SendMessageWidget extends StatefulWidget {
   /// Provides configuration for text field appearance.
   final SendMessageConfiguration? sendMessageConfig;
 
-  /// Allow user to set background colour.
-  final Color? backgroundColor;
 
   /// Allow user to set custom text field.
   final ReplyMessageWithReturnWidget? sendMessageBuilder;
@@ -62,9 +58,6 @@ class SendMessageWidget extends StatefulWidget {
 
   /// Provides call when user tap on close button which is showed in reply pop-up.
   final VoidCallBack? onReplyCloseCallback;
-
-  /// Provides controller for accessing few function for running chat.
-  final ChatController chatController;
 
   /// Provides configuration of all types of messages.
   final MessageConfiguration? messageConfig;
@@ -85,7 +78,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
   final _focusNode = FocusNode();
 
   ChatUser? get repliedUser => replyMessage.replyTo.isNotEmpty
-      ? widget.chatController.getUserFromId(replyMessage.replyTo)
+      ? chatViewIW?.chatController.getUserFromId(replyMessage.replyTo)
       : null;
 
   String get _replyTo => replyMessage.replyTo == currentUser?.id
@@ -97,8 +90,8 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (provide != null) {
-      currentUser = provide!.chatController.currentUser;
+    if (chatViewIW != null) {
+      currentUser = chatViewIW!.chatController.currentUser;
     }
   }
 
@@ -122,11 +115,11 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                     child: Container(
                       height: MediaQuery.of(context).size.height /
                           ((!kIsWeb && Platform.isIOS) ? 24 : 28),
-                      color: widget.backgroundColor ?? Colors.white,
+                      color: chatListConfig.chatBackgroundConfig.backgroundColor ?? Colors.white,
                     ),
                   ),
                   Padding(
-                    key: provide?.chatTextFieldViewKey,
+                    key: chatViewIW?.chatTextFieldViewKey,
                     padding: EdgeInsets.fromLTRB(
                       bottomPadding4,
                       bottomPadding4,

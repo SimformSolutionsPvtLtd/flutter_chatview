@@ -28,68 +28,28 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
 import '../../chatview.dart';
-import 'reaction_popup.dart';
 import 'reply_popup_widget.dart';
 
 class ChatListWidget extends StatefulWidget {
   const ChatListWidget({
     Key? key,
     required this.chatController,
-    required this.chatBackgroundConfig,
     required this.assignReplyMessage,
     required this.replyMessage,
     this.loadingWidget,
-    this.reactionPopupConfig,
-    this.messageConfig,
-    this.chatBubbleConfig,
-    this.profileCircleConfig,
-    this.swipeToReplyConfig,
-    this.repliedMessageConfig,
-    this.typeIndicatorConfig,
-    this.replyPopupConfig,
     this.loadMoreData,
     this.isLastPage,
     this.onChatListTap,
-    this.emojiPickerSheetConfig,
   }) : super(key: key);
 
   /// Provides controller for accessing few function for running chat.
   final ChatController chatController;
 
-  /// Provides configuration for background of chat.
-  final ChatBackgroundConfiguration chatBackgroundConfig;
-
   /// Provides widget for loading view while pagination is enabled.
   final Widget? loadingWidget;
 
-  /// Provides configuration for reaction pop up appearance.
-  final ReactionPopupConfiguration? reactionPopupConfig;
-
-  /// Provides configuration for customisation of different types
-  /// messages.
-  final MessageConfiguration? messageConfig;
-
-  /// Provides configuration of chat bubble's appearance.
-  final ChatBubbleConfiguration? chatBubbleConfig;
-
-  /// Provides configuration for profile circle avatar of user.
-  final ProfileCircleConfiguration? profileCircleConfig;
-
-  /// Provides configuration for when user swipe to chat bubble.
-  final SwipeToReplyConfiguration? swipeToReplyConfig;
-
-  /// Provides configuration for replied message view which is located upon chat
-  /// bubble.
-  final RepliedMessageConfiguration? repliedMessageConfig;
-
-  /// Provides configuration of typing indicator's appearance.
-  final TypeIndicatorConfiguration? typeIndicatorConfig;
-
   /// Provides reply message when user swipe to chat bubble.
   final ReplyMessage replyMessage;
-
-  /// Provides configuration for reply snack bar's appearance and options.
-  final ReplyPopupConfiguration? replyPopupConfig;
 
   /// Provides callback when user actions reaches to top and needs to load more
   /// chat
@@ -105,9 +65,6 @@ class ChatListWidget extends StatefulWidget {
   /// Provides callback when user tap anywhere on whole chat.
   final VoidCallBack? onChatListTap;
 
-  /// Configuration for emoji picker sheet
-  final Config? emojiPickerSheetConfig;
-
   @override
   State<ChatListWidget> createState() => _ChatListWidgetState();
 }
@@ -115,17 +72,12 @@ class ChatListWidget extends StatefulWidget {
 class _ChatListWidgetState extends State<ChatListWidget>
     with SingleTickerProviderStateMixin {
   final ValueNotifier<bool> _isNextPageLoading = ValueNotifier<bool>(false);
-  ValueNotifier<bool> showPopUp = ValueNotifier(false);
-  final GlobalKey<ReactionPopupState> _reactionPopupKey = GlobalKey();
 
   ChatController get chatController => widget.chatController;
 
   List<Message> get messageList => chatController.initialMessageList;
 
   ScrollController get scrollController => chatController.scrollController;
-
-  ChatBackgroundConfiguration get chatBackgroundConfig =>
-      widget.chatBackgroundConfig;
 
   FeatureActiveConfig? featureActiveConfig;
   ChatUser? currentUser;
@@ -139,9 +91,9 @@ class _ChatListWidgetState extends State<ChatListWidget>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (provide != null) {
-      featureActiveConfig = provide!.featureActiveConfig;
-      currentUser = provide!.chatController.currentUser;
+    if (chatViewIW != null) {
+      featureActiveConfig = chatViewIW!.featureActiveConfig;
+      currentUser = chatViewIW!.chatController.currentUser;
     }
     if (featureActiveConfig?.enablePagination ?? false) {
       // When flag is on then it will include pagination logic to scroll
@@ -181,7 +133,7 @@ class _ChatListWidgetState extends State<ChatListWidget>
         ),
         Expanded(
           child: ValueListenableBuilder<bool>(
-            valueListenable: showPopUp,
+            valueListenable: chatViewIW!.showPopUp,
             builder: (_, showPopupValue, child) {
               return Stack(
                 children: [
@@ -190,25 +142,16 @@ class _ChatListWidgetState extends State<ChatListWidget>
                     scrollController: scrollController,
                     isEnableSwipeToSeeTime:
                         featureActiveConfig?.enableSwipeToSeeTime ?? true,
-                    chatBackgroundConfig: widget.chatBackgroundConfig,
                     assignReplyMessage: widget.assignReplyMessage,
                     replyMessage: widget.replyMessage,
-                    swipeToReplyConfig: widget.swipeToReplyConfig,
-                    repliedMessageConfig: widget.repliedMessageConfig,
-                    profileCircleConfig: widget.profileCircleConfig,
-                    messageConfig: widget.messageConfig,
-                    chatBubbleConfig: widget.chatBubbleConfig,
-                    typeIndicatorConfig: widget.typeIndicatorConfig,
                     onChatBubbleLongPress: (yCoordinate, xCoordinate, message) {
                       if (featureActiveConfig?.enableReactionPopup ?? false) {
-                        _reactionPopupKey.currentState?.refreshWidget(
+                        chatViewIW?.reactionPopupKey.currentState?.refreshWidget(
                           message: message,
                           xCoordinate: xCoordinate,
-                          yCoordinate: yCoordinate < 0
-                              ? -(yCoordinate) - 5
-                              : yCoordinate,
+                          yCoordinate: yCoordinate,
                         );
-                        showPopUp.value = true;
+                        chatViewIW?.showPopUp.value = true;
                       }
                       if (featureActiveConfig?.enableReplySnackBar ?? false) {
                         _showReplyPopup(
@@ -219,14 +162,7 @@ class _ChatListWidgetState extends State<ChatListWidget>
                     },
                     onChatListTap: _onChatListTap,
                   ),
-                  if (featureActiveConfig?.enableReactionPopup ?? false)
-                    ReactionPopup(
-                      key: _reactionPopupKey,
-                      reactionPopupConfig: widget.reactionPopupConfig,
-                      onTap: _onChatListTap,
-                      showPopUp: showPopupValue,
-                      emojiPickerSheetConfig: widget.emojiPickerSheetConfig,
-                    ),
+
                 ],
               );
             },
@@ -251,7 +187,7 @@ class _ChatListWidgetState extends State<ChatListWidget>
     required Message message,
     required bool sentByCurrentUser,
   }) {
-    final replyPopup = widget.replyPopupConfig;
+    final replyPopup = chatListConfig.replyPopupConfig;
     ScaffoldMessenger.of(context)
         .showSnackBar(
           SnackBar(
@@ -284,7 +220,7 @@ class _ChatListWidgetState extends State<ChatListWidget>
                     onReplyTap: () {
                       widget.assignReplyMessage(message);
                       if (featureActiveConfig?.enableReactionPopup ?? false) {
-                        showPopUp.value = false;
+                        chatViewIW?.showPopUp.value = false;
                       }
                       ScaffoldMessenger.of(context).hideCurrentSnackBar();
                       if (replyPopup?.onReplyTap != null) {
@@ -304,16 +240,15 @@ class _ChatListWidgetState extends State<ChatListWidget>
     if (!kIsWeb && (Platform.isIOS || Platform.isAndroid)) {
       FocusScope.of(context).unfocus();
     }
-    showPopUp.value = false;
+    chatViewIW?.showPopUp.value = false;
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
   }
 
   @override
   void dispose() {
-    chatController.messageStreamController.close();
+    chatViewIW?.chatController.messageStreamController.close();
     scrollController.dispose();
     _isNextPageLoading.dispose();
-    showPopUp.dispose();
     super.dispose();
   }
 }

@@ -1,8 +1,15 @@
+## [2.0.1]
+
+* **Fix**: [217](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/217) fixed y
+  position of reaction popup
+* **Feat** [223](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/223) ability to
+  hide share icon in image view
+
 ## [2.0.0]
 
-* **Breaking**: [203](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/203) Dart 
+* **Breaking**: [203](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/203) Dart
   Minimum Version 3.2.0.
-* **Breaking**: [202](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/202) 
+* **Breaking**: [202](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/202)
   Message copyWith id value fix.
 * **Breaking**: [173](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/173) Added
   callback to sort message in chat.
@@ -25,7 +32,7 @@
   for configuring the audio recording quality.
 * **Feat**: [93](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/93) Added support
   that provide date pattern to change chat separation.
-* **Fix**: [200](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/200) ChatView 
+* **Fix**: [200](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/200) ChatView
   iOS Padding Issue Fix
 * **Fix**: [139](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/139) Added
   support to customize view for the reply of any message.
@@ -60,7 +67,7 @@
   send to closed socket or animate on `ScrollController` without clients.
 * **Fix**: [194](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/194) Dispose
   all `ValueNotifier`s and `ScrollController`s in `ChatController`.
-* **chore**: [168](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/168) Update 
+* **chore**: [168](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/168) Update
   intl to version 0.19.0.
 
 ## [1.3.1]
