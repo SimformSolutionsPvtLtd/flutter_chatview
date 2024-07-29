@@ -275,8 +275,8 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                                 ? _recordOrStop
                                 : null,
                             icon: (isRecordingValue
-                                    ? voiceRecordingConfig?.micIcon
-                                    : voiceRecordingConfig?.stopIcon) ??
+                                    ? voiceRecordingConfig?.stopIcon
+                                    : voiceRecordingConfig?.micIcon) ??
                                 Icon(
                                   isRecordingValue ? Icons.stop : Icons.mic,
                                   color:

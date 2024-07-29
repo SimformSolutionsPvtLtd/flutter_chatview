@@ -1,8 +1,10 @@
 ## [2.0.1]
 
-* **Fix**: [217](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/217) fixed y
+* **Fix**: [226](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/226) Fixed 
+  the icons for starting and stopping recording were reversed
+* **Fix**: [217](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/217) Fixed y
   position of reaction popup
-* **Feat** [223](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/223) ability to
+* **Feat** [223](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/223) Ability to
   hide share icon in image view
 
 ## [2.0.0]
