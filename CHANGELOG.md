@@ -1,11 +1,13 @@
 ## [2.0.1]
 
-* **Fix**: [226](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/226) Fixed 
+* **Fix**: [226](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/226) Fixed
   the icons for starting and stopping recording were reversed
 * **Fix**: [217](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/217) Fixed y
   position of reaction popup
 * **Feat** [223](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/223) Ability to
   hide share icon in image view
+* **Fix**: [232](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/232) The audio
+  record cancelIcon is overflowed pixel
 
 ## [2.0.0]
 
