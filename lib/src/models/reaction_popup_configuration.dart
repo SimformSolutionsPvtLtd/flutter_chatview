@@ -54,8 +54,12 @@ class ReactionPopupConfiguration {
   /// Provides callback when user react on message.
   final ReactionCallback? userReactionCallback;
 
+  /// Provides feasibility to completely override userReactionCallback defaults to false.
+  final bool? overrideUserReactionCallback;
+
   const ReactionPopupConfiguration({
     this.userReactionCallback,
+    this.overrideUserReactionCallback = false,
     this.showGlassMorphismEffect = false,
     this.backgroundColor,
     this.shadow,
