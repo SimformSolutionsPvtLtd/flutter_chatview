@@ -19,50 +19,52 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'package:chatview/src/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 
 class ReplyIcon extends StatelessWidget {
   const ReplyIcon({
     Key? key,
-    required this.scaleAnimation,
-    required this.slideAnimation,
-    this.replyIconColor,
+    required this.animationValue,
+    this.replyIconSize = 25,
   }) : super(key: key);
 
   /// Represents scale animation value of icon when user swipes for reply.
-  final Animation<double> scaleAnimation;
-
-  /// Represents slide animation value of chat bubble when user swipes for reply.
-  final Animation<Offset> slideAnimation;
+  final double animationValue;
 
   /// Allow user to set color of icon which is appeared when user swipes for reply.
-  final Color? replyIconColor;
+  final double replyIconSize;
 
   @override
   Widget build(BuildContext context) {
+    final swipeToReplyConfig = context.chatListConfig.swipeToReplyConfig;
     return Stack(
       alignment: Alignment.center,
       children: [
-        Transform.scale(
-          scale: scaleAnimation.value,
-          child: CircleAvatar(
-            radius: 14,
-            backgroundColor:
-                scaleAnimation.value == 1.0 ? Colors.grey : Colors.transparent,
-            child: Icon(
-              Icons.reply_rounded,
-              color: replyIconColor ?? Colors.black,
-            ),
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(replyIconSize),
+            color: animationValue >= 1.0
+                ? swipeToReplyConfig?.replyIconBackgroundColor ??
+                    Colors.grey.shade300
+                : Colors.transparent,
           ),
-        ),
-        SizedBox(
-          height: 25,
-          width: 25,
+          height: replyIconSize,
+          width: replyIconSize,
           child: CircularProgressIndicator(
-            value: scaleAnimation.value,
+            value: animationValue,
             backgroundColor: Colors.transparent,
             strokeWidth: 1.5,
-            color: replyIconColor ?? Colors.black,
+            color: swipeToReplyConfig?.replyIconProgressRingColor ??
+                Colors.grey.shade300,
+          ),
+        ),
+        Transform.scale(
+          scale: animationValue,
+          child: Icon(
+            Icons.reply_rounded,
+            color: swipeToReplyConfig?.replyIconColor ?? Colors.black,
+            size: replyIconSize - 5,
           ),
         ),
       ],
