@@ -8,6 +8,8 @@
   gesture interaction update
 * **Feat** [223](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/223) Ability to
   hide share icon in image view
+* **Fix**: [232](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/232) The audio
+  record cancelIcon is overflowed pixel
 
 ## [2.0.0]
 

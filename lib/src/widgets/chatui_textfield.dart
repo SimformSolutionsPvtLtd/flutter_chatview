@@ -147,29 +147,30 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
           return Row(
             children: [
               if (isRecordingValue && controller != null && !kIsWeb)
-                AudioWaveforms(
-                  size: Size(
-                      MediaQuery.of(context).size.width *
-                          (cancelRecordConfiguration == null ? 0.75 : 0.65),
-                      50),
-                  recorderController: controller!,
-                  margin: voiceRecordingConfig?.margin,
-                  padding: voiceRecordingConfig?.padding ??
-                      EdgeInsets.symmetric(
-                        horizontal: cancelRecordConfiguration == null ? 8 : 5,
-                      ),
-                  decoration: voiceRecordingConfig?.decoration ??
-                      BoxDecoration(
-                        color: voiceRecordingConfig?.backgroundColor,
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                  waveStyle: voiceRecordingConfig?.waveStyle ??
-                      WaveStyle(
-                        extendWaveform: true,
-                        showMiddleLine: false,
-                        waveColor: voiceRecordingConfig?.waveStyle?.waveColor ??
-                            Colors.black,
-                      ),
+                Expanded(
+                  child: AudioWaveforms(
+                    size: const Size(
+                        double.maxFinite,
+                        50),
+                    recorderController: controller!,
+                    margin: voiceRecordingConfig?.margin,
+                    padding: voiceRecordingConfig?.padding ??
+                        EdgeInsets.symmetric(
+                          horizontal: cancelRecordConfiguration == null ? 8 : 5,
+                        ),
+                    decoration: voiceRecordingConfig?.decoration ??
+                        BoxDecoration(
+                          color: voiceRecordingConfig?.backgroundColor,
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                    waveStyle: voiceRecordingConfig?.waveStyle ??
+                        WaveStyle(
+                          extendWaveform: true,
+                          showMiddleLine: false,
+                          waveColor: voiceRecordingConfig?.waveStyle?.waveColor ??
+                              Colors.black,
+                        ),
+                  ),
                 )
               else
                 Expanded(
