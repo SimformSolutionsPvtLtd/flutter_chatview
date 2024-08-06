@@ -147,11 +147,13 @@ class ReactionPopupState extends State<ReactionPopup>
         onEmojiTap: (emoji) {
           widget.onTap();
           if (currentUser != null && _message != null) {
-            chatController?.setReaction(
-              emoji: emoji,
-              messageId: _message!.id,
-              userId: currentUser!.id,
-            );
+            if (!(reactionPopupConfig?.overrideUserReactionCallback ?? false)) {
+              chatController?.setReaction(
+                emoji: emoji,
+                messageId: _message!.id,
+                userId: currentUser!.id,
+              );
+            }
             reactionPopupConfig?.userReactionCallback?.call(
               _message!,
               emoji,

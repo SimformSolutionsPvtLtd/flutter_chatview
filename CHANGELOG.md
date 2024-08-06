@@ -10,6 +10,8 @@
   hide share icon in image view
 * **Fix**: [232](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/232) The audio
   record cancelIcon is overflowed pixel
+* **Feat** [228](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/228) Ability to
+  completely override userReactionCallback
 
 ## [2.0.0]
 
