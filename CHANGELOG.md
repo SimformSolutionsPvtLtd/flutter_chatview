@@ -12,6 +12,8 @@
   record cancelIcon is overflowed pixel
 * **Feat** [228](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/228) Ability to
   completely override userReactionCallback
+* **Fix**: [218](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/218) fix: handle
+  snackBar queue while reacting on message
 
 ## [2.0.0]
 
