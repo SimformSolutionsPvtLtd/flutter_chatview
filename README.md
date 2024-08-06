@@ -184,6 +184,12 @@ For web demo visit [Chat View Example](https://simformsolutionspvtltd.github.io/
     }
     ```
 
+- Add MessageConfiguration, isMessageBySender, highlightImage, highlightScale to customMessageBuilder wherever you use it.
+ex:
+  ```dart
+    
+  ```
+
 ## Installing
 
 1.  Add dependency to `pubspec.yaml`
