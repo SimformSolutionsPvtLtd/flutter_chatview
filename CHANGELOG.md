@@ -1,4 +1,4 @@
-## [2.0.1]
+## [2.1.0]
 
 * **Fix**: [226](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/226) Fixed
   the icons for starting and stopping recording were reversed
