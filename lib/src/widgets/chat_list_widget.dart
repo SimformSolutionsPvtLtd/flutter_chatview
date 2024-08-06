@@ -146,7 +146,8 @@ class _ChatListWidgetState extends State<ChatListWidget>
                     replyMessage: widget.replyMessage,
                     onChatBubbleLongPress: (yCoordinate, xCoordinate, message) {
                       if (featureActiveConfig?.enableReactionPopup ?? false) {
-                        chatViewIW?.reactionPopupKey.currentState?.refreshWidget(
+                        chatViewIW?.reactionPopupKey.currentState
+                            ?.refreshWidget(
                           message: message,
                           xCoordinate: xCoordinate,
                           yCoordinate: yCoordinate,
@@ -162,7 +163,6 @@ class _ChatListWidgetState extends State<ChatListWidget>
                     },
                     onChatListTap: _onChatListTap,
                   ),
-
                 ],
               );
             },

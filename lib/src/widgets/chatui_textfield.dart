@@ -149,9 +149,7 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
               if (isRecordingValue && controller != null && !kIsWeb)
                 Expanded(
                   child: AudioWaveforms(
-                    size: const Size(
-                        double.maxFinite,
-                        50),
+                    size: const Size(double.maxFinite, 50),
                     recorderController: controller!,
                     margin: voiceRecordingConfig?.margin,
                     padding: voiceRecordingConfig?.padding ??
@@ -167,8 +165,9 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                         WaveStyle(
                           extendWaveform: true,
                           showMiddleLine: false,
-                          waveColor: voiceRecordingConfig?.waveStyle?.waveColor ??
-                              Colors.black,
+                          waveColor:
+                              voiceRecordingConfig?.waveStyle?.waveColor ??
+                                  Colors.black,
                         ),
                   ),
                 )

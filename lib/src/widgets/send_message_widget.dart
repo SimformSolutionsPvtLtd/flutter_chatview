@@ -49,7 +49,6 @@ class SendMessageWidget extends StatefulWidget {
   /// Provides configuration for text field appearance.
   final SendMessageConfiguration? sendMessageConfig;
 
-
   /// Allow user to set custom text field.
   final ReplyMessageWithReturnWidget? sendMessageBuilder;
 
@@ -115,7 +114,9 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                     child: Container(
                       height: MediaQuery.of(context).size.height /
                           ((!kIsWeb && Platform.isIOS) ? 24 : 28),
-                      color: chatListConfig.chatBackgroundConfig.backgroundColor ?? Colors.white,
+                      color:
+                          chatListConfig.chatBackgroundConfig.backgroundColor ??
+                              Colors.white,
                     ),
                   ),
                   Padding(

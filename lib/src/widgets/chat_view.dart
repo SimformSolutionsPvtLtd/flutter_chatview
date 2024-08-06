@@ -200,15 +200,15 @@ class _ChatViewState extends State<ChatView>
               Container(
                 height: chatBackgroundConfig.height ??
                     MediaQuery.of(context).size.height,
-                width:
-                    chatBackgroundConfig.width ?? MediaQuery.of(context).size.width,
+                width: chatBackgroundConfig.width ??
+                    MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   color: chatBackgroundConfig.backgroundColor ?? Colors.white,
                   image: chatBackgroundConfig.backgroundImage != null
                       ? DecorationImage(
                           fit: BoxFit.fill,
-                          image:
-                              NetworkImage(chatBackgroundConfig.backgroundImage!),
+                          image: NetworkImage(
+                              chatBackgroundConfig.backgroundImage!),
                         )
                       : null,
                 ),
@@ -264,9 +264,9 @@ class _ChatViewState extends State<ChatView>
                                     isLastPage: widget.isLastPage,
                                     loadingWidget: widget.loadingWidget,
                                     onChatListTap: widget.onChatListTap,
-                                    assignReplyMessage: (message) => _sendMessageKey
-                                        .currentState
-                                        ?.assignReplyMessage(message),
+                                    assignReplyMessage: (message) =>
+                                        _sendMessageKey.currentState
+                                            ?.assignReplyMessage(message),
                                   );
                                 },
                               ),
@@ -275,13 +275,15 @@ class _ChatViewState extends State<ChatView>
                                 key: _sendMessageKey,
                                 sendMessageBuilder: widget.sendMessageBuilder,
                                 sendMessageConfig: widget.sendMessageConfig,
-                                onSendTap: (message, replyMessage, messageType) {
+                                onSendTap:
+                                    (message, replyMessage, messageType) {
                                   if (context.suggestionsConfig
                                           ?.autoDismissOnSelection ??
                                       true) {
                                     chatController.removeReplySuggestions();
                                   }
-                                  _onSendTap(message, replyMessage, messageType);
+                                  _onSendTap(
+                                      message, replyMessage, messageType);
                                 },
                                 onReplyCallback: (reply) =>
                                     replyMessage.value = reply,

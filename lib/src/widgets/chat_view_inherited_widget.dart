@@ -19,7 +19,6 @@ class ChatViewInheritedWidget extends InheritedWidget {
   final ValueNotifier<bool> showPopUp = ValueNotifier(false);
   final GlobalKey<ReactionPopupState> reactionPopupKey = GlobalKey();
 
-
   static ChatViewInheritedWidget? of(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<ChatViewInheritedWidget>();
 
