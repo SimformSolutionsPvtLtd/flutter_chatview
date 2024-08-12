@@ -1,3 +1,8 @@
+## [2.1.1]
+
+* **Fix**: [238](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/238) Clear
+  initial message list - Exception Widget's Ancestor is unsafe
+
 ## [2.1.0]
 
 * **Fix**: [226](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/226) Fixed
