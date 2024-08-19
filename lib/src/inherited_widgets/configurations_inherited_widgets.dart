@@ -16,6 +16,7 @@ class ConfigurationsInheritedWidget extends InheritedWidget {
     this.typeIndicatorConfig,
     this.replyPopupConfig,
     this.emojiPickerSheetConfig,
+    this.scrollToBottomButtonConfig,
   }) : super(key: key, child: child);
 
   /// Provides configuration for background of chat.
@@ -49,6 +50,9 @@ class ConfigurationsInheritedWidget extends InheritedWidget {
 
   /// Configuration for emoji picker sheet
   final Config? emojiPickerSheetConfig;
+
+  /// Provides a configuration for scroll to bottom button config
+  final ScrollToBottomButtonConfig? scrollToBottomButtonConfig;
 
   static ConfigurationsInheritedWidget? of(BuildContext context) => context
       .dependOnInheritedWidgetOfExactType<ConfigurationsInheritedWidget>();
