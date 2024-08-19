@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import '../values/enumeration.dart';
+import '../../values/enumeration.dart';
 
 class ReplyMessage {
   /// Provides reply message.

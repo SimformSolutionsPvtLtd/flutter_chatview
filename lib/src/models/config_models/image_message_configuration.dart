@@ -21,7 +21,7 @@
  */
 import 'package:flutter/material.dart';
 
-import '../values/typedefs.dart';
+import '../../values/typedefs.dart';
 
 class ImageMessageConfiguration {
   /// Provides configuration of share button while image message is appeared.

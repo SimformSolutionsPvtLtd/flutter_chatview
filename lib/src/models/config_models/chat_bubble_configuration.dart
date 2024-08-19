@@ -19,11 +19,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'package:chatview/src/models/receipts_widget_config.dart';
+import 'package:chatview/src/models/config_models/receipts_widget_config.dart';
 import 'package:flutter/material.dart';
 
-import '../values/typedefs.dart';
-import 'models.dart';
+import '../../values/typedefs.dart';
+import '../models.dart';
 
 class ChatBubbleConfiguration {
   /// Used for giving padding of chat bubble.

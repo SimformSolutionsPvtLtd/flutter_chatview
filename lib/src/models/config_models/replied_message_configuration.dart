@@ -19,10 +19,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'package:chatview/src/models/replied_msg_auto_scroll_config.dart';
+import 'package:chatview/src/models/config_models/replied_msg_auto_scroll_config.dart';
 import 'package:flutter/material.dart';
 
-import '../values/typedefs.dart';
+import '../../values/typedefs.dart';
 
 class RepliedMessageConfiguration {
   /// Used to give color to vertical bar.

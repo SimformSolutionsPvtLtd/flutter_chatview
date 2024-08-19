@@ -1,4 +1,4 @@
-import 'package:chatview/src/models/suggestion_item_data.dart';
+import 'package:chatview/src/models/data_models/suggestion_item_data.dart';
 import 'package:flutter/material.dart';
 
 import 'suggestion_item_config.dart';

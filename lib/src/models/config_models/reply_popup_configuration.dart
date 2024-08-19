@@ -19,37 +19,45 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import 'package:chatview/src/models/models.dart';
-import 'package:chatview/src/models/voice_message_configuration.dart';
 import 'package:flutter/material.dart';
 
-import '../values/typedefs.dart';
+import '../../values/typedefs.dart';
+import '../data_models/message.dart';
 
-class MessageConfiguration {
-  /// Provides configuration of image message appearance.
-  final ImageMessageConfiguration? imageMessageConfig;
+class ReplyPopupConfiguration {
+  /// Used for giving background color to reply snack-bar.
+  final Color? backgroundColor;
 
-  /// Provides configuration of image message appearance.
-  final MessageReactionConfiguration? messageReactionConfig;
+  /// Provides builder for creating reply pop-up widget.
+  final Widget Function(Message message, bool sentByCurrentUser)?
+      replyPopupBuilder;
 
-  /// Provides configuration of emoji messages appearance.
-  final EmojiMessageConfiguration? emojiMessageConfig;
+  /// Provides callback on unSend button.
+  final MessageCallBack? onUnsendTap;
 
-  /// Provides builder to create view for custom messages.
-  final Widget Function(Message)? customMessageBuilder;
+  /// Provides callback on onReply button.
+  final MessageCallBack? onReplyTap;
 
-  /// Configurations for voice message bubble
-  final VoiceMessageConfiguration? voiceMessageConfig;
+  /// Provides callback on onReport button.
+  final MessageCallBack? onReportTap;
 
-  /// To customize reply view for custom message type
-  final CustomMessageReplyViewBuilder? customMessageReplyViewBuilder;
+  /// Provides callback on onMore button.
+  final MoreTapCallBack? onMoreTap;
 
-  const MessageConfiguration({
-    this.imageMessageConfig,
-    this.messageReactionConfig,
-    this.emojiMessageConfig,
-    this.customMessageBuilder,
-    this.voiceMessageConfig,
-    this.customMessageReplyViewBuilder,
+  /// Used to give text style of button text.
+  final TextStyle? buttonTextStyle;
+
+  /// Used to give color to top side border of reply snack bar.
+  final Color? topBorderColor;
+
+  const ReplyPopupConfiguration({
+    this.buttonTextStyle,
+    this.topBorderColor,
+    this.onUnsendTap,
+    this.onReplyTap,
+    this.onReportTap,
+    this.onMoreTap,
+    this.backgroundColor,
+    this.replyPopupBuilder,
   });
 }
