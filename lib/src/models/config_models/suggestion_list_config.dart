@@ -1,4 +1,4 @@
-import '../values/enumeration.dart';
+import '../../values/enumeration.dart';
 import 'package:flutter/cupertino.dart';
 
 class SuggestionListConfig {

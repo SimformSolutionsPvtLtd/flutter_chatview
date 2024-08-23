@@ -53,4 +53,5 @@ class FeatureActiveConfig {
 
   /// Used for enable/disable other users name.
   final bool enableOtherUserName;
+
 }

@@ -1,4 +1,4 @@
-import '../values/typedefs.dart';
+import '../../values/typedefs.dart';
 import 'package:flutter/material.dart';
 
 class SuggestionItemConfig {

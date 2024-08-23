@@ -19,45 +19,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'package:chatview/src/models/models.dart';
+import 'package:chatview/src/models/config_models/voice_message_configuration.dart';
 import 'package:flutter/material.dart';
 
-import '../values/typedefs.dart';
-import 'message.dart';
+import '../../values/typedefs.dart';
 
-class ReplyPopupConfiguration {
-  /// Used for giving background color to reply snack-bar.
-  final Color? backgroundColor;
+class MessageConfiguration {
+  /// Provides configuration of image message appearance.
+  final ImageMessageConfiguration? imageMessageConfig;
 
-  /// Provides builder for creating reply pop-up widget.
-  final Widget Function(Message message, bool sentByCurrentUser)?
-      replyPopupBuilder;
+  /// Provides configuration of image message appearance.
+  final MessageReactionConfiguration? messageReactionConfig;
 
-  /// Provides callback on unSend button.
-  final MessageCallBack? onUnsendTap;
+  /// Provides configuration of emoji messages appearance.
+  final EmojiMessageConfiguration? emojiMessageConfig;
 
-  /// Provides callback on onReply button.
-  final MessageCallBack? onReplyTap;
+  /// Provides builder to create view for custom messages.
+  final Widget Function(Message)? customMessageBuilder;
 
-  /// Provides callback on onReport button.
-  final MessageCallBack? onReportTap;
+  /// Configurations for voice message bubble
+  final VoiceMessageConfiguration? voiceMessageConfig;
 
-  /// Provides callback on onMore button.
-  final MoreTapCallBack? onMoreTap;
+  /// To customize reply view for custom message type
+  final CustomMessageReplyViewBuilder? customMessageReplyViewBuilder;
 
-  /// Used to give text style of button text.
-  final TextStyle? buttonTextStyle;
-
-  /// Used to give color to top side border of reply snack bar.
-  final Color? topBorderColor;
-
-  const ReplyPopupConfiguration({
-    this.buttonTextStyle,
-    this.topBorderColor,
-    this.onUnsendTap,
-    this.onReplyTap,
-    this.onReportTap,
-    this.onMoreTap,
-    this.backgroundColor,
-    this.replyPopupBuilder,
+  const MessageConfiguration({
+    this.imageMessageConfig,
+    this.messageReactionConfig,
+    this.emojiMessageConfig,
+    this.customMessageBuilder,
+    this.voiceMessageConfig,
+    this.customMessageReplyViewBuilder,
   });
 }

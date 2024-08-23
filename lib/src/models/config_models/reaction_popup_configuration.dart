@@ -21,7 +21,7 @@
  */
 import 'package:flutter/material.dart';
 
-import '../values/typedefs.dart';
+import '../../values/typedefs.dart';
 
 class ReactionPopupConfiguration {
   /// Used for background color in reaction pop-up.

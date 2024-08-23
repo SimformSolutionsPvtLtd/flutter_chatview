@@ -21,9 +21,9 @@
  */
 import 'package:flutter/material.dart';
 
-import '../utils/constants/constants.dart';
-import '../values/enumeration.dart';
-import '../values/typedefs.dart';
+import '../../utils/constants/constants.dart';
+import '../../values/enumeration.dart';
+import '../../values/typedefs.dart';
 
 class ChatBackgroundConfiguration {
   /// Provides background color of chat view.

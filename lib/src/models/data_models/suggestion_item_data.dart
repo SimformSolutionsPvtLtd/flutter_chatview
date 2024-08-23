@@ -1,4 +1,4 @@
-import 'suggestion_item_config.dart';
+import '../config_models/suggestion_item_config.dart';
 
 class SuggestionItemData {
   final String text;

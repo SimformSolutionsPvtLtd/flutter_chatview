@@ -21,7 +21,7 @@
  */
 import 'package:flutter/material.dart';
 
-import '../values/typedefs.dart';
+import '../../values/typedefs.dart';
 
 class MessageReactionConfiguration {
   /// Used for giving size of reaction on message.

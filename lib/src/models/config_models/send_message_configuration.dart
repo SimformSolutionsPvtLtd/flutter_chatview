@@ -25,8 +25,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../values/enumeration.dart';
-import '../values/typedefs.dart';
+import '../../values/enumeration.dart';
+import '../../values/typedefs.dart';
 
 class SendMessageConfiguration {
   /// Used to give background color to text field.
