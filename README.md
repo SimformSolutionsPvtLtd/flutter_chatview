@@ -998,6 +998,19 @@ ChatView(
 ),
 ```
 
+35. Use `ScrollToBottomButtonConfig` to change the configuration of scroll to bottom button.
+
+
+```dart
+ChatView(
+  ...
+    scrollToBottomButtonConfig: ScrollToBottomButtonConfig(
+
+),
+  ...
+),
+```
+
 ## How to use
 
 Check out [blog](https://medium.com/simform-engineering/chatview-a-cutting-edge-chat-ui-solution-7367b1f9d772) for better understanding and basic implementation.

@@ -133,3 +133,13 @@ extension GroupedListOrderExtension on GroupedListOrder {
 
   bool get isDesc => this == GroupedListOrder.desc;
 }
+
+enum ScrollButtonAlignment {
+  left(Alignment.bottomLeft),
+  center(Alignment.bottomCenter),
+  right(Alignment.bottomRight);
+
+  const ScrollButtonAlignment(this.alignment);
+
+  final Alignment alignment;
+}

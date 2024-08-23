@@ -62,6 +62,7 @@ class ChatView extends StatefulWidget {
     this.emojiPickerSheetConfig,
     this.replyMessageBuilder,
     this.replySuggestionsConfig,
+    this.scrollToBottomButtonConfig,
   })  : chatBackgroundConfig =
             chatBackgroundConfig ?? const ChatBackgroundConfiguration(),
         chatViewStateConfig =
@@ -146,6 +147,9 @@ class ChatView extends StatefulWidget {
   /// Provides a callback for the view when replying to message
   final CustomViewForReplyMessage? replyMessageBuilder;
 
+  /// Provides a configuration for scroll to bottom button config
+  final ScrollToBottomButtonConfig? scrollToBottomButtonConfig;
+
   static void closeReplyMessageView(BuildContext context) {
     final state = context.findAncestorStateOfType<_ChatViewState>();
     if (state == null) return;
@@ -229,6 +233,8 @@ class _ChatViewState extends State<ChatView>
                         repliedMessageConfig: widget.repliedMessageConfig,
                         swipeToReplyConfig: widget.swipeToReplyConfig,
                         emojiPickerSheetConfig: widget.emojiPickerSheetConfig,
+                        scrollToBottomButtonConfig:
+                            widget.scrollToBottomButtonConfig,
                         child: Stack(
                           children: [
                             if (chatViewState.isLoading)

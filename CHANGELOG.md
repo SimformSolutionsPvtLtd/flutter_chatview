@@ -1,3 +1,8 @@
+## [2.2.0]
+
+* **feat**: [246](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/246) add
+  functionality to scroll to bottom button
+
 ## [2.1.1]
 
 * **Fix**: [238](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/238) Clear
