@@ -2,6 +2,8 @@
 
 * **feat**: [246](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/246) add
   functionality to scroll to bottom button
+* **Fix**: [247](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/247) fix mobile
+  browser grey screen issue
 
 ## [2.1.1]
 
