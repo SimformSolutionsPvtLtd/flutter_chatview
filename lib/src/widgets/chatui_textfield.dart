@@ -107,8 +107,7 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
             const Duration(seconds: 1));
     super.initState();
 
-    if (defaultTargetPlatform == TargetPlatform.iOS ||
-        defaultTargetPlatform == TargetPlatform.android) {
+    if (!kIsWeb && (Platform.isIOS || Platform.isAndroid)) {
       controller = RecorderController();
     }
   }
