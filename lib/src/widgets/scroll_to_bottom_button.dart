@@ -29,14 +29,18 @@ class ScrollToBottomButtonState extends State<ScrollToBottomButton> {
     final double buttonDisplayOffset =
         chatListConfig.scrollToBottomButtonConfig?.buttonDisplayOffset ?? 300;
     final bool isOffsetCrossedLimit = currentOffset > buttonDisplayOffset;
-    if (isOffsetCrossedLimit && !isButtonVisible) {
-      setState(() {
-        isButtonVisible = true;
-      });
+    if (isOffsetCrossedLimit) {
+      if (!isButtonVisible) {
+        setState(() {
+          isButtonVisible = true;
+        });
+      }
     } else {
-      setState(() {
-        isButtonVisible = false;
-      });
+      if (isButtonVisible) {
+        setState(() {
+          isButtonVisible = false;
+        });
+      }
     }
   }
 
