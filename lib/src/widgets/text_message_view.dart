@@ -23,6 +23,7 @@ import 'package:flutter/material.dart';
 
 import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/models/models.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 import '../utils/constants/constants.dart';
 import 'link_preview.dart';
@@ -93,13 +94,15 @@ class TextMessageView extends StatelessWidget {
                   linkPreviewConfig: _linkPreviewConfig,
                   url: textMessage,
                 )
-              : Text(
-                  textMessage,
-                  style: _textStyle ??
-                      textTheme.bodyMedium!.copyWith(
-                        color: Colors.white,
-                        fontSize: 16,
-                      ),
+              : MarkdownBody(
+                  data: textMessage,
+                  styleSheet: MarkdownStyleSheet(
+                    p: _textStyle ??
+                        textTheme.bodyMedium!.copyWith(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
+                  ),
                 ),
         ),
         if (message.reaction.reactions.isNotEmpty)
