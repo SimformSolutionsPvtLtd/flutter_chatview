@@ -21,6 +21,7 @@
  */
 import 'package:chatview/chatview.dart';
 import 'package:chatview/src/extensions/extensions.dart';
+import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
 import 'package:chatview/src/widgets/suggestions/suggestion_list.dart';
 import 'package:chatview/src/widgets/type_indicator_widget.dart';
 import 'package:flutter/material.dart';
@@ -105,7 +106,7 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
       if (!mounted) return;
       setState(() {
         chatTextFieldHeight =
-            chatViewIW?.chatTextFieldViewKey.currentContext?.size?.height ?? 10;
+            ChatViewInheritedWidget.chatTextFieldViewKey.currentContext?.size?.height ?? 10;
       });
     });
   }

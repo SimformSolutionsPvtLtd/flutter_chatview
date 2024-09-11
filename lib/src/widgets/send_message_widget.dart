@@ -24,6 +24,7 @@ import 'dart:io' if (kIsWeb) 'dart:html';
 import 'package:chatview/chatview.dart';
 import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/utils/package_strings.dart';
+import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
 import 'package:chatview/src/widgets/chatui_textfield.dart';
 import 'package:chatview/src/widgets/reply_message_view.dart';
 import 'package:chatview/src/widgets/scroll_to_bottom_button.dart';
@@ -143,7 +144,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                             ),
                           ),
                         Padding(
-                          key: chatViewIW?.chatTextFieldViewKey,
+                          key: ChatViewInheritedWidget.chatTextFieldViewKey,
                           padding: EdgeInsets.fromLTRB(
                             bottomPadding4,
                             bottomPadding4,
