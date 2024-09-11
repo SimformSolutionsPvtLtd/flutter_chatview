@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'package:chatview/src/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -27,19 +28,22 @@ import 'reply_icon.dart';
 class SwipeToReply extends StatefulWidget {
   const SwipeToReply({
     Key? key,
-    this.onLeftSwipe,
+    required this.onSwipe,
     required this.child,
-    this.onRightSwipe,
+    this.isMessageByCurrentUser = true,
   }) : super(key: key);
 
-  /// Provides callback when user swipes chat bubble from right side.
-  final VoidCallback? onRightSwipe;
-
   /// Provides callback when user swipes chat bubble from left side.
-  final VoidCallback? onLeftSwipe;
+  final VoidCallback onSwipe;
 
   /// Allow user to set widget which is showed while user swipes chat bubble.
   final Widget child;
+
+  /// A boolean variable that indicates if the message is sent by the current user.
+  ///
+  /// This is `true` if the message is authored by the sender (the current user),
+  /// and `false` if it is authored by someone else.
+  final bool isMessageByCurrentUser;
 
   @override
   State<SwipeToReply> createState() => _SwipeToReplyState();
@@ -51,69 +55,60 @@ class _SwipeToReplyState extends State<SwipeToReply> {
   double initialTouchPoint = 0;
   bool isCallBackTriggered = false;
 
-  late bool isMessageBySender = widget.onLeftSwipe == null;
+  late bool isMessageByCurrentUser = widget.isMessageByCurrentUser;
 
   final paddingLimit = 50;
   final double replyIconSize = 25;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onHorizontalDragStart: (details) =>
-          initialTouchPoint = details.globalPosition.dx,
-      onHorizontalDragEnd: (details) => setState(
-        () {
-          paddingValue = 0;
-          isCallBackTriggered = false;
-        },
-      ),
-      onHorizontalDragUpdate: _onHorizontalDragUpdate,
-      child: Stack(
-        alignment:
-            isMessageBySender ? Alignment.centerLeft : Alignment.centerRight,
-        fit: StackFit.passthrough,
-        children: [
-          Align(
-            alignment: widget.onRightSwipe != null
-                ? Alignment.centerLeft
-                : Alignment.centerRight,
-            child: ReplyIcon(
-              replyIconSize: replyIconSize,
-              animationValue: paddingValue > replyIconSize
-                  ? (paddingValue) / (paddingLimit)
-                  : 0.0,
+    return !(chatViewIW?.featureActiveConfig.enableSwipeToReply ?? true)
+        ? widget.child
+        : GestureDetector(
+            onHorizontalDragStart: (details) =>
+                initialTouchPoint = details.globalPosition.dx,
+            onHorizontalDragEnd: (details) => setState(
+              () {
+                paddingValue = 0;
+                isCallBackTriggered = false;
+              },
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(
-              right: isMessageBySender ? 0 : paddingValue,
-              left: isMessageBySender ? paddingValue : 0,
+            onHorizontalDragUpdate: _onHorizontalDragUpdate,
+            child: Stack(
+              alignment: isMessageByCurrentUser
+                  ? Alignment.centerRight
+                  : Alignment.centerLeft,
+              fit: StackFit.passthrough,
+              children: [
+                ReplyIcon(
+                  replyIconSize: replyIconSize,
+                  animationValue: paddingValue > replyIconSize
+                      ? (paddingValue) / (paddingLimit)
+                      : 0.0,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                    right: isMessageByCurrentUser ? paddingValue : 0,
+                    left: isMessageByCurrentUser ? 0 : paddingValue,
+                  ),
+                  child: widget.child,
+                ),
+              ],
             ),
-            child: widget.child,
-          ),
-        ],
-      ),
-    );
+          );
   }
 
   void _onHorizontalDragUpdate(DragUpdateDetails details) {
-    if (!isMessageBySender) {
-      final swipeDistance = (initialTouchPoint - details.globalPosition.dx);
-      swipeLogic(swipeDistance, widget.onLeftSwipe);
-    } else {
-      final swipeDistance = (details.globalPosition.dx - initialTouchPoint);
-      swipeLogic(swipeDistance, widget.onRightSwipe);
-    }
-  }
-
-  void swipeLogic(double swipeDistance, VoidCallback? onSwipe) {
+    final swipeDistance = isMessageByCurrentUser
+        ? (initialTouchPoint - details.globalPosition.dx)
+        : (details.globalPosition.dx - initialTouchPoint);
     if (swipeDistance >= 0 && trackPaddingValue < paddingLimit) {
       setState(() {
         paddingValue = swipeDistance;
       });
     } else if (paddingValue >= paddingLimit) {
-      if (!isCallBackTriggered && onSwipe != null) {
-        onSwipe();
+      if (!isCallBackTriggered) {
+        widget.onSwipe();
         isCallBackTriggered = true;
       }
     } else {
@@ -121,7 +116,6 @@ class _SwipeToReplyState extends State<SwipeToReply> {
         paddingValue = 0;
       });
     }
-
     trackPaddingValue = swipeDistance;
   }
 }
