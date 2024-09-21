@@ -260,6 +260,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                                 focusNode: _focusNode,
                                 textEditingController: _textEditingController,
                                 onPressed: _onPressed,
+                                onSubmit: _onPressed,
                                 sendMessageConfig: widget.sendMessageConfig,
                                 onRecordingComplete: _onRecordingComplete,
                                 onImageSelected: _onImageSelected,

@@ -39,6 +39,7 @@ class ChatUITextField extends StatefulWidget {
     required this.focusNode,
     required this.textEditingController,
     required this.onPressed,
+    required this.onSubmit,
     required this.onRecordingComplete,
     required this.onImageSelected,
   }) : super(key: key);
@@ -54,6 +55,9 @@ class ChatUITextField extends StatefulWidget {
 
   /// Provides callback when user tap on text field.
   final VoidCallBack onPressed;
+
+  /// Provides callback when user submitted text field.
+  final VoidCallBack onSubmit;
 
   /// Provides callback once voice is recorded.
   final Function(String?) onRecordingComplete;
@@ -182,6 +186,10 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                     keyboardType: textFieldConfig?.textInputType,
                     inputFormatters: textFieldConfig?.inputFormatters,
                     onChanged: _onChanged,
+                    onSubmitted: (_) {
+                      widget.onSubmit();
+                    },
+                    autofocus: textFieldConfig?.autofocus ?? false,
                     enabled: textFieldConfig?.enabled,
                     textCapitalization: textFieldConfig?.textCapitalization ??
                         TextCapitalization.sentences,

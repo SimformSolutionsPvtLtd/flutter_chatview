@@ -123,7 +123,8 @@ class ReactionPopupState extends State<ReactionPopup>
                           decoration: BoxDecoration(
                             color: reactionPopupConfig?.backgroundColor ??
                                 Colors.white,
-                            borderRadius: BorderRadius.circular(30),
+                            borderRadius: reactionPopupConfig?.borderRadius ??
+                                BorderRadius.circular(30),
                             boxShadow: [
                               reactionPopupConfig?.shadow ??
                                   BoxShadow(
@@ -143,24 +144,35 @@ class ReactionPopupState extends State<ReactionPopup>
         : const SizedBox.shrink();
   }
 
-  Widget get _reactionPopupRow => EmojiRow(
-        onEmojiTap: (emoji) {
-          widget.onTap();
-          if (currentUser != null && _message != null) {
-            if (!(reactionPopupConfig?.overrideUserReactionCallback ?? false)) {
-              chatController?.setReaction(
-                emoji: emoji,
-                messageId: _message!.id,
-                userId: currentUser!.id,
-              );
-            }
-            reactionPopupConfig?.userReactionCallback?.call(
-              _message!,
-              emoji,
+  Widget get _reactionPopupRow =>
+      reactionPopupConfig?.customReactionPopup != null
+          ? Listener(
+              onPointerUp: (_) {
+                widget.onTap();
+                reactionPopupConfig?.userReactionCallback?.call(_message!, '');
+              },
+              child: reactionPopupConfig?.customReactionPopup?.call(_message) ??
+                  const SizedBox.shrink(),
+            )
+          : EmojiRow(
+              onEmojiTap: (emoji) {
+                widget.onTap();
+                if (currentUser != null && _message != null) {
+                  if (!(reactionPopupConfig?.overrideUserReactionCallback ??
+                      false)) {
+                    chatController?.setReaction(
+                      emoji: emoji,
+                      messageId: _message!.id,
+                      userId: currentUser!.id,
+                    );
+                  }
+                  reactionPopupConfig?.userReactionCallback?.call(
+                    _message!,
+                    emoji,
+                  );
+                }
+              },
             );
-          }
-        },
-      );
 
   void refreshWidget({
     required Message message,
