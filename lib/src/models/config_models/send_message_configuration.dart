@@ -158,6 +158,9 @@ class TextFieldConfiguration {
   /// Callback when a user starts/stops typing a message by [TypeWriterStatus]
   final void Function(TypeWriterStatus status)? onMessageTyping;
 
+  /// Callback when a user submits a message
+  final StringMessageCallBack? onMessageSubmit;
+
   /// After typing stopped, the threshold time after which the composing
   /// status to be changed to [TypeWriterStatus.composed].
   /// Default is 1 second.
@@ -167,6 +170,10 @@ class TextFieldConfiguration {
   /// [false] also will disable the buttons for send images, record audio or take picture.
   /// Default is [true].
   final bool enabled;
+
+  /// Used for autofocus of the text field.
+  /// Default is [false].
+  final bool autofocus;
 
   const TextFieldConfiguration({
     this.contentPadding,
@@ -183,7 +190,9 @@ class TextFieldConfiguration {
     this.compositionThresholdTime = const Duration(seconds: 1),
     this.inputFormatters,
     this.textCapitalization,
+    this.onMessageSubmit,
     this.enabled = true,
+    this.autofocus = false,
   });
 }
 

@@ -199,42 +199,41 @@ class _ChatViewState extends State<ChatView>
       child: SuggestionsConfigIW(
         suggestionsConfig: widget.replySuggestionsConfig,
         child: Builder(builder: (context) {
-          return Stack(
-            children: [
-              Container(
-                height: chatBackgroundConfig.height ??
-                    MediaQuery.of(context).size.height,
-                width: chatBackgroundConfig.width ??
-                    MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: chatBackgroundConfig.backgroundColor ?? Colors.white,
-                  image: chatBackgroundConfig.backgroundImage != null
-                      ? DecorationImage(
-                          fit: BoxFit.fill,
-                          image: NetworkImage(
-                              chatBackgroundConfig.backgroundImage!),
-                        )
-                      : null,
-                ),
-                padding: chatBackgroundConfig.padding,
-                margin: chatBackgroundConfig.margin,
-                child: Column(
-                  children: [
-                    if (widget.appBar != null) widget.appBar!,
-                    Expanded(
-                      child: ConfigurationsInheritedWidget(
-                        chatBackgroundConfig: widget.chatBackgroundConfig,
-                        reactionPopupConfig: widget.reactionPopupConfig,
-                        typeIndicatorConfig: widget.typeIndicatorConfig,
-                        chatBubbleConfig: widget.chatBubbleConfig,
-                        replyPopupConfig: widget.replyPopupConfig,
-                        messageConfig: widget.messageConfig,
-                        profileCircleConfig: widget.profileCircleConfig,
-                        repliedMessageConfig: widget.repliedMessageConfig,
-                        swipeToReplyConfig: widget.swipeToReplyConfig,
-                        emojiPickerSheetConfig: widget.emojiPickerSheetConfig,
-                        scrollToBottomButtonConfig:
-                            widget.scrollToBottomButtonConfig,
+          return ConfigurationsInheritedWidget(
+            chatBackgroundConfig: widget.chatBackgroundConfig,
+            reactionPopupConfig: widget.reactionPopupConfig,
+            typeIndicatorConfig: widget.typeIndicatorConfig,
+            chatBubbleConfig: widget.chatBubbleConfig,
+            replyPopupConfig: widget.replyPopupConfig,
+            messageConfig: widget.messageConfig,
+            profileCircleConfig: widget.profileCircleConfig,
+            repliedMessageConfig: widget.repliedMessageConfig,
+            swipeToReplyConfig: widget.swipeToReplyConfig,
+            emojiPickerSheetConfig: widget.emojiPickerSheetConfig,
+            scrollToBottomButtonConfig: widget.scrollToBottomButtonConfig,
+            child: Stack(
+              children: [
+                Container(
+                  height: chatBackgroundConfig.height ??
+                      MediaQuery.of(context).size.height,
+                  width: chatBackgroundConfig.width ??
+                      MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    color: chatBackgroundConfig.backgroundColor ?? Colors.white,
+                    image: chatBackgroundConfig.backgroundImage != null
+                        ? DecorationImage(
+                            fit: BoxFit.fill,
+                            image: NetworkImage(
+                                chatBackgroundConfig.backgroundImage!),
+                          )
+                        : null,
+                  ),
+                  padding: chatBackgroundConfig.padding,
+                  margin: chatBackgroundConfig.margin,
+                  child: Column(
+                    children: [
+                      if (widget.appBar != null) widget.appBar!,
+                      Expanded(
                         child: Stack(
                           children: [
                             if (chatViewState.isLoading)
@@ -301,22 +300,22 @@ class _ChatViewState extends State<ChatView>
                           ],
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              if (featureActiveConfig.enableReactionPopup)
-                ValueListenableBuilder<bool>(
-                  valueListenable: context.chatViewIW!.showPopUp,
-                  builder: (_, showPopupValue, child) {
-                    return ReactionPopup(
-                      key: context.chatViewIW!.reactionPopupKey,
-                      onTap: () => _onChatListTap(context),
-                      showPopUp: showPopupValue,
-                    );
-                  },
-                ),
-            ],
+                if (featureActiveConfig.enableReactionPopup)
+                  ValueListenableBuilder<bool>(
+                    valueListenable: context.chatViewIW!.showPopUp,
+                    builder: (_, showPopupValue, child) {
+                      return ReactionPopup(
+                        key: context.chatViewIW!.reactionPopupKey,
+                        onTap: () => _onChatListTap(context),
+                        showPopUp: showPopupValue,
+                      );
+                    },
+                  ),
+              ],
+            ),
           );
         }),
       ),

@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'package:chatview/src/models/data_models/message.dart';
 import 'package:flutter/material.dart';
 
 import '../../values/typedefs.dart';
@@ -42,6 +43,9 @@ class ReactionPopupConfiguration {
   /// Used for give padding in reaction pop-up.
   final EdgeInsetsGeometry? padding;
 
+  /// Used for give borderRadius in reaction pop-up.
+  final BorderRadius? borderRadius;
+
   /// Provides emoji configuration in reaction pop-up.
   final EmojiConfiguration? emojiConfig;
 
@@ -57,6 +61,9 @@ class ReactionPopupConfiguration {
   /// Provides feasibility to completely override userReactionCallback defaults to false.
   final bool? overrideUserReactionCallback;
 
+  /// Provides a custom popup to use instead of emojis
+  final Widget Function(Message? message)? customReactionPopup;
+
   const ReactionPopupConfiguration({
     this.userReactionCallback,
     this.overrideUserReactionCallback = false,
@@ -67,8 +74,10 @@ class ReactionPopupConfiguration {
     this.maxWidth,
     this.margin,
     this.padding,
+    this.borderRadius,
     this.emojiConfig,
     this.glassMorphismConfig,
+    this.customReactionPopup,
   });
 }
 
