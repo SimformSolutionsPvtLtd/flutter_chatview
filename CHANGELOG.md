@@ -1,6 +1,11 @@
+## [2.2.1]
+
+* **Fix**: [254](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/254) Outgoing
+  Message Alignment
+
 ## [2.2.0]
 
-* **feat**: [246](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/246) add
+* **Feat**: [246](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/246) add
   functionality to scroll to bottom button
 * **Fix**: [247](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/247) fix mobile
   browser grey screen issue
