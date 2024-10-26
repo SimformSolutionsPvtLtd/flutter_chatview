@@ -95,6 +95,7 @@ class TextMessageView extends StatelessWidget {
                   url: textMessage,
                 )
               : MarkdownBody(
+                  selectable: true,
                   data: textMessage,
                   styleSheet: MarkdownStyleSheet(
                     p: _textStyle ??
