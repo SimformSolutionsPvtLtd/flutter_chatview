@@ -31,7 +31,7 @@ class ImageMessageConfiguration {
   final bool hideShareIcon;
 
   /// Provides callback when user taps on image message.
-  final StringCallback? onTap;
+  final MessageCallBack? onTap;
 
   /// Used for giving height of image message.
   final double? height;
