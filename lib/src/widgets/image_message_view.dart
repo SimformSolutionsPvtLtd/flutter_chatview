@@ -78,7 +78,7 @@ class ImageMessageView extends StatelessWidget {
           children: [
             GestureDetector(
               onTap: () => imageMessageConfig?.onTap != null
-                  ? imageMessageConfig?.onTap!(imageUrl)
+                  ? imageMessageConfig?.onTap!(message)
                   : null,
               child: Transform.scale(
                 scale: highlightImage ? highlightScale : 1.0,

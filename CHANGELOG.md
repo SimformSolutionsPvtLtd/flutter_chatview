@@ -1,5 +1,7 @@
-## [2.2.1]
+## [2.3.0]
 
+* **Breaking**: [257](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/257) update
+  onTap callback in ImageMessageConfiguration to use message object instead of image URL
 * **Fix**: [254](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/254) Outgoing
   Message Alignment
 * **Fix**: [266](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/266) Update
