@@ -243,7 +243,7 @@ void onSendTap(String message, ReplyMessage replyMessage, MessageType messageTyp
     id: '3',
     message: "How are you",
     createdAt: DateTime.now(),
-    senBy: currentUser.id,
+    sentBy: currentUser.id,
     replyMessage: replyMessage,
     messageType: messageType,
   );
