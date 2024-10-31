@@ -2,6 +2,8 @@
 
 * **Fix**: [254](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/254) Outgoing
   Message Alignment
+* **Fix**: [266](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/266) Update
+  dependencies
 
 ## [2.2.0]
 
