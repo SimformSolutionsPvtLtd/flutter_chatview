@@ -7,6 +7,10 @@ repository: https://github.com/SimformSolutionsPvtLtd/flutter_chatview
 platforms:
   android:
   ios:
+  web:
+  macos:
+  windows:
+  linux:
 
 environment:
   sdk: '>=3.2.0 <4.0.0'
