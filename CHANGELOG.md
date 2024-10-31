@@ -4,6 +4,8 @@
   Message Alignment
 * **Fix**: [266](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/266) Update
   dependencies
+* **Fix**: [264](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/264) missing
+  voice_message_configuration.dart export in models.dart
 
 ## [2.2.0]
 

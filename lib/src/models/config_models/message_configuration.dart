@@ -20,7 +20,6 @@
  * SOFTWARE.
  */
 import 'package:chatview/src/models/models.dart';
-import 'package:chatview/src/models/config_models/voice_message_configuration.dart';
 import 'package:flutter/material.dart';
 
 import '../../values/typedefs.dart';
