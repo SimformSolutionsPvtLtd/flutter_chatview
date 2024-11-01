@@ -1,10 +1,6 @@
 name: web-example-release
 on:
-  push:
-    branches:
-      - main
-    # Allows you to run this workflow manually from the Actions tab
-    workflow_dispatch:
+  workflow_dispatch: # Allows only manual triggering
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
@@ -31,11 +27,11 @@ jobs:
       - name: Flutter action
         uses: subosito/flutter-action@v2.13.0
         with:
-          flutter-version: '3.16.5'
+          flutter-version: '3.24.3'
           cache: true
-          cache-key: 'flutter-macos-stable-3.16.5-apple'
-          cache-path: '${{ runner.tool_cache }}/flutter/macos-stable-3.16.5-apple'
-          pub-cache-key: 'flutter-pub-macos-stable-3.16.5-apple'
+          cache-key: 'flutter-macos-stable-3.24.3-apple'
+          cache-path: '${{ runner.tool_cache }}/flutter/macos-stable-3.24.3-apple'
+          pub-cache-key: 'flutter-pub-macos-stable-3.24.3-apple'
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Project Clean Up
