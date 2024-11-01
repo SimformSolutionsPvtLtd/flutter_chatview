@@ -8,6 +8,8 @@
   dependencies
 * **Fix**: [264](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/264) missing
   voice_message_configuration.dart export in models.dart
+* **Fix**: [261](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/261)
+  userReactionCallback not working
 
 ## [2.2.0]
 
