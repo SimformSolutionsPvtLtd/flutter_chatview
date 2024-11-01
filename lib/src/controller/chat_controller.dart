@@ -153,7 +153,7 @@ class ChatController {
         () {
           if (!scrollController.hasClients) return;
           scrollController.animateTo(
-            scrollController.position.minScrollExtent,
+            scrollController.positions.last.minScrollExtent,
             curve: Curves.easeIn,
             duration: const Duration(milliseconds: 300),
           );

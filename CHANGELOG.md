@@ -10,6 +10,8 @@
   voice_message_configuration.dart export in models.dart
 * **Fix**: [261](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/261)
   userReactionCallback not working
+* **Fix**: [240](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/240)
+  ScrollController Exception in ChatController.scrollToLastMessage
 
 ## [2.2.0]
 
