@@ -1,3 +1,7 @@
+## [UnReleased] 
+
+* **Fix**: [276](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/276) link preview custom error message
+
 ## [2.3.0]
 
 * **Breaking**: [257](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/257) update

@@ -50,6 +50,9 @@ class LinkPreviewConfiguration {
   /// Provides callback when message detect url in message.
   final StringCallback? onUrlDetect;
 
+  /// Displays an error message when the link cannot be parsed for preview.
+  final String? errorBody;
+
   const LinkPreviewConfiguration({
     this.onUrlDetect,
     this.loadingColor,
@@ -60,5 +63,6 @@ class LinkPreviewConfiguration {
     this.linkStyle,
     this.padding,
     this.proxyUrl,
+    this.errorBody,
   });
 }
