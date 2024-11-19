@@ -169,7 +169,7 @@ class TextFieldConfiguration {
   final bool enabled;
 
   /// Determines if pressing enter submits the message.
-  /// Defaults to false.
+  /// Defaults to [false].
   final bool enableEnterToSubmit;
 
   const TextFieldConfiguration({
