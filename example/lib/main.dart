@@ -117,7 +117,7 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
           onReloadButtonTap: () {},
         ),
-        typeIndicatorConfig: TypeIndicatorConfiguration(
+        typingIndicatorConfig: TypingIndicatorConfiguration(
           flashingCircleBrightColor: theme.flashingCircleBrightColor,
           flashingCircleDarkColor: theme.flashingCircleDarkColor,
         ),
@@ -206,7 +206,7 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
         ),
         chatBubbleConfig: ChatBubbleConfiguration(
-          outgoingChatBubbleConfig: ChatBubble(
+          outgoingChatBubble: ChatBubble(
             linkPreviewConfig: LinkPreviewConfiguration(
               backgroundColor: theme.linkPreviewOutgoingChatColor,
               bodyStyle: theme.outgoingChatLinkBodyStyle,
@@ -215,7 +215,7 @@ class _ChatScreenState extends State<ChatScreen> {
             receiptsWidgetConfig: const ReceiptsWidgetConfig(showReceiptsIn: ShowReceiptsIn.all),
             color: theme.outgoingChatBubbleColor,
           ),
-          inComingChatBubbleConfig: ChatBubble(
+          incomingChatBubble: ChatBubble(
             linkPreviewConfig: LinkPreviewConfiguration(
               linkStyle: TextStyle(
                 color: theme.inComingChatBubbleTextColor,
