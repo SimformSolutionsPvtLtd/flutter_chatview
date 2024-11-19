@@ -33,7 +33,7 @@ class ChatViewAppBar extends StatelessWidget {
     Key? key,
     required this.chatTitle,
     this.backgroundColor,
-    this.centerTitle,
+    this.centerTitle = false,
     this.userStatus,
     this.profilePicture,
     this.chatTitleTextStyle,
@@ -56,7 +56,7 @@ class ChatViewAppBar extends StatelessWidget {
   final Color? backgroundColor;
 
   /// Allow user to center title of appbar.
-  final bool? centerTitle;
+  final bool centerTitle;
 
   /// Allow user to change title of appbar.
   final String chatTitle;
