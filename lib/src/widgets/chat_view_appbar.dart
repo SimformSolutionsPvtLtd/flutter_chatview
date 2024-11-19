@@ -134,24 +134,27 @@ class ChatViewAppBar extends StatelessWidget {
                         networkImageProgressIndicatorBuilder: networkImageProgressIndicatorBuilder,
                       ),
                     ),
-                  Column(
-                    crossAxisAlignment: centerTitle ? CrossAxisAlignment.center : CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        chatTitle,
-                        style: chatTitleTextStyle ??
-                            const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 0.25,
-                            ),
-                      ),
-                      if (userStatus != null)
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: centerTitle ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+                      mainAxisAlignment: centerTitle ? MainAxisAlignment.center : MainAxisAlignment.start,
+                      children: [
                         Text(
-                          userStatus!,
-                          style: userStatusTextStyle,
+                          chatTitle,
+                          style: chatTitleTextStyle ??
+                              const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 0.25,
+                              ),
                         ),
-                    ],
+                        if (userStatus != null)
+                          Text(
+                            userStatus!,
+                            style: userStatusTextStyle,
+                          ),
+                      ],
+                    ),
                   ),
                 ],
               ),
