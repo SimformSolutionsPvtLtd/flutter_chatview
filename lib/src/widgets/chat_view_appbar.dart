@@ -32,7 +32,8 @@ class ChatViewAppBar extends StatelessWidget {
   const ChatViewAppBar({
     Key? key,
     required this.chatTitle,
-    this.backGroundColor,
+    this.backgroundColor,
+    this.centerTitle,
     this.userStatus,
     this.profilePicture,
     this.chatTitleTextStyle,
@@ -52,7 +53,10 @@ class ChatViewAppBar extends StatelessWidget {
   }) : super(key: key);
 
   /// Allow user to change colour of appbar.
-  final Color? backGroundColor;
+  final Color? backgroundColor;
+
+  /// Allow user to center title of appbar.
+  final bool? centerTitle;
 
   /// Allow user to change title of appbar.
   final String chatTitle;
@@ -116,7 +120,7 @@ class ChatViewAppBar extends StatelessWidget {
               top: MediaQuery.of(context).padding.top,
               bottom: 4,
             ),
-        color: backGroundColor ?? Colors.white,
+        color: backgroundColor ?? Colors.white,
         child: Row(
           children: [
             if (showLeading)
@@ -147,7 +151,7 @@ class ChatViewAppBar extends StatelessWidget {
                       ),
                     ),
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: centerTitle ? CrossAxisAlignment.center : CrossAxisAlignment.start,
                     children: [
                       Text(
                         chatTitle,
