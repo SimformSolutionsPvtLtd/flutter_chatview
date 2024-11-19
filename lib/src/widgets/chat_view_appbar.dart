@@ -32,7 +32,7 @@ class ChatViewAppBar extends StatelessWidget {
   const ChatViewAppBar({
     Key? key,
     required this.chatTitle,
-    this.backgroundColor,
+    this.backgroundColor = Colors.white,
     this.centerTitle = false,
     this.userStatus,
     this.profilePicture,
@@ -40,11 +40,10 @@ class ChatViewAppBar extends StatelessWidget {
     this.userStatusTextStyle,
     this.backArrowColor,
     this.actions,
-    this.elevation,
+    this.elevation = 1.0,
     this.onBackPress,
     this.padding,
     this.leading,
-    this.showLeading = true,
     this.defaultAvatarImage = profileImage,
     this.assetImageErrorBuilder,
     this.networkImageErrorBuilder,
@@ -53,7 +52,7 @@ class ChatViewAppBar extends StatelessWidget {
   }) : super(key: key);
 
   /// Allow user to change colour of appbar.
-  final Color? backgroundColor;
+  final Color backgroundColor;
 
   /// Allow user to center title of appbar.
   final bool centerTitle;
@@ -80,7 +79,7 @@ class ChatViewAppBar extends StatelessWidget {
   final List<Widget>? actions;
 
   /// Allow user to change elevation of appbar.
-  final double? elevation;
+  final double elevation;
 
   /// Provides callback when user tap on back arrow.
   final VoidCallBack? onBackPress;
@@ -90,9 +89,6 @@ class ChatViewAppBar extends StatelessWidget {
 
   /// Allow user to change leading icon of appbar.
   final Widget? leading;
-
-  /// Allow user to turn on/off leading icon.
-  final bool showLeading;
 
   /// Field to set default image if network url for profile image not provided
   final String defaultAvatarImage;
@@ -107,33 +103,22 @@ class ChatViewAppBar extends StatelessWidget {
   final ImageType imageType;
 
   /// Progress indicator builder for network image
-  final NetworkImageProgressIndicatorBuilder?
-      networkImageProgressIndicatorBuilder;
+  final NetworkImageProgressIndicatorBuilder? networkImageProgressIndicatorBuilder;
 
   @override
   Widget build(BuildContext context) {
     return Material(
-      elevation: elevation ?? 1,
+      elevation: elevation,
       child: Container(
         padding: padding ??
             EdgeInsets.only(
               top: MediaQuery.of(context).padding.top,
               bottom: 4,
             ),
-        color: backgroundColor ?? Colors.white,
+        color: backgroundColor,
         child: Row(
           children: [
-            if (showLeading)
-              leading ??
-                  IconButton(
-                    onPressed: onBackPress ?? () => Navigator.pop(context),
-                    icon: Icon(
-                      (!kIsWeb && Platform.isIOS)
-                          ? Icons.arrow_back_ios
-                          : Icons.arrow_back,
-                      color: backArrowColor,
-                    ),
-                  ),
+            if (leading != null) leading!,
             Expanded(
               child: Row(
                 children: [
@@ -146,8 +131,7 @@ class ChatViewAppBar extends StatelessWidget {
                         assetImageErrorBuilder: assetImageErrorBuilder,
                         networkImageErrorBuilder: networkImageErrorBuilder,
                         imageType: imageType,
-                        networkImageProgressIndicatorBuilder:
-                            networkImageProgressIndicatorBuilder,
+                        networkImageProgressIndicatorBuilder: networkImageProgressIndicatorBuilder,
                       ),
                     ),
                   Column(
