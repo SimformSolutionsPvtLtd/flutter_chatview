@@ -20,6 +20,9 @@
  * SOFTWARE.
  */
 
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../chatview.dart';
@@ -42,6 +45,7 @@ class ChatViewAppBar extends StatelessWidget {
     this.onBackPress,
     this.padding,
     this.leading,
+    this.showLeading = true,
     this.defaultAvatarImage = profileImage,
     this.assetImageErrorBuilder,
     this.networkImageErrorBuilder,
@@ -88,6 +92,9 @@ class ChatViewAppBar extends StatelessWidget {
   /// Allow user to change leading icon of appbar.
   final Widget? leading;
 
+  /// Allow user to turn on/off leading icon.
+  final bool showLeading;
+
   /// Field to set default image if network url for profile image not provided
   final String defaultAvatarImage;
 
@@ -116,7 +123,15 @@ class ChatViewAppBar extends StatelessWidget {
         color: backgroundColor,
         child: Row(
           children: [
-            if (leading != null) leading!,
+            if (showLeading)
+              leading ??
+                  IconButton(
+                    onPressed: onBackPress ?? () => Navigator.pop(context),
+                    icon: Icon(
+                      (!kIsWeb && Platform.isIOS) ? Icons.arrow_back_ios : Icons.arrow_back,
+                      color: backArrowColor,
+                    ),
+                  ),
             Expanded(
               child: Row(
                 children: [
