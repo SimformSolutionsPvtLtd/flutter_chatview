@@ -1,6 +1,7 @@
 ## [2.4.0]
 
-
+* **Feat**: [251](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/251) Add
+  support to provide a type of suggestions item(Scrollable or Multi Line).
 * **Fix**: [281](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/281) Fix date 
   and time divider in between messages
 * **Fix**: [282](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/282) Upgrade
