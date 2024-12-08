@@ -1,3 +1,8 @@
+## [2.3.1]
+
+* **Fix**: [282](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/282) Upgrade
+  version of audio wave forms 1.2.0
+
 ## [2.3.0]
 
 * **Breaking**: [257](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/257) update

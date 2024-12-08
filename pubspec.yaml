@@ -23,7 +23,7 @@ dependencies:
   emoji_picker_flutter: ^3.0.0
   any_link_preview: ^3.0.2
   image_picker: '>=0.8.9 <2.0.0'
-  audio_waveforms: ^1.0.5
+  audio_waveforms: 1.2.0
   # For formatting time locale in message receipts
   timeago: ^3.7.0
   cached_network_image: ^3.4.1
