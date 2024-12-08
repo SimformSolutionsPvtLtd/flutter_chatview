@@ -64,6 +64,7 @@ class LinkPreview extends StatelessWidget {
                 : AnyLinkPreview(
                     link: url,
                     removeElevation: true,
+                    errorBody: linkPreviewConfig?.errorBody,
                     proxyUrl: linkPreviewConfig?.proxyUrl,
                     onTap: _onLinkTap,
                     placeholderWidget: SizedBox(
