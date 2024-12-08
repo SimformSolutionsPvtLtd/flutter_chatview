@@ -1,5 +1,7 @@
 ## [2.3.1]
 
+* **Feat**: [251](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/251) Add
+  support to provide a type of suggestions item(Scrollable or Multi Line).
 * **Fix**: [282](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/282) Upgrade
   version of audio wave forms 1.2.0
 * **Fix**: [276](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/276) link preview

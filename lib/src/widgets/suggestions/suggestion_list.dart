@@ -78,36 +78,50 @@ class _SuggestionListState extends State<SuggestionList>
               alignment: const AlignmentDirectional(-1.0, -1.0),
               heightFactor: math.max(_controller.value, 0.0),
               widthFactor: 1,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: List.generate(
-                    suggestions.length,
-                    (index) {
-                      final suggestion = suggestions[index];
-                      return suggestion.config?.customItemBuilder
-                              ?.call(index, suggestion) ??
-                          suggestionsItemConfig?.customItemBuilder
-                              ?.call(index, suggestion) ??
-                          Padding(
-                            padding: EdgeInsets.only(
-                              right: index == suggestions.length
-                                  ? 0
-                                  : suggestionsListConfig.itemSeparatorWidth,
-                            ),
-                            child: SuggestionItem(
-                              suggestionItemData: suggestion,
-                            ),
-                          );
-                    },
-                  ),
-                ),
-              ),
+              child: suggestionsConfig?.suggestionItemType.isScrollType ?? false
+                  ? SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: _suggestionListWidget(
+                          suggestionsItemConfig,
+                        ),
+                      ),
+                    )
+                  : Wrap(
+                      runSpacing:
+                          suggestionsConfig?.spaceBetweenSuggestionItemRow ??
+                              10,
+                      alignment: WrapAlignment.end,
+                      children: _suggestionListWidget(suggestionsItemConfig),
+                    ),
             );
           },
         ),
       ),
+    );
+  }
+
+  List<Widget> _suggestionListWidget(
+      SuggestionItemConfig? suggestionsItemConfig) {
+    final suggestionsListConfig =
+        suggestionsConfig?.listConfig ?? const SuggestionListConfig();
+    return List.generate(
+      suggestions.length,
+      (index) {
+        final suggestion = suggestions[index];
+        return suggestion.config?.customItemBuilder?.call(index, suggestion) ??
+            suggestionsItemConfig?.customItemBuilder?.call(index, suggestion) ??
+            Padding(
+              padding: EdgeInsets.only(
+                right: index == suggestions.length
+                    ? 0
+                    : suggestionsListConfig.itemSeparatorWidth,
+              ),
+              child: SuggestionItem(
+                suggestionItemData: suggestion,
+              ),
+            );
+      },
     );
   }
 
