@@ -1,9 +1,11 @@
-## [2.3.1]
+## [2.4.0]
 
 * **Fix**: [282](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/282) Upgrade
   version of audio wave forms 1.2.0
 * **Fix**: [276](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/276) link preview
   custom error message
+* **Feat**: [280](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/280) ability to
+  disable link preview
 
 ## [2.3.0]
 
