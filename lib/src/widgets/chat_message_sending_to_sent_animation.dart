@@ -1,6 +1,5 @@
 part of '../../chatview.dart';
 
-
 class SendingMessageAnimatingWidget extends StatefulWidget {
   const SendingMessageAnimatingWidget(this.status, {Key? key})
       : super(key: key);
@@ -27,11 +26,6 @@ class _SendingMessageAnimatingWidgetState
         }
       });
     }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   @override

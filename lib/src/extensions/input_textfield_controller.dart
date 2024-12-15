@@ -21,9 +21,9 @@ class InputTextFieldController extends TextEditingController {
     required bool withComposing,
   }) {
     final children = <TextSpan>[];
+
     /// chatusers here.
     final users = ["@yogesh dubey"];
-
 
     text.splitMapJoin(
       RegExp(_listPatternStyle.map((it) => it.regExp.pattern).join('|')),
@@ -33,26 +33,21 @@ class InputTextFieldController extends TextEditingController {
             .firstWhere((element) => element.regExp.hasMatch(text))
             .textStyle;
 
-        debugPrint(text);
-            if (text.startsWith('@')){
-              if(users.contains(text)){
-                final span = TextSpan(text: match.group(0), style: newStyle);
-                children.add(span);
-                return span.toPlainText();
-              }
-              else   {
-                final span = TextSpan(text: text, style: style);
-                children.add(span);
-                return span.toPlainText();
-              }
-            }
-            else   {
-              final span = TextSpan(text: text, style: newStyle);
-              children.add(span);
-              return span.toPlainText();
-            }
-
-
+        if (text.startsWith('@')) {
+          if (users.contains(text)) {
+            final span = TextSpan(text: match.group(0), style: newStyle);
+            children.add(span);
+            return span.toPlainText();
+          } else {
+            final span = TextSpan(text: text, style: style);
+            children.add(span);
+            return span.toPlainText();
+          }
+        } else {
+          final span = TextSpan(text: text, style: newStyle);
+          children.add(span);
+          return span.toPlainText();
+        }
       },
       onNonMatch: (text) {
         final span = TextSpan(text: text, style: style);

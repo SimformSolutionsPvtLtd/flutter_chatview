@@ -1,6 +1,5 @@
 part of '../../chatview.dart';
 
-
 class ReactionsBottomSheet {
   Future<void> show({
     required BuildContext context,
@@ -59,12 +58,12 @@ class ReactionsBottomSheet {
                                     ?.profileCircleRadius ??
                                 16,
                             backgroundImage: NetworkImage(
-                              reactedUser.profilePhoto ?? profileImage,
+                              reactedUser.imageUrl ?? profileImage,
                             ),
                           ),
                           const SizedBox(width: 12),
                           Text(
-                            reactedUser.name,
+                            reactedUser.firstName ?? "",
                             style: reactionsBottomSheetConfig
                                 ?.reactedUserTextStyle,
                           ),

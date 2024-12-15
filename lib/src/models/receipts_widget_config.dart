@@ -23,7 +23,6 @@
 import 'package:flutter/cupertino.dart';
 import '../../chatview.dart';
 import '../utils/constants/constants.dart';
-import '../values/enumaration.dart';
 
 class ReceiptsWidgetConfig {
   /// The builder that builds widget that right next to the senders message bubble.
@@ -31,7 +30,7 @@ class ReceiptsWidgetConfig {
   /// like instagram.
   /// By default [sendMessageAnimationBuilder]
   /// TODO: Pass messsage here too
-  final Widget Function(MessageStatus status)? receiptsBuilder;
+  final Widget Function(Message message)? receiptsBuilder;
 
   /// Just like Instagram messages receipts are displayed at the bottom of last
   /// message. If in case you want to modify it using your custom widget you can
@@ -42,9 +41,13 @@ class ReceiptsWidgetConfig {
   /// Whether to show receipts in all messages or not defaults to [ShowReceiptsIn.lastMessage]
   final ShowReceiptsIn showReceiptsIn;
 
+  /// Whether to show receipts inside or outside the bubble, defaults to  [ReceiptsBubblePreference.inside]
+  final ReceiptsBubblePreference receiptsBubblePreference;
+
   const ReceiptsWidgetConfig({
     this.receiptsBuilder,
     this.lastSeenAgoBuilder,
+    this.receiptsBubblePreference = ReceiptsBubblePreference.inside,
     this.showReceiptsIn = ShowReceiptsIn.lastMessage,
   });
 }

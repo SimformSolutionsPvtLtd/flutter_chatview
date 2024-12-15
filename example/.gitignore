@@ -8,6 +8,7 @@
 .buildlog/
 .history
 .svn/
+migrate_working_dir/
 
 # IntelliJ related
 *.iml
@@ -31,8 +32,6 @@
 .pub/
 /build/
 
-# Web related
-
 # Symbolication related
 app.*.symbols
 
@@ -43,6 +42,3 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
-
-# IOS files
-ios/Podfile.lock

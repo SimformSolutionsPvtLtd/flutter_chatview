@@ -21,7 +21,6 @@
  */
 part of '../../chatview.dart';
 
-
 class ChatUITextField extends StatefulWidget {
   const ChatUITextField({
     Key? key,
@@ -47,7 +46,7 @@ class ChatUITextField extends StatefulWidget {
   final VoidCallBack onPressed;
 
   /// Provides callback once voice is recorded.
-  final Function(String?) onRecordingComplete;
+  final Function(String? path, Duration? duration) onRecordingComplete;
 
   /// Provides callback when user select images from camera/gallery.
   final StringsCallBack onImageSelected;
@@ -59,18 +58,15 @@ class ChatUITextField extends StatefulWidget {
 }
 
 class _ChatUITextFieldState extends State<ChatUITextField> {
-
   final ValueNotifier<String> _inputText = ValueNotifier('');
 
   final ValueNotifier<bool> isUserTagging = ValueNotifier(false);
 
   ChatUser? get currentUser => ChatViewInheritedWidget.of(context)?.currentUser;
 
-
   final ImagePicker _imagePicker = ImagePicker();
 
   RecorderController? controller;
-  
 
   ValueNotifier<bool> isRecording = ValueNotifier(false);
 
@@ -140,44 +136,62 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ValueListenableBuilder<bool>(valueListenable: isUserTagging, builder:(context,value,child)=>
-          value ? AnimatedContainer(
-          padding: const EdgeInsets.all(10),
-         decoration:   BoxDecoration(
-              borderRadius: textFieldConfig?.borderRadius ??
-                  BorderRadius.circular(textFieldBorderRadius),
-              color: sendMessageConfig?.textFieldBackgroundColor ?? Colors.white,
-            ),
-            height: 200,
-            duration: const Duration(seconds: 2),
-            curve: Curves.linear,
-            child: Stack(
-              children: [
-                ListView.builder(
-                    itemCount: widget.chatController.chatUsers.length,
-                    padding: const EdgeInsets.all(5),
-                    itemBuilder:(context,index) {
-                      if(widget.chatController.chatUsers[index].id == currentUser?.id )return const SizedBox();
-                     return ListTile(
-                        title: Text(widget.chatController.chatUsers[index].name,
-                          style: textFieldConfig?.textStyle ??
-                              const TextStyle(color: Colors.white),),
-                        leading: widget.chatController.chatUsers[index]
-                            .profilePhoto != null ? CircleAvatar(
-                          child: Image.network(
-                              widget.chatController.chatUsers[index]
-                                  .profilePhoto!),
-                        ) : null,
-                      );
-                    }),
-                Positioned(
-                    top: 10,
-                    right: 10,
-                    child: IconButton(onPressed: (){
-                  isUserTagging.value = false;
-                },icon: const Icon(CupertinoIcons.xmark_circle),))
-              ],
-            ),):const SizedBox()),
+          ValueListenableBuilder<bool>(
+              valueListenable: isUserTagging,
+              builder: (context, value, child) => value
+                  ? AnimatedContainer(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        borderRadius: textFieldConfig?.borderRadius ??
+                            BorderRadius.circular(textFieldBorderRadius),
+                        color: sendMessageConfig?.textFieldBackgroundColor ??
+                            Colors.white,
+                      ),
+                      height: 200,
+                      duration: const Duration(seconds: 2),
+                      curve: Curves.linear,
+                      child: Stack(
+                        children: [
+                          ListView.builder(
+                              itemCount: widget.chatController.chatUsers.length,
+                              padding: const EdgeInsets.all(5),
+                              itemBuilder: (context, index) {
+                                if (widget.chatController.chatUsers[index].id ==
+                                    currentUser?.id) return const SizedBox();
+                                return ListTile(
+                                  title: Text(
+                                    widget.chatController.chatUsers[index]
+                                            .firstName ??
+                                        '',
+                                    style: textFieldConfig?.textStyle ??
+                                        const TextStyle(color: Colors.white),
+                                  ),
+                                  leading: widget.chatController
+                                              .chatUsers[index].imageUrl !=
+                                          null
+                                      ? CircleAvatar(
+                                          child: Image.network(widget
+                                                  .chatController
+                                                  .chatUsers[index]
+                                                  .imageUrl ??
+                                              ""),
+                                        )
+                                      : null,
+                                );
+                              }),
+                          Positioned(
+                              top: 10,
+                              right: 10,
+                              child: IconButton(
+                                onPressed: () {
+                                  isUserTagging.value = false;
+                                },
+                                icon: const Icon(CupertinoIcons.xmark_circle),
+                              ))
+                        ],
+                      ),
+                    )
+                  : const SizedBox()),
           ValueListenableBuilder<bool>(
             valueListenable: isRecording,
             builder: (_, isRecordingValue, child) {
@@ -199,8 +213,9 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                           WaveStyle(
                             extendWaveform: true,
                             showMiddleLine: false,
-                            waveColor: voiceRecordingConfig?.waveStyle?.waveColor ??
-                                Colors.black,
+                            waveColor:
+                                voiceRecordingConfig?.waveStyle?.waveColor ??
+                                    Colors.black,
                           ),
                     )
                   else
@@ -215,13 +230,15 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                         keyboardType: textFieldConfig?.textInputType,
                         inputFormatters: textFieldConfig?.inputFormatters,
                         onChanged: _onChanged,
-                        textCapitalization: textFieldConfig?.textCapitalization ??
-                            TextCapitalization.sentences,
+                        textCapitalization:
+                            textFieldConfig?.textCapitalization ??
+                                TextCapitalization.sentences,
                         decoration: InputDecoration(
-                          hintText:
-                              textFieldConfig?.hintText ?? PackageStrings.message,
-                          fillColor: sendMessageConfig?.textFieldBackgroundColor ??
-                              Colors.white,
+                          hintText: textFieldConfig?.hintText ??
+                              PackageStrings.message,
+                          fillColor:
+                              sendMessageConfig?.textFieldBackgroundColor ??
+                                  Colors.white,
                           filled: true,
                           hintStyle: textFieldConfig?.hintStyle ??
                               TextStyle(
@@ -235,7 +252,8 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                           border: _outLineBorder,
                           focusedBorder: _outLineBorder,
                           enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(color: Colors.transparent),
+                            borderSide:
+                                const BorderSide(color: Colors.transparent),
                             borderRadius: textFieldConfig?.borderRadius ??
                                 BorderRadius.circular(textFieldBorderRadius),
                           ),
@@ -250,8 +268,10 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                           color: sendMessageConfig?.defaultSendButtonColor ??
                               Colors.green,
                           onPressed: () {
-                                if(widget.textEditingController.text.trim().isNotEmpty){
-                                  isUserTagging.value = false;
+                            if (widget.textEditingController.text
+                                .trim()
+                                .isNotEmpty) {
+                              isUserTagging.value = false;
                               widget.onPressed();
                             }
                             widget.textEditingController.clear();
@@ -266,14 +286,15 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                             if (!isRecordingValue) ...[
                               IconButton(
                                 constraints: const BoxConstraints(),
-                                onPressed: () => _onIconPressed(ImageSource.camera),
-                                icon:
-                                    imagePickerIconsConfig?.cameraImagePickerIcon ??
-                                        Icon(
-                                          Icons.camera_alt_outlined,
-                                          color: imagePickerIconsConfig
-                                              ?.cameraIconColor,
-                                        ),
+                                onPressed: () =>
+                                    _onIconPressed(ImageSource.camera),
+                                icon: imagePickerIconsConfig
+                                        ?.cameraImagePickerIcon ??
+                                    Icon(
+                                      Icons.camera_alt_outlined,
+                                      color: imagePickerIconsConfig
+                                          ?.cameraIconColor,
+                                    ),
                               ),
                               IconButton(
                                 constraints: const BoxConstraints(),
@@ -283,8 +304,8 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                                         ?.galleryImagePickerIcon ??
                                     Icon(
                                       Icons.image,
-                                      color:
-                                          imagePickerIconsConfig?.galleryIconColor,
+                                      color: imagePickerIconsConfig
+                                          ?.galleryIconColor,
                                     ),
                               ),
                             ],
@@ -298,7 +319,9 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                                 icon: (isRecordingValue
                                         ? voiceRecordingConfig?.micIcon
                                         : voiceRecordingConfig?.stopIcon) ??
-                                    Icon(isRecordingValue ? Icons.stop : Icons.mic),
+                                    Icon(isRecordingValue
+                                        ? Icons.stop
+                                        : Icons.mic),
                                 color: voiceRecordingConfig?.recorderIconColor,
                               )
                           ],
@@ -326,8 +349,9 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
       isRecording.value = true;
     } else {
       final path = await controller?.stop();
+      final duration = controller?.recordedDuration;
       isRecording.value = false;
-      widget.onRecordingComplete(path);
+      widget.onRecordingComplete(path, duration);
     }
   }
 
@@ -341,13 +365,14 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
   }
 
   void _onChanged(String inputText) {
-
-  if( widget.textEditingController.text.split(' ').indexWhere((element) => element.startsWith('@')) != -1 ){
-    isUserTagging.value = true;
-    }
-  else if (inputText.trim().isEmpty){
+    if (widget.textEditingController.text
+            .split(' ')
+            .indexWhere((element) => element.startsWith('@')) !=
+        -1) {
+      isUserTagging.value = true;
+    } else if (inputText.trim().isEmpty) {
       isUserTagging.value = false;
-  }
+    }
     debouncer.run(() {
       composingStatus.value = TypeWriterStatus.typed;
     }, () {

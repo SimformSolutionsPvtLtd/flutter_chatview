@@ -21,7 +21,6 @@
  */
 part of '../../chatview.dart';
 
-
 class VerticalLine extends StatelessWidget {
   const VerticalLine({
     Key? key,

@@ -21,7 +21,6 @@
  */
 part of '../../chatview.dart';
 
-
 class ReplyIcon extends StatelessWidget {
   const ReplyIcon({
     Key? key,

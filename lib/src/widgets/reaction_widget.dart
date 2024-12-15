@@ -22,7 +22,6 @@
 
 part of '../../chatview.dart';
 
-
 class ReactionWidget extends StatefulWidget {
   const ReactionWidget({
     Key? key,

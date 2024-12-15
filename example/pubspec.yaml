@@ -23,6 +23,10 @@ dependencies:
   moxxmpp_socket_tcp:
     hosted: https://git.polynom.me/api/packages/Moxxy/pub
     version: 0.2.1
+  sticky_grouped_list:
+    git:
+      url: https://github.com/Yogesh-Dubey-Ayesavi/sticky_grouped_list.git  
+  get_it: ^7.4.1
 
 dev_dependencies:
   flutter_test:

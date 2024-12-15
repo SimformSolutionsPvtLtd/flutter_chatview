@@ -21,7 +21,6 @@
  */
 part of '../../chatview.dart';
 
-
 class EmojiRow extends StatelessWidget {
   EmojiRow({
     Key? key,

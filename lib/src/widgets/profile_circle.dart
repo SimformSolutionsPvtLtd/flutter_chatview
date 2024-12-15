@@ -21,7 +21,6 @@
  */
 part of '../../chatview.dart';
 
-
 class ProfileCircle extends StatelessWidget {
   const ProfileCircle({
     Key? key,

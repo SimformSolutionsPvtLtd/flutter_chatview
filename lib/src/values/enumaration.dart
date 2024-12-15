@@ -20,14 +20,12 @@
  * SOFTWARE.
  */
 
-// Different types Message of ChatView
 enum MessageType {
+  custom,
   image,
   text,
-
-  /// Only supported on android and ios
+  unsupported,
   voice,
-  custom
 }
 
 /// Events, Wheter the user is still typing a message or has
@@ -36,12 +34,14 @@ enum TypeWriterStatus { typing, typed }
 
 /// [MessageStatus] defines the current state of the message
 /// if you are sender sending a message then, the
-enum MessageStatus { read, delivered, undelivered, pending }
+// enum MessageStatus { read, delivered, undelivered, pending }
 
 /// Types of states
 enum ChatViewState { hasMessages, noData, loading, error }
 
 enum ShowReceiptsIn { all, lastMessage }
+
+enum ReceiptsBubblePreference { inside, outSide }
 
 extension ChatViewStateExtension on ChatViewState {
   bool get hasMessages => this == ChatViewState.hasMessages;
@@ -52,3 +52,5 @@ extension ChatViewStateExtension on ChatViewState {
 
   bool get noMessages => this == ChatViewState.noData;
 }
+
+enum ToolBarPriority { high, medium, low }

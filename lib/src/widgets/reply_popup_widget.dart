@@ -21,7 +21,6 @@
  */
 part of '../../chatview.dart';
 
-
 class ReplyPopupWidget extends StatelessWidget {
   const ReplyPopupWidget({
     Key? key,

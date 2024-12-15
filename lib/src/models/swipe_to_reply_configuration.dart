@@ -22,6 +22,8 @@
 import 'package:flutter/material.dart';
 import 'package:swipeable_tile/swipeable_tile.dart';
 
+import '../../chatview.dart';
+
 class SwipeToReplyConfiguration {
   /// Used to give color of reply icon while swipe to reply.
   final Color? replyIconColor;
@@ -35,10 +37,10 @@ class SwipeToReplyConfiguration {
       AnimationController progress, double value)? backgroundBuilder;
 
   /// Provides callback when user swipe chat bubble from left side.
-  final void Function(String message, String sendBy)? onLeftSwipe;
+  final void Function(Message message, ChatUser sendBy)? onLeftSwipe;
 
   /// Provides callback when user swipe chat bubble from right side.
-  final void Function(String message, String sendBy)? onRightSwipe;
+  final void Function(Message message, ChatUser sendBy)? onRightSwipe;
 
   const SwipeToReplyConfiguration({
     this.replyIconColor,

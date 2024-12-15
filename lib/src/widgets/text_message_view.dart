@@ -21,7 +21,6 @@
  */
 part of '../../chatview.dart';
 
-
 class TextMessageView extends StatelessWidget {
   const TextMessageView({
     Key? key,
@@ -32,6 +31,7 @@ class TextMessageView extends StatelessWidget {
     this.outgoingChatBubbleConfig,
     this.messageReactionConfig,
     this.highlightMessage = false,
+    this.receiptsBuilderVisibility = true,
     this.highlightColor,
   }) : super(key: key);
 
@@ -39,7 +39,7 @@ class TextMessageView extends StatelessWidget {
   final bool isMessageBySender;
 
   /// Provides message instance of chat.
-  final Message message;
+  final TextMessage message;
 
   /// Allow users to give max width of chat bubble.
   final double? chatBubbleMaxWidth;
@@ -59,10 +59,13 @@ class TextMessageView extends StatelessWidget {
   /// Allow user to set color of highlighted message.
   final Color? highlightColor;
 
+  /// To controll receiptsBuilderVisibility.
+  final bool receiptsBuilderVisibility;
+
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final textMessage = message.message;
+    final textMessage = message.text;
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -76,97 +79,100 @@ class TextMessageView extends StatelessWidget {
                   vertical: 10,
                 ),
             margin: _margin ??
-                EdgeInsets.fromLTRB(
-                    5, 0, 6, message.reaction.reactions.isNotEmpty ? 15 : 2),
+                EdgeInsets.fromLTRB(5, 0, 6,
+                    message.reaction?.reactions.isNotEmpty ?? false ? 15 : 2),
             decoration: BoxDecoration(
               color: highlightMessage ? highlightColor : _color,
               borderRadius: _borderRadius(textMessage),
             ),
-            child: textMessage.isUrl
-                ? LinkPreview(
-                    linkPreviewConfig: _linkPreviewConfig,
-                    url: textMessage,
-                  )
-                : ParsedText(
-                    selectable: false,
-                    text: message.message,
-                    style: _textStyle ??
-                        textTheme.bodyMedium!.copyWith(
-                          color: Colors.white,
-                          fontSize: 16,
-                        ),
-                    parse: [
-                      MatchText(
-                        pattern: PatternStyle.bold.pattern,
-                        style: PatternStyle.bold.textStyle,
-                        renderText: (
-                                {required String str,
-                                required String pattern}) =>
-                            {
-                          'display': str.replaceAll(
-                            PatternStyle.bold.from,
-                            PatternStyle.bold.replace,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                textMessage.isUrl
+                    ? LinkPreview(
+                        linkPreviewConfig: _linkPreviewConfig,
+                        url: textMessage,
+                      )
+                    : ParsedText(
+                        selectable: false,
+                        text: message.text,
+                        style: _textStyle ??
+                            textTheme.bodyMedium!.copyWith(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                        parse: [
+                          MatchText(
+                            pattern: PatternStyle.bold.pattern,
+                            style: PatternStyle.bold.textStyle,
+                            renderText: (
+                                    {required String str,
+                                    required String pattern}) =>
+                                {
+                              'display': str.replaceAll(
+                                PatternStyle.bold.from,
+                                PatternStyle.bold.replace,
+                              ),
+                            },
                           ),
-                        },
-                      ),
-                      MatchText(
-                        pattern: PatternStyle.italic.pattern,
-                        style: PatternStyle.italic.textStyle,
-                        renderText: (
-                                {required String str,
-                                required String pattern}) =>
-                            {
-                          'display': str.replaceAll(
-                            PatternStyle.italic.from,
-                            PatternStyle.italic.replace,
+                          MatchText(
+                            pattern: PatternStyle.italic.pattern,
+                            style: PatternStyle.italic.textStyle,
+                            renderText: (
+                                    {required String str,
+                                    required String pattern}) =>
+                                {
+                              'display': str.replaceAll(
+                                PatternStyle.italic.from,
+                                PatternStyle.italic.replace,
+                              ),
+                            },
                           ),
-                        },
-                      ),
-                      MatchText(
-                        pattern: PatternStyle.lineThrough.pattern,
-                        style: (PatternStyle.lineThrough.textStyle),
-                        renderText: (
-                                {required String str,
-                                required String pattern}) =>
-                            {
-                          'display': str.replaceAll(
-                            PatternStyle.lineThrough.from,
-                            PatternStyle.lineThrough.replace,
+                          MatchText(
+                            pattern: PatternStyle.lineThrough.pattern,
+                            style: (PatternStyle.lineThrough.textStyle),
+                            renderText: (
+                                    {required String str,
+                                    required String pattern}) =>
+                                {
+                              'display': str.replaceAll(
+                                PatternStyle.lineThrough.from,
+                                PatternStyle.lineThrough.replace,
+                              ),
+                            },
                           ),
-                        },
-                      ),
-                      MatchText(
-                        pattern: PatternStyle.code.pattern,
-                        style: (PatternStyle.code.textStyle),
-                        renderText: (
-                                {required String str,
-                                required String pattern}) =>
-                            {
-                          'display': str.replaceAll(
-                            PatternStyle.code.from,
-                            PatternStyle.code.replace,
+                          MatchText(
+                            pattern: PatternStyle.code.pattern,
+                            style: (PatternStyle.code.textStyle),
+                            renderText: (
+                                    {required String str,
+                                    required String pattern}) =>
+                                {
+                              'display': str.replaceAll(
+                                PatternStyle.code.from,
+                                PatternStyle.code.replace,
+                              ),
+                            },
                           ),
-                        },
+                        ],
                       ),
-                      MatchText(
-                        pattern: PatternStyle.at.pattern,
-                        style: (PatternStyle.at.textStyle),
-                        renderText: (
-                                {required String str,
-                                required String pattern}) =>
-                            {
-                          'display': str.replaceAll(
-                            PatternStyle.code.from,
-                            PatternStyle.code.replace,
-                          ),
-                        },
-                      ),
-                    ],
-                  )),
-        if (message.reaction.reactions.isNotEmpty)
+                if (receiptsBuilderVisibility &&
+                    isMessageBySender &&
+                    outgoingChatBubbleConfig
+                            ?.receiptsWidgetConfig?.receiptsBubblePreference ==
+                        ReceiptsBubblePreference.inside) ...[
+                  outgoingChatBubbleConfig
+                          ?.receiptsWidgetConfig?.receiptsBuilder
+                          ?.call(message) ??
+                      WhatsappStyleMessageTimeWidget(message)
+                ],
+              ],
+            )),
+        if (message.reaction?.reactions.isNotEmpty ?? false)
           ReactionWidget(
             isMessageBySender: isMessageBySender,
-            reaction: message.reaction,
+            reaction: message.reaction!,
             messageReactionConfig: messageReactionConfig,
           ),
       ],

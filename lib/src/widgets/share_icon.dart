@@ -21,7 +21,6 @@
  */
 part of '../../chatview.dart';
 
-
 class ShareIcon extends StatelessWidget {
   const ShareIcon({
     Key? key,

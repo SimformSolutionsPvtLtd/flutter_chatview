@@ -21,7 +21,6 @@
  */
 part of '../../chatview.dart';
 
-
 class TypingIndicator extends StatefulWidget {
   const TypingIndicator({
     Key? key,

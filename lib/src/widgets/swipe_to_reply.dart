@@ -21,7 +21,6 @@
  */
 part of '../../chatview.dart';
 
-
 class SwipeToReply extends StatefulWidget {
   const SwipeToReply({
     Key? key,

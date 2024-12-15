@@ -21,7 +21,6 @@
  */
 part of '../../chatview.dart';
 
-
 class LinkPreview extends StatelessWidget {
   const LinkPreview({
     Key? key,

@@ -21,14 +21,13 @@
  */
 import 'package:chatview/chatview.dart';
 import 'package:flutter/material.dart';
-import 'enumaration.dart';
 
 typedef StringCallback = void Function(String);
 typedef StringMessageCallBack = void Function(
-    String message, ReplyMessage replyMessage, MessageType messageType);
-typedef ReplyMessageWithReturnWidget = Widget Function(
-    ReplyMessage? replyMessage);
-typedef ReplyMessageCallBack = void Function(ReplyMessage replyMessage);
+    String message, Message? replyMessage, MessageType messageType,
+    {Duration? duration});
+typedef ReplyMessageWithReturnWidget = Widget Function(Message? replyMessage);
+typedef ReplyMessageCallBack = void Function(Message replyMessage);
 typedef VoidCallBack = void Function();
 typedef DoubleCallBack = void Function(double, double);
 typedef MessageCallBack = void Function(Message message);
@@ -36,3 +35,4 @@ typedef VoidCallBackWithFuture = Future<void> Function();
 typedef StringsCallBack = void Function(String emoji, String messageId);
 typedef StringWithReturnWidget = Widget Function(String separator);
 typedef DragUpdateDetailsCallback = void Function(DragUpdateDetails);
+typedef MessageNotifierList = List<ValueNotifier<Message>>;

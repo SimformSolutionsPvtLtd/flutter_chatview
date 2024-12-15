@@ -1,6 +1,5 @@
 part of '../../chatview.dart';
 
-
 class ChatViewStateWidget extends StatelessWidget {
   const ChatViewStateWidget({
     Key? key,

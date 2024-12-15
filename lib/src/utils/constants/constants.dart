@@ -25,7 +25,6 @@ import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../../../chatview.dart';
-import '../../values/enumaration.dart';
 
 const String enUS = "en_US";
 const String emojiRegExpression =
@@ -82,7 +81,7 @@ Widget lastSeenAgoBuilder(Message message, String formattedDate) {
   return Padding(
     padding: const EdgeInsets.all(2),
     child: Text(
-      'Seen ${applicationDateFormatter(message.createdAt)}    ',
+      'Seen ${applicationDateFormatter(DateTime.fromMillisecondsSinceEpoch(message.createdAt))}',
       style: const TextStyle(color: Colors.grey, fontSize: 12),
     ),
   );
@@ -99,4 +98,4 @@ bool sameDay(int firstStamp, int? secondStamp) {
   }
 }
 
-final serviceLocator = GetIt.I;
+final serviceLocator = GetIt.instance;

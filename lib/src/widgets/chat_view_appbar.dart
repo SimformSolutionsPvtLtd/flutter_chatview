@@ -22,7 +22,6 @@
 
 part of '../../chatview.dart';
 
-
 class ChatViewAppBar extends StatefulWidget {
   const ChatViewAppBar({
     Key? key,
@@ -81,19 +80,27 @@ class ChatViewAppBar extends StatefulWidget {
   /// Allow user to turn on/off leading icon.
   final bool showLeading;
 
-  final List<Widget> Function(Message message)? messageActionsBuilder;
+  final List<Widget> Function(List<Message> message)? messageActionsBuilder;
 
   @override
   State<ChatViewAppBar> createState() => _ChatViewAppBarState();
 }
 
 class _ChatViewAppBarState extends State<ChatViewAppBar> {
-  ChatController get chatController =>
-      ChatViewInheritedWidget.of(context)!.chatController;
+  ChatController? chatController;
 
-  bool get isCupertino => ChatViewInheritedWidget.of(context)!.isCupertinoApp;
+  bool isCupertino = false;
 
   int get profileRadius => 20;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (provide != null) {
+      isCupertino = provide!.isCupertinoApp;
+      chatController = provide!.chatController;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -158,21 +165,23 @@ class _ChatViewAppBarState extends State<ChatViewAppBar> {
                 ],
               ),
             ),
-            ValueListenableBuilder(
-              valueListenable: chatController.showMessageActions,
-              builder: (context, message, child) {
-                message as Message?;
-                if (message != null && widget.messageActionsBuilder != null) {
-                  return Row(
-                      children: widget.messageActionsBuilder!.call(message));
-                } else if (widget.actions != null) {
-                  return Row(
-                    children: widget.actions!,
-                  );
-                }
-                return const SizedBox();
-              },
-            )
+            if (chatController != null) ...[
+              ValueListenableBuilder(
+                valueListenable: chatController!.multipleMessageSelection,
+                builder: (context, message, child) {
+                  if (message.isNotEmpty &&
+                      widget.messageActionsBuilder != null) {
+                    return Row(
+                        children: widget.messageActionsBuilder!.call(message));
+                  } else if (widget.actions != null) {
+                    return Row(
+                      children: widget.actions!,
+                    );
+                  }
+                  return const SizedBox();
+                },
+              )
+            ]
           ],
         ),
       ),

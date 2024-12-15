@@ -25,7 +25,6 @@ import 'package:intl/intl.dart';
 import '../utils/constants/constants.dart';
 import '../utils/emoji_parser.dart';
 import '../utils/package_strings.dart';
-import '../values/enumaration.dart';
 
 /// Extension for DateTime to get specific formats of dates and time.
 extension TimeDifference on DateTime {
@@ -79,11 +78,8 @@ extension ValidateString on String {
       padding: profileCirclePadding ?? const EdgeInsets.only(left: 4),
       child: CircleAvatar(
         radius: profileCircleRadius ?? 8,
-        child: Image.network(
-          getChatUser(this)?.profilePhoto ?? profileImage,
-          cacheHeight: 16,
-          cacheWidth: 16,
-        ),
+        backgroundImage:
+            NetworkImage(getChatUser(this)?.imageUrl ?? profileImage),
       ),
     );
   }

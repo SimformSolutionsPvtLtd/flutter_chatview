@@ -20,7 +20,8 @@ class VoiceMessageView extends StatefulWidget {
   final double screenWidth;
 
   /// Provides message instance of chat.
-  final Message message;
+  final AudioMessage message;
+
   final Function(int)? onMaxDuration;
 
   /// Represents current message is sent by current user.
@@ -53,13 +54,16 @@ class _VoiceMessageViewState extends State<VoiceMessageView> {
   @override
   void initState() {
     super.initState();
+    final msg = widget.message as AudioPathMessage;
     controller = PlayerController()
       ..preparePlayer(
-        path: widget.message.message,
+        path: msg.uri,
         noOfSamples: widget.config?.playerWaveStyle
                 ?.getSamplesForWidth(widget.screenWidth * 0.5) ??
             playerWaveStyle.getSamplesForWidth(widget.screenWidth * 0.5),
-      ).whenComplete(() => widget.onMaxDuration?.call(controller.maxDuration));
+      ).whenComplete(() {
+        widget.onMaxDuration?.call(controller.maxDuration);
+      });
     playerStateSubscription = controller.onPlayerStateChanged
         .listen((state) => _playerState.value = state);
   }
@@ -90,7 +94,9 @@ class _VoiceMessageViewState extends State<VoiceMessageView> {
           margin: widget.config?.margin ??
               EdgeInsets.symmetric(
                 horizontal: 8,
-                vertical: widget.message.reaction.reactions.isNotEmpty ? 15 : 0,
+                vertical: widget.message.reaction?.reactions.isNotEmpty ?? false
+                    ? 15
+                    : 0,
               ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -132,12 +138,12 @@ class _VoiceMessageViewState extends State<VoiceMessageView> {
             ],
           ),
         ),
-        // if (widget.message.reaction.reactions.isNotEmpty)
-        //   ReactionWidget(
-        //     isMessageBySender: widget.isMessageBySender,
-        //     reaction: widget.message.reaction,
-        //     messageReactionConfig: widget.messageReactionConfig,
-        //   ),
+        if (widget.message.reaction?.reactions.isNotEmpty ?? false)
+          ReactionWidget(
+            isMessageBySender: widget.isMessageBySender,
+            reaction: widget.message.reaction!,
+            messageReactionConfig: widget.messageReactionConfig,
+          ),
       ],
     );
   }

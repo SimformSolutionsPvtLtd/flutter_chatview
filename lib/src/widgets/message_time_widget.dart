@@ -22,7 +22,6 @@
 
 part of '../../chatview.dart';
 
-
 class MessageTimeWidget extends StatelessWidget {
   const MessageTimeWidget({
     Key? key,

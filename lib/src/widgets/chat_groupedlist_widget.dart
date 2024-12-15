@@ -22,7 +22,6 @@
 
 part of '../../chatview.dart';
 
-
 class ChatGroupedListWidget extends StatefulWidget {
   const ChatGroupedListWidget({
     Key? key,
@@ -30,7 +29,7 @@ class ChatGroupedListWidget extends StatefulWidget {
     required this.showTypingIndicator,
     required this.scrollController,
     required this.chatBackgroundConfig,
-    required this.replyMessage,
+    this.replyMessage,
     required this.assignReplyMessage,
     required this.onChatListTap,
     required this.onChatBubbleLongPress,
@@ -72,7 +71,7 @@ class ChatGroupedListWidget extends StatefulWidget {
   final TypeIndicatorConfiguration? typeIndicatorConfig;
 
   /// Provides reply message if actual message is sent by replying any message.
-  final ReplyMessage replyMessage;
+  final Message? replyMessage;
 
   /// Provides callback for assigning reply message when user swipe on chat bubble.
   final MessageCallBack assignReplyMessage;
@@ -160,72 +159,40 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      reverse: true,
-      // When reaction popup is being appeared at that user should not scroll.
-      physics: const NeverScrollableScrollPhysics(),
-      padding: EdgeInsets.only(bottom: showTypingIndicator ? 50 : 0),
-      child: Column(
-        children: [
-          SizedBox(
-            height: MediaQuery.of(context).size.height - 150,
-            child: GestureDetector(
-              onHorizontalDragUpdate: (details) => isEnableSwipeToSeeTime
-                  ? showPopUp
-                      ? null
-                      : _onHorizontalDrag(details)
-                  : null,
-              onHorizontalDragEnd: (details) => isEnableSwipeToSeeTime
-                  ? showPopUp
-                      ? null
-                      : _animationController?.reverse()
-                  : null,
-              onTap: widget.onChatListTap,
-              child: _animationController != null
-                  ? AnimatedBuilder(
-                      animation: _animationController!,
-                      builder: (context, child) {
-                        return _chatStreamBuilder;
-                      },
-                    )
-                  : _chatStreamBuilder,
-            ),
-          ),
-          widget.showTypingIndicator
-              ? TypingIndicator(
-                  typeIndicatorConfig: widget.typeIndicatorConfig,
-                  chatBubbleConfig: chatBubbleConfig?.inComingChatBubbleConfig,
-                  showIndicator: widget.showTypingIndicator,
-                  profilePic: profileCircleConfig?.profileImageUrl,
-                )
-              : ValueListenableBuilder(
-                  valueListenable: ChatViewInheritedWidget.of(context)!
-                      .chatController
-                      .typingIndicatorNotifier,
-                  builder: (context, value, child) => TypingIndicator(
-                        typeIndicatorConfig: widget.typeIndicatorConfig,
-                        chatBubbleConfig:
-                            chatBubbleConfig?.inComingChatBubbleConfig,
-                        showIndicator: value as bool,
-                        profilePic: profileCircleConfig?.profileImageUrl,
-                      )),
-          SizedBox(
-            height: MediaQuery.of(context).size.width *
-                (widget.replyMessage.message.isNotEmpty ? 0.3 : 0.14),
-          ),
-        ],
-      ),
-    );
+    return isEnableSwipeToSeeTime
+        ? GestureDetector(
+            onHorizontalDragUpdate: (details) => isEnableSwipeToSeeTime
+                ? showPopUp
+                    ? null
+                    : _onHorizontalDrag(details)
+                : null,
+            onHorizontalDragEnd: (details) => isEnableSwipeToSeeTime
+                ? showPopUp
+                    ? null
+                    : _animationController?.reverse()
+                : null,
+            onTap: widget.onChatListTap,
+            child: _animationController != null
+                ? AnimatedBuilder(
+                    animation: _animationController!,
+                    builder: (context, child) {
+                      return _chatStreamBuilder;
+                    },
+                  )
+                : _chatStreamBuilder)
+        : _chatStreamBuilder;
   }
 
-  Future<void> _onReplyTap(String id, List<Message>? messages) async {
+  Future<void> _onReplyTap(String id, MessageNotifierList? messages) async {
     // Finds the replied message if exists
-    final repliedMessages = messages?.firstWhere((message) => id == message.id);
-    final int index = messages?.indexWhere((element) => element.id == id) ?? -1;
+    final repliedMessages =
+        messages?.firstWhere((message) => id == message.value.id);
+    final int index =
+        messages?.indexWhere((element) => element.value.id == id) ?? -1;
 
     // Scrolls to replied message and highlights
     if (repliedMessages != null) {
-      if (repliedMessages.key.currentState == null && index != -1) {
+      if (repliedMessages.value.key.currentState == null && index != -1) {
         _replyId.value = id;
         widget.scrollController.scrollToIndex(index,
             duration: const Duration(seconds: 1),
@@ -238,7 +205,7 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
         });
       } else {
         await Scrollable.ensureVisible(
-          repliedMessages.key.currentState!.context,
+          repliedMessages.value.key.currentState!.context,
           // This value will make widget to be in center when auto scrolled.
           alignment: 0.5,
           curve: widget.repliedMessageConfig?.repliedMsgAutoScrollConfig
@@ -290,71 +257,84 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
   }
 
   Widget get _chatStreamBuilder {
-    return StreamBuilder<List<Message>>(
+    return StreamBuilder<MessageNotifierList>(
       stream: chatController?.messageStreamController.stream,
       builder: (context, snapshot) {
         return snapshot.connectionState.isActive
-            ? GroupedListView<Message, String>(
-                shrinkWrap: true,
-                elements: snapshot.data!,
-                groupBy: (element) => element.createdAt.getDateFromDateTime,
-                itemComparator: (message1, message2) =>
-                    message1.message.compareTo(message2.message),
-                controller: widget.scrollController,
-                order: chatBackgroundConfig.groupedListOrder,
-                sort: chatBackgroundConfig.sortEnable,
-                groupSeparatorBuilder: (separator) =>
-                    featureActiveConfig?.enableChatSeparator ?? false
-                        ? _GroupSeparatorBuilder(
-                            separator: separator,
-                            defaultGroupSeparatorConfig: chatBackgroundConfig
-                                .defaultGroupSeparatorConfig,
-                            groupSeparatorBuilder:
-                                chatBackgroundConfig.groupSeparatorBuilder,
-                          )
-                        : const SizedBox.shrink(),
-                indexedItemBuilder: (context, message, index) {
-                  return ValueListenableBuilder<String?>(
-                    valueListenable: _replyId,
-                    builder: (context, state, child) {
-                      return AutoScrollTag(
-                        key: ValueKey(index),
-                        controller: widget.scrollController,
-                        index: index,
-                        child: ChatBubbleWidget(
-                          key: message.key,
-                          messageTimeTextStyle:
-                              chatBackgroundConfig.messageTimeTextStyle,
-                          messageTimeIconColor:
-                              chatBackgroundConfig.messageTimeIconColor,
-                          message: message,
-                          messageConfig: widget.messageConfig,
-                          chatBubbleConfig: chatBubbleConfig,
-                          profileCircleConfig: profileCircleConfig,
-                          swipeToReplyConfig: widget.swipeToReplyConfig,
-                          repliedMessageConfig: widget.repliedMessageConfig,
-                          slideAnimation: _slideAnimation,
-                          onLongPress: (yCoordinate, xCoordinate) =>
-                              widget.onChatBubbleLongPress(
-                            yCoordinate,
-                            xCoordinate,
-                            message,
-                          ),
-                          onSwipe: widget.assignReplyMessage,
-                          shouldHighlight: state == message.id,
-                          onReplyTap: widget
-                                      .repliedMessageConfig
-                                      ?.repliedMsgAutoScrollConfig
-                                      .enableScrollToRepliedMsg ??
-                                  false
-                              ? (replyId) => _onReplyTap(replyId, snapshot.data)
-                              : null,
-                        ),
-                      );
-                    },
-                  );
-                },
-              )
+            ? RefreshIndicator(
+                onRefresh: chatController?._pagintationLoadMore ?? () async {},
+                child: GroupedListView<ValueNotifier<Message>, String>(
+                  shrinkWrap: true,
+                  elements: snapshot.data!,
+                  reverse: true,
+                  groupBy: (element) => DateTime.fromMillisecondsSinceEpoch(
+                          element.value.createdAt)
+                      .getDateFromDateTime,
+                  itemComparator: (message1, message2) =>
+                      // TODO: CHECK OUT HERE
+                      message1.value.id.compareTo(message2.value.id),
+                  // physics: const BouncingScrollPhysics(),
+                  controller: widget.scrollController,
+                  order: chatBackgroundConfig.groupedListOrder,
+                  sort: chatBackgroundConfig.sortEnable,
+                  groupSeparatorBuilder: (separator) =>
+                      featureActiveConfig?.enableChatSeparator ?? false
+                          ? _GroupSeparatorBuilder(
+                              separator: separator,
+                              defaultGroupSeparatorConfig: chatBackgroundConfig
+                                  .defaultGroupSeparatorConfig,
+                              groupSeparatorBuilder:
+                                  chatBackgroundConfig.groupSeparatorBuilder,
+                            )
+                          : const SizedBox.shrink(),
+                  indexedItemBuilder: (context, message, index) {
+                    return ValueListenableBuilder<String?>(
+                      valueListenable: _replyId,
+                      builder: (context, state, child) {
+                        return ValueListenableBuilder(
+                            valueListenable: message,
+                            builder: (context, value, child) {
+                              return AutoScrollTag(
+                                key: ValueKey(index),
+                                controller: widget.scrollController,
+                                index: index,
+                                child: ChatBubbleWidget(
+                                  key: value.key,
+                                  messageTimeTextStyle:
+                                      chatBackgroundConfig.messageTimeTextStyle,
+                                  messageTimeIconColor:
+                                      chatBackgroundConfig.messageTimeIconColor,
+                                  message: value,
+                                  messageConfig: widget.messageConfig,
+                                  chatBubbleConfig: chatBubbleConfig,
+                                  profileCircleConfig: profileCircleConfig,
+                                  swipeToReplyConfig: widget.swipeToReplyConfig,
+                                  repliedMessageConfig:
+                                      widget.repliedMessageConfig,
+                                  slideAnimation: _slideAnimation,
+                                  onLongPress: (yCoordinate, xCoordinate) =>
+                                      widget.onChatBubbleLongPress(
+                                    yCoordinate,
+                                    xCoordinate,
+                                    value,
+                                  ),
+                                  onSwipe: widget.assignReplyMessage,
+                                  shouldHighlight: state == value.id,
+                                  onReplyTap: widget
+                                              .repliedMessageConfig
+                                              ?.repliedMsgAutoScrollConfig
+                                              .enableScrollToRepliedMsg ??
+                                          false
+                                      ? (replyId) =>
+                                          _onReplyTap(replyId, snapshot.data)
+                                      : null,
+                                ),
+                              );
+                            });
+                      },
+                    );
+                  },
+                ))
             : Center(
                 child: chatBackgroundConfig.loadingWidget ??
                     const CircularProgressIndicator(),

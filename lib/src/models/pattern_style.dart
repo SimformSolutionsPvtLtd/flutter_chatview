@@ -1,9 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:io' show Platform;
 
 class PatternStyle {
   const PatternStyle(
-      this.name, this.from, this.regExp, this.replace, this.textStyle,{this.atSource});
+      this.name, this.from, this.regExp, this.replace, this.textStyle,
+      {this.atSource});
 
   final Pattern from;
   final RegExp regExp;
@@ -27,7 +29,7 @@ class PatternStyle {
         RegExp('`(.*?)`'),
         '',
         TextStyle(
-          fontFamily: Platform.isIOS ? 'Courier' : 'monospace',
+          fontFamily: (!kIsWeb && Platform.isIOS) ? 'Courier' : 'monospace',
         ),
       );
 
