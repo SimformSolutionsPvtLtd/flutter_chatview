@@ -49,6 +49,15 @@ class ChatBubbleConfiguration {
 
   final ReceiptsWidgetConfig? receiptsWidgetConfig;
 
+  /// A flag to disable link preview functionality.
+  ///
+  /// When `true`, link previews will be disabled, rendering links as plain text
+  /// or standard hyperlinks without additional preview metadata.
+  /// When `false`, link previews will be enabled by default (current behavior).
+  ///
+  /// Default value: `false`.
+  final bool disableLinkPreview;
+
   const ChatBubbleConfiguration({
     this.padding,
     this.margin,
@@ -58,5 +67,6 @@ class ChatBubbleConfiguration {
     this.outgoingChatBubbleConfig,
     this.onDoubleTap,
     this.receiptsWidgetConfig,
+    this.disableLinkPreview = false
   });
 }
