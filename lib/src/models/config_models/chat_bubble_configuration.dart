@@ -67,6 +67,6 @@ class ChatBubbleConfiguration {
     this.outgoingChatBubbleConfig,
     this.onDoubleTap,
     this.receiptsWidgetConfig,
-    this.disableLinkPreview = false
+    this.disableLinkPreview = false,
   });
 }
