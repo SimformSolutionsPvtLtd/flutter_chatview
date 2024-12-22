@@ -10,12 +10,13 @@ class ChatViewInheritedWidget extends InheritedWidget {
     required Widget child,
     required this.featureActiveConfig,
     required this.chatController,
+    required this.chatTextFieldViewKey,
     this.profileCircleConfiguration,
   }) : super(key: key, child: child);
   final FeatureActiveConfig featureActiveConfig;
   final ProfileCircleConfiguration? profileCircleConfiguration;
   final ChatController chatController;
-  final GlobalKey chatTextFieldViewKey = GlobalKey();
+  final GlobalKey chatTextFieldViewKey;
   final ValueNotifier<bool> showPopUp = ValueNotifier(false);
   final GlobalKey<ReactionPopupState> reactionPopupKey = GlobalKey();
 
