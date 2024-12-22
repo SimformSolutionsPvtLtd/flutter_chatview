@@ -173,5 +173,6 @@ extension BuildContextExtension on BuildContext {
               child: SizedBox.shrink(),
             );
 
-  ChatBubbleConfiguration? get chatBubbleConfig => chatListConfig.chatBubbleConfig;
+  ChatBubbleConfiguration? get chatBubbleConfig =>
+      chatListConfig.chatBubbleConfig;
 }

@@ -1,4 +1,4 @@
-import 'package:timeago/timeago.dart';
+import '../utils/timeago/lookupmessages.dart';
 
 // Override "en" locale messages with custom messages that are more precise and short
 // setLocaleMessages('en', ReceiptsCustomMessages())
