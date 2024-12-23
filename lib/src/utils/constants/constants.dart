@@ -21,10 +21,10 @@
  */
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 import '../../../chatview.dart';
 import '../../widgets/chat_message_sending_to_sent_animation.dart';
+import '../timeago/timeago.dart' as timeago;
 
 const String emojiRegExpression =
     r'(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])';

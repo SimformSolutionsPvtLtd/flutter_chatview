@@ -1,3 +1,18 @@
+## [2.4.0]
+
+* **Feat**: [251](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/251) Add
+  support to provide a type of suggestions item(Scrollable or Multi Line).
+* **Fix**: [281](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/281) Fix date
+  and time divider in between messages
+* **Fix**: [282](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/pull/282) Upgrade
+  version of audio wave forms 1.2.0
+* **Fix**: [276](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/276) link preview
+  custom error message
+* **Feat**: [280](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/280) ability to
+  disable link preview
+* **Fix**: [253](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/253)
+  chatTextFieldViewKey key gets re-initialized every widget render
+
 ## [2.3.0]
 
 * **Breaking**: [257](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/257) update

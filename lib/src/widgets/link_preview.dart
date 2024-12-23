@@ -49,41 +49,48 @@ class LinkPreview extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: verticalPadding),
-            child: url.isImageUrl
-                ? InkWell(
-                    onTap: _onLinkTap,
-                    child: Image.network(
-                      url,
-                      height: 120,
-                      width: double.infinity,
-                      fit: BoxFit.fitWidth,
+          if (!url.isImageUrl &&
+              !(context.chatBubbleConfig?.disableLinkPreview ?? false)) ...{
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: verticalPadding),
+              child: AnyLinkPreview(
+                link: url,
+                removeElevation: true,
+                errorBody: linkPreviewConfig?.errorBody,
+                proxyUrl: linkPreviewConfig?.proxyUrl,
+                onTap: _onLinkTap,
+                placeholderWidget: SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.25,
+                  width: double.infinity,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      strokeWidth: 1,
+                      color: linkPreviewConfig?.loadingColor,
                     ),
-                  )
-                : AnyLinkPreview(
-                    link: url,
-                    removeElevation: true,
-                    proxyUrl: linkPreviewConfig?.proxyUrl,
-                    onTap: _onLinkTap,
-                    placeholderWidget: SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.25,
-                      width: double.infinity,
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          strokeWidth: 1,
-                          color: linkPreviewConfig?.loadingColor,
-                        ),
-                      ),
-                    ),
-                    backgroundColor: linkPreviewConfig?.backgroundColor ??
-                        Colors.grey.shade200,
-                    borderRadius: linkPreviewConfig?.borderRadius,
-                    bodyStyle: linkPreviewConfig?.bodyStyle ??
-                        const TextStyle(color: Colors.black),
-                    titleStyle: linkPreviewConfig?.titleStyle,
                   ),
-          ),
+                ),
+                backgroundColor:
+                    linkPreviewConfig?.backgroundColor ?? Colors.grey.shade200,
+                borderRadius: linkPreviewConfig?.borderRadius,
+                bodyStyle: linkPreviewConfig?.bodyStyle ??
+                    const TextStyle(color: Colors.black),
+                titleStyle: linkPreviewConfig?.titleStyle,
+              ),
+            ),
+          } else ...{
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: verticalPadding),
+              child: InkWell(
+                onTap: _onLinkTap,
+                child: Image.network(
+                  url,
+                  height: 120,
+                  width: double.infinity,
+                  fit: BoxFit.fitWidth,
+                ),
+              ),
+            ),
+          },
           const SizedBox(height: verticalPadding),
           InkWell(
             onTap: _onLinkTap,

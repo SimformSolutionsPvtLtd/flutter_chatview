@@ -31,7 +31,7 @@ import 'package:chatview/src/widgets/reaction_popup.dart';
 import 'package:chatview/src/widgets/suggestions/suggestions_config_inherited_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:timeago/timeago.dart';
+import '../utils/timeago/timeago.dart';
 import '../values/custom_time_messages.dart';
 import 'send_message_widget.dart';
 
@@ -173,10 +173,13 @@ class _ChatViewState extends State<ChatView> with SingleTickerProviderStateMixin
 
   FeatureActiveConfig get featureActiveConfig => widget.featureActiveConfig;
 
+  late GlobalKey chatTextFieldViewKey;
+
   @override
   void initState() {
     super.initState();
     setLocaleMessages('en', ReceiptsCustomMessages());
+    chatTextFieldViewKey = GlobalKey();
   }
 
   @override
@@ -189,6 +192,7 @@ class _ChatViewState extends State<ChatView> with SingleTickerProviderStateMixin
       chatController: chatController,
       featureActiveConfig: featureActiveConfig,
       profileCircleConfiguration: widget.profileCircleConfig,
+      chatTextFieldViewKey: chatTextFieldViewKey,
       child: SuggestionsConfigIW(
         suggestionsConfig: widget.replySuggestionsConfig,
         child: Builder(builder: (context) {
