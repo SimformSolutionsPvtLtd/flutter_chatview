@@ -1,6 +1,7 @@
 ![Banner](https://raw.githubusercontent.com/SimformSolutionsPvtLtd/flutter_chatview/main/preview/banner.png)
 
 # ChatView
+
 [![chatview](https://img.shields.io/pub/v/chatview?label=chatview)](https://pub.dev/packages/chatview)
 
 A Flutter package that allows you to integrate Chat View with highly customization options such as one on one
@@ -25,164 +26,178 @@ For web demo visit [Chat View Example](https://simformsolutionspvtltd.github.io/
 - Removed `showTypingIndicator` field from `ChatView` and replaced it with `ChatController.showTypingIndicator`.
 
   Before:
-    ```dart
-    ChatView(
-      showTypingIndicator:false,
-    ),
-    ```
+
+  ```dart
+  ChatView(
+    showTypingIndicator:false,
+  ),
+  ```
 
   After:
-    ```dart
-    /// use it with your [ChatController] instance.
-    _chatContoller.setTypingIndicator = true; // for showing indicator
-    _chatContoller.setTypingIndicator = false; // for hiding indicator
-    ```
+
+  ```dart
+  /// use it with your [ChatController] instance.
+  _chatContoller.setTypingIndicator = true; // for showing indicator
+  _chatContoller.setTypingIndicator = false; // for hiding indicator
+  ```
 
 - Updated `ChatUser`, `Message` and `ReplyMessage` Data Model's `fromJson` and `toJson` methods:
 
   ##### in `ChatUser.fromJson`:
 
   Before:
-    ```dart
-    ChatUser.fromJson(
-      { 
-        ...
-        'imageType': ImageType.asset,
-        ...
-      },
-    ),
-    ```
+
+  ```dart
+  ChatUser.fromJson(
+    {
+      ...
+      'imageType': ImageType.asset,
+      ...
+    },
+  ),
+  ```
 
   After:
-    ```dart
-    ChatUser.fromJson(
-      {
-        ...
-        'imageType': 'asset',
-        ...
-      },
-    ),
-    ```
+
+  ```dart
+  ChatUser.fromJson(
+    {
+      ...
+      'imageType': 'asset',
+      ...
+    },
+  ),
+  ```
 
   ##### in `ChatUser.toJson`:
 
   Before:
-    ```dart
-    {
-      ...
-      imageType: ImageType.asset,
-      ...
-    }
-    ```
+
+  ```dart
+  {
+    ...
+    imageType: ImageType.asset,
+    ...
+  }
+  ```
 
   After:
-    ```dart
-    {
-      ...
-      imageType: asset,
-      ...
-    }
-    ```
+
+  ```dart
+  {
+    ...
+    imageType: asset,
+    ...
+  }
+  ```
 
   ##### in `Message.fromJson`:
 
   Before:
-    ```dart
-    Message.fromJson(
-      {
-        ...
-        'createdAt': DateTime.now(),
-        'message_type': MessageType.text,
-        'voice_message_duration': Duration(seconds: 5),
-        ...
-      }
-    )
-    ```
+
+  ```dart
+  Message.fromJson(
+    {
+      ...
+      'createdAt': DateTime.now(),
+      'message_type': MessageType.text,
+      'voice_message_duration': Duration(seconds: 5),
+      ...
+    }
+  )
+  ```
 
   After:
-    ```dart
-    Message.fromJson(
-      {
-        ...
-        'createdAt': '2024-06-13T17:32:19.586412',
-        'message_type': 'text',
-        'voice_message_duration': '5000000',
-        ...
-      }
-    )
-    ```
+
+  ```dart
+  Message.fromJson(
+    {
+      ...
+      'createdAt': '2024-06-13T17:32:19.586412',
+      'message_type': 'text',
+      'voice_message_duration': '5000000',
+      ...
+    }
+  )
+  ```
 
   ##### in `Message.toJson`:
 
   Before:
-    ```dart
-    {
-      ...
-      createdAt: 2024-06-13 17:23:19.454789,
-      message_type: MessageType.text,
-      voice_message_duration: 0:00:05.000000,
-      ...
-    }
-    ```
+
+  ```dart
+  {
+    ...
+    createdAt: 2024-06-13 17:23:19.454789,
+    message_type: MessageType.text,
+    voice_message_duration: 0:00:05.000000,
+    ...
+  }
+  ```
 
   After:
-    ```dart
-    {
-      ...
-      createdAt: 2024-06-13T17:32:19.586412,
-      message_type: text,
-      voice_message_duration: 5000000,
-      ...
-    }
-    ```
+
+  ```dart
+  {
+    ...
+    createdAt: 2024-06-13T17:32:19.586412,
+    message_type: text,
+    voice_message_duration: 5000000,
+    ...
+  }
+  ```
 
   ##### in `ReplyMessage.fromJson`:
 
   Before:
-    ```dart
-    ReplyMessage.fromJson(
-      {
-        ...
-        'message_type': MessageType.text,  
-        'voiceMessageDuration': Duration(seconds: 5),
-        ...
-      }
-    )
-    ```
+
+  ```dart
+  ReplyMessage.fromJson(
+    {
+      ...
+      'message_type': MessageType.text,
+      'voiceMessageDuration': Duration(seconds: 5),
+      ...
+    }
+  )
+  ```
 
   After:
-    ```dart
-    ReplyMessage.fromJson(
-      {
-        ...
-        'message_type': 'text',  
-        'voiceMessageDuration': '5000000',
-        ...
-      }
-    )
-    ```
+
+  ```dart
+  ReplyMessage.fromJson(
+    {
+      ...
+      'message_type': 'text',
+      'voiceMessageDuration': '5000000',
+      ...
+    }
+  )
+  ```
 
   in `ReplyMessage.toJson`:
 
   Before:
-    ```dart
-    {
-      ...
-      message_type: MessageType.text,
-      voiceMessageDuration: 0:00:05.000000,
-      ...
-    }
-    ```
+
+  ```dart
+  {
+    ...
+    message_type: MessageType.text,
+    voiceMessageDuration: 0:00:05.000000,
+    ...
+  }
+  ```
 
   After:
-    ```dart
-    {
-      ...
-      message_type: text,
-      voiceMessageDuration: 5000000,
-      ...
-    }
-    ```
+
+  ```dart
+  {
+    ...
+    message_type: text,
+    voiceMessageDuration: 5000000,
+    ...
+  }
+  ```
 
 ## Installing
 
@@ -192,14 +207,17 @@ For web demo visit [Chat View Example](https://simformsolutionspvtltd.github.io/
 dependencies:
   chatview: <latest-version>
 ```
-*Get the latest version in the 'Installing' tab on [pub.dev](https://pub.dev/packages/chatview)*
+
+_Get the latest version in the 'Installing' tab on [pub.dev](https://pub.dev/packages/chatview)_
 
 2.  Import the package
+
 ```dart
 import 'package:chatview/chatview.dart';
 ```
 
 3. Adding a chat controller.
+
 ```dart
 final chatController = ChatController(
   initialMessageList: messageList,
@@ -210,6 +228,7 @@ final chatController = ChatController(
 ```
 
 4. Adding a `ChatView` widget.
+
 ```dart
 ChatView(
   chatController: chatController,
@@ -219,6 +238,7 @@ ChatView(
 ```
 
 5. Adding a messageList with `Message` class.
+
 ```dart
 List<Message> messageList = [
   Message(
@@ -237,6 +257,7 @@ List<Message> messageList = [
 ```
 
 6. Adding a `onSendTap`.
+
 ```dart
 void onSendTap(String message, ReplyMessage replyMessage, MessageType messageType){
   final message = Message(
@@ -255,19 +276,20 @@ Note: you can evaluate message type from `messageType` parameter, based on that 
 
 ## Messages types compability
 
-|Message Types   | Android | iOS | MacOS | Web | Linux | Windows |
-| :-----:        | :-----: | :-: | :---: | :-: | :---: | :-----: |
-|Text messages   |   ✔️    | ✔️  |  ✔️   | ✔️  |  ✔️   |   ✔️    |
-|Image messages  |   ✔️    | ✔️  |  ✔️   | ✔️  |  ✔️   |   ✔️    |
-|Voice messages  |   ✔️    | ✔️  |  ❌   | ❌  |  ❌  |   ❌  |
-|Custom messages |   ✔️    | ✔️  |  ✔️   | ✔️  |  ✔️   |   ✔️    |
-
+|  Message Types  | Android | iOS | MacOS | Web | Linux | Windows |
+| :-------------: | :-----: | :-: | :---: | :-: | :---: | :-----: |
+|  Text messages  |   ✔️    | ✔️  |  ✔️   | ✔️  |  ✔️   |   ✔️    |
+| Image messages  |   ✔️    | ✔️  |  ✔️   | ✔️  |  ✔️   |   ✔️    |
+| Voice messages  |   ✔️    | ✔️  |  ❌   | ❌  |  ❌   |   ❌    |
+| Custom messages |   ✔️    | ✔️  |  ✔️   | ✔️  |  ✔️   |   ✔️    |
 
 ## Platform specific configuration
 
 ### For image Picker
+
 #### iOS
-* Add the following keys to your _Info.plist_ file, located in `<project root>/ios/Runner/Info.plist`:
+
+- Add the following keys to your _Info.plist_ file, located in `<project root>/ios/Runner/Info.plist`:
 
 ```
     <key>NSCameraUsageDescription</key>
@@ -279,32 +301,40 @@ Note: you can evaluate message type from `messageType` parameter, based on that 
 ```
 
 ### For voice messages
+
 #### iOS
-* Add this two rows in `ios/Runner/Info.plist`
+
+- Add this two rows in `ios/Runner/Info.plist`
+
 ```
     <key>NSMicrophoneUsageDescription</key>
     <string>This app requires Mic permission.</string>
 ```
-* This plugin requires ios 10.0 or higher. So add this line in `Podfile`
+
+- This plugin requires ios 10.0 or higher. So add this line in `Podfile`
+
 ```
     platform :ios, '10.0'
 ```
 
 #### Android
-* Change the minimum Android sdk version to 21 (or higher) in your android/app/build.gradle file.
+
+- Change the minimum Android sdk version to 21 (or higher) in your android/app/build.gradle file.
+
 ```
     minSdkVersion 21
 ```
 
-* Add RECORD_AUDIO permission in `AndroidManifest.xml`
+- Add RECORD_AUDIO permission in `AndroidManifest.xml`
+
 ```
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 ```
 
-
 ## Some more optional parameters
 
 1. Enable and disable specific features with `FeatureActiveConfig`.
+
 ```dart
 ChatView(
   ...
@@ -317,6 +347,7 @@ ChatView(
 ```
 
 2. Adding an appbar with `ChatViewAppBar`.
+
 ```dart
 ChatView(
   ...
@@ -333,6 +364,7 @@ ChatView(
 ```
 
 3. Adding a message list configuration with `ChatBackgroundConfiguration` class.
+
 ```dart
 ChatView(
   ...
@@ -345,6 +377,7 @@ ChatView(
 ```
 
 4. Adding a send message configuration with `SendMessageConfiguration` class.
+
 ```dart
 ChatView(
   ...
@@ -359,6 +392,7 @@ ChatView(
 ```
 
 5. Adding a chat bubble configuration with `ChatBubbleConfiguration` class.
+
 ```dart
 ChatView(
   ...
@@ -366,15 +400,15 @@ ChatView(
     onDoubleTap: (){
        // Your code goes here
     },
-    outgoingChatBubbleConfig: ChatBubble(      // Sender's message chat bubble 
+    outgoingChatBubble: ChatBubble(      // Sender's message chat bubble
       color: Colors.blue,
-      borderRadius: const BorderRadius.only(  
+      borderRadius: const BorderRadius.only(
         topRight: Radius.circular(12),
         topLeft: Radius.circular(12),
         bottomLeft: Radius.circular(12),
       ),
     ),
-    inComingChatBubbleConfig: ChatBubble(      // Receiver's message chat bubble
+    incomingChatBubble: ChatBubble(      // Receiver's message chat bubble
       color: Colors.grey.shade200,
       borderRadius: const BorderRadius.only(
         topLeft: Radius.circular(12),
@@ -388,6 +422,7 @@ ChatView(
 ```
 
 6. Adding swipe to reply configuration with `SwipeToReplyConfiguration` class.
+
 ```dart
 ChatView(
   ...
@@ -397,22 +432,23 @@ ChatView(
     },
     onRightSwipe: (message, sentBy){
         // Your code goes here
-    },              
+    },
   ),
   ...
 )
 ```
 
 7. Adding messages configuration with `MessageConfiguration` class.
+
 ```dart
 ChatView(
   ...
   messageConfig: MessageConfiguration(
-    messageReactionConfig: MessageReactionConfiguration(),      // Emoji reaction configuration for single message 
+    messageReactionConfig: MessageReactionConfiguration(),      // Emoji reaction configuration for single message
     imageMessageConfig: ImageMessageConfiguration(
       onTap: (){
           // Your code goes here
-      },                          
+      },
       shareIconConfig: ShareIconConfiguration(
         onPressed: (){
            // Your code goes here
@@ -425,6 +461,7 @@ ChatView(
 ```
 
 8. Adding reaction pop-up configuration with `ReactionPopupConfiguration` class.
+
 ```dart
 ChatView(
   ...
@@ -444,6 +481,7 @@ ChatView(
 ```
 
 9. Adding reply pop-up configuration with `ReplyPopupConfiguration` class.
+
 ```dart
 ChatView(
   ...
@@ -467,6 +505,7 @@ ChatView(
 ```
 
 10. Adding replied message configuration with `RepliedMessageConfiguration` class.
+
 ```dart
 ChatView(
    ...
@@ -479,12 +518,13 @@ ChatView(
 )
 ```
 
-11. For customizing typing indicators use `typeIndicatorConfig` with `TypeIndicatorConfig`.
+11. For customizing typing indicators use `typingIndicatorConfig` with `TypeIndicatorConfig`.
+
 ```dart
 ChatView(
   ...
 
-  typeIndicatorConfig: TypeIndicatorConfiguration(
+  typingIndicatorConfig: TypingIndicatorConfiguration(
     flashingCircleBrightColor: Colors.grey,
     flashingCircleDarkColor: Colors.black,
   ),
@@ -492,7 +532,9 @@ ChatView(
 )
 
 ```
+
 12. For showing hiding typeIndicatorwidget use `ChatController.setTypingIndicaor`, for more info see `ChatController`.
+
 ```dart
 /// use it with your [ChatController] instance.
 _chatContoller.setTypingIndicator = true; // for showing indicator
@@ -500,6 +542,7 @@ _chatContoller.setTypingIndicator = false; // for hiding indicator
 ```
 
 13. Adding linkpreview configuration with `LinkPreviewConfiguration` class.
+
 ```dart
 ChatView(
   ...
@@ -525,6 +568,7 @@ ChatView(
 ```
 
 14. Adding pagination.
+
 ```dart
 ChatView(
   ...
@@ -538,6 +582,7 @@ ChatView(
 ```
 
 15. Add image picker configuration.
+
 ```dart
 ChatView(
   ...
@@ -554,6 +599,7 @@ ChatView(
 ```
 
 16. Add `ChatViewState` customisations.
+
 ```dart
 ChatView(
   ...
@@ -568,6 +614,7 @@ ChatView(
 ```
 
 17. Setting auto scroll and highlight config with `RepliedMsgAutoScrollConfig` class.
+
 ```dart
 ChatView(
     ...
@@ -586,14 +633,14 @@ ChatView(
 ChatView(
     ...
       sendMessageConfig: SendMessageConfiguration(
-       
+
           textFieldConfig: TextFieldConfiguration(
             onMessageTyping: (status) {
                 // send composing/composed status to other client
                 // your code goes here
-            },   
+            },
 
-            
+
         /// After typing stopped, the threshold time after which the composing
         /// status to be changed to [TypeWriterStatus.typed].
         /// Default is 1 second.
@@ -605,7 +652,7 @@ ChatView(
 )
 ```
 
-19. Passing customReceipts builder or handling stuffs related receipts see `ReceiptsWidgetConfig` in  outgoingChatBubbleConfig.
+19. Passing customReceipts builder or handling stuffs related receipts see `ReceiptsWidgetConfig` in outgoingChatBubble.
 
 ```dart
 ChatView(
@@ -614,28 +661,28 @@ ChatView(
             /// Controls the visibility of message seen ago receipts default is true
             lastSeenAgoBuilderVisibility: false,
             /// Controls the visibility of the message [receiptsBuilder]
-            receiptsBuilderVisibility: false),            
+            receiptsBuilderVisibility: false),
        ChatBubbleConfiguration(
-          inComingChatBubbleConfig: ChatBubble(
+          incomingChatBubble: ChatBubble(
             onMessageRead: (message) {
               /// send your message reciepts to the other client
               debugPrint('Message Read');
             },
 
           ),
-          outgoingChatBubbleConfig: ChatBubble(
+          outgoingChatBubble: ChatBubble(
               receiptsWidgetConfig: ReceiptsWidgetConfig(
-                      /// custom receipts builder 
+                      /// custom receipts builder
                       receiptsBuilder: _customReceiptsBuilder,
-                      /// whether to display receipts in all 
+                      /// whether to display receipts in all
                       /// message or just at the last one just like instagram
                       showReceiptsIn: ShowReceiptsIn.lastMessage
               ),
-            ), 
-        ), 
-        
+            ),
+        ),
+
   ...
- 
+
 )
 ```
 
@@ -686,7 +733,7 @@ ChatView(
           recentTabBehavior: RecentTabBehavior.NONE,
         ),
   ...
- 
+
 )
 ```
 
@@ -700,7 +747,7 @@ ChatView(
             voiceRecordingConfiguration: VoiceRecordingConfiguration(
             iosEncoder: IosEncoder.kAudioFormatMPEG4AAC,
             androidOutputFormat: AndroidOutputFormat.mpeg4,
-            androidEncoder: AndroidEncoder.aac, 
+            androidEncoder: AndroidEncoder.aac,
             bitRate: 128000,
             sampleRate: 44100,
             waveStyle: WaveStyle(
@@ -709,7 +756,7 @@ ChatView(
                 extendWaveform: true,
             ),
         ),
-    
+
     ...
   )
 )
@@ -728,9 +775,10 @@ ChatView(
       ...
       ),
   ...
- 
+
 )
 ```
+
 25. Added flag `isProfilePhotoInBase64` that defines whether provided image is url or base64 data.
 
 ```dart
@@ -797,6 +845,7 @@ ChatView(
 ```
 
 28. Added callback of onTap on list of reacted users in reaction sheet `reactedUserCallback`.
+
 ```dart
 
 ChatView(
@@ -841,6 +890,7 @@ ChatView(
 30. Add default avatar for profile image `defaultAvatarImage`,
     error builder for asset and network profile image `assetImageErrorBuilder` `networkImageErrorBuilder`,
     Enum `ImageType` to define image as asset, network or base64 data.
+
 ```dart
 ChatView(
   ...
@@ -918,7 +968,7 @@ ChatView(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: Text( 
+                      child: Text(
                         state.message,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -949,7 +999,8 @@ ChatView(
 
 33. Reply Suggestions functionalities.
 
-* Add reply suggestions
+- Add reply suggestions
+
 ```dart
 _chatController.addReplySuggestions([
       SuggestionItemData(text: 'Thanks.'),
@@ -957,11 +1008,15 @@ _chatController.addReplySuggestions([
       SuggestionItemData(text: 'Great.')
     ]);
 ```
-* Remove reply suggestions
+
+- Remove reply suggestions
+
 ```dart
 _chatController.removeReplySuggestions();
 ```
-* Update suggestions Config
+
+- Update suggestions Config
+
 ```dart
 replySuggestionsConfig: ReplySuggestionsConfig(
     itemConfig: SuggestionItemConfig(
@@ -999,7 +1054,6 @@ ChatView(
 ```
 
 35. Use `ScrollToBottomButtonConfig` to change the configuration of scroll to bottom button.
-
 
 ```dart
 ChatView(
@@ -1045,7 +1099,6 @@ ChatView(
 Check out [blog](https://medium.com/simform-engineering/chatview-a-cutting-edge-chat-ui-solution-7367b1f9d772) for better understanding and basic implementation.
 
 Also, for whole example, check out the **example** app in the [example](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/tree/main/example) directory or the 'Example' tab on pub.dartlang.org for a more complete example.
-
 
 ## Main Contributors
 
