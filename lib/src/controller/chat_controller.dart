@@ -25,6 +25,7 @@ import 'package:chatview/src/widgets/suggestions/suggestion_list.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../values/enumaration.dart';
 import '../models/models.dart';
 
 class ChatController {
@@ -108,6 +109,27 @@ class ChatController {
   /// Used to remove reply suggestions.
   void removeReplySuggestions() {
     _replySuggestion.value = [];
+  }
+
+  /// Function to change status on specific chat bubble
+  void changeStatus({
+    required String messageId,
+    required MessageStatus status,
+  }) {
+    final message = initialMessageList.firstWhere((element) => element.id == messageId);
+    final indexOfMessage = initialMessageList.indexOf(message);
+    initialMessageList[indexOfMessage] = Message(
+      id: messageId,
+      message: message.message,
+      createdAt: message.createdAt,
+      sendBy: message.sendBy,
+      replyMessage: message.replyMessage,
+      reaction: message.reaction,
+      messageType: message.messageType,
+      voiceMessageDuration: message.voiceMessageDuration,
+      status: status,
+    );
+    messageStreamController.sink.add(initialMessageList);
   }
 
   /// Function for setting reaction on specific chat bubble
