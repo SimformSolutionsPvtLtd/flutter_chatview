@@ -26,6 +26,7 @@ import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:chatview/src/utils/constants/constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../chatview.dart';
@@ -182,6 +183,14 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                     keyboardType: textFieldConfig?.textInputType,
                     inputFormatters: textFieldConfig?.inputFormatters,
                     onChanged: _onChanged,
+                    onSubmitted: (inputText) {
+                      if (sendMessageConfig?.onSubmitted != null) {
+                        sendMessageConfig!.onSubmitted!(inputText);
+                      } else {
+                        _onSubmitted(inputText);
+                      }
+                    },
+                    textInputAction:textFieldConfig?.textInputAction ?? TextInputAction.newline,
                     enabled: textFieldConfig?.enabled,
                     textCapitalization: textFieldConfig?.textCapitalization ??
                         TextCapitalization.sentences,
@@ -370,6 +379,28 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
       widget.onImageSelected(imagePath ?? '', '');
     } catch (e) {
       widget.onImageSelected('', e.toString());
+    }
+  }
+
+  bool _isWebOrDesktop() {
+    return kIsWeb || Platform.isMacOS || Platform.isWindows || Platform.isLinux;
+  }
+
+  void _onSubmitted(String inputText){
+    bool isShiftPressed = HardwareKeyboard.instance.isShiftPressed;
+    if(_isWebOrDesktop() && isShiftPressed){
+      widget.textEditingController.text += '\n';
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        widget.textEditingController.selection = TextSelection.fromPosition(
+          TextPosition(offset: widget.textEditingController.text.length),
+        );
+        widget.focusNode.requestFocus();
+      });
+    }else{
+      if(inputText.isNotEmpty){
+        widget.onPressed();
+        _inputText.value = '';
+      }
     }
   }
 
