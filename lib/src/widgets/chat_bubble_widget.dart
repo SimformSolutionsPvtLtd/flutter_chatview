@@ -122,6 +122,7 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
       padding: chatBubbleConfig?.padding ?? const EdgeInsets.only(left: 5.0),
       margin: chatBubbleConfig?.margin ?? const EdgeInsets.only(bottom: 10),
       width: double.infinity,
+      alignment: isMessageBySender ? Alignment.centerRight : Alignment.centerLeft,
       child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment:
