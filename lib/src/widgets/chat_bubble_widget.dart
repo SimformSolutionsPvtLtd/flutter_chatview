@@ -132,7 +132,7 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
           if (!isMessageBySender &&
               (featureActiveConfig?.enableOtherUserProfileAvatar ?? true))
             profileCircle(messagedUser),
-          if (isMessageBySender) getReceipt(),
+          // if (isMessageBySender) getReceipt(),
           _messagesWidgetColumn(messagedUser),
           if (!isMessageBySender) getReceipt(),
           if (isMessageBySender &&
