@@ -121,8 +121,9 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
     return Container(
       padding: chatBubbleConfig?.padding ?? const EdgeInsets.only(left: 5.0),
       margin: chatBubbleConfig?.margin ?? const EdgeInsets.only(bottom: 10),
+      width: double.infinity,
       child: Row(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: MainAxisSize.max,
         mainAxisAlignment:
             isMessageBySender ? MainAxisAlignment.end : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -130,9 +131,15 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
           if (!isMessageBySender &&
               (featureActiveConfig?.enableOtherUserProfileAvatar ?? true))
             profileCircle(messagedUser),
-          if (isMessageBySender) ...[getReceipt()],
+          if (isMessageBySender) ...[
+            const Expanded(child: SizedBox()),
+            getReceipt(),
+          ],
           _messagesWidgetColumn(messagedUser),
-          if (!isMessageBySender) ...[getReceipt()],
+          if (!isMessageBySender) ...[
+            getReceipt(),
+            const Expanded(child: SizedBox()),
+          ],
           if (isMessageBySender &&
               (featureActiveConfig?.enableCurrentUserProfileAvatar ?? true))
             profileCircle(messagedUser),
