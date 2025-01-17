@@ -23,6 +23,7 @@ import 'dart:async';
 import 'dart:io' show File, Platform;
 
 import 'package:audio_waveforms/audio_waveforms.dart';
+import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/utils/constants/constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +32,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../chatview.dart';
 import '../utils/debounce.dart';
 import '../utils/package_strings.dart';
+import 'emoji_picker_widget.dart';
 
 class ChatUITextField extends StatefulWidget {
   const ChatUITextField({
@@ -41,6 +43,7 @@ class ChatUITextField extends StatefulWidget {
     required this.onPressed,
     required this.onRecordingComplete,
     required this.onImageSelected,
+    this.onEmojiTap,
   }) : super(key: key);
 
   /// Provides configuration of default text field in chat.
@@ -48,6 +51,8 @@ class ChatUITextField extends StatefulWidget {
 
   /// Provides focusNode for focusing text field.
   final FocusNode focusNode;
+
+  final StringCallback? onEmojiTap;
 
   /// Provides functions which handles text field.
   final TextEditingController textEditingController;
@@ -186,6 +191,7 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                     textCapitalization: textFieldConfig?.textCapitalization ??
                         TextCapitalization.sentences,
                     decoration: InputDecoration(
+                      prefixIcon: IconButton(icon: Icon(Icons.emoji_emotions), onPressed:()=> _showBottomSheet(context), ),
                       hintText:
                           textFieldConfig?.hintText ?? PackageStrings.message,
                       fillColor: sendMessageConfig?.textFieldBackgroundColor ??
@@ -381,4 +387,15 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
     });
     _inputText.value = inputText;
   }
+
+  void _showBottomSheet(BuildContext context) => showModalBottomSheet<void>(
+    context: context,
+    builder: (newContext) => EmojiPickerWidget(
+      emojiPickerSheetConfig: context.chatListConfig.emojiPickerSheetConfig,
+      onSelected: (emoji) {
+        Navigator.pop(newContext);
+        widget.textEditingController.text += emoji;
+      },
+    ),
+  );
 }

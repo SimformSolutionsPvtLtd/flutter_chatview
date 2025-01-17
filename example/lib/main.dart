@@ -1,6 +1,7 @@
 import 'package:chatview/chatview.dart';
 import 'package:example/data.dart';
 import 'package:example/models/theme.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -273,6 +274,9 @@ class _ChatScreenState extends State<ChatScreen> {
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
+          ),
+          emojiMessageConfig: const EmojiMessageConfiguration(
+            padding: EdgeInsets.zero
           ),
           imageMessageConfig: ImageMessageConfiguration(
             margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
