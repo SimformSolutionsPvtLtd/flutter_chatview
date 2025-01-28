@@ -26,6 +26,7 @@ dependencies:
   audio_waveforms: ^1.2.0
   # For formatting time locale in message receipts
   cached_network_image: ^3.4.1
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:
