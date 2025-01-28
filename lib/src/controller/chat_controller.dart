@@ -100,6 +100,18 @@ class ChatController {
     }
   }
 
+   /// Used to replace the last message in the list.
+  /// Useful for streaming responses where content is updated incrementally.
+  void replaceLastMessage(Message message) {
+    if (initialMessageList.isNotEmpty) {
+      initialMessageList[initialMessageList.length - 1] = message;
+      if (!messageStreamController.isClosed) {
+        messageStreamController.sink.add(initialMessageList);
+      }
+    } else {
+      addMessage(message);
+    }
+  }
   /// Used to add reply suggestions.
   void addReplySuggestions(List<SuggestionItemData> suggestions) {
     _replySuggestion.value = suggestions;
