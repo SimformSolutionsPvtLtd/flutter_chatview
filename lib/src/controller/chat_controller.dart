@@ -21,6 +21,7 @@
  */
 import 'dart:async';
 
+import 'package:chatview/src/models/config_models/typing_configuration.dart';
 import 'package:chatview/src/widgets/suggestions/suggestion_list.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -74,12 +75,17 @@ class ChatController {
   /// Provides current user which is sending messages.
   final ChatUser currentUser;
 
+  ///Configuration for Animated Typewriter functionality as in a chatbot.
+  TypewriterAnimatedConfiguration typewriterAnimatedConfiguration;
+
   ChatController({
     required this.initialMessageList,
     required this.scrollController,
     required this.otherUsers,
     required this.currentUser,
-  });
+    TypewriterAnimatedConfiguration? typewriterAnimatedConfiguration,
+  }) : typewriterAnimatedConfiguration = typewriterAnimatedConfiguration ??
+            TypewriterAnimatedConfiguration();
 
   /// Represents message stream of chat
   StreamController<List<Message>> messageStreamController = StreamController();

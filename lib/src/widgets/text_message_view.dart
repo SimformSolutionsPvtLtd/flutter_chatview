@@ -20,6 +20,7 @@
  * SOFTWARE.
  */
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:chatview/src/extensions/extensions.dart';
@@ -70,6 +71,7 @@ class TextMessageView extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final textMessage = message.message;
+    final chatController = ChatViewInheritedWidget.of(context)!.chatController;
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -94,7 +96,10 @@ class TextMessageView extends StatelessWidget {
                   linkPreviewConfig: _linkPreviewConfig,
                   url: textMessage,
                 )
-              : !isMessageBySender
+              : !isMessageBySender &&
+                      chatController.typewriterAnimatedConfiguration
+                          .enableConfiguration &&
+                      chatController.initialMessageList.isNotEmpty
                   ? AnimatedTextKit(
                       animatedTexts: [
                         TypewriterAnimatedText(
@@ -107,11 +112,11 @@ class TextMessageView extends StatelessWidget {
                           speed: const Duration(milliseconds: 50),
                         ),
                       ],
-                      totalRepeatCount: 0, isRepeatingAnimation: false,
-                      pause: const Duration(milliseconds: 1000),
-                      displayFullTextOnTap: true,
-                      stopPauseOnTap: false,
-                      // controller: myAnimatedTextController,
+                      isRepeatingAnimation: false,
+                      displayFullTextOnTap: chatController
+                          .typewriterAnimatedConfiguration.displayFullTextOnTap,
+                      controller: chatController
+                          .typewriterAnimatedConfiguration.controller,
                     )
                   : Text(
                       textMessage,

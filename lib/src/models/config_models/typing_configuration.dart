@@ -20,22 +20,30 @@
  * SOFTWARE.
  */
 
-library chatview;
+import 'package:animated_text_kit/animated_text_kit.dart';
 
-export 'src/widgets/chat_view.dart';
-export 'src/models/models.dart';
-export 'src/widgets/chat_view_appbar.dart';
-export 'src/values/enumeration.dart';
-export 'src/controller/chat_controller.dart';
-export 'src/values/typedefs.dart';
-export 'package:audio_waveforms/audio_waveforms.dart'
-    show
-        WaveStyle,
-        PlayerWaveStyle,
-        AndroidEncoder,
-        IosEncoder,
-        AndroidOutputFormat;
-export 'src/models/config_models/receipts_widget_config.dart';
-export 'src/extensions/extensions.dart' show MessageTypes;
-export 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
-export '/src/models/config_models/typing_configuration.dart';
+///Configuration for Animated Typewriter functionality as in a chatbot.
+class TypewriterAnimatedConfiguration {
+  ///Toggle to enable
+  /// By default it is set to false.
+  final bool enableConfiguration;
+
+  /// A controller for managing the state of an animated text sequence.
+  ///
+  /// This controller exposes methods to play, pause, and reset the animation.
+  /// The [AnimatedTextState] enum represents the various states the animation
+  /// can be in. By calling [play()], [pause()], or [reset()], you can transition
+  /// between these states and the animated widget will react accordingly.
+  AnimatedTextController? controller;
+
+  /// Should the animation ends up early and display full text if you tap on it?
+  ///
+  /// By default it is set to false.
+  final bool displayFullTextOnTap;
+
+  TypewriterAnimatedConfiguration({
+    this.displayFullTextOnTap = false,
+    this.controller,
+    this.enableConfiguration = false,
+  });
+}
