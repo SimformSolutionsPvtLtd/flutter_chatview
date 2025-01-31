@@ -51,6 +51,9 @@ class MessageReactionConfiguration {
   /// Used for giving text style to total count of reaction text.
   final TextStyle? reactionCountTextStyle;
 
+  /// Used for giving text style to total count of reaction text.
+  final TextStyle? myReactionCountTextStyle;
+
   /// Provides configurations for reaction bottom sheet which shows reacted users
   /// and their reaction on any message.
   final ReactionsBottomSheetConfiguration? reactionsBottomSheetConfig;
@@ -65,6 +68,7 @@ class MessageReactionConfiguration {
     this.reactionsBottomSheetConfig,
     this.reactionCountTextStyle,
     this.reactedUserCountTextStyle,
+    this.myReactionCountTextStyle,
     this.reactionSize,
     this.margin,
     this.padding,

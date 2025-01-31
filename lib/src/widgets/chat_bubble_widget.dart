@@ -278,7 +278,7 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
                   Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 5,
-                      vertical: 3,
+                      vertical: 2,
                     ),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
@@ -314,7 +314,14 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              if (isMessageBySender) getReceipt(isMessageBySender),
+              if (isMessageBySender)
+                Padding(
+                  padding: EdgeInsets.only(
+                    bottom:
+                        widget.message.reaction.reactions.isNotEmpty ? 18 : 0,
+                  ),
+                  child: getReceipt(isMessageBySender),
+                ),
               MessageView(
                 outgoingChatBubbleConfig:
                     chatListConfig.chatBubbleConfig?.outgoingChatBubbleConfig,
@@ -350,7 +357,14 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
                     1.1,
                 onMaxDuration: _onMaxDuration,
               ),
-              if (!isMessageBySender) getReceipt(isMessageBySender),
+              if (!isMessageBySender)
+                Padding(
+                  padding: EdgeInsets.only(
+                    bottom:
+                        widget.message.reaction.reactions.isNotEmpty ? 18 : 0,
+                  ),
+                  child: getReceipt(isMessageBySender),
+                ),
             ],
           ),
         ),

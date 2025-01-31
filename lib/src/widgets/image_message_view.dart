@@ -22,6 +22,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:chatview/chatview.dart';
 import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/models/models.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +39,7 @@ class ImageMessageView extends StatelessWidget {
     this.messageReactionConfig,
     this.highlightImage = false,
     this.highlightScale = 1.2,
+    this.controller,
   }) : super(key: key);
 
   /// Provides message instance of chat.
@@ -58,6 +60,9 @@ class ImageMessageView extends StatelessWidget {
   /// Provides scale of highlighted image when user taps on replied image.
   final double highlightScale;
 
+  /// chat controller
+  final ChatController? controller;
+
   String get imageUrl => message.message;
 
   Widget get iconButton => ShareIcon(
@@ -75,6 +80,7 @@ class ImageMessageView extends StatelessWidget {
         if (isMessageBySender && !(imageMessageConfig?.hideShareIcon ?? false))
           iconButton,
         Stack(
+          clipBehavior: Clip.none,
           children: [
             GestureDetector(
               onTap: () => imageMessageConfig?.onTap != null
@@ -139,6 +145,8 @@ class ImageMessageView extends StatelessWidget {
                 isMessageBySender: isMessageBySender,
                 reaction: message.reaction,
                 messageReactionConfig: messageReactionConfig,
+                isMyReaction: message.reaction.reactedUserIds
+                    .contains(controller?.currentUser.id),
               ),
           ],
         ),

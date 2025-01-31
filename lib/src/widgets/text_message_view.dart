@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'package:chatview/chatview.dart';
 import 'package:flutter/material.dart';
 
 import 'package:chatview/src/extensions/extensions.dart';
@@ -39,6 +40,7 @@ class TextMessageView extends StatelessWidget {
     this.messageReactionConfig,
     this.highlightMessage = false,
     this.highlightColor,
+    this.controller,
   }) : super(key: key);
 
   /// Represents current message is sent by current user.
@@ -64,6 +66,9 @@ class TextMessageView extends StatelessWidget {
 
   /// Allow user to set color of highlighted message.
   final Color? highlightColor;
+
+  /// chat controller
+  final ChatController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -114,6 +119,8 @@ class TextMessageView extends StatelessWidget {
             isMessageBySender: isMessageBySender,
             reaction: message.reaction,
             messageReactionConfig: messageReactionConfig,
+            isMyReaction: message.reaction.reactedUserIds
+                .contains(controller?.currentUser.id),
           ),
       ],
     );
