@@ -26,8 +26,11 @@ import '../utils/constants/constants.dart';
 import '../values/enumeration.dart';
 import '../values/typedefs.dart';
 import 'profile_image_widget.dart';
+import '../../../chatview.dart';
 
 class ProfileCircle extends StatelessWidget {
+  final ChatUser? user;
+
   const ProfileCircle({
     Key? key,
     required this.bottomPadding,
@@ -41,6 +44,8 @@ class ProfileCircle extends StatelessWidget {
     this.networkImageErrorBuilder,
     this.imageType = ImageType.network,
     this.networkImageProgressIndicatorBuilder,
+    this.profileAvatar,
+    this.user,
   }) : super(key: key);
 
   /// Allow users to give  default bottom padding according to user case.
@@ -79,6 +84,9 @@ class ProfileCircle extends StatelessWidget {
   final NetworkImageProgressIndicatorBuilder?
       networkImageProgressIndicatorBuilder;
 
+  /// custom profile avatar
+  final Widget? Function(ChatUser?)? profileAvatar;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -87,16 +95,17 @@ class ProfileCircle extends StatelessWidget {
       child: InkWell(
         onLongPress: onLongPress,
         onTap: onTap,
-        child: ProfileImageWidget(
-          circleRadius: circleRadius ?? 16,
-          imageUrl: imageUrl,
-          defaultAvatarImage: defaultAvatarImage,
-          assetImageErrorBuilder: assetImageErrorBuilder,
-          networkImageErrorBuilder: networkImageErrorBuilder,
-          imageType: imageType,
-          networkImageProgressIndicatorBuilder:
-              networkImageProgressIndicatorBuilder,
-        ),
+        child: profileAvatar?.call(user) ??
+            ProfileImageWidget(
+              circleRadius: circleRadius ?? 16,
+              imageUrl: imageUrl,
+              defaultAvatarImage: defaultAvatarImage,
+              assetImageErrorBuilder: assetImageErrorBuilder,
+              networkImageErrorBuilder: networkImageErrorBuilder,
+              imageType: imageType,
+              networkImageProgressIndicatorBuilder:
+                  networkImageProgressIndicatorBuilder,
+            ),
       ),
     );
   }

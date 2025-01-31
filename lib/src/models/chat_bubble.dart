@@ -52,8 +52,6 @@ class ChatBubble {
   /// time only
   final Function(Message message)? onMessageRead;
 
-  final Widget? messageTimeAndUnreadCount;
-
   const ChatBubble({
     this.color,
     this.borderRadius,
@@ -64,6 +62,5 @@ class ChatBubble {
     this.senderNameTextStyle,
     this.receiptsWidgetConfig,
     this.onMessageRead,
-    this.messageTimeAndUnreadCount,
   });
 }

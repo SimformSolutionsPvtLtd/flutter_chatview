@@ -51,31 +51,28 @@ class LinkPreview extends StatelessWidget {
         children: [
           if (!url.isImageUrl &&
               !(context.chatBubbleConfig?.disableLinkPreview ?? false)) ...{
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: verticalPadding),
-              child: AnyLinkPreview(
-                link: url,
-                removeElevation: true,
-                errorBody: linkPreviewConfig?.errorBody,
-                proxyUrl: linkPreviewConfig?.proxyUrl,
-                onTap: _onLinkTap,
-                placeholderWidget: SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.25,
-                  width: double.infinity,
-                  child: Center(
-                    child: CircularProgressIndicator(
-                      strokeWidth: 1,
-                      color: linkPreviewConfig?.loadingColor,
-                    ),
+            AnyLinkPreview(
+              link: url,
+              removeElevation: true,
+              errorBody: linkPreviewConfig?.errorBody,
+              proxyUrl: linkPreviewConfig?.proxyUrl,
+              onTap: _onLinkTap,
+              placeholderWidget: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.25,
+                width: double.infinity,
+                child: Center(
+                  child: CircularProgressIndicator(
+                    strokeWidth: 1,
+                    color: linkPreviewConfig?.loadingColor,
                   ),
                 ),
-                backgroundColor:
-                    linkPreviewConfig?.backgroundColor ?? Colors.grey.shade200,
-                borderRadius: linkPreviewConfig?.borderRadius,
-                bodyStyle: linkPreviewConfig?.bodyStyle ??
-                    const TextStyle(color: Colors.black),
-                titleStyle: linkPreviewConfig?.titleStyle,
               ),
+              backgroundColor:
+                  linkPreviewConfig?.backgroundColor ?? Colors.grey.shade200,
+              borderRadius: linkPreviewConfig?.borderRadius,
+              bodyStyle: linkPreviewConfig?.bodyStyle ??
+                  const TextStyle(color: Colors.black),
+              titleStyle: linkPreviewConfig?.titleStyle,
             ),
           } else ...{
             Padding(
@@ -91,18 +88,17 @@ class LinkPreview extends StatelessWidget {
               ),
             ),
           },
-          const SizedBox(height: verticalPadding),
-          InkWell(
-            onTap: _onLinkTap,
-            child: Text(
-              url,
-              style: linkPreviewConfig?.linkStyle ??
-                  const TextStyle(
-                    color: Colors.white,
-                    decoration: TextDecoration.underline,
-                  ),
-            ),
-          ),
+          // InkWell(
+          //   onTap: _onLinkTap,
+          //   child: Text(
+          //     url,
+          //     style: linkPreviewConfig?.linkStyle ??
+          //         const TextStyle(
+          //           color: Colors.white,
+          //           decoration: TextDecoration.underline,
+          //         ),
+          //   ),
+          // ),
         ],
       ),
     );

@@ -31,10 +31,22 @@ class ChatUser {
   /// Provides name of user.
   final String name;
 
+  // Provides title of user
+  final String? title;
+
   /// Provides profile picture as network URL or asset of user.
   /// Or
   /// Provides profile picture's data in base64 string.
   final String? profilePhoto;
+
+  /// Provides emoji of user
+  final String? emoji;
+
+  /// Provides introduction of user
+  final String? introduction;
+
+  /// Provides createdAt of user
+  final DateTime? createdAt;
 
   /// Field to set default image if network url for profile image not provided
   final String defaultAvatarImage;
@@ -55,7 +67,11 @@ class ChatUser {
   ChatUser({
     required this.id,
     required this.name,
+    this.title,
     this.profilePhoto,
+    this.emoji,
+    this.introduction,
+    this.createdAt,
     this.defaultAvatarImage = profileImage,
     this.imageType = ImageType.network,
     this.assetImageErrorBuilder,
@@ -66,7 +82,11 @@ class ChatUser {
   factory ChatUser.fromJson(Map<String, dynamic> json) => ChatUser(
         id: json["id"],
         name: json["name"],
+        title: json["title"],
         profilePhoto: json["profilePhoto"],
+        emoji: json["emoji"],
+        introduction: json["introduction"],
+        createdAt: json["createdAt"],
         imageType: ImageType.tryParse(json['imageType']?.toString()) ??
             ImageType.network,
         defaultAvatarImage: json["defaultAvatarImage"],
@@ -75,8 +95,12 @@ class ChatUser {
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,
+        'title': title,
         'profilePhoto': profilePhoto,
+        'emoji': emoji,
+        'introduction': introduction,
         'imageType': imageType.name,
+        'createdAt': createdAt,
         'defaultAvatarImage': defaultAvatarImage,
       };
 
@@ -84,14 +108,22 @@ class ChatUser {
     String? id,
     String? name,
     String? profilePhoto,
+    String? title,
+    String? emoji,
+    String? introduction,
     ImageType? imageType,
+    DateTime? createdAt,
     String? defaultAvatarImage,
     bool forceNullValue = false,
   }) {
     return ChatUser(
       id: id ?? this.id,
       name: name ?? this.name,
+      title: title ?? this.title,
+      emoji: emoji ?? this.emoji,
+      introduction: introduction ?? this.introduction,
       imageType: imageType ?? this.imageType,
+      createdAt: createdAt ?? this.createdAt,
       profilePhoto:
           forceNullValue ? profilePhoto : profilePhoto ?? this.profilePhoto,
       defaultAvatarImage: defaultAvatarImage ?? this.defaultAvatarImage,

@@ -110,6 +110,13 @@ class ChatController {
     _replySuggestion.value = [];
   }
 
+  void syncMessageList(List messageList) {
+    initialMessageList = messageList as List<Message>;
+    if (!messageStreamController.isClosed) {
+      messageStreamController.sink.add(initialMessageList);
+    }
+  }
+
   /// Function for setting reaction on specific chat bubble
   void setReaction({
     required String emoji,

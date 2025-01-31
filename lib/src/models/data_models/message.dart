@@ -54,6 +54,12 @@ class Message {
   /// Provides max duration for recorded voice message.
   Duration? voiceMessageDuration;
 
+  // Provides unread count
+  int? unreadCount;
+
+  // Provice custom data
+  Map<String, dynamic>? customData;
+
   Message({
     this.id = '',
     required this.message,
@@ -64,6 +70,8 @@ class Message {
     this.messageType = MessageType.text,
     this.voiceMessageDuration,
     MessageStatus status = MessageStatus.pending,
+    this.customData,
+    this.unreadCount,
   })  : reaction = reaction ?? Reaction(reactions: [], reactedUserIds: []),
         key = GlobalKey(),
         _status = ValueNotifier(status),
