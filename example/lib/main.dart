@@ -65,6 +65,11 @@ class _ChatScreenState extends State<ChatScreen> {
         profilePhoto: Data.profileImage,
       ),
     ],
+
+    ///Uncomment to enable typewriter functionality
+    // typewriterAnimatedConfiguration: TypewriterAnimatedConfiguration(
+    //   enableConfiguration: true,
+    // ),
   );
 
   void _showHideTypingIndicator() {

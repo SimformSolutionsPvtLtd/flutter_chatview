@@ -1,3 +1,7 @@
+## [2.5.0]
+
+* **Feat**: [309](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/309) Introduced animated typewriter functionality, allowing developers to seamlessly integrate the chat view for chatbot implementations.
+
 ## [2.4.0]
 
 * **Feat**: [251](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/251) Add
