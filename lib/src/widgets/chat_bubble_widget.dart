@@ -263,14 +263,37 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
                       ?.inComingChatBubbleConfig?.senderNameTextStyle,
                 ),
                 const SizedBox(width: 3),
-                Text(
-                  messagedUser?.title != null ? '· ${messagedUser?.title}' : '',
-                  style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xFF717171),
+                if (messagedUser?.type == ChatUser.TYPE_USER)
+                  Text(
+                    messagedUser?.title != null
+                        ? '· ${messagedUser?.title}'
+                        : '',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xFF717171),
+                    ),
                   ),
-                ),
+                if (messagedUser?.type == ChatUser.TYPE_BOT)
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 5,
+                      vertical: 3,
+                    ),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF475467),
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                    child: Text(
+                      messagedUser!.type!,
+                      style: const TextStyle(
+                        fontSize: 9,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),

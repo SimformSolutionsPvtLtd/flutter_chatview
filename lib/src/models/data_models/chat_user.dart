@@ -25,6 +25,10 @@ import '../../values/enumeration.dart';
 import '../../values/typedefs.dart';
 
 class ChatUser {
+  static const String TYPE_USER = 'user';
+  static const String TYPE_ADMIN = 'admin';
+  static const String TYPE_BOT = 'bot';
+
   /// Provides id of user.
   final String id;
 
@@ -47,6 +51,9 @@ class ChatUser {
 
   /// Provides createdAt of user
   final DateTime? createdAt;
+
+  /// Provides senderType of user
+  final String? type;
 
   /// Field to set default image if network url for profile image not provided
   final String defaultAvatarImage;
@@ -72,6 +79,7 @@ class ChatUser {
     this.emoji,
     this.introduction,
     this.createdAt,
+    this.type,
     this.defaultAvatarImage = profileImage,
     this.imageType = ImageType.network,
     this.assetImageErrorBuilder,
@@ -87,6 +95,7 @@ class ChatUser {
         emoji: json["emoji"],
         introduction: json["introduction"],
         createdAt: json["createdAt"],
+        type: json["type"],
         imageType: ImageType.tryParse(json['imageType']?.toString()) ??
             ImageType.network,
         defaultAvatarImage: json["defaultAvatarImage"],
@@ -102,6 +111,7 @@ class ChatUser {
         'imageType': imageType.name,
         'createdAt': createdAt,
         'defaultAvatarImage': defaultAvatarImage,
+        'type': type,
       };
 
   ChatUser copyWith({
@@ -114,6 +124,7 @@ class ChatUser {
     ImageType? imageType,
     DateTime? createdAt,
     String? defaultAvatarImage,
+    String? type,
     bool forceNullValue = false,
   }) {
     return ChatUser(
@@ -127,6 +138,7 @@ class ChatUser {
       profilePhoto:
           forceNullValue ? profilePhoto : profilePhoto ?? this.profilePhoto,
       defaultAvatarImage: defaultAvatarImage ?? this.defaultAvatarImage,
+      type: type ?? this.type,
     );
   }
 }
