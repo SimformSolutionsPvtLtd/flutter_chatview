@@ -41,9 +41,15 @@ class TypewriterAnimatedConfiguration {
   /// By default it is set to false.
   final bool displayFullTextOnTap;
 
+  ///The [Duration] of the delay between the apparition of each characters
+
+  ///By default it is set to 50 milliseconds.
+  final Duration duration;
+
   TypewriterAnimatedConfiguration({
     this.displayFullTextOnTap = false,
     this.controller,
     this.enableConfiguration = false,
+    this.duration = const Duration(milliseconds: 50),
   });
 }

@@ -109,7 +109,8 @@ class TextMessageView extends StatelessWidget {
                                 color: Colors.white,
                                 fontSize: 16,
                               ),
-                          speed: const Duration(milliseconds: 50),
+                          speed: chatController
+                              .typewriterAnimatedConfiguration.duration,
                         ),
                       ],
                       isRepeatingAnimation: false,
