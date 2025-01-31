@@ -117,6 +117,7 @@ class TextMessageView extends StatelessWidget {
                           .typewriterAnimatedConfiguration.displayFullTextOnTap,
                       controller: chatController
                           .typewriterAnimatedConfiguration.controller,
+                      totalRepeatCount: 1,
                     )
                   : Text(
                       textMessage,
