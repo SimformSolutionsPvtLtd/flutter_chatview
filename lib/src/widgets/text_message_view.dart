@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 
 import 'package:chatview/src/extensions/extensions.dart';
@@ -93,14 +94,33 @@ class TextMessageView extends StatelessWidget {
                   linkPreviewConfig: _linkPreviewConfig,
                   url: textMessage,
                 )
-              : Text(
-                  textMessage,
-                  style: _textStyle ??
-                      textTheme.bodyMedium!.copyWith(
-                        color: Colors.white,
-                        fontSize: 16,
-                      ),
-                ),
+              : !isMessageBySender
+                  ? AnimatedTextKit(
+                      animatedTexts: [
+                        TypewriterAnimatedText(
+                          textMessage,
+                          textStyle: _textStyle ??
+                              textTheme.bodyMedium!.copyWith(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
+                          speed: const Duration(milliseconds: 50),
+                        ),
+                      ],
+                      totalRepeatCount: 0, isRepeatingAnimation: false,
+                      pause: const Duration(milliseconds: 1000),
+                      displayFullTextOnTap: true,
+                      stopPauseOnTap: false,
+                      // controller: myAnimatedTextController,
+                    )
+                  : Text(
+                      textMessage,
+                      style: _textStyle ??
+                          textTheme.bodyMedium!.copyWith(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                    ),
         ),
         if (message.reaction.reactions.isNotEmpty)
           ReactionWidget(
