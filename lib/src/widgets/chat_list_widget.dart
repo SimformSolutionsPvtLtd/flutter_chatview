@@ -116,19 +116,19 @@ class _ChatListWidgetState extends State<ChatListWidget>
       children: [
         ValueListenableBuilder<bool>(
           valueListenable: _isNextPageLoading,
-          builder: (_, isNextPageLoading, child) {
-            if (isNextPageLoading &&
-                (featureActiveConfig?.enablePagination ?? false)) {
-              return SizedBox(
-                height: Scaffold.of(context).appBarMaxHeight,
+          builder:
+              (BuildContext context, bool isNextPageLoading, Widget? child) {
+            return SizedBox(
+              height: isNextPageLoading ? 50.0 : 0.0,
+              child: AnimatedOpacity(
+                duration: const Duration(milliseconds: 500),
+                opacity: isNextPageLoading ? 1.0 : 0.0,
                 child: Center(
                   child:
                       widget.loadingWidget ?? const CircularProgressIndicator(),
                 ),
-              );
-            } else {
-              return const SizedBox.shrink();
-            }
+              ),
+            );
           },
         ),
         Expanded(
