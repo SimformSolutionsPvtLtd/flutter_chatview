@@ -31,6 +31,7 @@ typedef StringMessageCallBack = void Function(
 );
 typedef ReplyMessageWithReturnWidget = Widget Function(
   ReplyMessage? replyMessage,
+  FocusNode? focusNode,
 );
 typedef ReplyMessageCallBack = void Function(ReplyMessage replyMessage);
 typedef VoidCallBack = void Function();

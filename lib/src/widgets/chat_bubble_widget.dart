@@ -300,8 +300,9 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
         if (replyMessage.isNotEmpty)
           chatListConfig.repliedMessageConfig?.repliedMessageWidgetBuilder !=
                   null
-              ? chatListConfig.repliedMessageConfig!
-                  .repliedMessageWidgetBuilder!(widget.message.replyMessage)
+              ? chatListConfig
+                      .repliedMessageConfig!.repliedMessageWidgetBuilder!(
+                  widget.message.replyMessage, null)
               : ReplyMessageWidget(
                   message: widget.message,
                   repliedMessageConfig: chatListConfig.repliedMessageConfig,
