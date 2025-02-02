@@ -73,6 +73,8 @@ class ChatController {
 
   /// Provides current user which is sending messages.
   final ChatUser currentUser;
+
+  // Provides a callback function to be called when changing reactions on a message.
   final Function(Message)? setReactionCallback;
 
   ChatController({
