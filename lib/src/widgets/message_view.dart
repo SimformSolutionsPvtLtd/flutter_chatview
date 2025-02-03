@@ -117,15 +117,15 @@ class _MessageViewState extends State<MessageView>
         upperBound: 0.1,
         lowerBound: 0.0,
       );
-      if (widget.message.status != MessageStatus.read &&
-          !widget.isMessageBySender) {
-        widget.inComingChatBubbleConfig?.onMessageRead?.call(widget.message);
-      }
       _animationController?.addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           _animationController?.reverse();
         }
       });
+      if (widget.message.status != MessageStatus.read &&
+          !widget.isMessageBySender) {
+        widget.inComingChatBubbleConfig?.onMessageRead?.call(widget.message);
+      }
     }
   }
 
