@@ -113,7 +113,7 @@ class ChatController {
   /// Function for setting reaction on specific chat bubble
   void setReaction({
     required String emoji,
-    required String messageId,
+    required int messageId,
     required String userId,
   }) {
     final message =

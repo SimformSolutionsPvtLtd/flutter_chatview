@@ -71,7 +71,7 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
   bool get showPopUp => widget.showPopUp;
 
   bool highlightMessage = false;
-  final ValueNotifier<String?> _replyId = ValueNotifier(null);
+  final ValueNotifier<int?> _replyId = ValueNotifier(null);
 
   AnimationController? _animationController;
   Animation<Offset>? _slideAnimation;
@@ -199,7 +199,7 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
     );
   }
 
-  Future<void> _onReplyTap(String id, List<Message>? messages) async {
+  Future<void> _onReplyTap(int id, List<Message>? messages) async {
     // Finds the replied message if exists
     final repliedMessages = messages?.firstWhere((message) => id == message.id);
     final repliedMsgAutoScrollConfig =
@@ -305,7 +305,7 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
                 );
               }
 
-              return ValueListenableBuilder<String?>(
+              return ValueListenableBuilder<int?>(
                 valueListenable: _replyId,
                 builder: (context, state, child) {
                   final message = messages[newIndex];

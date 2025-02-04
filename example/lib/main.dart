@@ -74,7 +74,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void receiveMessage() async {
     _chatController.addMessage(
       Message(
-        id: DateTime.now().toString(),
+        id: DateTime.now().microsecondsSinceEpoch,
         message: 'I will schedule the meeting.',
         createdAt: DateTime.now(),
         sentBy: '2',
@@ -330,7 +330,7 @@ class _ChatScreenState extends State<ChatScreen> {
   ) {
     _chatController.addMessage(
       Message(
-        id: DateTime.now().toString(),
+        id: DateTime.now().millisecondsSinceEpoch,
         createdAt: DateTime.now(),
         message: message,
         sentBy: _chatController.currentUser.id,

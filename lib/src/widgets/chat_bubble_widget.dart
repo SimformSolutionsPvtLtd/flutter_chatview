@@ -55,7 +55,7 @@ class ChatBubbleWidget extends StatefulWidget {
   final Animation<Offset>? slideAnimation;
 
   /// Provides callback when user tap on replied message upon chat bubble.
-  final Function(String)? onReplyTap;
+  final Function(int)? onReplyTap;
 
   /// Flag for when user tap on replied message and highlight actual message.
   final bool shouldHighlight;

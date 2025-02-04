@@ -32,6 +32,7 @@ class ChatViewStateWidgetConfiguration {
     this.subTitleTextStyle,
     this.loadingIndicatorColor,
     this.reloadButton,
+    this.loadingWidget,
     this.showDefaultReloadButton = true,
     this.reloadButtonColor,
   });
@@ -65,4 +66,6 @@ class ChatViewStateWidgetConfiguration {
 
   /// Gives ability to pass custom widget in any state.
   final Widget? widget;
+
+  final Widget? loadingWidget;
 }

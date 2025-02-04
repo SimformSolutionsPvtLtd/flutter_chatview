@@ -43,6 +43,7 @@ class ChatViewStateWidget extends StatelessWidget {
                   style: chatViewStateWidgetConfig?.subTitleTextStyle,
                 ),
               if (chatViewState.isLoading)
+                chatViewStateWidgetConfig?.loadingWidget ??
                 CircularProgressIndicator(
                   color: chatViewStateWidgetConfig?.loadingIndicatorColor,
                 ),

@@ -5,35 +5,35 @@ class Data {
       "https://raw.githubusercontent.com/SimformSolutionsPvtLtd/flutter_showcaseview/master/example/assets/simform.png";
   static final messageList = [
     Message(
-      id: '1',
+      id: 1,
       message: "Hi!",
       createdAt: DateTime.now(),
       sentBy: '1', // userId of who sends the message
       status: MessageStatus.read,
     ),
     Message(
-      id: '2',
+      id: 2,
       message: "Hi!",
       createdAt: DateTime.now(),
       sentBy: '2',
       status: MessageStatus.read,
     ),
     Message(
-      id: '3',
+      id: 3,
       message: "We can meet?I am free",
       createdAt: DateTime.now(),
       sentBy: '1',
       status: MessageStatus.read,
     ),
     Message(
-      id: '4',
+      id: 4,
       message: "Can you write the time and place of the meeting?",
       createdAt: DateTime.now(),
       sentBy: '1',
       status: MessageStatus.read,
     ),
     Message(
-      id: '5',
+      id: 5,
       message: "That's fine",
       createdAt: DateTime.now(),
       sentBy: '2',
@@ -41,21 +41,21 @@ class Data {
       status: MessageStatus.read,
     ),
     Message(
-      id: '6',
+      id: 6,
       message: "When to go ?",
       createdAt: DateTime.now(),
       sentBy: '3',
       status: MessageStatus.read,
     ),
     Message(
-      id: '7',
+      id: 7,
       message: "I guess Simform will reply",
       createdAt: DateTime.now(),
       sentBy: '4',
       status: MessageStatus.read,
     ),
     Message(
-      id: '8',
+      id: 8,
       message: "https://bit.ly/3JHS2Wl",
       createdAt: DateTime.now(),
       sentBy: '2',
@@ -68,11 +68,11 @@ class Data {
         message: "Can you write the time and place of the meeting?",
         replyTo: '1',
         replyBy: '2',
-        messageId: '4',
+        messageId: 4,
       ),
     ),
     Message(
-      id: '9',
+      id: 9,
       message: "Done",
       createdAt: DateTime.now(),
       sentBy: '1',
@@ -87,7 +87,7 @@ class Data {
       ),
     ),
     Message(
-      id: '10',
+      id: 10,
       message: "Thank you!!",
       status: MessageStatus.read,
       createdAt: DateTime.now(),
@@ -98,7 +98,7 @@ class Data {
       ),
     ),
     Message(
-      id: '11',
+      id: 11,
       message: "https://miro.medium.com/max/1000/0*s7of7kWnf9fDg4XM.jpeg",
       createdAt: DateTime.now(),
       messageType: MessageType.image,
@@ -107,7 +107,7 @@ class Data {
       status: MessageStatus.read,
     ),
     Message(
-      id: '12',
+      id: 12,
       message: "🤩🤩",
       createdAt: DateTime.now(),
       sentBy: '2',

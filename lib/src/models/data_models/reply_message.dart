@@ -19,7 +19,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import '../../values/enumeration.dart';
+import 'package:chatview/chatview.dart';
+
 
 class ReplyMessage {
   /// Provides reply message.
@@ -36,10 +37,10 @@ class ReplyMessage {
   final Duration? voiceMessageDuration;
 
   /// Id of message, it replies to.
-  final String messageId;
+  final int messageId;
 
   const ReplyMessage({
-    this.messageId = '',
+    this.messageId = messageEmptyId,
     this.message = '',
     this.replyTo = '',
     this.replyBy = '',
@@ -53,7 +54,7 @@ class ReplyMessage {
         replyTo: json['replyTo']?.toString() ?? '',
         messageType: MessageType.tryParse(json['message_type']?.toString()) ??
             MessageType.text,
-        messageId: json['id']?.toString() ?? '',
+        messageId: json['id'] ?? messageEmptyId,
         voiceMessageDuration: Duration(
           microseconds:
               int.tryParse(json['voiceMessageDuration'].toString()) ?? 0,
@@ -70,7 +71,7 @@ class ReplyMessage {
       };
 
   ReplyMessage copyWith({
-    String? messageId,
+    int? messageId,
     String? message,
     String? replyTo,
     String? replyBy,

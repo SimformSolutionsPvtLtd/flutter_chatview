@@ -23,9 +23,12 @@ import 'package:chatview/chatview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
+const messageEmptyId = 0;
+
 class Message {
+
   /// Provides id
-  final String id;
+  final int id;
 
   /// Used for accessing widget's render box.
   final GlobalKey key;
@@ -55,7 +58,7 @@ class Message {
   Duration? voiceMessageDuration;
 
   Message({
-    this.id = '',
+    this.id = messageEmptyId,
     required this.message,
     required this.createdAt,
     required this.sentBy,
@@ -91,7 +94,7 @@ class Message {
   }
 
   factory Message.fromJson(Map<String, dynamic> json) => Message(
-        id: json['id']?.toString() ?? '',
+        id: json['id'] ?? messageEmptyId,
         message: json['message']?.toString() ?? '',
         createdAt:
             DateTime.tryParse(json['createdAt'].toString()) ?? DateTime.now(),
@@ -125,7 +128,7 @@ class Message {
       };
 
   Message copyWith({
-    String? id,
+    int? id,
     GlobalKey? key,
     String? message,
     DateTime? createdAt,
