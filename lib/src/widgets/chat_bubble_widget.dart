@@ -253,7 +253,6 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
           Padding(
             padding: const EdgeInsets.only(
               bottom: 6,
-              left: 12,
             ),
             child: Row(
               children: [
