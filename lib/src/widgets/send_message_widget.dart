@@ -77,7 +77,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
   ReplyMessage get replyMessage => _replyMessage.value;
   final _focusNode = FocusNode();
 
-  ChatUser? get repliedUser => replyMessage.replyTo.isNotEmpty
+  ChatUser? get repliedUser => replyMessage.replyTo!=userEmptyId
       ? chatViewIW?.chatController.getUserFromId(replyMessage.replyTo)
       : null;
 

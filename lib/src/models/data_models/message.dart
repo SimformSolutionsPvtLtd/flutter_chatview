@@ -24,6 +24,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
 const messageEmptyId = 0;
+const userEmptyId = 0;
 
 class Message {
 
@@ -40,7 +41,7 @@ class Message {
   final DateTime createdAt;
 
   /// Provides id of sender of message.
-  final String sentBy;
+  final int sentBy;
 
   /// Provides reply message if user triggers any reply on any message.
   final ReplyMessage replyMessage;
@@ -98,7 +99,7 @@ class Message {
         message: json['message']?.toString() ?? '',
         createdAt:
             DateTime.tryParse(json['createdAt'].toString()) ?? DateTime.now(),
-        sentBy: json['sentBy']?.toString() ?? '',
+        sentBy: json['sentBy'] ?? userEmptyId,
         replyMessage: json['reply_message'] is Map<String, dynamic>
             ? ReplyMessage.fromJson(json['reply_message'])
             : const ReplyMessage(),
@@ -132,7 +133,7 @@ class Message {
     GlobalKey? key,
     String? message,
     DateTime? createdAt,
-    String? sentBy,
+    int? sentBy,
     ReplyMessage? replyMessage,
     Reaction? reaction,
     MessageType? messageType,

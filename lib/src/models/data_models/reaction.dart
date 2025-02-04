@@ -1,3 +1,5 @@
+import 'package:chatview/chatview.dart';
+
 class Reaction {
   Reaction({
     required this.reactions,
@@ -19,10 +21,10 @@ class Reaction {
         ? json['reactedUserIds'] as List<dynamic>
         : <dynamic>[];
 
-    final reactedUserIds = <String>[
+    final reactedUserIds = <int>[
       for (var i = 0; i < reactedUserIdList.length; i++)
-        if (reactedUserIdList[i]?.toString().isNotEmpty ?? false)
-          reactedUserIdList[i]!.toString()
+        if (reactedUserIdList[i]!=userEmptyId)
+          reactedUserIdList[i]
     ];
 
     return Reaction(
@@ -35,7 +37,7 @@ class Reaction {
   final List<String> reactions;
 
   /// Provides list of user who reacted on message.
-  final List<String> reactedUserIds;
+  final List<int> reactedUserIds;
 
   Map<String, dynamic> toJson() => {
         'reactions': reactions,
@@ -44,7 +46,7 @@ class Reaction {
 
   Reaction copyWith({
     List<String>? reactions,
-    List<String>? reactedUserIds,
+    List<int>? reactedUserIds,
   }) {
     return Reaction(
       reactions: reactions ?? this.reactions,

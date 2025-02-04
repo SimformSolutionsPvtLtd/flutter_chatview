@@ -114,7 +114,7 @@ class ChatController {
   void setReaction({
     required String emoji,
     required int messageId,
-    required String userId,
+    required int userId,
   }) {
     final message =
         initialMessageList.firstWhere((element) => element.id == messageId);
@@ -170,7 +170,7 @@ class ChatController {
   }
 
   /// Function for getting ChatUser object from user id
-  ChatUser getUserFromId(String userId) => userId == currentUser.id
+  ChatUser getUserFromId(int userId) => userId == currentUser.id
       ? currentUser
       : otherUsers.firstWhere((element) => element.id == userId);
 }

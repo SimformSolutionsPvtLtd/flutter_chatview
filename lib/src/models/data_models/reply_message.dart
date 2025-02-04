@@ -27,10 +27,10 @@ class ReplyMessage {
   final String message;
 
   /// Provides user id of who replied message.
-  final String replyBy;
+  final int replyBy;
 
   /// Provides user id of whom to reply.
-  final String replyTo;
+  final int replyTo;
   final MessageType messageType;
 
   /// Provides max duration for recorded voice message.
@@ -42,16 +42,16 @@ class ReplyMessage {
   const ReplyMessage({
     this.messageId = messageEmptyId,
     this.message = '',
-    this.replyTo = '',
-    this.replyBy = '',
+    this.replyTo = userEmptyId,
+    this.replyBy = userEmptyId,
     this.messageType = MessageType.text,
     this.voiceMessageDuration,
   });
 
   factory ReplyMessage.fromJson(Map<String, dynamic> json) => ReplyMessage(
         message: json['message']?.toString() ?? '',
-        replyBy: json['replyBy']?.toString() ?? '',
-        replyTo: json['replyTo']?.toString() ?? '',
+        replyBy: json['replyBy'] ?? userEmptyId,
+        replyTo: json['replyTo'] ?? userEmptyId,
         messageType: MessageType.tryParse(json['message_type']?.toString()) ??
             MessageType.text,
         messageId: json['id'] ?? messageEmptyId,
@@ -73,8 +73,8 @@ class ReplyMessage {
   ReplyMessage copyWith({
     int? messageId,
     String? message,
-    String? replyTo,
-    String? replyBy,
+    int? replyTo,
+    int? replyBy,
     MessageType? messageType,
     Duration? voiceMessageDuration,
     bool forceNullValue = false,

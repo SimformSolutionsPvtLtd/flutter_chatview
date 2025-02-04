@@ -63,6 +63,30 @@ extension TimeDifference on DateTime {
   String get getTimeFromDateTime => DateFormat.Hm().format(this);
 }
 
+extension GetChatUserInt on int {
+  Widget getUserProfilePicture({
+    required ChatUser? Function(int) getChatUser,
+    double? profileCircleRadius,
+    EdgeInsets? profileCirclePadding,
+  }) {
+    final user = getChatUser(this);
+    return Padding(
+      padding: profileCirclePadding ?? const EdgeInsets.only(left: 4),
+      child: ProfileImageWidget(
+        imageUrl: user?.profilePhoto,
+        imageType: user?.imageType,
+        defaultAvatarImage: user?.defaultAvatarImage ?? profileImage,
+        circleRadius: profileCircleRadius ?? 8,
+        assetImageErrorBuilder: user?.assetImageErrorBuilder,
+        networkImageErrorBuilder: user?.networkImageErrorBuilder,
+        networkImageProgressIndicatorBuilder:
+        user?.networkImageProgressIndicatorBuilder,
+      ),
+    );
+  }
+}
+
+
 /// Extension on String which implements different types string validations.
 extension ValidateString on String {
   bool get isImageUrl {
@@ -82,27 +106,6 @@ extension ValidateString on String {
   }
 
   bool get isUrl => Uri.tryParse(this)?.isAbsolute ?? false;
-
-  Widget getUserProfilePicture({
-    required ChatUser? Function(String) getChatUser,
-    double? profileCircleRadius,
-    EdgeInsets? profileCirclePadding,
-  }) {
-    final user = getChatUser(this);
-    return Padding(
-      padding: profileCirclePadding ?? const EdgeInsets.only(left: 4),
-      child: ProfileImageWidget(
-        imageUrl: user?.profilePhoto,
-        imageType: user?.imageType,
-        defaultAvatarImage: user?.defaultAvatarImage ?? profileImage,
-        circleRadius: profileCircleRadius ?? 8,
-        assetImageErrorBuilder: user?.assetImageErrorBuilder,
-        networkImageErrorBuilder: user?.networkImageErrorBuilder,
-        networkImageProgressIndicatorBuilder:
-            user?.networkImageProgressIndicatorBuilder,
-      ),
-    );
-  }
 }
 
 /// Extension on MessageType for checking specific message type

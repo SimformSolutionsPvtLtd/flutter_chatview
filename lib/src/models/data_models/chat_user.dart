@@ -26,7 +26,7 @@ import '../../values/typedefs.dart';
 
 class ChatUser {
   /// Provides id of user.
-  final String id;
+  final int id;
 
   /// Provides name of user.
   final String name;
@@ -81,7 +81,7 @@ class ChatUser {
       };
 
   ChatUser copyWith({
-    String? id,
+    int? id,
     String? name,
     String? profilePhoto,
     ImageType? imageType,

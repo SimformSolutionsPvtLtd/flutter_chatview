@@ -39,28 +39,28 @@ class _ChatScreenState extends State<ChatScreen> {
     initialMessageList: Data.messageList,
     scrollController: ScrollController(),
     currentUser: ChatUser(
-      id: '1',
+      id: 1,
       name: 'Flutter',
       profilePhoto: Data.profileImage,
     ),
     otherUsers: [
       ChatUser(
-        id: '2',
+        id: 2,
         name: 'Simform',
         profilePhoto: Data.profileImage,
       ),
       ChatUser(
-        id: '3',
+        id: 3,
         name: 'Jhon',
         profilePhoto: Data.profileImage,
       ),
       ChatUser(
-        id: '4',
+        id: 4,
         name: 'Mike',
         profilePhoto: Data.profileImage,
       ),
       ChatUser(
-        id: '5',
+        id: 5,
         name: 'Rich',
         profilePhoto: Data.profileImage,
       ),
@@ -77,7 +77,7 @@ class _ChatScreenState extends State<ChatScreen> {
         id: DateTime.now().microsecondsSinceEpoch,
         message: 'I will schedule the meeting.',
         createdAt: DateTime.now(),
-        sentBy: '2',
+        sentBy: 2,
       ),
     );
     await Future.delayed(const Duration(milliseconds: 500));
