@@ -237,7 +237,21 @@ class _MessageViewState extends State<MessageView>
                   );
                 } else if (widget.message.messageType.isCustom &&
                     messageConfig?.customMessageBuilder != null) {
-                  return messageConfig?.customMessageBuilder!(widget.message);
+                  return Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      messageConfig!.customMessageBuilder!(widget.message),
+                      if (widget.message.reaction.reactions.isNotEmpty)
+                        ReactionWidget(
+                          reaction: widget.message.reaction,
+                          messageReactionConfig:
+                              messageConfig?.messageReactionConfig,
+                          isMessageBySender: widget.isMessageBySender,
+                          isMyReaction: widget.message.reaction.reactedUserIds
+                              .contains(widget.controller?.currentUser.id),
+                        ),
+                    ],
+                  );
                 }
               }()) ??
               const SizedBox(),
