@@ -24,6 +24,7 @@ import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/models/config_models/link_preview_configuration.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:chatview/chatview.dart';
 
 import '../utils/constants/constants.dart';
 
@@ -32,6 +33,8 @@ class LinkPreview extends StatelessWidget {
     Key? key,
     required this.url,
     this.linkPreviewConfig,
+    required this.isMessageBySender,
+    this.chatBubbleConfig,
   }) : super(key: key);
 
   /// Provides url which is passed in message.
@@ -40,6 +43,12 @@ class LinkPreview extends StatelessWidget {
   /// Provides configuration of chat bubble appearance when link/URL is passed
   /// in message.
   final LinkPreviewConfiguration? linkPreviewConfig;
+
+  /// isMessageBySender
+  final bool isMessageBySender;
+
+  /// chatBubbleConfig
+  final ChatBubble? chatBubbleConfig;
 
   @override
   Widget build(BuildContext context) {
@@ -52,10 +61,35 @@ class LinkPreview extends StatelessWidget {
           if (!url.isImageUrl &&
               !(context.chatBubbleConfig?.disableLinkPreview ?? false)) ...{
             AnyLinkPreview(
-              link: url,
+              link: url.normalizedUrl,
               removeElevation: true,
               errorBody: linkPreviewConfig?.errorBody,
               proxyUrl: linkPreviewConfig?.proxyUrl,
+              errorWidget: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                decoration: BoxDecoration(
+                  color: isMessageBySender
+                      ? chatBubbleConfig?.color ?? Colors.purple
+                      : chatBubbleConfig?.color ?? Colors.grey.shade500,
+                  borderRadius: chatBubbleConfig?.borderRadius ??
+                      BorderRadius.circular(12),
+                ),
+                child: InkWell(
+                  onTap: _onLinkTap,
+                  child: Text(
+                    url,
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 15,
+                      decoration: TextDecoration.underline,
+                      decorationColor: Colors.blue,
+                      fontWeight: FontWeight.w500,
+                      height: 1.5,
+                    ),
+                  ),
+                ),
+              ),
               onTap: _onLinkTap,
               placeholderWidget: SizedBox(
                 height: MediaQuery.of(context).size.height * 0.25,
@@ -69,7 +103,7 @@ class LinkPreview extends StatelessWidget {
               ),
               backgroundColor:
                   linkPreviewConfig?.backgroundColor ?? Colors.grey.shade200,
-              borderRadius: linkPreviewConfig?.borderRadius,
+              borderRadius: linkPreviewConfig?.borderRadius ?? 12,
               bodyStyle: linkPreviewConfig?.bodyStyle ??
                   const TextStyle(color: Colors.black),
               titleStyle: linkPreviewConfig?.titleStyle,

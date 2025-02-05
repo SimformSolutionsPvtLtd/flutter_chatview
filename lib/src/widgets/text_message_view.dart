@@ -77,7 +77,7 @@ class TextMessageView extends StatelessWidget {
     return Stack(
       clipBehavior: Clip.none,
       children: [
-        if (textMessage.isUrl)
+        if (textMessage.isWebUrl == true)
           Container(
             constraints: BoxConstraints(
                 maxWidth: chatBubbleMaxWidth ??
@@ -85,6 +85,10 @@ class TextMessageView extends StatelessWidget {
             child: LinkPreview(
               linkPreviewConfig: _linkPreviewConfig,
               url: textMessage,
+              isMessageBySender: isMessageBySender,
+              chatBubbleConfig: isMessageBySender
+                  ? outgoingChatBubbleConfig
+                  : inComingChatBubbleConfig,
             ),
           )
         else
