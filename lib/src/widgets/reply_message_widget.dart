@@ -20,11 +20,9 @@
  * SOFTWARE.
  */
 import 'package:audio_waveforms/audio_waveforms.dart';
-import 'package:chatview/src/extensions/extensions.dart';
+import 'package:chatview/chatview.dart';
 import 'package:flutter/material.dart';
 
-import '../models/data_models/message.dart';
-import '../models/config_models/replied_message_configuration.dart';
 import '../utils/constants/constants.dart';
 import '../utils/package_strings.dart';
 import 'chat_view_inherited_widget.dart';
@@ -33,13 +31,13 @@ import 'vertical_line.dart';
 class ReplyMessageWidget extends StatelessWidget {
   const ReplyMessageWidget({
     Key? key,
-    required this.message,
+    required this.replyMessage,
     this.repliedMessageConfig,
     this.onTap,
   }) : super(key: key);
 
   /// Provides message instance of chat.
-  final Message message;
+  final ReplyMessage replyMessage;
 
   /// Provides configurations related to replied message such as textstyle
   /// padding, margin etc. Also, this widget is located upon chat bubble.
@@ -52,11 +50,11 @@ class ReplyMessageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final chatController = ChatViewInheritedWidget.of(context)?.chatController;
     final currentUser = chatController?.currentUser;
-    final replyBySender = message.replyMessage.replyBy == currentUser?.id;
+    final replyBySender = this.replyMessage.replyBy == currentUser?.id;
     final textTheme = Theme.of(context).textTheme;
-    final replyMessage = message.replyMessage.message;
+    final replyMessage = this.replyMessage.message;
     final messagedUser =
-        chatController?.getUserFromId(message.replyMessage.replyBy);
+        chatController?.getUserFromId(this.replyMessage.replyBy);
     final replyBy = replyBySender ? PackageStrings.you : messagedUser?.name;
     return GestureDetector(
       onTap: onTap,
@@ -95,7 +93,7 @@ class ReplyMessageWidget extends StatelessWidget {
                   Flexible(
                     child: Opacity(
                       opacity: repliedMessageConfig?.opacity ?? 0.8,
-                      child: message.replyMessage.messageType.isImage
+                      child: this.replyMessage.messageType.isImage
                           ? Container(
                               height: repliedMessageConfig
                                       ?.repliedImageMessageHeight ??
@@ -130,7 +128,7 @@ class ReplyMessageWidget extends StatelessWidget {
                                 color: repliedMessageConfig?.backgroundColor ??
                                     Colors.grey.shade500,
                               ),
-                              child: message.replyMessage.messageType.isVoice
+                              child: this.replyMessage.messageType.isVoice
                                   ? Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
@@ -141,11 +139,11 @@ class ReplyMessageWidget extends StatelessWidget {
                                               Colors.white,
                                         ),
                                         const SizedBox(width: 2),
-                                        if (message.replyMessage
+                                        if (this.replyMessage
                                                 .voiceMessageDuration !=
                                             null)
                                           Text(
-                                            message.replyMessage
+                                            this.replyMessage
                                                 .voiceMessageDuration!
                                                 .toHHMMSS(),
                                             style:

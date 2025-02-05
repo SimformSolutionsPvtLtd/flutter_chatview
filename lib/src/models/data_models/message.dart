@@ -44,7 +44,7 @@ class Message {
   final int sentBy;
 
   /// Provides reply message if user triggers any reply on any message.
-  final ReplyMessage replyMessage;
+  final ReplyMessage? replyMessage;
 
   /// Represents reaction on message.
   final Reaction reaction;
@@ -63,7 +63,7 @@ class Message {
     required this.message,
     required this.createdAt,
     required this.sentBy,
-    this.replyMessage = const ReplyMessage(),
+    this.replyMessage,
     Reaction? reaction,
     this.messageType = MessageType.text,
     this.voiceMessageDuration,
@@ -94,39 +94,45 @@ class Message {
     _status.value = messageStatus;
   }
 
-  factory Message.fromJson(Map<String, dynamic> json) => Message(
-        id: json['id'] ?? messageEmptyId,
-        message: json['message']?.toString() ?? '',
-        createdAt:
-            DateTime.tryParse(json['createdAt'].toString()) ?? DateTime.now(),
-        sentBy: json['sentBy'] ?? userEmptyId,
-        replyMessage: json['reply_message'] is Map<String, dynamic>
-            ? ReplyMessage.fromJson(json['reply_message'])
-            : const ReplyMessage(),
-        reaction: json['reaction'] is Map<String, dynamic>
-            ? Reaction.fromJson(json['reaction'])
-            : null,
-        messageType: MessageType.tryParse(json['message_type']?.toString()) ??
-            MessageType.text,
-        voiceMessageDuration: Duration(
-          microseconds:
-              int.tryParse(json['voice_message_duration'].toString()) ?? 0,
-        ),
-        status: MessageStatus.tryParse(json['status']?.toString()) ??
-            MessageStatus.pending,
-      );
 
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'message': message,
-        'createdAt': createdAt.toIso8601String(),
-        'sentBy': sentBy,
-        'reply_message': replyMessage.toJson(),
-        'reaction': reaction.toJson(),
-        'message_type': messageType.name,
-        'voice_message_duration': voiceMessageDuration?.inMicroseconds,
-        'status': status.name,
-      };
+  factory Message.fromJson(dynamic json) {
+    return Message(
+      id: json['id'],
+      sentBy: json['sender_id'],
+      message: json['text'] ?? json['file'],
+        replyMessage: json['reply_message'] is Map<String, dynamic>
+                  ? ReplyMessage.fromJson(json['reply_message'])
+                  : null,
+        reaction: json['reaction'] is Map<String, dynamic>
+                  ? Reaction.fromJson(json['reaction'])
+                  : null,
+
+              voiceMessageDuration: Duration(
+                microseconds:
+                    int.tryParse(json['voice_message_duration'].toString()) ?? 0,
+              ),
+              messageType: json['text'] != null ? MessageType.text : MessageType.image,
+      createdAt: DateTime.parse(json['date_created']).toLocal(),
+      status: json['read'] ? MessageStatus.read : MessageStatus.delivered,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> ret = {
+      'sender_id': sentBy,
+    //  'reply_message': replyMessage?.messageId,
+      //'reaction': reaction.toJson(),
+      //'message_type': messageType.name,
+      //'voice_message_duration': voiceMessageDuration?.inMicroseconds,
+    };
+
+    if (messageType == MessageType.text) {
+      ret['text'] = message;
+    } else {
+      ret['file'] = message;
+    }
+    return ret;
+  }
 
   Message copyWith({
     int? id,

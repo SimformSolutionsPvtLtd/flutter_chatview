@@ -65,7 +65,7 @@ class ChatBubbleWidget extends StatefulWidget {
 }
 
 class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
-  String get replyMessage => widget.message.replyMessage.message;
+  String? get replyMessage => widget.message.replyMessage?.message ;
 
   bool get isMessageBySender => widget.message.sentBy == currentUser?.id;
 
@@ -258,16 +258,16 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
                   ?.senderNameTextStyle,
             ),
           ),
-        if (replyMessage.isNotEmpty)
+        if (widget.message.replyMessage!=null)
           chatListConfig.repliedMessageConfig?.repliedMessageWidgetBuilder !=
                   null
               ? chatListConfig.repliedMessageConfig!
                   .repliedMessageWidgetBuilder!(widget.message.replyMessage)
               : ReplyMessageWidget(
-                  message: widget.message,
+                  replyMessage: widget.message.replyMessage!,
                   repliedMessageConfig: chatListConfig.repliedMessageConfig,
                   onTap: () => widget.onReplyTap
-                      ?.call(widget.message.replyMessage.messageId),
+                      ?.call(widget.message.replyMessage!.messageId),
                 ),
         SwipeToReply(
           isMessageByCurrentUser: isMessageBySender,
