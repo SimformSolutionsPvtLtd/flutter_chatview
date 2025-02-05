@@ -83,36 +83,6 @@ extension ValidateString on String {
 
   bool get isUrl => Uri.tryParse(this)?.isAbsolute ?? false;
 
-  bool get isWebUrl {
-    final cleanText = trim();
-
-    try {
-      // 1. 기본적인 URL 패턴 체크
-      final urlPattern = RegExp(
-        r'^(https?:\/\/)?' // http:// 또는 https:// (선택적)
-        r'[-a-zA-Z0-9@:%._\+~#=]{1,256}\.' // 도메인 이름
-        r'[a-zA-Z0-9()]{1,6}' // TLD
-        r'([-a-zA-Z0-9()@:%_\+.~#?&//=]*)', // 경로 및 쿼리 파라미터
-        caseSensitive: false,
-      );
-
-      if (!urlPattern.hasMatch(cleanText)) return false;
-
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  String get normalizedUrl {
-    final cleanText = trim();
-    if (cleanText.toLowerCase().startsWith('http://') ||
-        cleanText.toLowerCase().startsWith('https://')) {
-      return cleanText;
-    }
-    return 'https://$cleanText';
-  }
-
   Widget getUserProfilePicture({
     required ChatUser? Function(String) getChatUser,
     double? profileCircleRadius,
