@@ -30,7 +30,7 @@ import 'chat_group_header.dart';
 
 class ChatGroupedListWidget extends StatefulWidget {
   const ChatGroupedListWidget({
-    Key? key,
+    super.key,
     required this.showPopUp,
     required this.scrollController,
     required this.replyMessage,
@@ -38,7 +38,7 @@ class ChatGroupedListWidget extends StatefulWidget {
     required this.onChatListTap,
     required this.onChatBubbleLongPress,
     required this.isEnableSwipeToSeeTime,
-  }) : super(key: key);
+  });
 
   /// Allow user to swipe to see time while reaction pop is not open.
   final bool showPopUp;
@@ -343,7 +343,7 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
     final elements = [...messages];
     elements.sort(
       chatBackgroundConfig.messageSorter ??
-          (a, b) => a.createdAt.compareTo(b.createdAt),
+          (a, b) => a.id.compareTo(b.id),
     );
     if (chatBackgroundConfig.groupedListOrder.isAsc) {
       return elements.toList();
@@ -418,11 +418,10 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
 
 class _GroupSeparatorBuilder extends StatelessWidget {
   const _GroupSeparatorBuilder({
-    Key? key,
     required this.separator,
     this.groupSeparatorBuilder,
     this.defaultGroupSeparatorConfig,
-  }) : super(key: key);
+  });
   final DateTime separator;
   final StringWithReturnWidget? groupSeparatorBuilder;
   final DefaultGroupSeparatorConfiguration? defaultGroupSeparatorConfig;

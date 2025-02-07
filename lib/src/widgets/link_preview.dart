@@ -29,10 +29,10 @@ import '../utils/constants/constants.dart';
 
 class LinkPreview extends StatelessWidget {
   const LinkPreview({
-    Key? key,
+    super.key,
     required this.url,
     this.linkPreviewConfig,
-  }) : super(key: key);
+  });
 
   /// Provides url which is passed in message.
   final String url;

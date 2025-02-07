@@ -32,15 +32,14 @@ import 'reply_message_widget.dart';
 import 'swipe_to_reply.dart';
 
 class ChatBubbleWidget extends StatefulWidget {
-  const ChatBubbleWidget({
-    required GlobalKey key,
+  const ChatBubbleWidget({super.key,
     required this.message,
     required this.onLongPress,
     required this.slideAnimation,
     required this.onSwipe,
     this.onReplyTap,
     this.shouldHighlight = false,
-  }) : super(key: key);
+  });
 
   /// Represent current instance of message.
   final Message message;

@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 
 class ConfigurationsInheritedWidget extends InheritedWidget {
   const ConfigurationsInheritedWidget({
-    Key? key,
-    required Widget child,
+    super.key,
+    required super.child,
     required this.chatBackgroundConfig,
     this.reactionPopupConfig,
     this.messageConfig,
@@ -17,7 +17,7 @@ class ConfigurationsInheritedWidget extends InheritedWidget {
     this.replyPopupConfig,
     this.emojiPickerSheetConfig,
     this.scrollToBottomButtonConfig,
-  }) : super(key: key, child: child);
+  });
 
   /// Provides configuration for background of chat.
   final ChatBackgroundConfiguration chatBackgroundConfig;

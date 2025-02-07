@@ -8,7 +8,7 @@ void main() {
 }
 
 class Example extends StatelessWidget {
-  const Example({Key? key}) : super(key: key);
+  const Example({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class Example extends StatelessWidget {
 }
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({Key? key}) : super(key: key);
+  const ChatScreen({super.key});
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();

@@ -34,7 +34,7 @@ import '../utils/constants/constants.dart';
 
 class SendMessageWidget extends StatefulWidget {
   const SendMessageWidget({
-    Key? key,
+    super.key,
     required this.onSendTap,
     this.sendMessageConfig,
     this.sendMessageBuilder,
@@ -42,7 +42,7 @@ class SendMessageWidget extends StatefulWidget {
     this.onReplyCloseCallback,
     this.messageConfig,
     this.replyMessageBuilder,
-  }) : super(key: key);
+  });
 
   /// Provides call back when user tap on send button on text field.
   final StringMessageCallBack onSendTap;

@@ -31,10 +31,10 @@ class MeasureSize extends StatefulWidget {
   final OnWidgetSizeChange onSizeChange;
 
   const MeasureSize({
-    Key? key,
+    super.key,
     required this.onSizeChange,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   State<MeasureSize> createState() => _MeasureSizeState();
