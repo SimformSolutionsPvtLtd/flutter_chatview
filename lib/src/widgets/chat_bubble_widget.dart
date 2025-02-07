@@ -22,6 +22,7 @@
 import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/utils/constants/constants.dart';
 import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
+import 'package:chatview/src/widgets/multi_value_listenable_builder.dart';
 import 'package:flutter/material.dart';
 
 import '../../chatview.dart';
@@ -202,9 +203,12 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
         chatBubbleConfig?.receiptsWidgetConfig?.showReceiptsIn ??
             ShowReceiptsIn.lastMessage;
     if (showReceipts == ShowReceiptsIn.all) {
-      return ValueListenableBuilder(
-        valueListenable: widget.message.statusNotifier,
-        builder: (context, value, child) {
+      return MultiValueListenableBuilder(
+        listenables: [
+          widget.message.statusNotifier,
+          widget.message.unreadCountNotifier,
+        ],
+        builder: (context, values, child) {
           if (ChatViewInheritedWidget.of(context)
                   ?.featureActiveConfig
                   .receiptsBuilderVisibility ??
@@ -217,10 +221,12 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
         },
       );
     } else if (showReceipts == ShowReceiptsIn.lastMessage && isLastMessage) {
-      return ValueListenableBuilder(
-          valueListenable:
-              chatController!.initialMessageList.last.statusNotifier,
-          builder: (context, value, child) {
+      return MultiValueListenableBuilder(
+          listenables: [
+            chatController!.initialMessageList.last.statusNotifier,
+            chatController!.initialMessageList.last.unreadCountNotifier,
+          ],
+          builder: (context, values, child) {
             if (ChatViewInheritedWidget.of(context)
                     ?.featureActiveConfig
                     .receiptsBuilderVisibility ??

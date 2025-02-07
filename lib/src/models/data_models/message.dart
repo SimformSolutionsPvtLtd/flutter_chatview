@@ -55,7 +55,7 @@ class Message {
   Duration? voiceMessageDuration;
 
   // Provides unread count
-  int? unreadCount;
+  final ValueNotifier<int?> _unreadCount;
 
   // Provice custom data
   Map<String, dynamic>? customData;
@@ -96,6 +96,14 @@ class Message {
   /// builders will be updated.
   set setStatus(MessageStatus messageStatus) {
     _status.value = messageStatus;
+  }
+
+  int? get unreadCount => _unreadCount.value;
+
+  ValueNotifier<int?> get unreadCountNotifier => _unreadCount;
+
+  set setUnreadCount(int? unreadCount) {
+    _unreadCount.value = unreadCount;
   }
 
   factory Message.fromJson(Map<String, dynamic> json) => Message(

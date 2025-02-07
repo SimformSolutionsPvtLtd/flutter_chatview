@@ -100,6 +100,20 @@ class ChatController {
     }
   }
 
+  void addMessages(List<Message> messages) {
+    initialMessageList.addAll(messages);
+    if (!messageStreamController.isClosed) {
+      messageStreamController.sink.add(initialMessageList);
+    }
+  }
+
+  void insertPreviousMessages(List<Message> messages) {
+    initialMessageList.insertAll(0, messages);
+    if (!messageStreamController.isClosed) {
+      messageStreamController.sink.add(initialMessageList);
+    }
+  }
+
   /// Used to add reply suggestions.
   void addReplySuggestions(List<SuggestionItemData> suggestions) {
     _replySuggestion.value = suggestions;
