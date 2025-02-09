@@ -33,9 +33,6 @@ class Message {
   /// Provides actual message it will be text or image/audio file path.
   final String message;
 
-  /// Provides message created date time.
-  final DateTime createdAt;
-
   /// Provides id of sender of message.
   final String sentBy;
 
@@ -57,13 +54,16 @@ class Message {
   // Provides unread count
   final ValueNotifier<int?> _unreadCount;
 
+  /// Provides message created date time.
+  final ValueNotifier<DateTime> _createdAt;
+
   // Provice custom data
   Map<String, dynamic>? customData;
 
   Message({
     this.id = '',
     required this.message,
-    required this.createdAt,
+    required DateTime createdAt,
     required this.sentBy,
     this.replyMessage = const ReplyMessage(),
     Reaction? reaction,
@@ -71,10 +71,12 @@ class Message {
     this.voiceMessageDuration,
     MessageStatus status = MessageStatus.pending,
     this.customData,
-    this.unreadCount,
+    int? unreadCount,
   })  : reaction = reaction ?? Reaction(reactions: [], reactedUserIds: []),
         key = GlobalKey(),
         _status = ValueNotifier(status),
+        _createdAt = ValueNotifier(createdAt),
+        _unreadCount = ValueNotifier(unreadCount),
         assert(
           (messageType.isVoice
               ? ((defaultTargetPlatform == TargetPlatform.iOS ||
@@ -82,6 +84,17 @@ class Message {
               : true),
           "Voice messages are only supported with android and ios platform",
         );
+
+  /// Get current createdAt value
+  DateTime get createdAt => _createdAt.value;
+
+  /// Get createdAt ValueNotifier
+  ValueNotifier<DateTime> get createdAtNotifier => _createdAt;
+
+  /// Set new createdAt value
+  set setCreatedAt(DateTime dateTime) {
+    _createdAt.value = dateTime;
+  }
 
   /// curret messageStatus
   MessageStatus get status => _status.value;
@@ -131,7 +144,7 @@ class Message {
   Map<String, dynamic> toJson() => {
         'id': id,
         'message': message,
-        'createdAt': createdAt.toIso8601String(),
+        'createdAt': _createdAt.value.toIso8601String(),
         'sentBy': sentBy,
         'reply_message': replyMessage.toJson(),
         'reaction': reaction.toJson(),

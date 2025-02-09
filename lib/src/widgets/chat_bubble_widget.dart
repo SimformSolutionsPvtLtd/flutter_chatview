@@ -207,6 +207,7 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
         listenables: [
           widget.message.statusNotifier,
           widget.message.unreadCountNotifier,
+          widget.message.createdAtNotifier,
         ],
         builder: (context, values, child) {
           if (ChatViewInheritedWidget.of(context)
@@ -225,6 +226,7 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
           listenables: [
             chatController!.initialMessageList.last.statusNotifier,
             chatController!.initialMessageList.last.unreadCountNotifier,
+            chatController!.initialMessageList.last.createdAtNotifier,
           ],
           builder: (context, values, child) {
             if (ChatViewInheritedWidget.of(context)
