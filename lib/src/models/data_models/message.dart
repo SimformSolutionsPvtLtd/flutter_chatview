@@ -100,30 +100,38 @@ class Message {
       id: json['id'],
       sentBy: json['sender_id'],
       message: json['text'] ?? json['file'],
-        replyMessage: json['reply_message'] is Map<String, dynamic>
+      replyMessage: json['reply_message'] is Map<String, dynamic>
                   ? ReplyMessage.fromJson(json['reply_message'])
                   : null,
-        reaction: json['reaction'] is Map<String, dynamic>
+      reaction: json['reaction'] is Map<String, dynamic>
                   ? Reaction.fromJson(json['reaction'])
                   : null,
-
-              voiceMessageDuration: Duration(
+      voiceMessageDuration: Duration(
                 microseconds:
                     int.tryParse(json['voice_message_duration'].toString()) ?? 0,
               ),
-              messageType: json['text'] != null ? MessageType.text : MessageType.image,
+      messageType: json['text'] != null ? MessageType.text : MessageType.image,
       createdAt: DateTime.parse(json['date_created']).toLocal(),
-      status: json['read'] ? MessageStatus.read : MessageStatus.delivered,
+      status:  (json['read'] ?? false) ? MessageStatus.read : MessageStatus.delivered,
     );
   }
 
   Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'sender_id': sentBy,
+      'text': messageType == MessageType.text  ?  message: null,
+      'file': messageType == MessageType.image  ?  message: null,
+      'reply_message': replyMessage?.toJson(),
+      'reaction': reaction.toJson(),
+      'voice_message_duration': voiceMessageDuration?.inMicroseconds,
+    };
+  }
+
+  Map<String, dynamic> toJsonForApi() {
     final Map<String, dynamic> ret = {
       'sender_id': sentBy,
-    //  'reply_message': replyMessage?.messageId,
-      //'reaction': reaction.toJson(),
-      //'message_type': messageType.name,
-      //'voice_message_duration': voiceMessageDuration?.inMicroseconds,
+      'reply_to': replyMessage.messageId,
     };
 
     if (messageType == MessageType.text) {

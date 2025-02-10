@@ -50,8 +50,8 @@ class ReplyMessage {
 
   factory ReplyMessage.fromJson(Map<String, dynamic> json) => ReplyMessage(
         message: json['message']?.toString() ?? '',
-        replyBy: json['replyBy'] ?? userEmptyId,
-        replyTo: json['replyTo'] ?? userEmptyId,
+        replyBy: json['reply_by'] ?? userEmptyId,
+        replyTo: json['reply_to'] ?? userEmptyId,
         messageType: MessageType.tryParse(json['message_type']?.toString()) ??
             MessageType.text,
         messageId: json['id'] ?? messageEmptyId,
@@ -63,8 +63,8 @@ class ReplyMessage {
 
   Map<String, dynamic> toJson() => {
         'message': message,
-        'replyBy': replyBy,
-        'replyTo': replyTo,
+        'reply_by': replyBy,
+        'reply_to': replyTo,
         'message_type': messageType.name,
         'id': messageId,
         'voiceMessageDuration': voiceMessageDuration?.inMicroseconds,
