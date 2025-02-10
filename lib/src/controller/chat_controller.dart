@@ -33,8 +33,15 @@ import '../models/models.dart';
 class MessageUpdate {
   final MessageStatus status;
   final DateTime? createdAt;
+  final Map<String, dynamic>? customData;
+  final int? unreadCount;
 
-  MessageUpdate({required this.status, this.createdAt});
+  MessageUpdate({
+    required this.status,
+    this.createdAt,
+    this.customData,
+    this.unreadCount,
+  });
 }
 
 class ChatController {
@@ -159,8 +166,18 @@ class ChatController {
         if (update.createdAt != null) {
           message.setCreatedAt = update.createdAt!;
         }
+        if (update.customData != null) {
+          message.customData = update.customData;
+        }
+        if (update.unreadCount != null) {
+          message.setUnreadCount = update.unreadCount!;
+        }
         // 해당 업데이트 데이터 제거
         updates.remove(message.id);
+
+        if (!messageStreamController.isClosed) {
+          messageStreamController.sink.add(initialMessageList);
+        }
       }
       // 모든 업데이트가 처리되었으면 종료
       if (updates.isEmpty) {
