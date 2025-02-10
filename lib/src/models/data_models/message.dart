@@ -139,6 +139,7 @@ class Message {
         ),
         status: MessageStatus.tryParse(json['status']?.toString()) ??
             MessageStatus.pending,
+        unreadCount: json['unreadCount']?.toInt(),
       );
 
   Map<String, dynamic> toJson() => {
@@ -151,6 +152,7 @@ class Message {
         'message_type': messageType.name,
         'voice_message_duration': voiceMessageDuration?.inMicroseconds,
         'status': status.name,
+        'unreadCount': unreadCount,
       };
 
   Message copyWith({
@@ -165,6 +167,7 @@ class Message {
     Duration? voiceMessageDuration,
     MessageStatus? status,
     bool forceNullValue = false,
+    int? unreadCount,
   }) {
     return Message(
       id: id ?? this.id,
@@ -178,6 +181,7 @@ class Message {
       reaction: reaction ?? this.reaction,
       replyMessage: replyMessage ?? this.replyMessage,
       status: status ?? this.status,
+      unreadCount: unreadCount ?? this.unreadCount,
     );
   }
 }

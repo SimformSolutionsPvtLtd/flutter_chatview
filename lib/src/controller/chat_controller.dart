@@ -200,6 +200,8 @@ class ChatController {
       reaction: message.reaction,
       messageType: message.messageType,
       status: message.status,
+      unreadCount: message.unreadCount,
+      customData: message.customData,
     );
     if (!messageStreamController.isClosed) {
       messageStreamController.sink.add(initialMessageList);
