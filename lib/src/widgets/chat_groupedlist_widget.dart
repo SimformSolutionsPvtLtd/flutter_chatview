@@ -144,58 +144,134 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
   Widget build(BuildContext context) {
     final suggestionsListConfig =
         suggestionsConfig?.listConfig ?? const SuggestionListConfig();
-    return SingleChildScrollView(
-      reverse: true,
-      // When reaction popup is being appeared at that user should not scroll.
-      physics: showPopUp ? const NeverScrollableScrollPhysics() : null,
-      controller: widget.scrollController,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          GestureDetector(
-            onHorizontalDragUpdate: (details) =>
-                isEnableSwipeToSeeTime && !showPopUp
-                    ? _onHorizontalDrag(details)
-                    : null,
-            onHorizontalDragEnd: (details) =>
-                isEnableSwipeToSeeTime && !showPopUp
-                    ? _animationController?.reverse()
-                    : null,
-            onTap: widget.onChatListTap,
-            child: _animationController != null
-                ? AnimatedBuilder(
-                    animation: _animationController!,
-                    builder: (context, child) {
-                      return _chatStreamBuilder;
-                    },
-                  )
-                : _chatStreamBuilder,
+    return GestureDetector(
+      onHorizontalDragUpdate:
+          isEnableSwipeToSeeTime && !showPopUp ? _onHorizontalDrag : null,
+      onHorizontalDragEnd: isEnableSwipeToSeeTime && !showPopUp
+          ? (details) => _animationController?.reverse()
+          : null,
+      onTap: widget.onChatListTap,
+      child: CustomScrollView(
+        reverse: true,
+        controller: widget.scrollController,
+        physics: showPopUp ? const NeverScrollableScrollPhysics() : null,
+        // 화면에 보이지 않는 영역에 대해서도 미리 위젯을 생성하여 스크롤 성능 개선 (필요에 따라 값 조정)
+        cacheExtent: 1000,
+        slivers: [
+          // 메시지 입력 필드 위쪽 여백
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: chatTextFieldHeight,
+            ),
           ),
+          // 메시지 리스트 영역 (직접 SliverList 반환)
+          _buildMessageSliver(),
+          // 타이핑 인디케이터 영역
           if (chatController != null)
-            ValueListenableBuilder(
-              valueListenable: chatController!.typingIndicatorNotifier,
-              builder: (context, value, child) => TypingIndicator(
-                typeIndicatorConfig: chatListConfig.typeIndicatorConfig,
-                chatBubbleConfig:
-                    chatListConfig.chatBubbleConfig?.inComingChatBubbleConfig,
-                showIndicator: value,
+            SliverToBoxAdapter(
+              child: ValueListenableBuilder(
+                valueListenable: chatController!.typingIndicatorNotifier,
+                builder: (context, value, child) => TypingIndicator(
+                  typeIndicatorConfig: chatListConfig.typeIndicatorConfig,
+                  chatBubbleConfig:
+                      chatListConfig.chatBubbleConfig?.inComingChatBubbleConfig,
+                  showIndicator: value,
+                ),
               ),
             ),
+          // SuggestionList 영역
           if (chatController != null)
-            Flexible(
+            SliverToBoxAdapter(
               child: Align(
                 alignment: suggestionsListConfig.axisAlignment.alignment,
                 child: const SuggestionList(),
               ),
             ),
-
-          // Adds bottom space to the message list, ensuring it is displayed
-          // above the message text field.
-          SizedBox(
-            height: chatTextFieldHeight,
-          ),
         ],
       ),
+    );
+  }
+
+  /// 메시지 리스트를 SliverList로 렌더링하는 메서드
+  Widget _buildMessageSliver() {
+    return StreamBuilder<List<Message>>(
+      stream: chatController?.messageStreamController.stream,
+      builder: (context, snapshot) {
+        if (!snapshot.connectionState.isActive || !snapshot.hasData) {
+          // 메시지 데이터가 준비되지 않은 경우 전 영역을 채우는 로딩 위젯 반환
+          return SliverFillRemaining(
+            child: Center(
+              child: chatBackgroundConfig.loadingWidget ??
+                  const CircularProgressIndicator(),
+            ),
+          );
+        } else {
+          final messages = chatBackgroundConfig.sortEnable
+              ? sortMessage(snapshot.data!)
+              : snapshot.data!;
+          final enableSeparator =
+              featureActiveConfig?.enableChatSeparator ?? false;
+
+          // 메시지 및 그룹 separator를 하나의 리스트로 결합
+          List<_ChatListItem> items = [];
+          if (enableSeparator) {
+            DateTime? lastDate;
+            // loop backward in the most performant way
+            for (var i = messages.length - 1; i >= 0; i--) {
+              final message = messages[i];
+              // 첫 메시지이거나 날짜가 달라졌다면 separator 추가
+              if (lastDate == null ||
+                  lastDate.getDateFromDateTime !=
+                      message.createdAt.getDateFromDateTime) {
+                if (lastDate != null) {
+                  items.add(_ChatListItem(separator: lastDate));
+                }
+                lastDate = message.createdAt;
+              }
+              items.add(_ChatListItem(message: message));
+            }
+          } else {
+            items = messages.map((m) => _ChatListItem(message: m)).toList();
+          }
+
+          return SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                final item = items[index];
+                if (item.separator != null) {
+                  return _groupSeparator(item.separator!);
+                } else {
+                  final message = item.message!;
+                  final enableScrollToRepliedMsg = chatListConfig
+                          .repliedMessageConfig
+                          ?.repliedMsgAutoScrollConfig
+                          .enableScrollToRepliedMsg ??
+                      false;
+                  return ValueListenableBuilder<String?>(
+                    valueListenable: _replyId,
+                    builder: (context, state, child) {
+                      return ChatBubbleWidget(
+                        key: message.key,
+                        message: message,
+                        slideAnimation: _slideAnimation,
+                        onLongPress: (yCoordinate, xCoordinate) =>
+                            widget.onChatBubbleLongPress(
+                                yCoordinate, xCoordinate, message),
+                        onSwipe: widget.assignReplyMessage,
+                        shouldHighlight: state == message.id,
+                        onReplyTap: enableScrollToRepliedMsg
+                            ? (replyId) => _onReplyTap(replyId, snapshot.data)
+                            : null,
+                      );
+                    },
+                  );
+                }
+              },
+              childCount: items.length,
+            ),
+          );
+        }
+      },
     );
   }
 
@@ -250,95 +326,6 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
     super.dispose();
   }
 
-  Widget get _chatStreamBuilder {
-    DateTime lastMatchedDate = DateTime.now();
-    return StreamBuilder<List<Message>>(
-      stream: chatController?.messageStreamController.stream,
-      builder: (context, snapshot) {
-        if (!snapshot.connectionState.isActive) {
-          return Center(
-            child: chatBackgroundConfig.loadingWidget ??
-                const CircularProgressIndicator(),
-          );
-        } else {
-          final messages = chatBackgroundConfig.sortEnable
-              ? sortMessage(snapshot.data!)
-              : snapshot.data!;
-
-          final enableSeparator =
-              featureActiveConfig?.enableChatSeparator ?? false;
-
-          Map<int, DateTime> messageSeparator = {};
-
-          if (enableSeparator) {
-            /// Get separator when date differ for two messages
-            (messageSeparator, lastMatchedDate) = _getMessageSeparator(
-              messages,
-              lastMatchedDate,
-            );
-          }
-
-          /// [count] that indicates how many separators
-          /// needs to be display in chat
-          var count = 0;
-
-          return ListView.builder(
-            key: widget.key,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.zero,
-            shrinkWrap: true,
-            itemCount: (enableSeparator
-                ? messages.length + messageSeparator.length
-                : messages.length),
-            itemBuilder: (context, index) {
-              /// By removing [count] from [index] will get actual index
-              /// to display message in chat
-              var newIndex = index - count;
-
-              /// Check [messageSeparator] contains group separator for [index]
-              if (enableSeparator && messageSeparator.containsKey(index)) {
-                /// Increase counter each time
-                /// after separating messages with separator
-                count++;
-                return _groupSeparator(
-                  messageSeparator[index]!,
-                );
-              }
-
-              return ValueListenableBuilder<String?>(
-                valueListenable: _replyId,
-                builder: (context, state, child) {
-                  final message = messages[newIndex];
-                  final enableScrollToRepliedMsg = chatListConfig
-                          .repliedMessageConfig
-                          ?.repliedMsgAutoScrollConfig
-                          .enableScrollToRepliedMsg ??
-                      false;
-                  return ChatBubbleWidget(
-                    key: message.key,
-                    message: message,
-                    slideAnimation: _slideAnimation,
-                    onLongPress: (yCoordinate, xCoordinate) =>
-                        widget.onChatBubbleLongPress(
-                      yCoordinate,
-                      xCoordinate,
-                      message,
-                    ),
-                    onSwipe: widget.assignReplyMessage,
-                    shouldHighlight: state == message.id,
-                    onReplyTap: enableScrollToRepliedMsg
-                        ? (replyId) => _onReplyTap(replyId, snapshot.data)
-                        : null,
-                  );
-                },
-              );
-            },
-          );
-        }
-      },
-    );
-  }
-
   List<Message> sortMessage(List<Message> messages) {
     final elements = [...messages];
     elements.sort(
@@ -378,42 +365,6 @@ class _ChatGroupedListWidgetState extends State<ChatGroupedListWidget>
           )
         : const SizedBox.shrink();
   }
-
-  GetMessageSeparator _getMessageSeparator(
-    List<Message> messages,
-    DateTime lastDate,
-  ) {
-    final messageSeparator = <int, DateTime>{};
-    var lastMatchedDate = lastDate;
-    var counter = 0;
-
-    /// Holds index and separator mapping to display in chat
-    for (var i = 0; i < messages.length; i++) {
-      if (messageSeparator.isEmpty) {
-        /// Separator for initial message
-        messageSeparator[0] = messages[0].createdAt;
-        continue;
-      }
-      lastMatchedDate = _groupBy(
-        messages[i],
-        lastMatchedDate,
-      );
-      var previousDate = _groupBy(
-        messages[i - 1],
-        lastMatchedDate,
-      );
-
-      if (previousDate != lastMatchedDate) {
-        /// Group separator when previous message and
-        /// current message time differ
-        counter++;
-
-        messageSeparator[i + counter] = messages[i].createdAt;
-      }
-    }
-
-    return (messageSeparator, lastMatchedDate);
-  }
 }
 
 class _GroupSeparatorBuilder extends StatelessWidget {
@@ -436,4 +387,11 @@ class _GroupSeparatorBuilder extends StatelessWidget {
             groupSeparatorConfig: defaultGroupSeparatorConfig,
           );
   }
+}
+
+/// 메시지와 구분자(separator)를 담기 위한 간단한 클래스
+class _ChatListItem {
+  final Message? message;
+  final DateTime? separator;
+  _ChatListItem({this.message, this.separator});
 }
