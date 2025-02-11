@@ -32,6 +32,7 @@ class LinkPreview extends StatelessWidget {
     Key? key,
     required this.url,
     this.linkPreviewConfig,
+    this.errorWidget,
   }) : super(key: key);
 
   /// Provides url which is passed in message.
@@ -40,6 +41,9 @@ class LinkPreview extends StatelessWidget {
   /// Provides configuration of chat bubble appearance when link/URL is passed
   /// in message.
   final LinkPreviewConfiguration? linkPreviewConfig;
+
+  /// Provides error widget when link/URL is invalid.
+  final Widget? errorWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +59,9 @@ class LinkPreview extends StatelessWidget {
               link: url,
               removeElevation: true,
               errorBody: linkPreviewConfig?.errorBody,
+              errorImage:
+                  'https://imagedelivery.net/hftuYAvwaYr78lZIcGkPyQ/5705788b-a151-437c-7fcc-f553156ea700/public',
+              errorWidget: errorWidget,
               proxyUrl: linkPreviewConfig?.proxyUrl,
               onTap: _onLinkTap,
               placeholderWidget: SizedBox(

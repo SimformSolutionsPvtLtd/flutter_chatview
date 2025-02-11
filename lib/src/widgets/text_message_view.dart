@@ -21,9 +21,11 @@
  */
 import 'package:chatview/chatview.dart';
 import 'package:flutter/material.dart';
+import 'package:any_link_preview/any_link_preview.dart';
 
 import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/models/models.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../utils/constants/constants.dart';
 import 'link_preview.dart';
@@ -77,7 +79,7 @@ class TextMessageView extends StatelessWidget {
     return Stack(
       clipBehavior: Clip.none,
       children: [
-        if (textMessage.isUrl)
+        if (textMessage.isWebUrl)
           Container(
             constraints: BoxConstraints(
                 maxWidth: chatBubbleMaxWidth ??
@@ -85,6 +87,41 @@ class TextMessageView extends StatelessWidget {
             child: LinkPreview(
               linkPreviewConfig: _linkPreviewConfig,
               url: textMessage,
+              errorWidget: GestureDetector(
+                onTap: () async {
+                  final uri = Uri.parse(textMessage);
+                  if (await canLaunchUrl(uri)) {
+                    await launchUrl(uri);
+                  } else {
+                    throw Exception('유효하지 않은 주소입니다.');
+                  }
+                },
+                child: Container(
+                  constraints: BoxConstraints(
+                      maxWidth: chatBubbleMaxWidth ??
+                          MediaQuery.of(context).size.width * 0.75),
+                  padding: _padding ??
+                      const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 10,
+                      ),
+                  margin: _margin ??
+                      EdgeInsets.fromLTRB(5, 0, 6,
+                          message.reaction.reactions.isNotEmpty ? 15 : 2),
+                  decoration: BoxDecoration(
+                    color: highlightMessage ? highlightColor : _color,
+                    borderRadius: _borderRadius(textMessage),
+                  ),
+                  child: Text(
+                    textMessage,
+                    style: _textStyle?.copyWith(
+                      color: Colors.blue,
+                      decoration: TextDecoration.underline,
+                      decorationColor: Colors.blue,
+                    ),
+                  ),
+                ),
+              ),
             ),
           )
         else
