@@ -102,7 +102,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
     return Align(
       alignment: Alignment.bottomCenter,
       child: SizedBox(
-        width: MediaQuery.of(context).size.width,
+        width: MediaQuery.sizeOf(context).width,
         child: Stack(
           children: [
             // This has been added to prevent messages from being
@@ -113,7 +113,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
               left: 0,
               bottom: 0,
               child: Container(
-                height: MediaQuery.of(context).size.height /
+                height: MediaQuery.sizeOf(context).height /
                     ((!kIsWeb && Platform.isIOS) ? 24 : 28),
                 color: chatListConfig.chatBackgroundConfig.backgroundColor ??
                     Colors.white,

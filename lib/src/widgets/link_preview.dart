@@ -65,7 +65,7 @@ class LinkPreview extends StatelessWidget {
               proxyUrl: linkPreviewConfig?.proxyUrl,
               onTap: _onLinkTap,
               placeholderWidget: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.25,
+                height: MediaQuery.sizeOf(context).height * 0.25,
                 width: double.infinity,
                 child: Center(
                   child: CircularProgressIndicator(

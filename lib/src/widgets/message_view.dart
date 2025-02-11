@@ -225,7 +225,7 @@ class _MessageViewState extends State<MessageView>
                   );
                 } else if (widget.message.messageType.isVoice) {
                   return VoiceMessageView(
-                    screenWidth: MediaQuery.of(context).size.width,
+                    screenWidth: MediaQuery.sizeOf(context).width,
                     message: widget.message,
                     config: messageConfig?.voiceMessageConfig,
                     onMaxDuration: widget.onMaxDuration,

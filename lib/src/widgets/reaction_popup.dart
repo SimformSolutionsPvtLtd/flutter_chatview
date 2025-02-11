@@ -84,7 +84,7 @@ class ReactionPopupState extends State<ReactionPopup>
 
   @override
   Widget build(BuildContext context) {
-    final deviceWidth = MediaQuery.of(context).size.width;
+    final deviceWidth = MediaQuery.sizeOf(context).width;
     final toolTipWidth = deviceWidth > 450 ? 450 : deviceWidth;
     if (showPopUp) {
       _animationController.forward();

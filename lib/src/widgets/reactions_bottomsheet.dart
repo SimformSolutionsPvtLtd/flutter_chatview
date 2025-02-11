@@ -21,7 +21,7 @@ class ReactionsBottomSheet {
       context: context,
       builder: (BuildContext context) {
         return Container(
-          height: MediaQuery.of(context).size.height * 0.5,
+          height: MediaQuery.sizeOf(context).height * 0.5,
           color: reactionsBottomSheetConfig?.backgroundColor,
           child: ListView.builder(
             padding: reactionsBottomSheetConfig?.bottomSheetPadding ??

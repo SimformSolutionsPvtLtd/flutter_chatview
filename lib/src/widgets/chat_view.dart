@@ -220,9 +220,9 @@ class _ChatViewState extends State<ChatView>
               children: [
                 Container(
                   height: chatBackgroundConfig.height ??
-                      MediaQuery.of(context).size.height,
+                      MediaQuery.sizeOf(context).height,
                   width: chatBackgroundConfig.width ??
-                      MediaQuery.of(context).size.width,
+                      MediaQuery.sizeOf(context).width,
                   decoration: BoxDecoration(
                     color: chatBackgroundConfig.backgroundColor ?? Colors.white,
                     image: chatBackgroundConfig.backgroundImage != null

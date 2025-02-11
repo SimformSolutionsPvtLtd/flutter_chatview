@@ -83,7 +83,7 @@ class TextMessageView extends StatelessWidget {
           Container(
             constraints: BoxConstraints(
                 maxWidth: chatBubbleMaxWidth ??
-                    MediaQuery.of(context).size.width * 0.75),
+                    MediaQuery.sizeOf(context).width * 0.75),
             child: LinkPreview(
               linkPreviewConfig: _linkPreviewConfig,
               url: textMessage,
@@ -99,7 +99,7 @@ class TextMessageView extends StatelessWidget {
                 child: Container(
                   constraints: BoxConstraints(
                       maxWidth: chatBubbleMaxWidth ??
-                          MediaQuery.of(context).size.width * 0.75),
+                          MediaQuery.sizeOf(context).width * 0.75),
                   padding: _padding ??
                       const EdgeInsets.symmetric(
                         horizontal: 12,
@@ -128,7 +128,7 @@ class TextMessageView extends StatelessWidget {
           Container(
             constraints: BoxConstraints(
                 maxWidth: chatBubbleMaxWidth ??
-                    MediaQuery.of(context).size.width * 0.75),
+                    MediaQuery.sizeOf(context).width * 0.75),
             padding: _padding ??
                 const EdgeInsets.symmetric(
                   horizontal: 12,
