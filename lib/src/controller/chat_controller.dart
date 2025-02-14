@@ -74,11 +74,14 @@ class ChatController {
   /// Provides current user which is sending messages.
   final ChatUser currentUser;
 
+  final int currentRoomId;
+
   ChatController({
     required this.initialMessageList,
     required this.scrollController,
     required this.otherUsers,
     required this.currentUser,
+    required this.currentRoomId,
   });
 
   /// Represents message stream of chat
@@ -95,6 +98,15 @@ class ChatController {
   /// Used to add message in message list.
   void addMessage(Message message) {
     initialMessageList.add(message);
+    if (!messageStreamController.isClosed) {
+      messageStreamController.sink.add(initialMessageList);
+    }
+  }
+
+  /// Update a mesage.
+  void updateMessage(Message message) {
+    final indexOfMessage = initialMessageList.indexWhere((m)=>m.id==message.id);
+    initialMessageList[indexOfMessage] = message;
     if (!messageStreamController.isClosed) {
       messageStreamController.sink.add(initialMessageList);
     }

@@ -120,6 +120,7 @@ class Message {
     return {
       'id': id,
       'sender_id': sentBy,
+      'date_created': createdAt.toIso8601String(),
       'text': messageType == MessageType.text  ?  message: null,
       'file': messageType == MessageType.image  ?  message: null,
       'reply_message': replyMessage?.toJson(),
@@ -131,7 +132,7 @@ class Message {
   Map<String, dynamic> toJsonForApi() {
     final Map<String, dynamic> ret = {
       'sender_id': sentBy,
-      'reply_to': replyMessage.messageId,
+      'reply_to': replyMessage?.messageId,
     };
 
     if (messageType == MessageType.text) {

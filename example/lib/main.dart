@@ -36,6 +36,7 @@ class _ChatScreenState extends State<ChatScreen> {
   AppTheme theme = LightTheme();
   bool isDarkTheme = false;
   final _chatController = ChatController(
+    currentRoomId: 0,
     initialMessageList: Data.messageList,
     scrollController: ScrollController(),
     currentUser: ChatUser(
