@@ -216,21 +216,14 @@ class _ChatViewState extends State<ChatView>
             scrollToBottomButtonConfig: widget.scrollToBottomButtonConfig,
             child: Stack(
               children: [
+                if( chatBackgroundConfig.backgroundWidget!=null)
+                  Positioned.fill(child: chatBackgroundConfig.backgroundWidget!),
                 Container(
                   height: chatBackgroundConfig.height ??
                       MediaQuery.of(context).size.height,
                   width: chatBackgroundConfig.width ??
                       MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    color: chatBackgroundConfig.backgroundColor ?? Colors.white,
-                    image: chatBackgroundConfig.backgroundImage != null
-                        ? DecorationImage(
-                            fit: BoxFit.fill,
-                            image: NetworkImage(
-                                chatBackgroundConfig.backgroundImage!),
-                          )
-                        : null,
-                  ),
+
                   padding: chatBackgroundConfig.padding,
                   margin: chatBackgroundConfig.margin,
                   child: Column(

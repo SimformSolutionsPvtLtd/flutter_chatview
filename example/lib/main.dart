@@ -174,7 +174,7 @@ class _ChatScreenState extends State<ChatScreen> {
               fontSize: 17,
             ),
           ),
-          backgroundColor: theme.backgroundColor,
+          backgroundWidget: Container( color:  theme.backgroundColor),
         ),
         sendMessageConfig: SendMessageConfiguration(
           imagePickerIconsConfig: ImagePickerIconsConfiguration(

@@ -118,7 +118,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                       height: MediaQuery.of(context).size.height /
                           ((!kIsWeb && Platform.isIOS) ? 24 : 28),
                       color:
-                          chatListConfig.chatBackgroundConfig.backgroundColor ??
+
                               Colors.white,
                     ),
                   ),
@@ -142,7 +142,9 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                               child: const ScrollToBottomButton(),
                             ),
                           ),
-                        Padding(
+        Container(color:  widget.sendMessageConfig?.textFieldContainerBackgroundColor??Colors.transparent,
+          child:Padding(
+
                           key: chatViewIW?.chatTextFieldViewKey,
                           padding: EdgeInsets.fromLTRB(
                             bottomPadding4,
@@ -161,6 +163,9 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                                     return widget.replyMessageBuilder
                                             ?.call(context, state) ??
                                         Container(
+                                        margin: EdgeInsets.only(bottom: 24),
+
+                                        child:Container(
                                           decoration: BoxDecoration(
                                             color: widget.sendMessageConfig
                                                     ?.textFieldBackgroundColor ??
@@ -170,8 +175,8 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                                               top: Radius.circular(14),
                                             ),
                                           ),
-                                          margin: const EdgeInsets.only(
-                                            bottom: 17,
+                                          margin: widget.sendMessageConfig?.textFieldConfig?.margin ?? const EdgeInsets.only(
+
                                             right: 0.4,
                                             left: 0.4,
                                           ),
@@ -248,7 +253,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                                                 ),
                                               ],
                                             ),
-                                          ),
+                                          ),),
                                         );
                                   } else {
                                     return const SizedBox.shrink();
@@ -266,9 +271,9 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                               )
                             ],
                           ),
-                        ),
+                        ),  ),
                       ],
-                    ),
+                  )
                   ),
                 ],
               ),

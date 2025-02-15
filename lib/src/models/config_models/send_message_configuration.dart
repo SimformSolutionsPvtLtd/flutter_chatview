@@ -32,6 +32,9 @@ class SendMessageConfiguration {
   /// Used to give background color to text field.
   final Color? textFieldBackgroundColor;
 
+  /// Used to give background color to the container of the text field.
+  final Color? textFieldContainerBackgroundColor;
+
   /// Used to give color to send button.
   final Color? defaultSendButtonColor;
 
@@ -80,6 +83,7 @@ class SendMessageConfiguration {
   const SendMessageConfiguration({
     this.textFieldConfig,
     this.textFieldBackgroundColor,
+    this.textFieldContainerBackgroundColor,
     this.imagePickerIconsConfig,
     this.imagePickerConfiguration,
     this.defaultSendButtonColor,

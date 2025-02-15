@@ -26,11 +26,9 @@ import '../../values/enumeration.dart';
 import '../../values/typedefs.dart';
 
 class ChatBackgroundConfiguration {
-  /// Provides background color of chat view.
-  final Color? backgroundColor;
 
-  /// Provides background image of chat view.
-  final String? backgroundImage;
+  /// Provides background decoration.
+  final Widget? backgroundWidget;
 
   /// Provides padding of chat view.
   final EdgeInsetsGeometry? padding;
@@ -76,8 +74,7 @@ class ChatBackgroundConfiguration {
 
   const ChatBackgroundConfiguration({
     this.defaultGroupSeparatorConfig,
-    this.backgroundColor,
-    this.backgroundImage,
+    this.backgroundWidget,
     this.height,
     this.width,
     this.groupSeparatorBuilder,

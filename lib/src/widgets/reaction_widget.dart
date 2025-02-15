@@ -68,7 +68,7 @@ class _ReactionWidgetState extends State<ReactionWidget> {
     //// Convert into set to remove reduntant values
     final reactionsSet = widget.reaction.reactions.toSet();
     return Positioned(
-      bottom: 0,
+      bottom: -15,
       right: widget.isMessageBySender && needToExtend ? 0 : null,
       child: InkWell(
         onTap: () => chatController != null
