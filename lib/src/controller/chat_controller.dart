@@ -104,9 +104,13 @@ class ChatController {
   }
 
   /// Update a mesage.
-  void updateMessage(Message message) {
-    final indexOfMessage = initialMessageList.indexWhere((m)=>m.id==message.id);
-    initialMessageList[indexOfMessage] = message;
+  void updateMessages(Iterable<Message> messages) {
+    for(var message in messages) {
+      final indexOfMessage = initialMessageList.indexWhere((m) =>
+      m.id == message.id);
+      initialMessageList[indexOfMessage] = message;
+    }
+
     if (!messageStreamController.isClosed) {
       messageStreamController.sink.add(initialMessageList);
     }
