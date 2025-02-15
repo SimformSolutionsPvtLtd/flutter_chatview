@@ -156,7 +156,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                               ValueListenableBuilder<ReplyMessage>(
                                 builder: (_, state, child) {
                                   final replyTitle =
-                                      "${PackageStrings.replyTo} $_replyTo";
+                                      _replyTo;
                                   if (state.message.isNotEmpty) {
                                     return widget.replyMessageBuilder
                                             ?.call(context, state) ??

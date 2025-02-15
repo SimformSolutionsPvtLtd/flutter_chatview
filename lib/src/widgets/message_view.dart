@@ -164,6 +164,7 @@ class _MessageViewState extends State<MessageView>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
+
           (() {
                 if (message.isAllEmoji) {
                   return Stack(
