@@ -176,6 +176,20 @@ class ChatController {
         },
       );
 
+  /// Scroll to a specific message
+  void scrollToMessage(Message message) => Timer(
+    const Duration(milliseconds: 300),
+      () async{
+        await Scrollable.ensureVisible(
+          message.key.currentState!.context,
+          // This value will make widget to be in center when auto scrolled.
+          alignment: 0.5,
+          curve: Curves.easeIn,
+          duration: const Duration(milliseconds: 300),
+        );
+      }
+  );
+
   /// Function for loading data while pagination.
   void loadMoreData(List<Message> messageList) {
     /// Here, we have passed 0 index as we need to add data before first data
