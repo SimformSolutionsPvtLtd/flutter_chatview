@@ -11,7 +11,7 @@ class VoiceMessageView extends StatefulWidget {
     super.key,
     required this.screenWidth,
     required this.message,
-    required this.isMessageBySender,
+    required this.isMessageByCurrentUser,
     this.inComingChatBubbleConfig,
     this.outgoingChatBubbleConfig,
     this.onMaxDuration,
@@ -30,7 +30,7 @@ class VoiceMessageView extends StatefulWidget {
   final Function(int)? onMaxDuration;
 
   /// Represents current message is sent by current user.
-  final bool isMessageBySender;
+  final bool isMessageByCurrentUser;
 
   /// Provides configuration of reaction appearance in chat bubble.
   final MessageReactionConfiguration? messageReactionConfig;
@@ -87,7 +87,7 @@ class _VoiceMessageViewState extends State<VoiceMessageView> {
           decoration: widget.config?.decoration ??
               BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
-                color: widget.isMessageBySender
+                color: widget.isMessageByCurrentUser
                     ? widget.outgoingChatBubbleConfig?.color
                     : widget.inComingChatBubbleConfig?.color,
               ),
@@ -140,7 +140,7 @@ class _VoiceMessageViewState extends State<VoiceMessageView> {
         ),
         if (widget.message.reaction.reactions.isNotEmpty)
           ReactionWidget(
-            isMessageBySender: widget.isMessageBySender,
+            isMessageByCurrentUser: widget.isMessageByCurrentUser,
             reaction: widget.message.reaction,
             messageReactionConfig: widget.messageReactionConfig,
           ),

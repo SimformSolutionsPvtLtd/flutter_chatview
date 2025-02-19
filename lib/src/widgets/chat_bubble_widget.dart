@@ -66,7 +66,7 @@ class ChatBubbleWidget extends StatefulWidget {
 class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
   String? get replyMessage => widget.message.replyMessage?.message ;
 
-  bool get isMessageBySender => widget.message.sentBy == currentUser?.id;
+  bool get isMessageByCurrentUser => widget.message.sentBy == currentUser?.id;
 
   bool get isLastMessage =>
       chatController?.initialMessageList.last.id == widget.message.id;
@@ -100,7 +100,7 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
                 alignment: Alignment.centerRight,
                 child: MessageTimeWidget(
                   messageTime: widget.message.createdAt,
-                  isCurrentUser: isMessageBySender,
+                  isCurrentUser: isMessageByCurrentUser,
                 ),
               ),
             ),
@@ -123,17 +123,17 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment:
-            isMessageBySender ? MainAxisAlignment.end : MainAxisAlignment.start,
+            isMessageByCurrentUser ? MainAxisAlignment.end : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          if (!isMessageBySender &&
+          if (!isMessageByCurrentUser &&
               (featureActiveConfig?.enableOtherUserProfileAvatar ?? true))
             profileCircle(messagedUser),
           Expanded(
             child: _messagesWidgetColumn(messagedUser),
           ),
-          if (isMessageBySender) ...[getReceipt()],
-          if (isMessageBySender &&
+          if (isMessageByCurrentUser) ...[getReceipt()],
+          if (isMessageByCurrentUser &&
               (featureActiveConfig?.enableCurrentUserProfileAvatar ?? true))
             profileCircle(messagedUser),
         ],
@@ -242,10 +242,10 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
   Widget _messagesWidgetColumn(ChatUser? messagedUser) {
     return Column(
       crossAxisAlignment:
-          isMessageBySender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+          isMessageByCurrentUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       children: [
         if ((chatController?.otherUsers.isNotEmpty ?? false) &&
-            !isMessageBySender &&
+            !isMessageByCurrentUser &&
             (featureActiveConfig?.enableOtherUserName ?? true))
           Padding(
             padding: chatListConfig
@@ -269,8 +269,8 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
                       ?.call(widget.message.replyMessage!.messageId),
                 ),
         SwipeToReply(
-          isMessageByCurrentUser: isMessageBySender,
-          onSwipe: isMessageBySender ? onLeftSwipe : onRightSwipe,
+          isMessageByCurrentUser: isMessageByCurrentUser,
+          onSwipe: isMessageByCurrentUser ? onLeftSwipe : onRightSwipe,
           child: MessageView(
             outgoingChatBubbleConfig:
                 chatListConfig.chatBubbleConfig?.outgoingChatBubbleConfig,
@@ -280,7 +280,7 @@ class _ChatBubbleWidgetState extends State<ChatBubbleWidget> {
             inComingChatBubbleConfig:
                 chatListConfig.chatBubbleConfig?.inComingChatBubbleConfig,
             message: widget.message,
-            isMessageBySender: isMessageBySender,
+            isMessageByCurrentUser: isMessageByCurrentUser,
             messageConfig: chatListConfig.messageConfig,
             onLongPress: widget.onLongPress,
             chatBubbleMaxWidth: chatListConfig.chatBubbleConfig?.maxWidth,

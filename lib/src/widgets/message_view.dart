@@ -34,7 +34,7 @@ class MessageView extends StatefulWidget {
   const MessageView({
     super.key,
     required this.message,
-    required this.isMessageBySender,
+    required this.isMessageByCurrentUser,
     required this.onLongPress,
     required this.isLongPressEnable,
     this.chatBubbleMaxWidth,
@@ -54,7 +54,7 @@ class MessageView extends StatefulWidget {
   final Message message;
 
   /// Represents current message is sent by current user.
-  final bool isMessageBySender;
+  final bool isMessageByCurrentUser;
 
   /// Give callback once user long press on chat bubble.
   final DoubleCallBack onLongPress;
@@ -123,7 +123,7 @@ class _MessageViewState extends State<MessageView>
         }
       });
       if (widget.message.status != MessageStatus.read &&
-          !widget.isMessageBySender) {
+          !widget.isMessageByCurrentUser) {
         widget.inComingChatBubbleConfig?.onMessageRead?.call(widget.message);
       }
     }
@@ -196,14 +196,14 @@ class _MessageViewState extends State<MessageView>
                           reaction: widget.message.reaction,
                           messageReactionConfig:
                               messageConfig?.messageReactionConfig,
-                          isMessageBySender: widget.isMessageBySender,
+                          isMessageByCurrentUser: widget.isMessageByCurrentUser,
                         ),
                     ],
                   );
                 } else if (widget.message.messageType.isImage) {
                   return ImageMessageView(
                     message: widget.message,
-                    isMessageBySender: widget.isMessageBySender,
+                    isMessageByCurrentUser: widget.isMessageByCurrentUser,
                     imageMessageConfig: messageConfig?.imageMessageConfig,
                     messageReactionConfig: messageConfig?.messageReactionConfig,
                     highlightImage: widget.shouldHighlight,
@@ -213,7 +213,7 @@ class _MessageViewState extends State<MessageView>
                   return TextMessageView(
                     inComingChatBubbleConfig: widget.inComingChatBubbleConfig,
                     outgoingChatBubbleConfig: widget.outgoingChatBubbleConfig,
-                    isMessageBySender: widget.isMessageBySender,
+                    isMessageByCurrentUser: widget.isMessageByCurrentUser,
                     message: widget.message,
                     chatBubbleMaxWidth: widget.chatBubbleMaxWidth,
                     messageReactionConfig: messageConfig?.messageReactionConfig,
@@ -226,7 +226,7 @@ class _MessageViewState extends State<MessageView>
                     message: widget.message,
                     config: messageConfig?.voiceMessageConfig,
                     onMaxDuration: widget.onMaxDuration,
-                    isMessageBySender: widget.isMessageBySender,
+                    isMessageByCurrentUser: widget.isMessageByCurrentUser,
                     messageReactionConfig: messageConfig?.messageReactionConfig,
                     inComingChatBubbleConfig: widget.inComingChatBubbleConfig,
                     outgoingChatBubbleConfig: widget.outgoingChatBubbleConfig,
@@ -240,7 +240,7 @@ class _MessageViewState extends State<MessageView>
           ValueListenableBuilder(
             valueListenable: widget.message.statusNotifier,
             builder: (context, value, child) {
-              if (widget.isMessageBySender &&
+              if (widget.isMessageByCurrentUser &&
                   widget.controller?.initialMessageList.last.id ==
                       widget.message.id &&
                   widget.message.status == MessageStatus.read) {

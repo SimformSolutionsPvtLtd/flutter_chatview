@@ -33,7 +33,7 @@ class ImageMessageView extends StatelessWidget {
   const ImageMessageView({
     super.key,
     required this.message,
-    required this.isMessageBySender,
+    required this.isMessageByCurrentUser,
     this.imageMessageConfig,
     this.messageReactionConfig,
     this.highlightImage = false,
@@ -44,7 +44,7 @@ class ImageMessageView extends StatelessWidget {
   final Message message;
 
   /// Represents current message is sent by current user.
-  final bool isMessageBySender;
+  final bool isMessageByCurrentUser;
 
   /// Provides configuration for image message appearance.
   final ImageMessageConfiguration? imageMessageConfig;
@@ -70,9 +70,9 @@ class ImageMessageView extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment:
-          isMessageBySender ? MainAxisAlignment.end : MainAxisAlignment.start,
+          isMessageByCurrentUser ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
-        if (isMessageBySender && !(imageMessageConfig?.hideShareIcon ?? false))
+        if (isMessageByCurrentUser && !(imageMessageConfig?.hideShareIcon ?? false))
           iconButton,
         Stack(
           children: [
@@ -82,7 +82,7 @@ class ImageMessageView extends StatelessWidget {
                   : null,
               child: Transform.scale(
                 scale: highlightImage ? highlightScale : 1.0,
-                alignment: isMessageBySender
+                alignment: isMessageByCurrentUser
                     ? Alignment.centerRight
                     : Alignment.centerLeft,
                 child: Container(
@@ -90,8 +90,8 @@ class ImageMessageView extends StatelessWidget {
                   margin: imageMessageConfig?.margin ??
                       EdgeInsets.only(
                         top: 6,
-                        right: isMessageBySender ? 6 : 0,
-                        left: isMessageBySender ? 0 : 6,
+                        right: isMessageByCurrentUser ? 6 : 0,
+                        left: isMessageByCurrentUser ? 0 : 6,
                         bottom: message.reaction.reactions.isNotEmpty ? 15 : 0,
                       ),
                   height: imageMessageConfig?.height ?? 200,
@@ -136,13 +136,13 @@ class ImageMessageView extends StatelessWidget {
             ),
             if (message.reaction.reactions.isNotEmpty)
               ReactionWidget(
-                isMessageBySender: isMessageBySender,
+                isMessageByCurrentUser: isMessageByCurrentUser,
                 reaction: message.reaction,
                 messageReactionConfig: messageReactionConfig,
               ),
           ],
         ),
-        if (!isMessageBySender && !(imageMessageConfig?.hideShareIcon ?? false))
+        if (!isMessageByCurrentUser && !(imageMessageConfig?.hideShareIcon ?? false))
           iconButton,
       ],
     );

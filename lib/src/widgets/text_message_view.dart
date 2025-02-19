@@ -31,7 +31,7 @@ import 'reaction_widget.dart';
 class TextMessageView extends StatelessWidget {
   const TextMessageView({
     super.key,
-    required this.isMessageBySender,
+    required this.isMessageByCurrentUser,
     required this.message,
     this.chatBubbleMaxWidth,
     this.inComingChatBubbleConfig,
@@ -42,7 +42,7 @@ class TextMessageView extends StatelessWidget {
   });
 
   /// Represents current message is sent by current user.
-  final bool isMessageBySender;
+  final bool isMessageByCurrentUser;
 
   /// Provides message instance of chat.
   final Message message;
@@ -105,7 +105,7 @@ class TextMessageView extends StatelessWidget {
         if (message.reaction.reactions.isNotEmpty)
           ReactionWidget(
             key: key,
-            isMessageBySender: isMessageBySender,
+            isMessageByCurrentUser: isMessageByCurrentUser,
             reaction: message.reaction,
             messageReactionConfig: messageReactionConfig,
           ),
@@ -113,23 +113,23 @@ class TextMessageView extends StatelessWidget {
     );
   }
 
-  EdgeInsetsGeometry? get _padding => isMessageBySender
+  EdgeInsetsGeometry? get _padding => isMessageByCurrentUser
       ? outgoingChatBubbleConfig?.padding
       : inComingChatBubbleConfig?.padding;
 
-  EdgeInsetsGeometry? get _margin => isMessageBySender
+  EdgeInsetsGeometry? get _margin => isMessageByCurrentUser
       ? outgoingChatBubbleConfig?.margin
       : inComingChatBubbleConfig?.margin;
 
-  LinkPreviewConfiguration? get _linkPreviewConfig => isMessageBySender
+  LinkPreviewConfiguration? get _linkPreviewConfig => isMessageByCurrentUser
       ? outgoingChatBubbleConfig?.linkPreviewConfig
       : inComingChatBubbleConfig?.linkPreviewConfig;
 
-  TextStyle? get _textStyle => isMessageBySender
+  TextStyle? get _textStyle => isMessageByCurrentUser
       ? outgoingChatBubbleConfig?.textStyle
       : inComingChatBubbleConfig?.textStyle;
 
-  BorderRadiusGeometry _borderRadius(String message) => isMessageBySender
+  BorderRadiusGeometry _borderRadius(String message) => isMessageByCurrentUser
       ? outgoingChatBubbleConfig?.borderRadius ??
           (message.length < 37
               ? BorderRadius.circular(replyBorderRadius1)
@@ -139,7 +139,7 @@ class TextMessageView extends StatelessWidget {
               ? BorderRadius.circular(replyBorderRadius1)
               : BorderRadius.circular(replyBorderRadius2));
 
-  Color get _color => isMessageBySender
+  Color get _color => isMessageByCurrentUser
       ? outgoingChatBubbleConfig?.color ?? Colors.purple
       : inComingChatBubbleConfig?.color ?? Colors.grey.shade500;
 }

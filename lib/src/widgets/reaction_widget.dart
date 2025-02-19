@@ -31,7 +31,7 @@ class ReactionWidget extends StatefulWidget {
     super.key,
     required this.reaction,
     this.messageReactionConfig,
-    required this.isMessageBySender,
+    required this.isMessageByCurrentUser,
   });
 
   /// Provides reaction instance of message.
@@ -41,7 +41,7 @@ class ReactionWidget extends StatefulWidget {
   final MessageReactionConfiguration? messageReactionConfig;
 
   /// Represents current message is sent by current user.
-  final bool isMessageBySender;
+  final bool isMessageByCurrentUser;
 
   @override
   State<ReactionWidget> createState() => _ReactionWidgetState();
@@ -69,7 +69,7 @@ class _ReactionWidgetState extends State<ReactionWidget> {
     final reactionsSet = widget.reaction.reactions.toSet();
     return Positioned(
       bottom: -15,
-      right: widget.isMessageBySender && needToExtend ? 0 : null,
+      right: widget.isMessageByCurrentUser && needToExtend ? 0 : null,
       child: InkWell(
         onTap: () => chatController != null
             ? ReactionsBottomSheet().show(
@@ -87,7 +87,7 @@ class _ReactionWidgetState extends State<ReactionWidget> {
                 const EdgeInsets.symmetric(vertical: 1.7, horizontal: 6),
             margin: messageReactionConfig?.margin ??
                 EdgeInsets.only(
-                  left: widget.isMessageBySender ? 10 : 16,
+                  left: widget.isMessageByCurrentUser ? 10 : 16,
                   right: 10,
                 ),
             decoration: BoxDecoration(
