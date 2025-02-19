@@ -109,7 +109,7 @@ class _ReactionWidgetState extends State<ReactionWidget> {
                   ),
                 ),
                 if (chatController?.otherUsers.isNotEmpty ?? false) ...[
-                  if (!(widget.reaction.reactedUserIds.length > 3) &&
+                  if (chatController!.otherUsers.length > 1 && !(widget.reaction.reactedUserIds.length > 3) &&
                       !(reactionsSet.length > 1))
                     ...List.generate(
                       widget.reaction.reactedUserIds.length,
