@@ -20,14 +20,13 @@
  * SOFTWARE.
  */
 import 'package:chatview/chatview.dart';
-import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
+import 'package:chatview/src/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 
-import 'package:chatview/src/extensions/extensions.dart';
 import '../utils/constants/constants.dart';
 import 'image_message_view.dart';
-import 'text_message_view.dart';
 import 'reaction_widget.dart';
+import 'text_message_view.dart';
 import 'voice_message_view.dart';
 
 class MessageView extends StatefulWidget {
@@ -40,6 +39,7 @@ class MessageView extends StatefulWidget {
     this.chatBubbleMaxWidth,
     this.inComingChatBubbleConfig,
     this.outgoingChatBubbleConfig,
+    this.receiptWidgetConfig,
     this.longPressAnimationDuration,
     this.onDoubleTap,
     this.highlightColor = Colors.grey,
@@ -89,6 +89,8 @@ class MessageView extends StatefulWidget {
 
   /// Allow user to turn on/off long press tap on chat bubble.
   final bool isLongPressEnable;
+
+  final ReceiptsWidgetConfig? receiptWidgetConfig;
 
   final ChatController? controller;
 
@@ -164,7 +166,6 @@ class _MessageViewState extends State<MessageView>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-
           (() {
                 if (message.isAllEmoji) {
                   return Stack(
@@ -237,31 +238,6 @@ class _MessageViewState extends State<MessageView>
                 }
               }()) ??
               const SizedBox(),
-          ValueListenableBuilder(
-            valueListenable: widget.message.statusNotifier,
-            builder: (context, value, child) {
-              if (widget.isMessageByCurrentUser &&
-                  widget.controller?.initialMessageList.last.id ==
-                      widget.message.id &&
-                  widget.message.status == MessageStatus.read) {
-                if (ChatViewInheritedWidget.of(context)
-                        ?.featureActiveConfig
-                        .lastSeenAgoBuilderVisibility ??
-                    true) {
-                  return widget.outgoingChatBubbleConfig?.receiptsWidgetConfig
-                          ?.lastSeenAgoBuilder
-                          ?.call(
-                              widget.message,
-                              applicationDateFormatter(
-                                  widget.message.createdAt)) ??
-                      lastSeenAgoBuilder(widget.message,
-                          applicationDateFormatter(widget.message.createdAt));
-                }
-                return const SizedBox();
-              }
-              return const SizedBox();
-            },
-          )
         ],
       ),
     );

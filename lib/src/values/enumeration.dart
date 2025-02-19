@@ -79,8 +79,6 @@ enum MessageStatus {
 /// Types of states
 enum ChatViewState { hasMessages, noData, loading, error }
 
-enum ShowReceiptsIn { all, lastMessage }
-
 enum ImageType {
   asset,
   network,
