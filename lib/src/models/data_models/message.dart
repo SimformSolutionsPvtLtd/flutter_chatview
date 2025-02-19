@@ -27,7 +27,6 @@ const messageEmptyId = 0;
 const userEmptyId = 0;
 
 class Message {
-
   /// Provides id
   final int id;
 
@@ -94,26 +93,26 @@ class Message {
     _status.value = messageStatus;
   }
 
-
   factory Message.fromJson(dynamic json) {
     return Message(
-      id: json['id'],
-      sentBy: json['sender_id'],
-      message: json['text'] ?? json['file'],
-      replyMessage: json['reply_message'] is Map<String, dynamic>
-                  ? ReplyMessage.fromJson(json['reply_message'])
-                  : null,
-      reaction: json['reaction'] is Map<String, dynamic>
-                  ? Reaction.fromJson(json['reaction'])
-                  : null,
-      voiceMessageDuration: Duration(
-                microseconds:
-                    int.tryParse(json['voice_message_duration'].toString()) ?? 0,
-              ),
-      messageType: json['text'] != null ? MessageType.text : MessageType.image,
-      createdAt: DateTime.parse(json['date_created']).toLocal(),
-      status:  (json['read'] ?? false) ? MessageStatus.read : MessageStatus.delivered,
-    );
+        id: json['id'],
+        sentBy: json['sender_id'],
+        message: json['text'] ?? json['file'],
+        replyMessage: json['reply_message'] is Map<String, dynamic>
+            ? ReplyMessage.fromJson(json['reply_message'])
+            : null,
+        reaction: json['reaction'] is Map<String, dynamic>
+            ? Reaction.fromJson(json['reaction'])
+            : null,
+        voiceMessageDuration: Duration(
+          microseconds:
+              int.tryParse(json['voice_message_duration'].toString()) ?? 0,
+        ),
+        messageType:
+            json['text'] != null ? MessageType.text : MessageType.image,
+        createdAt: DateTime.parse(json['date_created']).toLocal(),
+        status: MessageStatus.values
+            .byName(json['status'] ?? MessageStatus.undelivered.name));
   }
 
   Map<String, dynamic> toJson() {
@@ -121,10 +120,11 @@ class Message {
       'id': id,
       'sender_id': sentBy,
       'date_created': createdAt.toIso8601String(),
-      'text': messageType == MessageType.text  ?  message: null,
-      'file': messageType == MessageType.image  ?  message: null,
+      'text': messageType == MessageType.text ? message : null,
+      'file': messageType == MessageType.image ? message : null,
       'reply_message': replyMessage?.toJson(),
       'reaction': reaction.toJson(),
+      'status': status.name,
       'voice_message_duration': voiceMessageDuration?.inMicroseconds,
     };
   }

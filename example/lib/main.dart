@@ -96,8 +96,6 @@ class _ChatScreenState extends State<ChatScreen> {
         chatController: _chatController,
         onSendTap: _onSendTap,
         featureActiveConfig: const FeatureActiveConfig(
-          lastSeenAgoBuilderVisibility: true,
-          receiptsBuilderVisibility: true,
           enableScrollToBottomButton: true,
         ),
         scrollToBottomButtonConfig: ScrollToBottomButtonConfig(
@@ -174,7 +172,7 @@ class _ChatScreenState extends State<ChatScreen> {
               fontSize: 17,
             ),
           ),
-          backgroundWidget: Container( color:  theme.backgroundColor),
+          backgroundWidget: Container(color: theme.backgroundColor),
         ),
         sendMessageConfig: SendMessageConfiguration(
           imagePickerIconsConfig: ImagePickerIconsConfiguration(

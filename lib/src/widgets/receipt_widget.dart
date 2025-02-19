@@ -30,7 +30,7 @@ class ReceiptWidget extends StatelessWidget {
               .labelSmall
               ?.copyWith(color: Colors.grey),
         ),
-        if (isMessageByCurrentUser) SizedBox(width: 10),
+        if (isMessageByCurrentUser) SizedBox(width: 5),
         if (isMessageByCurrentUser)
           ValueListenableBuilder(
             valueListenable: message.statusNotifier,
@@ -40,12 +40,12 @@ class ReceiptWidget extends StatelessWidget {
                   return Icon(
                     Icons.remove_road,
                     color: Colors.red,
-                    size: 10,
+                    size: 15,
                   );
                 case MessageStatus.read:
-                  return Icon(Icons.speed, color: Colors.green, size: 10);
+                  return Icon(Icons.speed, color: Colors.green, size: 15);
                 case MessageStatus.delivered:
-                  return Icon(Icons.speed, color: Colors.orange, size: 10);
+                  return Icon(Icons.speed, color: Colors.orange, size: 15);
                 case MessageStatus.pending:
                   return Icon(Icons.speed, color: Colors.grey, size: 10);
               }
