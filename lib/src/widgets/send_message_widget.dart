@@ -150,7 +150,8 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                             bottomPadding4,
                             bottomPadding4,
                             bottomPadding4,
-                            _bottomPadding,
+                            bottomPadding4
+
                           ),
                           child: Stack(
                             alignment: Alignment.bottomCenter,
@@ -334,15 +335,6 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
     _replyMessage.value = const ReplyMessage();
     if (widget.onReplyCloseCallback != null) widget.onReplyCloseCallback!();
   }
-
-  double get _bottomPadding => (!kIsWeb && Platform.isIOS)
-      ? (_focusNode.hasFocus
-          ? bottomPadding1
-          : View.of(context).viewPadding.bottom > 0
-              ? bottomPadding2
-              : bottomPadding3)
-      : bottomPadding3;
-
   @override
   void dispose() {
     _textEditingController.dispose();
