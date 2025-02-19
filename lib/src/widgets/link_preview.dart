@@ -69,6 +69,7 @@ class LinkPreview extends StatelessWidget {
                     ),
                   ),
                 ),
+                errorWidget: SizedBox(),
                 backgroundColor:
                     linkPreviewConfig?.backgroundColor ?? Colors.grey.shade200,
                 borderRadius: linkPreviewConfig?.borderRadius,
@@ -82,12 +83,13 @@ class LinkPreview extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: verticalPadding),
               child: InkWell(
                 onTap: _onLinkTap,
-                child: Image.network(
-                  url,
-                  height: 120,
-                  width: double.infinity,
-                  fit: BoxFit.fitWidth,
-                ),
+                child: Image.network(url,
+                    height: 120,
+                    width: double.infinity,
+                    fit: BoxFit.fitWidth, errorBuilder: (BuildContext context,
+                        Object error, StackTrace? stackTrace) {
+                  return SizedBox();
+                }),
               ),
             ),
           },
