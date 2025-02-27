@@ -174,6 +174,7 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                 Expanded(
                   child: TextField(
                     focusNode: widget.focusNode,
+                    autofocus: false,
                     controller: widget.textEditingController,
                     style: textFieldConfig?.textStyle ??
                         const TextStyle(color: Colors.white),
@@ -210,7 +211,8 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
               ValueListenableBuilder<String>(
                 valueListenable: _inputText,
                 builder: (_, inputTextValue, child) {
-                  if (inputTextValue.isNotEmpty) {
+                  if (inputTextValue.isNotEmpty ||
+                      widget.textEditingController.text.isNotEmpty) {
                     return IconButton(
                       color: sendMessageConfig?.defaultSendButtonColor ??
                           Colors.green,

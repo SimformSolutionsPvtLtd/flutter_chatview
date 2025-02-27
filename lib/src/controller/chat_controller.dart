@@ -78,14 +78,20 @@ class ChatController {
   ///Configuration for Animated Typewriter functionality as in a chatbot.
   TypewriterAnimatedConfiguration typewriterAnimatedConfiguration;
 
+  ///Gives us control of the TextEditting controller of the TextField of the current user
+  TextEditingController textEdittingController;
+
   ChatController({
     required this.initialMessageList,
     required this.scrollController,
     required this.otherUsers,
     required this.currentUser,
+    TextEditingController? textEdittingController,
     TypewriterAnimatedConfiguration? typewriterAnimatedConfiguration,
-  }) : typewriterAnimatedConfiguration = typewriterAnimatedConfiguration ??
-            TypewriterAnimatedConfiguration();
+  })  : typewriterAnimatedConfiguration = typewriterAnimatedConfiguration ??
+            TypewriterAnimatedConfiguration(),
+        textEdittingController =
+            textEdittingController ?? TextEditingController();
 
   /// Represents message stream of chat
   StreamController<List<Message>> messageStreamController = StreamController();
