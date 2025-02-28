@@ -81,11 +81,15 @@ class ChatController {
   ///Gives us control of the TextEditting controller of the TextField of the current user
   TextEditingController textEdittingController;
 
+  ///Enable adding more function to what already exits on the [onChange] callback of the [TextField]
+  VoidCallback? onChangedFunct;
+
   ChatController({
     required this.initialMessageList,
     required this.scrollController,
     required this.otherUsers,
     required this.currentUser,
+    this.onChangedFunct,
     TextEditingController? textEdittingController,
     TypewriterAnimatedConfiguration? typewriterAnimatedConfiguration,
   })  : typewriterAnimatedConfiguration = typewriterAnimatedConfiguration ??

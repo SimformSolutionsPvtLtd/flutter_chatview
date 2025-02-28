@@ -100,9 +100,8 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
   Widget build(BuildContext context) {
     final scrollToBottomButtonConfig =
         chatListConfig.scrollToBottomButtonConfig;
-    textEditingController = ChatViewInheritedWidget.of(context)!
-        .chatController
-        .textEdittingController;
+    final cntrl = ChatViewInheritedWidget.of(context)!.chatController;
+    textEditingController = cntrl.textEdittingController;
     return Align(
       alignment: Alignment.bottomCenter,
       child: widget.sendMessageBuilder != null
@@ -267,6 +266,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                                 sendMessageConfig: widget.sendMessageConfig,
                                 onRecordingComplete: _onRecordingComplete,
                                 onImageSelected: _onImageSelected,
+                                onChangedFunction: cntrl.onChangedFunct,
                               )
                             ],
                           ),
