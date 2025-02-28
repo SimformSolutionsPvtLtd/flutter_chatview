@@ -31,6 +31,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
 import '../utils/constants/constants.dart';
+import 'chat_view_inherited_widget.dart';
 
 class SendMessageWidget extends StatefulWidget {
   const SendMessageWidget({
@@ -70,7 +71,7 @@ class SendMessageWidget extends StatefulWidget {
 }
 
 class SendMessageWidgetState extends State<SendMessageWidget> {
-  final _textEditingController = TextEditingController();
+  late TextEditingController textEditingController;
   final ValueNotifier<ReplyMessage> _replyMessage =
       ValueNotifier(const ReplyMessage());
 
@@ -99,6 +100,8 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
   Widget build(BuildContext context) {
     final scrollToBottomButtonConfig =
         chatListConfig.scrollToBottomButtonConfig;
+    final cntrl = ChatViewInheritedWidget.of(context)!.chatController;
+    textEditingController = cntrl.textEdittingController;
     return Align(
       alignment: Alignment.bottomCenter,
       child: widget.sendMessageBuilder != null
@@ -258,11 +261,12 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                               ),
                               ChatUITextField(
                                 focusNode: _focusNode,
-                                textEditingController: _textEditingController,
+                                textEditingController: textEditingController,
                                 onPressed: _onPressed,
                                 sendMessageConfig: widget.sendMessageConfig,
                                 onRecordingComplete: _onRecordingComplete,
                                 onImageSelected: _onImageSelected,
+                                onChangedFunction: cntrl.onChangedFunct,
                               )
                             ],
                           ),
@@ -298,8 +302,8 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
   }
 
   void _onPressed() {
-    final messageText = _textEditingController.text.trim();
-    _textEditingController.clear();
+    final messageText = textEditingController.text.trim();
+    textEditingController.clear();
     if (messageText.isEmpty) return;
 
     widget.onSendTap.call(
@@ -340,7 +344,7 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
 
   @override
   void dispose() {
-    _textEditingController.dispose();
+    textEditingController.dispose();
     _focusNode.dispose();
     _replyMessage.dispose();
     super.dispose();

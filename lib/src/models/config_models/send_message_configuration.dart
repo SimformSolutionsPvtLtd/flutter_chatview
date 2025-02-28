@@ -32,8 +32,11 @@ class SendMessageConfiguration {
   /// Used to give background color to text field.
   final Color? textFieldBackgroundColor;
 
-  /// Used to give color to send button.
+  /// Used to give color to send button icon.
   final Color? defaultSendButtonColor;
+
+  /// Used to give color to send button background.
+  final Color? defaultSendButtonBackgroundColor;
 
   /// Provides ability to give custom send button.
   final Widget? sendButtonIcon;
@@ -58,6 +61,9 @@ class SendMessageConfiguration {
 
   /// Provides configuration of text field.
   final TextFieldConfiguration? textFieldConfig;
+
+  ///For adding other actions component to the textfield
+  final List<Widget> actionsWidget;
 
   /// Enable/disable voice recording. Enabled by default.
   final bool allowRecordingVoice;
@@ -94,6 +100,8 @@ class SendMessageConfiguration {
     this.voiceRecordingConfiguration,
     this.micIconColor,
     this.cancelRecordConfiguration,
+    this.defaultSendButtonBackgroundColor,
+    this.actionsWidget = const [],
   });
 }
 

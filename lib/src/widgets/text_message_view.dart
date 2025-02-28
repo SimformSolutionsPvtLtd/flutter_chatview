@@ -19,6 +19,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:chatview/src/extensions/extensions.dart';
@@ -69,6 +71,7 @@ class TextMessageView extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final textMessage = message.message;
+    final chatController = ChatViewInheritedWidget.of(context)!.chatController;
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -93,14 +96,38 @@ class TextMessageView extends StatelessWidget {
                   linkPreviewConfig: _linkPreviewConfig,
                   url: textMessage,
                 )
-              : Text(
-                  textMessage,
-                  style: _textStyle ??
-                      textTheme.bodyMedium!.copyWith(
-                        color: Colors.white,
-                        fontSize: 16,
-                      ),
-                ),
+              : !isMessageBySender &&
+                      chatController.typewriterAnimatedConfiguration
+                          .enableConfiguration &&
+                      chatController.initialMessageList.isNotEmpty
+                  ? AnimatedTextKit(
+                      animatedTexts: [
+                        TypewriterAnimatedText(
+                          textMessage,
+                          textStyle: _textStyle ??
+                              textTheme.bodyMedium!.copyWith(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
+                          speed: chatController
+                              .typewriterAnimatedConfiguration.duration,
+                        ),
+                      ],
+                      isRepeatingAnimation: false,
+                      displayFullTextOnTap: chatController
+                          .typewriterAnimatedConfiguration.displayFullTextOnTap,
+                      controller: chatController
+                          .typewriterAnimatedConfiguration.controller,
+                      totalRepeatCount: 1,
+                    )
+                  : Text(
+                      textMessage,
+                      style: _textStyle ??
+                          textTheme.bodyMedium!.copyWith(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                    ),
         ),
         if (message.reaction.reactions.isNotEmpty)
           ReactionWidget(
