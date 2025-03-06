@@ -69,8 +69,7 @@ class ChatListWidget extends StatefulWidget {
   State<ChatListWidget> createState() => _ChatListWidgetState();
 }
 
-class _ChatListWidgetState extends State<ChatListWidget>
-    with SingleTickerProviderStateMixin {
+class _ChatListWidgetState extends State<ChatListWidget> {
   final ValueNotifier<bool> _isNextPageLoading = ValueNotifier<bool>(false);
 
   ChatController get chatController => widget.chatController;

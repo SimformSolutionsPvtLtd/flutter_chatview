@@ -21,6 +21,7 @@
  */
 import 'package:flutter/material.dart';
 
+import 'package:flutter_chatview_models/flutter_chatview_models.dart';
 import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/models/models.dart';
 

@@ -22,10 +22,10 @@
 
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_chatview_models/flutter_chatview_models.dart';
 
 import '../models/models.dart';
 import '../utils/package_strings.dart';
-import '../values/enumeration.dart';
 import '../values/typedefs.dart';
 
 class ReplyMessageView extends StatelessWidget {

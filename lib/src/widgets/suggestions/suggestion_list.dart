@@ -5,6 +5,7 @@ import 'package:chatview/src/models/models.dart';
 import 'package:chatview/src/utils/constants/constants.dart';
 import 'package:chatview/src/widgets/suggestions/suggestion_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_chatview_models/flutter_chatview_models.dart';
 
 class SuggestionList extends StatefulWidget {
   const SuggestionList({super.key});

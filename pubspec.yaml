@@ -27,6 +27,11 @@ dependencies:
   # For formatting time locale in message receipts
   cached_network_image: ^3.4.1
 
+  # TODO(YASH): Use pub.dev version once this package is released
+  flutter_chatview_models:
+    git:
+      url: https://github.com/SimformSolutionsPvtLtd/flutter_chatview_models
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
