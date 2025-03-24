@@ -185,12 +185,15 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
                     onChanged: _onChanged,
                     onSubmitted: (inputText) {
                       if (sendMessageConfig?.onSubmitted != null) {
+                        widget.onPressed();
+                        _inputText.value = '';
                         sendMessageConfig!.onSubmitted!(inputText);
                       } else {
                         _onSubmitted(inputText);
                       }
                     },
-                    textInputAction:textFieldConfig?.textInputAction ?? TextInputAction.newline,
+                    textInputAction: textFieldConfig?.textInputAction ??
+                        TextInputAction.unspecified,
                     enabled: textFieldConfig?.enabled,
                     textCapitalization: textFieldConfig?.textCapitalization ??
                         TextCapitalization.sentences,
@@ -386,21 +389,24 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
     return kIsWeb || Platform.isMacOS || Platform.isWindows || Platform.isLinux;
   }
 
-  void _onSubmitted(String inputText){
+  void _onSubmitted(String inputText) {
     bool isShiftPressed = HardwareKeyboard.instance.isShiftPressed;
-    if(_isWebOrDesktop() && isShiftPressed){
-      widget.textEditingController.text += '\n';
+    if (_isWebOrDesktop() && isShiftPressed) {
+      final controller = widget.textEditingController;
+      final text = controller.text;
+      final cursorPosition = controller.selection.baseOffset;
+      final newText = '${text.substring(0, cursorPosition)}\n${text.substring(cursorPosition)}';
+      controller.text = newText;
+      // Move cursor to the correct position after the newline
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        widget.textEditingController.selection = TextSelection.fromPosition(
-          TextPosition(offset: widget.textEditingController.text.length),
+        controller.selection = TextSelection.fromPosition(
+          TextPosition(offset: cursorPosition + 1),
         );
         widget.focusNode.requestFocus();
       });
-    }else{
-      if(inputText.isNotEmpty){
-        widget.onPressed();
-        _inputText.value = '';
-      }
+    } else if (inputText.isNotEmpty) {
+      widget.onPressed();
+      _inputText.value = '';
     }
   }
 

@@ -190,7 +190,7 @@ class TextFieldConfiguration {
     this.compositionThresholdTime = const Duration(seconds: 1),
     this.inputFormatters,
     this.textCapitalization,
-    this.textInputAction = TextInputAction.newline,
+    this.textInputAction = TextInputAction.unspecified,
     this.enabled = true,
   });
 }
