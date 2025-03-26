@@ -354,6 +354,7 @@ class _ChatUITextFieldState extends State<ChatUITextField> {
     ImagePickerConfiguration? config,
   }) async {
     try {
+      widget.focusNode.unfocus();
       final XFile? image = await _imagePicker.pickImage(
         source: imageSource,
         maxHeight: config?.maxHeight,
