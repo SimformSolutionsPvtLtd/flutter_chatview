@@ -31,6 +31,7 @@ dependencies:
   flutter_chatview_models:
     git:
       url: https://github.com/SimformSolutionsPvtLtd/flutter_chatview_models
+      ref: refactor/expose_other_user_map
 
 dev_dependencies:
   flutter_test:
