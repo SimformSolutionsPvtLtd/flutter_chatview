@@ -77,7 +77,7 @@ class LinkPreview extends StatelessWidget {
                 titleStyle: linkPreviewConfig?.titleStyle,
               ),
             ),
-          } else ...{
+          } else if(url.isImageUrl)...{
             Padding(
               padding: const EdgeInsets.symmetric(vertical: verticalPadding),
               child: InkWell(

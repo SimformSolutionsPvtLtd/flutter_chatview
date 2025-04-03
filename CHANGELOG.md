@@ -1,3 +1,8 @@
+## [2.4.1] (unreleased)
+
+* **Fix**: [317](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/317) Link Preview
+  is attempted even after adding disableLinkPreview: true
+
 ## [2.4.0]
 
 * **Feat**: [251](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/251) Add
