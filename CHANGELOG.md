@@ -1,5 +1,7 @@
 ## [2.4.1] (unreleased)
 
+* **Feat**: [303](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/303) Add
+  send message on enter key for web and desktop platforms.
 * **Fix**: [317](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/317) Link Preview
   is attempted even after adding disableLinkPreview: true
 

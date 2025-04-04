@@ -41,6 +41,9 @@ class SendMessageConfiguration {
   /// Used to give reply dialog color.
   final Color? replyDialogColor;
 
+  /// Provides call when user add action on submit and enter is pressed.
+  final StringCallback? onSubmitted;
+
   /// Used to give color to title of reply pop-up.
   final Color? replyTitleColor;
 
@@ -87,6 +90,7 @@ class SendMessageConfiguration {
     this.replyDialogColor,
     this.replyTitleColor,
     this.replyMessageColor,
+    this.onSubmitted,
     this.closeIconColor,
     this.allowRecordingVoice = true,
     this.enableCameraImagePicker = true,
@@ -137,6 +141,9 @@ class TextFieldConfiguration {
   /// Used to give text style of hint text in text field.
   final TextStyle? hintStyle;
 
+  /// Used to text input action from keyboard enter button.
+  final TextInputAction textInputAction;
+
   /// Used to give text style of actual text in text field.
   final TextStyle? textStyle;
 
@@ -183,6 +190,7 @@ class TextFieldConfiguration {
     this.compositionThresholdTime = const Duration(seconds: 1),
     this.inputFormatters,
     this.textCapitalization,
+    this.textInputAction = TextInputAction.unspecified,
     this.enabled = true,
   });
 }
