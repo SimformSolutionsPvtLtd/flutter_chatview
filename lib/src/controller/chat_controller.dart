@@ -74,11 +74,15 @@ class ChatController {
   /// Provides current user which is sending messages.
   final ChatUser currentUser;
 
+  // Provides a callback function to be called when changing reactions on a message.
+  final Function(Message)? setReactionCallback;
+
   ChatController({
     required this.initialMessageList,
     required this.scrollController,
     required this.otherUsers,
     required this.currentUser,
+    this.setReactionCallback,
   });
 
   /// Represents message stream of chat
@@ -143,6 +147,8 @@ class ChatController {
       status: message.status,
     );
     if (!messageStreamController.isClosed) {
+      setReactionCallback?.call(initialMessageList[indexOfMessage]);
+
       messageStreamController.sink.add(initialMessageList);
     }
   }

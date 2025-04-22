@@ -20,14 +20,14 @@
  * SOFTWARE.
  */
 import 'package:chatview/chatview.dart';
+import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/widgets/chat_view_inherited_widget.dart';
 import 'package:flutter/material.dart';
 
-import 'package:chatview/src/extensions/extensions.dart';
 import '../utils/constants/constants.dart';
 import 'image_message_view.dart';
-import 'text_message_view.dart';
 import 'reaction_widget.dart';
+import 'text_message_view.dart';
 import 'voice_message_view.dart';
 
 class MessageView extends StatefulWidget {
@@ -239,6 +239,9 @@ class _MessageViewState extends State<MessageView>
           ValueListenableBuilder(
             valueListenable: widget.message.statusNotifier,
             builder: (context, value, child) {
+              Widget childWidget = const SizedBox(
+                key: ValueKey(0),
+              );
               if (widget.isMessageBySender &&
                   widget.controller?.initialMessageList.last.id ==
                       widget.message.id &&
@@ -247,8 +250,8 @@ class _MessageViewState extends State<MessageView>
                         ?.featureActiveConfig
                         .lastSeenAgoBuilderVisibility ??
                     true) {
-                  return widget.outgoingChatBubbleConfig?.receiptsWidgetConfig
-                          ?.lastSeenAgoBuilder
+                  childWidget = widget.outgoingChatBubbleConfig
+                          ?.receiptsWidgetConfig?.lastSeenAgoBuilder
                           ?.call(
                               widget.message,
                               applicationDateFormatter(
@@ -256,9 +259,19 @@ class _MessageViewState extends State<MessageView>
                       lastSeenAgoBuilder(widget.message,
                           applicationDateFormatter(widget.message.createdAt));
                 }
-                return const SizedBox();
               }
-              return const SizedBox();
+              return AnimatedSize(
+                duration: const Duration(milliseconds: 300),
+                child: AnimatedSwitcher(
+                  reverseDuration: const Duration(seconds: 0),
+                  duration: const Duration(milliseconds: 600),
+                  transitionBuilder: (child, animation) => FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  ),
+                  child: childWidget,
+                ),
+              );
             },
           )
         ],
