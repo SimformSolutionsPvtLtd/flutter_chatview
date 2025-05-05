@@ -61,6 +61,9 @@ class ProfileCircleConfiguration {
   final NetworkImageProgressIndicatorBuilder?
       networkImageProgressIndicatorBuilder;
 
+  // custom profile avatar
+  final Widget? Function(ChatUser?)? profileAvatar;
+
   const ProfileCircleConfiguration({
     this.onAvatarTap,
     this.padding,
@@ -73,5 +76,6 @@ class ProfileCircleConfiguration {
     this.networkImageErrorBuilder,
     this.assetImageErrorBuilder,
     this.networkImageProgressIndicatorBuilder,
+    this.profileAvatar,
   });
 }

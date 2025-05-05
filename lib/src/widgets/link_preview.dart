@@ -32,6 +32,7 @@ class LinkPreview extends StatelessWidget {
     Key? key,
     required this.url,
     this.linkPreviewConfig,
+    this.errorWidget,
   }) : super(key: key);
 
   /// Provides url which is passed in message.
@@ -40,6 +41,9 @@ class LinkPreview extends StatelessWidget {
   /// Provides configuration of chat bubble appearance when link/URL is passed
   /// in message.
   final LinkPreviewConfiguration? linkPreviewConfig;
+
+  /// Provides error widget when link/URL is invalid.
+  final Widget? errorWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -51,31 +55,31 @@ class LinkPreview extends StatelessWidget {
         children: [
           if (!url.isImageUrl &&
               !(context.chatBubbleConfig?.disableLinkPreview ?? false)) ...{
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: verticalPadding),
-              child: AnyLinkPreview(
-                link: url,
-                removeElevation: true,
-                errorBody: linkPreviewConfig?.errorBody,
-                proxyUrl: linkPreviewConfig?.proxyUrl,
-                onTap: _onLinkTap,
-                placeholderWidget: SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.25,
-                  width: double.infinity,
-                  child: Center(
-                    child: CircularProgressIndicator(
-                      strokeWidth: 1,
-                      color: linkPreviewConfig?.loadingColor,
-                    ),
+            AnyLinkPreview(
+              link: url,
+              removeElevation: true,
+              errorBody: linkPreviewConfig?.errorBody,
+              errorImage:
+                  'https://imagedelivery.net/hftuYAvwaYr78lZIcGkPyQ/5705788b-a151-437c-7fcc-f553156ea700/public',
+              errorWidget: errorWidget,
+              proxyUrl: linkPreviewConfig?.proxyUrl,
+              onTap: _onLinkTap,
+              placeholderWidget: SizedBox(
+                height: MediaQuery.sizeOf(context).height * 0.25,
+                width: double.infinity,
+                child: Center(
+                  child: CircularProgressIndicator(
+                    strokeWidth: 1,
+                    color: linkPreviewConfig?.loadingColor,
                   ),
                 ),
-                backgroundColor:
-                    linkPreviewConfig?.backgroundColor ?? Colors.grey.shade200,
-                borderRadius: linkPreviewConfig?.borderRadius,
-                bodyStyle: linkPreviewConfig?.bodyStyle ??
-                    const TextStyle(color: Colors.black),
-                titleStyle: linkPreviewConfig?.titleStyle,
               ),
+              backgroundColor:
+                  linkPreviewConfig?.backgroundColor ?? Colors.grey.shade200,
+              borderRadius: linkPreviewConfig?.borderRadius,
+              bodyStyle: linkPreviewConfig?.bodyStyle ??
+                  const TextStyle(color: Colors.black),
+              titleStyle: linkPreviewConfig?.titleStyle,
             ),
           } else if(url.isImageUrl)...{
             Padding(
@@ -91,18 +95,17 @@ class LinkPreview extends StatelessWidget {
               ),
             ),
           },
-          const SizedBox(height: verticalPadding),
-          InkWell(
-            onTap: _onLinkTap,
-            child: Text(
-              url,
-              style: linkPreviewConfig?.linkStyle ??
-                  const TextStyle(
-                    color: Colors.white,
-                    decoration: TextDecoration.underline,
-                  ),
-            ),
-          ),
+          // InkWell(
+          //   onTap: _onLinkTap,
+          //   child: Text(
+          //     url,
+          //     style: linkPreviewConfig?.linkStyle ??
+          //         const TextStyle(
+          //           color: Colors.white,
+          //           decoration: TextDecoration.underline,
+          //         ),
+          //   ),
+          // ),
         ],
       ),
     );

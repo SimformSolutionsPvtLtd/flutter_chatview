@@ -29,7 +29,7 @@ class ReceiptsWidgetConfig {
   /// Right now it's implemented to show animation only at the last message just
   /// like instagram.
   /// By default [sendMessageAnimationBuilder]
-  final Widget Function(MessageStatus status)? receiptsBuilder;
+  final Widget Function(Message message)? receiptsBuilder;
 
   /// Just like Instagram messages receipts are displayed at the bottom of last
   /// message. If in case you want to modify it using your custom widget you can

@@ -83,6 +83,12 @@ extension ValidateString on String {
 
   bool get isUrl => Uri.tryParse(this)?.isAbsolute ?? false;
 
+  bool get isWebUrl {
+    final pattern = r'^https?:\/\/[-a-zA-Z0-9@:%._\+~#=]+([\/?].*)?$';
+    final regExp = RegExp(pattern, caseSensitive: false);
+    return regExp.hasMatch(this);
+  }
+
   Widget getUserProfilePicture({
     required ChatUser? Function(String) getChatUser,
     double? profileCircleRadius,

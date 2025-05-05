@@ -101,162 +101,157 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
         chatListConfig.scrollToBottomButtonConfig;
     return Align(
       alignment: Alignment.bottomCenter,
-      child: widget.sendMessageBuilder != null
-          ? widget.sendMessageBuilder!(replyMessage)
-          : SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: Stack(
+      child: SizedBox(
+        width: MediaQuery.sizeOf(context).width,
+        child: Stack(
+          children: [
+            // This has been added to prevent messages from being
+            // displayed below the text field
+            // when the user scrolls the message list.
+            Positioned(
+              right: 0,
+              left: 0,
+              bottom: 0,
+              child: Container(
+                height: MediaQuery.sizeOf(context).height /
+                    ((!kIsWeb && Platform.isIOS) ? 24 : 28),
+                color: chatListConfig.chatBackgroundConfig.backgroundColor ??
+                    Colors.white,
+              ),
+            ),
+            Positioned(
+              right: 0,
+              left: 0,
+              bottom: 0,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  // This has been added to prevent messages from being
-                  // displayed below the text field
-                  // when the user scrolls the message list.
-                  Positioned(
-                    right: 0,
-                    left: 0,
-                    bottom: 0,
-                    child: Container(
-                      height: MediaQuery.of(context).size.height /
-                          ((!kIsWeb && Platform.isIOS) ? 24 : 28),
-                      color:
-                          chatListConfig.chatBackgroundConfig.backgroundColor ??
-                              Colors.white,
+                  if (chatViewIW
+                          ?.featureActiveConfig.enableScrollToBottomButton ??
+                      true)
+                    Align(
+                      alignment:
+                          scrollToBottomButtonConfig?.alignment?.alignment ??
+                              Alignment.bottomCenter,
+                      child: Padding(
+                        padding: scrollToBottomButtonConfig?.padding ??
+                            EdgeInsets.zero,
+                        child: const ScrollToBottomButton(),
+                      ),
                     ),
-                  ),
-                  Positioned(
-                    right: 0,
-                    left: 0,
-                    bottom: 0,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
+                  Padding(
+                    key: chatViewIW?.chatTextFieldViewKey,
+                    padding: EdgeInsets.fromLTRB(
+                      0,
+                      bottomPadding4,
+                      0,
+                      _bottomPadding,
+                    ),
+                    child: Stack(
+                      alignment: Alignment.bottomCenter,
                       children: [
-                        if (chatViewIW?.featureActiveConfig
-                                .enableScrollToBottomButton ??
-                            true)
-                          Align(
-                            alignment: scrollToBottomButtonConfig
-                                    ?.alignment?.alignment ??
-                                Alignment.bottomCenter,
-                            child: Padding(
-                              padding: scrollToBottomButtonConfig?.padding ??
-                                  EdgeInsets.zero,
-                              child: const ScrollToBottomButton(),
-                            ),
-                          ),
-                        Padding(
-                          key: chatViewIW?.chatTextFieldViewKey,
-                          padding: EdgeInsets.fromLTRB(
-                            bottomPadding4,
-                            bottomPadding4,
-                            bottomPadding4,
-                            _bottomPadding,
-                          ),
-                          child: Stack(
-                            alignment: Alignment.bottomCenter,
-                            children: [
-                              ValueListenableBuilder<ReplyMessage>(
-                                builder: (_, state, child) {
-                                  final replyTitle =
-                                      "${PackageStrings.replyTo} $_replyTo";
-                                  if (state.message.isNotEmpty) {
-                                    return widget.replyMessageBuilder
-                                            ?.call(context, state) ??
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            color: widget.sendMessageConfig
-                                                    ?.textFieldBackgroundColor ??
-                                                Colors.white,
-                                            borderRadius:
-                                                const BorderRadius.vertical(
-                                              top: Radius.circular(14),
-                                            ),
-                                          ),
-                                          margin: const EdgeInsets.only(
-                                            bottom: 17,
-                                            right: 0.4,
-                                            left: 0.4,
-                                          ),
-                                          padding: const EdgeInsets.fromLTRB(
-                                            leftPadding,
-                                            leftPadding,
-                                            leftPadding,
-                                            30,
-                                          ),
-                                          child: Container(
-                                            margin: const EdgeInsets.only(
-                                                bottom: 2),
-                                            padding: const EdgeInsets.symmetric(
-                                              vertical: 4,
-                                              horizontal: 6,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: widget.sendMessageConfig
-                                                      ?.replyDialogColor ??
-                                                  Colors.grey.shade200,
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                            ),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Expanded(
-                                                      child: Text(
-                                                        replyTitle,
-                                                        maxLines: 1,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        style: TextStyle(
-                                                          color: widget
-                                                                  .sendMessageConfig
-                                                                  ?.replyTitleColor ??
-                                                              Colors.deepPurple,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          letterSpacing: 0.25,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    IconButton(
-                                                      constraints:
-                                                          const BoxConstraints(),
-                                                      padding: EdgeInsets.zero,
-                                                      icon: Icon(
-                                                        Icons.close,
-                                                        color: widget
-                                                                .sendMessageConfig
-                                                                ?.closeIconColor ??
-                                                            Colors.black,
-                                                        size: 16,
-                                                      ),
-                                                      onPressed: onCloseTap,
-                                                    ),
-                                                  ],
+                        ValueListenableBuilder<ReplyMessage>(
+                          builder: (_, state, child) {
+                            final replyTitle =
+                                "${PackageStrings.replyTo} $_replyTo";
+                            if (state.message.isNotEmpty) {
+                              return widget.replyMessageBuilder
+                                      ?.call(context, state) ??
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: widget.sendMessageConfig
+                                              ?.textFieldBackgroundColor ??
+                                          Colors.white,
+                                      borderRadius: const BorderRadius.vertical(
+                                        top: Radius.circular(14),
+                                      ),
+                                    ),
+                                    margin: const EdgeInsets.only(
+                                      bottom: 17,
+                                      right: 0.4,
+                                      left: 0.4,
+                                    ),
+                                    padding: const EdgeInsets.fromLTRB(
+                                      leftPadding,
+                                      leftPadding,
+                                      leftPadding,
+                                      30,
+                                    ),
+                                    child: Container(
+                                      margin: const EdgeInsets.only(bottom: 2),
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 4,
+                                        horizontal: 6,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: widget.sendMessageConfig
+                                                ?.replyDialogColor ??
+                                            Colors.grey.shade200,
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Expanded(
+                                                child: Text(
+                                                  replyTitle,
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                    color: widget
+                                                            .sendMessageConfig
+                                                            ?.replyTitleColor ??
+                                                        Colors.deepPurple,
+                                                    fontWeight: FontWeight.bold,
+                                                    letterSpacing: 0.25,
+                                                  ),
                                                 ),
-                                                ReplyMessageView(
-                                                  message: state,
-                                                  customMessageReplyViewBuilder:
-                                                      widget.messageConfig
-                                                          ?.customMessageReplyViewBuilder,
-                                                  sendMessageConfig:
-                                                      widget.sendMessageConfig,
+                                              ),
+                                              IconButton(
+                                                constraints:
+                                                    const BoxConstraints(),
+                                                padding: EdgeInsets.zero,
+                                                icon: Icon(
+                                                  Icons.close,
+                                                  color: widget
+                                                          .sendMessageConfig
+                                                          ?.closeIconColor ??
+                                                      Colors.black,
+                                                  size: 16,
                                                 ),
-                                              ],
-                                            ),
+                                                onPressed: onCloseTap,
+                                              ),
+                                            ],
                                           ),
-                                        );
-                                  } else {
-                                    return const SizedBox.shrink();
-                                  }
-                                },
-                                valueListenable: _replyMessage,
-                              ),
-                              ChatUITextField(
+                                          ReplyMessageView(
+                                            message: state,
+                                            customMessageReplyViewBuilder: widget
+                                                .messageConfig
+                                                ?.customMessageReplyViewBuilder,
+                                            sendMessageConfig:
+                                                widget.sendMessageConfig,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                            } else {
+                              return const SizedBox.shrink();
+                            }
+                          },
+                          valueListenable: _replyMessage,
+                        ),
+                        widget.sendMessageBuilder != null
+                            ? widget.sendMessageBuilder!(
+                                replyMessage, _focusNode)
+                            : ChatUITextField(
                                 focusNode: _focusNode,
                                 textEditingController: _textEditingController,
                                 onPressed: _onPressed,
@@ -264,15 +259,15 @@ class SendMessageWidgetState extends State<SendMessageWidget> {
                                 onRecordingComplete: _onRecordingComplete,
                                 onImageSelected: _onImageSelected,
                               )
-                            ],
-                          ),
-                        ),
                       ],
                     ),
                   ),
                 ],
               ),
             ),
+          ],
+        ),
+      ),
     );
   }
 

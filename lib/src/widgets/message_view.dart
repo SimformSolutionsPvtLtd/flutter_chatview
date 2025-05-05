@@ -159,7 +159,7 @@ class _MessageViewState extends State<MessageView>
     final emojiMessageConfiguration = messageConfig?.emojiMessageConfig;
     return Padding(
       padding: EdgeInsets.only(
-        bottom: widget.message.reaction.reactions.isNotEmpty ? 6 : 0,
+        bottom: widget.message.reaction.reactions.isNotEmpty ? 20 : 0,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -196,6 +196,8 @@ class _MessageViewState extends State<MessageView>
                           messageReactionConfig:
                               messageConfig?.messageReactionConfig,
                           isMessageBySender: widget.isMessageBySender,
+                          isMyReaction: widget.message.reaction.reactedUserIds
+                              .contains(widget.controller?.currentUser.id),
                         ),
                     ],
                   );
@@ -207,6 +209,7 @@ class _MessageViewState extends State<MessageView>
                     messageReactionConfig: messageConfig?.messageReactionConfig,
                     highlightImage: widget.shouldHighlight,
                     highlightScale: widget.highlightScale,
+                    controller: widget.controller,
                   );
                 } else if (widget.message.messageType.isText) {
                   return TextMessageView(
@@ -218,10 +221,11 @@ class _MessageViewState extends State<MessageView>
                     messageReactionConfig: messageConfig?.messageReactionConfig,
                     highlightColor: widget.highlightColor,
                     highlightMessage: widget.shouldHighlight,
+                    controller: widget.controller,
                   );
                 } else if (widget.message.messageType.isVoice) {
                   return VoiceMessageView(
-                    screenWidth: MediaQuery.of(context).size.width,
+                    screenWidth: MediaQuery.sizeOf(context).width,
                     message: widget.message,
                     config: messageConfig?.voiceMessageConfig,
                     onMaxDuration: widget.onMaxDuration,
@@ -229,10 +233,25 @@ class _MessageViewState extends State<MessageView>
                     messageReactionConfig: messageConfig?.messageReactionConfig,
                     inComingChatBubbleConfig: widget.inComingChatBubbleConfig,
                     outgoingChatBubbleConfig: widget.outgoingChatBubbleConfig,
+                    controller: widget.controller,
                   );
                 } else if (widget.message.messageType.isCustom &&
                     messageConfig?.customMessageBuilder != null) {
-                  return messageConfig?.customMessageBuilder!(widget.message);
+                  return Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      messageConfig!.customMessageBuilder!(widget.message),
+                      if (widget.message.reaction.reactions.isNotEmpty)
+                        ReactionWidget(
+                          reaction: widget.message.reaction,
+                          messageReactionConfig:
+                              messageConfig?.messageReactionConfig,
+                          isMessageBySender: widget.isMessageBySender,
+                          isMyReaction: widget.message.reaction.reactedUserIds
+                              .contains(widget.controller?.currentUser.id),
+                        ),
+                    ],
+                  );
                 }
               }()) ??
               const SizedBox(),

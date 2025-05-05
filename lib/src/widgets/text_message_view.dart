@@ -19,10 +19,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import 'package:chatview/chatview.dart';
 import 'package:flutter/material.dart';
+import 'package:any_link_preview/any_link_preview.dart';
 
 import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/models/models.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../utils/constants/constants.dart';
 import 'link_preview.dart';
@@ -39,6 +42,7 @@ class TextMessageView extends StatelessWidget {
     this.messageReactionConfig,
     this.highlightMessage = false,
     this.highlightColor,
+    this.controller,
   }) : super(key: key);
 
   /// Represents current message is sent by current user.
@@ -65,6 +69,9 @@ class TextMessageView extends StatelessWidget {
   /// Allow user to set color of highlighted message.
   final Color? highlightColor;
 
+  /// chat controller
+  final ChatController? controller;
+
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -72,42 +79,85 @@ class TextMessageView extends StatelessWidget {
     return Stack(
       clipBehavior: Clip.none,
       children: [
-        Container(
-          constraints: BoxConstraints(
-              maxWidth: chatBubbleMaxWidth ??
-                  MediaQuery.of(context).size.width * 0.75),
-          padding: _padding ??
-              const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 10,
-              ),
-          margin: _margin ??
-              EdgeInsets.fromLTRB(
-                  5, 0, 6, message.reaction.reactions.isNotEmpty ? 15 : 2),
-          decoration: BoxDecoration(
-            color: highlightMessage ? highlightColor : _color,
-            borderRadius: _borderRadius(textMessage),
-          ),
-          child: textMessage.isUrl
-              ? LinkPreview(
-                  linkPreviewConfig: _linkPreviewConfig,
-                  url: textMessage,
-                )
-              : Text(
-                  textMessage,
-                  style: _textStyle ??
-                      textTheme.bodyMedium!.copyWith(
-                        color: Colors.white,
-                        fontSize: 16,
+        if (textMessage.isWebUrl)
+          Container(
+            constraints: BoxConstraints(
+                maxWidth: chatBubbleMaxWidth ??
+                    MediaQuery.sizeOf(context).width * 0.75),
+            child: LinkPreview(
+              linkPreviewConfig: _linkPreviewConfig,
+              url: textMessage,
+              errorWidget: GestureDetector(
+                onTap: () async {
+                  final uri = Uri.parse(textMessage);
+                  if (await canLaunchUrl(uri)) {
+                    await launchUrl(uri);
+                  } else {
+                    throw Exception('유효하지 않은 주소입니다.');
+                  }
+                },
+                child: Container(
+                  constraints: BoxConstraints(
+                      maxWidth: chatBubbleMaxWidth ??
+                          MediaQuery.sizeOf(context).width * 0.75),
+                  padding: _padding ??
+                      const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 10,
                       ),
+                  margin: _margin ??
+                      EdgeInsets.fromLTRB(5, 0, 6,
+                          message.reaction.reactions.isNotEmpty ? 15 : 2),
+                  decoration: BoxDecoration(
+                    color: highlightMessage ? highlightColor : _color,
+                    borderRadius: _borderRadius(textMessage),
+                  ),
+                  child: Text(
+                    textMessage,
+                    style: _textStyle?.copyWith(
+                      color: Colors.blue,
+                      decoration: TextDecoration.underline,
+                      decorationColor: Colors.blue,
+                    ),
+                  ),
                 ),
-        ),
+              ),
+            ),
+          )
+        else
+          Container(
+            constraints: BoxConstraints(
+                maxWidth: chatBubbleMaxWidth ??
+                    MediaQuery.sizeOf(context).width * 0.75),
+            padding: _padding ??
+                const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 10,
+                ),
+            margin: _margin ??
+                EdgeInsets.fromLTRB(
+                    5, 0, 6, message.reaction.reactions.isNotEmpty ? 15 : 2),
+            decoration: BoxDecoration(
+              color: highlightMessage ? highlightColor : _color,
+              borderRadius: _borderRadius(textMessage),
+            ),
+            child: Text(
+              textMessage,
+              style: _textStyle ??
+                  textTheme.bodyMedium!.copyWith(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+            ),
+          ),
         if (message.reaction.reactions.isNotEmpty)
           ReactionWidget(
             key: key,
             isMessageBySender: isMessageBySender,
             reaction: message.reaction,
             messageReactionConfig: messageReactionConfig,
+            isMyReaction: message.reaction.reactedUserIds
+                .contains(controller?.currentUser.id),
           ),
       ],
     );

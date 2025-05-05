@@ -24,8 +24,25 @@ import 'dart:async';
 import 'package:chatview/src/widgets/suggestions/suggestion_list.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:chatview/src/values/enumeration.dart';
 
 import '../models/models.dart';
+
+/// 메시지 업데이트를 위한 데이터 클래스
+/// id별로 업데이트할 상태(status)와 (nullable) createdAt 값을 포함합니다.
+class MessageUpdate {
+  final MessageStatus status;
+  final DateTime? createdAt;
+  final Map<String, dynamic>? customData;
+  final int? unreadCount;
+
+  MessageUpdate({
+    required this.status,
+    this.createdAt,
+    this.customData,
+    this.unreadCount,
+  });
+}
 
 class ChatController {
   /// Represents initial message list in chat which can be add by user.
@@ -100,6 +117,13 @@ class ChatController {
     }
   }
 
+  void addMessages(List<Message> messages) {
+    initialMessageList.addAll(messages);
+    if (!messageStreamController.isClosed) {
+      messageStreamController.sink.add(initialMessageList);
+    }
+  }
+
   /// Used to add reply suggestions.
   void addReplySuggestions(List<SuggestionItemData> suggestions) {
     _replySuggestion.value = suggestions;
@@ -108,6 +132,58 @@ class ChatController {
   /// Used to remove reply suggestions.
   void removeReplySuggestions() {
     _replySuggestion.value = [];
+  }
+
+  void syncMessageList(List messageList) {
+    initialMessageList = messageList as List<Message>;
+    if (!messageStreamController.isClosed) {
+      messageStreamController.sink.add(initialMessageList);
+    }
+  }
+
+  void deleteMessage(String messageId) {
+    initialMessageList.removeWhere((element) => element.id == messageId);
+    if (!messageStreamController.isClosed) {
+      messageStreamController.sink.add(initialMessageList);
+    }
+  }
+
+  /// 여러 메시지의 상태를 동시에 업데이트합니다.
+  ///
+  /// [updates] 는 key가 메시지 ID(String),
+  /// 값이 해당 메시지의 업데이트 정보인 [MessageUpdate]인 Map입니다.
+  ///
+  /// 내부적으로 리스트를 역순으로 순회하여, 해당 메시지가 존재하면 업데이트 후에 map에서 제거하며
+  /// map이 비면 loop를 즉시 종료하여 성능 최적화를 도모합니다.
+  void updateMessagesStatus(Map<String, MessageUpdate> updates) {
+    for (int i = initialMessageList.length - 1; i >= 0; i--) {
+      final message = initialMessageList[i];
+      if (updates.containsKey(message.id)) {
+        final update = updates[message.id]!;
+        // 메시지 상태 업데이트
+        message.setStatus = update.status;
+        // createdAt 정보가 있을 경우 업데이트
+        if (update.createdAt != null) {
+          message.setCreatedAt = update.createdAt!;
+        }
+        if (update.customData != null) {
+          message.customData = update.customData;
+        }
+        if (update.unreadCount != null) {
+          message.setUnreadCount = update.unreadCount!;
+        }
+        // 해당 업데이트 데이터 제거
+        updates.remove(message.id);
+
+        if (!messageStreamController.isClosed) {
+          messageStreamController.sink.add(initialMessageList);
+        }
+      }
+      // 모든 업데이트가 처리되었으면 종료
+      if (updates.isEmpty) {
+        break;
+      }
+    }
   }
 
   /// Function for setting reaction on specific chat bubble
@@ -141,6 +217,8 @@ class ChatController {
       reaction: message.reaction,
       messageType: message.messageType,
       status: message.status,
+      unreadCount: message.unreadCount,
+      customData: message.customData,
     );
     if (!messageStreamController.isClosed) {
       messageStreamController.sink.add(initialMessageList);
@@ -173,4 +251,42 @@ class ChatController {
   ChatUser getUserFromId(String userId) => userId == currentUser.id
       ? currentUser
       : otherUsers.firstWhere((element) => element.id == userId);
+
+  /// 주어진 시간 범위 내의 메시지들만 정렬합니다.
+  ///
+  /// [from] 부터 [to] 까지 사이에 있는 메시지에 대해, 메시지의 [createdAt] 값을 기준으로 오름차순으로 정렬한 후
+  /// 해당 위치에 정렬된 순서로 업데이트합니다.
+  ///
+  /// 예를 들어, 순서가 섞여있는 새로운 메시지들이 수신되었을 경우 해당 시간 구간 내에서만 정렬하여 전체 리스트에 반영합니다.
+  void sortMessagesByCreatedAt(DateTime from, DateTime to) {
+    // 해당 시간 범위에 포함되는 메시지들의 인덱스와 메시지 객체를 수집합니다.
+    final List<int> targetIndices = [];
+    final List<Message> targetMessages = [];
+
+    for (int i = 0; i < initialMessageList.length; i++) {
+      final message = initialMessageList[i];
+      // createdAt 값이 null이 아니고, from 초과 to 미만인 경우에 포함시킵니다.
+      if (message.createdAt != null &&
+          message.createdAt!.isAfter(from) &&
+          message.createdAt!.isBefore(to)) {
+        targetIndices.add(i);
+        targetMessages.add(message);
+      }
+    }
+
+    if (targetMessages.isEmpty) return; // 정렬 대상 메시지가 없다면 종료
+
+    // createdAt을 기준으로 오름차순 정렬 (오래된 순으로)
+    targetMessages.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
+
+    // 정렬된 메시지별로 원래 리스트의 해당 인덱스 위치를 업데이트합니다.
+    for (int j = 0; j < targetIndices.length; j++) {
+      initialMessageList[targetIndices[j]] = targetMessages[j];
+    }
+
+    // 리스트 내의 변경사항을 구독자에게 반영하기 위해 업데이트 이벤트를 발행합니다.
+    if (!messageStreamController.isClosed) {
+      messageStreamController.sink.add(initialMessageList);
+    }
+  }
 }

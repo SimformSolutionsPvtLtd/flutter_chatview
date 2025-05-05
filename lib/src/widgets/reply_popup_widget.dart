@@ -62,7 +62,7 @@ class ReplyPopupWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final textStyle =
         buttonTextStyle ?? const TextStyle(fontSize: 14, color: Colors.black);
-    final deviceWidth = MediaQuery.of(context).size.width;
+    final deviceWidth = MediaQuery.sizeOf(context).width;
     return Container(
       height: deviceWidth > 500 ? deviceWidth * 0.05 : deviceWidth * 0.13,
       decoration: BoxDecoration(

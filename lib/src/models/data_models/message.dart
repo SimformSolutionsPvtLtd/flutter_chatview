@@ -33,9 +33,6 @@ class Message {
   /// Provides actual message it will be text or image/audio file path.
   final String message;
 
-  /// Provides message created date time.
-  final DateTime createdAt;
-
   /// Provides id of sender of message.
   final String sentBy;
 
@@ -54,19 +51,32 @@ class Message {
   /// Provides max duration for recorded voice message.
   Duration? voiceMessageDuration;
 
+  // Provides unread count
+  final ValueNotifier<int?> _unreadCount;
+
+  /// Provides message created date time.
+  final ValueNotifier<DateTime> _createdAt;
+
+  // Provice custom data
+  Map<String, dynamic>? customData;
+
   Message({
     this.id = '',
     required this.message,
-    required this.createdAt,
+    required DateTime createdAt,
     required this.sentBy,
     this.replyMessage = const ReplyMessage(),
     Reaction? reaction,
     this.messageType = MessageType.text,
     this.voiceMessageDuration,
     MessageStatus status = MessageStatus.pending,
+    this.customData,
+    int? unreadCount,
   })  : reaction = reaction ?? Reaction(reactions: [], reactedUserIds: []),
         key = GlobalKey(),
         _status = ValueNotifier(status),
+        _createdAt = ValueNotifier(createdAt),
+        _unreadCount = ValueNotifier(unreadCount),
         assert(
           (messageType.isVoice
               ? ((defaultTargetPlatform == TargetPlatform.iOS ||
@@ -74,6 +84,17 @@ class Message {
               : true),
           "Voice messages are only supported with android and ios platform",
         );
+
+  /// Get current createdAt value
+  DateTime get createdAt => _createdAt.value;
+
+  /// Get createdAt ValueNotifier
+  ValueNotifier<DateTime> get createdAtNotifier => _createdAt;
+
+  /// Set new createdAt value
+  set setCreatedAt(DateTime dateTime) {
+    _createdAt.value = dateTime;
+  }
 
   /// curret messageStatus
   MessageStatus get status => _status.value;
@@ -88,6 +109,14 @@ class Message {
   /// builders will be updated.
   set setStatus(MessageStatus messageStatus) {
     _status.value = messageStatus;
+  }
+
+  int? get unreadCount => _unreadCount.value;
+
+  ValueNotifier<int?> get unreadCountNotifier => _unreadCount;
+
+  set setUnreadCount(int? unreadCount) {
+    _unreadCount.value = unreadCount;
   }
 
   factory Message.fromJson(Map<String, dynamic> json) => Message(
@@ -110,18 +139,20 @@ class Message {
         ),
         status: MessageStatus.tryParse(json['status']?.toString()) ??
             MessageStatus.pending,
+        unreadCount: json['unreadCount']?.toInt(),
       );
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'message': message,
-        'createdAt': createdAt.toIso8601String(),
+        'createdAt': _createdAt.value.toIso8601String(),
         'sentBy': sentBy,
         'reply_message': replyMessage.toJson(),
         'reaction': reaction.toJson(),
         'message_type': messageType.name,
         'voice_message_duration': voiceMessageDuration?.inMicroseconds,
         'status': status.name,
+        'unreadCount': unreadCount,
       };
 
   Message copyWith({
@@ -136,6 +167,7 @@ class Message {
     Duration? voiceMessageDuration,
     MessageStatus? status,
     bool forceNullValue = false,
+    int? unreadCount,
   }) {
     return Message(
       id: id ?? this.id,
@@ -149,6 +181,7 @@ class Message {
       reaction: reaction ?? this.reaction,
       replyMessage: replyMessage ?? this.replyMessage,
       status: status ?? this.status,
+      unreadCount: unreadCount ?? this.unreadCount,
     );
   }
 }

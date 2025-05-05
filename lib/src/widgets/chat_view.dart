@@ -190,11 +190,12 @@ class _ChatViewState extends State<ChatView>
 
   @override
   Widget build(BuildContext context) {
-    // Scroll to last message on in hasMessages state.
+    // 채팅 내역이 있을 경우 타이핑 지시자에 따른 마지막 메시지로 스크롤
     if (widget.chatController.showTypingIndicator &&
         chatViewState.hasMessages) {
       chatController.scrollToLastMessage();
     }
+
     return ChatViewInheritedWidget(
       chatController: chatController,
       featureActiveConfig: featureActiveConfig,
@@ -219,9 +220,9 @@ class _ChatViewState extends State<ChatView>
               children: [
                 Container(
                   height: chatBackgroundConfig.height ??
-                      MediaQuery.of(context).size.height,
+                      MediaQuery.sizeOf(context).height,
                   width: chatBackgroundConfig.width ??
-                      MediaQuery.of(context).size.width,
+                      MediaQuery.sizeOf(context).width,
                   decoration: BoxDecoration(
                     color: chatBackgroundConfig.backgroundColor ?? Colors.white,
                     image: chatBackgroundConfig.backgroundImage != null
@@ -240,13 +241,16 @@ class _ChatViewState extends State<ChatView>
                       Expanded(
                         child: Stack(
                           children: [
-                            if (chatViewState.isLoading)
+                            // 메시지가 없는 경우에만 전체 화면 상태 위젯을 노출
+                            if (!chatViewState.hasMessages &&
+                                chatViewState.isLoading)
                               ChatViewStateWidget(
                                 chatViewStateWidgetConfig:
                                     chatViewStateConfig?.loadingWidgetConfig,
                                 chatViewState: chatViewState,
                               )
-                            else if (chatViewState.noMessages)
+                            else if (!chatViewState.hasMessages &&
+                                chatViewState.noMessages)
                               ChatViewStateWidget(
                                 chatViewStateWidgetConfig:
                                     chatViewStateConfig?.noMessageWidgetConfig,
@@ -254,7 +258,8 @@ class _ChatViewState extends State<ChatView>
                                 onReloadButtonTap:
                                     chatViewStateConfig?.onReloadButtonTap,
                               )
-                            else if (chatViewState.isError)
+                            else if (!chatViewState.hasMessages &&
+                                chatViewState.isError)
                               ChatViewStateWidget(
                                 chatViewStateWidgetConfig:
                                     chatViewStateConfig?.errorWidgetConfig,
@@ -262,7 +267,8 @@ class _ChatViewState extends State<ChatView>
                                 onReloadButtonTap:
                                     chatViewStateConfig?.onReloadButtonTap,
                               )
-                            else if (chatViewState.hasMessages)
+                            else
+                              // 메시지가 존재하는 경우 채팅 리스트를 표시
                               ValueListenableBuilder<ReplyMessage>(
                                 valueListenable: replyMessage,
                                 builder: (_, state, child) {
