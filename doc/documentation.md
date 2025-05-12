@@ -80,7 +80,7 @@ Add the following keys to your _Info.plist_ file, located in `<project root>/ios
 ```
 
 * This plugin requires iOS 10.0 or higher. Add this line in `Podfile`:
-```
+```ruby
 platform :ios, '10.0'
 ```
 
@@ -672,140 +672,6 @@ _chatController.setTypingIndicator = true; // for showing indicator
 _chatController.setTypingIndicator = false; // for hiding indicator
 ```
 
-# API References
-
-This document provides a reference for the main classes and their properties in the ChatView package.
-
-## ChatView
-
-The main widget for implementing a chat interface.
-
-### Properties
-
-| Property                     | Type                                          | Description                                           |
-|------------------------------|-----------------------------------------------|-------------------------------------------------------|
-| `chatController`             | `ChatController`                              | Controller for managing messages and chat state       |
-| `onSendTap`                  | `Function(String, ReplyMessage, MessageType)` | Callback when send button is tapped                   |
-| `chatViewState`              | `ChatViewState`                               | Current state of the chat view (loading, error, etc.) |
-| `appBar`                     | `ChatViewAppBar`                              | Custom app bar for the chat view                      |
-| `chatBackgroundConfig`       | `ChatBackgroundConfiguration`                 | Configuration for chat background                     |
-| `sendMessageConfig`          | `SendMessageConfiguration`                    | Configuration for send message section                |
-| `chatBubbleConfig`           | `ChatBubbleConfiguration`                     | Configuration for chat bubbles                        |
-| `swipeToReplyConfig`         | `SwipeToReplyConfiguration`                   | Configuration for swipe to reply feature              |
-| `messageConfig`              | `MessageConfiguration`                        | Configuration for messages                            |
-| `reactionPopupConfig`        | `ReactionPopupConfiguration`                  | Configuration for reaction popup                      |
-| `replyPopupConfig`           | `ReplyPopupConfiguration`                     | Configuration for reply popup                         |
-| `repliedMessageConfig`       | `RepliedMessageConfiguration`                 | Configuration for replied messages                    |
-| `typeIndicatorConfig`        | `TypeIndicatorConfiguration`                  | Configuration for typing indicator                    |
-| `featureActiveConfig`        | `FeatureActiveConfig`                         | Configuration to enable/disable features              |
-| `replySuggestionsConfig`     | `ReplySuggestionsConfig`                      | Configuration for reply suggestions                   |
-| `emojiPickerSheetConfig`     | `Config`                                      | Configuration for emoji picker                        |
-| `isLastPage`                 | `bool`                                        | Whether this is the last page of messages             |
-| `loadMoreData`               | `Function`                                    | Callback to load more messages for pagination         |
-| `replyMessageBuilder`        | `Widget Function(BuildContext, ReplyMessage)` | Builder for custom reply message UI                   |
-| `scrollToBottomButtonConfig` | `ScrollToBottomButtonConfig`                  | Configuration for scroll to bottom button             |
-
-## ChatController
-
-Manages the state of the chat view.
-
-### Properties
-
-| Property             | Type               | Description                    |
-|----------------------|--------------------|--------------------------------|
-| `initialMessageList` | `List<Message>`    | Initial list of messages       |
-| `scrollController`   | `ScrollController` | Controller for the scroll view |
-| `currentUser`        | `ChatUser`         | The current user               |
-| `otherUsers`         | `List<ChatUser>`   | Other users in the chat        |
-
-### Methods
-
-| Method                   | Parameters                             | Return Type | Description                        |
-|--------------------------|----------------------------------------|-------------|------------------------------------|
-| `addMessage`             | `Message message`                      | `void`      | Adds a message to the chat         |
-| `setTypingIndicator`     | `bool value`                           | `void`      | Shows/hides typing indicator       |
-| `addReplySuggestions`    | `List<SuggestionItemData> suggestions` | `void`      | Adds reply suggestions             |
-| `removeReplySuggestions` | None                                   | `void`      | Removes reply suggestions          |
-| `loadMoreData`           | None                                   | `void`      | Loads more messages for pagination |
-
-## Message
-
-Represents a chat message.
-
-### Properties
-
-| Property               | Type             | Description                                   |
-|------------------------|------------------|-----------------------------------------------|
-| `id`                   | `String`         | Unique identifier for the message             |
-| `message`              | `String`         | The message content                           |
-| `createdAt`            | `DateTime`       | When the message was created                  |
-| `sentBy`               | `String`         | ID of the user who sent the message           |
-| `replyMessage`         | `ReplyMessage?`  | The message being replied to, if any          |
-| `messageType`          | `MessageType`    | Type of message (text, image, voice, custom)  |
-| `reaction`             | `Reaction?`      | Reaction to the message, if any               |
-| `status`               | `MessageStatus?` | Status of the message (sent, delivered, read) |
-| `voiceMessageDuration` | `Duration?`      | Duration of voice message, if applicable      |
-
-## ChatUser
-
-Represents a user in the chat.
-
-### Properties
-
-| Property                 | Type        | Description                                   |
-|--------------------------|-------------|-----------------------------------------------|
-| `id`                     | `String`    | Unique identifier for the user                |
-| `name`                   | `String`    | Name of the user                              |
-| `profilePhoto`           | `String?`   | URL or path to profile photo                  |
-| `isProfilePhotoInBase64` | `bool`      | Whether the profile photo is in base64 format |
-| `imageType`              | `ImageType` | Type of image (asset, network, base64)        |
-
-## ChatBubbleConfiguration
-
-Configuration for chat bubbles.
-
-### Properties
-
-| Property                   | Type                        | Description                             |
-|----------------------------|-----------------------------|-----------------------------------------|
-| `outgoingChatBubbleConfig` | `ChatBubble`                | Configuration for outgoing chat bubbles |
-| `inComingChatBubbleConfig` | `ChatBubble`                | Configuration for incoming chat bubbles |
-| `onDoubleTap`              | `Function?`                 | Callback when a bubble is double-tapped |
-| `linkPreviewConfig`        | `LinkPreviewConfiguration?` | Configuration for link previews         |
-
-## FeatureActiveConfig
-
-Configuration to enable/disable features.
-
-### Properties
-
-| Property                       | Type   | Description                                 |
-|--------------------------------|--------|---------------------------------------------|
-| `enableSwipeToReply`           | `bool` | Whether to enable swipe to reply            |
-| `enableSwipeToSeeTime`         | `bool` | Whether to enable swipe to see message time |
-| `enablePagination`             | `bool` | Whether to enable message pagination        |
-| `enableOtherUserName`          | `bool` | Whether to show other user names            |
-| `lastSeenAgoBuilderVisibility` | `bool` | Whether to show last seen ago               |
-| `receiptsBuilderVisibility`    | `bool` | Whether to show message receipts            |
-## SendMessageConfiguration
-
-Configuration for send message section.
-
-### Properties
-
-| Property                      | Type                            | Description                            |
-|-------------------------------|---------------------------------|----------------------------------------|
-| `textFieldConfig`             | `TextFieldConfiguration`        | Configuration for text field           |
-| `enableCameraImagePicker`     | `bool`                          | Whether to enable camera image picker  |
-| `enableGalleryImagePicker`    | `bool`                          | Whether to enable gallery image picker |
-| `imagePickerIconsConfig`      | `ImagePickerIconsConfiguration` | Configuration for image picker icons   |
-| `voiceRecordingConfiguration` | `VoiceRecordingConfiguration`   | Configuration for voice recording      |
-| `cancelRecordConfiguration`   | `CancelRecordConfiguration`     | Configuration for cancel record button |
-| `replyMessageColor`           | `Color`                         | Color for reply message                |
-| `replyDialogColor`            | `Color`                         | Color for reply dialog                 |
-| `replyTitleColor`             | `Color`                         | Color for reply title                  |
-| `closeIconColor`              | `Color`                         | Color for close icon                   |
-
 # Contributors
 
 ## Main Contributors
@@ -837,7 +703,7 @@ If you find any bugs or have feature requests, please create an issue in the [is
 
 # License
 
-```text
+```
 MIT License
 Copyright (c) 2022 Simform Solutions
 Permission is hereby granted, free of charge, to any person obtaining a copy
