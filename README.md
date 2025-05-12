@@ -5,7 +5,8 @@
 [![chatview](https://img.shields.io/pub/v/chatview?label=chatview)](https://pub.dev/packages/chatview)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/blob/main/LICENSE)
 
-A Flutter package that allows you to integrate highly customizable chat UI in your Flutter applications.
+ChatView is a Flutter package that allows you to integrate a highly customizable chat UI in your
+Flutter applications with [Flexible Backend Integration][chatViewConnect].
 
 ![Preview](https://raw.githubusercontent.com/SimformSolutionsPvtLtd/flutter_chatview/main/preview/chatview.gif)
 
@@ -22,6 +23,7 @@ A Flutter package that allows you to integrate highly customizable chat UI in yo
 - Reply suggestions
 - Message status indicators (sent, delivered, read)
 - Highly customizable UI components
+- Plug-and-play backend support using [chatview_connect][chatViewConnect]
 
 ## Documentation
 
@@ -35,9 +37,19 @@ dependencies:
   chatview: <latest-version>
 ```
 
+## ChatView with Backend Support
+
+Make `ChatView` backend-ready with [chatview_connect][chatViewConnect]
+
+- 🔌 Easy backend integration without boilerplate (🔥 Firebase)
+- ⚙️ Setup in 3 steps: set **Service Type** -> **User ID** and get **`ChatManager`**
+- 💬 Supports **1-on-1** and **group chats** with **media uploads** *(audio not supported).*
+
 ## Support
 
 For issues or feature requests, please [create an issue](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues) on GitHub.
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](https://simform-flutter-packages.web.app/chatView/license).
+
+[chatViewConnect]: https://pub.dev/packages/chatview_connect

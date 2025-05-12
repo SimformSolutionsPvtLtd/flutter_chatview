@@ -1,6 +1,7 @@
 # Overview
 
-ChatView is a Flutter package that allows you to integrate a highly customizable chat UI in your Flutter applications. It supports various features such as:
+ChatView is a Flutter package that allows you to integrate a highly customizable chat UI in your
+Flutter applications with [Flexible Backend Integration](https://pub.dev/packages/chatview_connect).
 
 ## Preview
 
@@ -18,7 +19,9 @@ ChatView is a Flutter package that allows you to integrate a highly customizable
 - Message styling
 - Typing indicators
 - Reply suggestions
-- And many more configuration options
+- Connect ChatView to any backend
+  using [chatview_connect](https://pub.dev/packages/chatview_connect)
+- And a wide range of configuration options to customize your chat.
 
 For a live web demo, visit [Chat View Example](https://simformsolutionspvtltd.github.io/flutter_chatview/).
 
