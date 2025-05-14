@@ -1,4 +1,4 @@
-![Banner](https://raw.githubusercontent.com/SimformSolutionsPvtLtd/flutter_chatview/main/preview/banner.png)
+![Banner](https://raw.githubusercontent.com/SimformSolutionsPvtLtd/chatview/main/preview/banner.png)
 
 # ChatView
 [![chatview](https://img.shields.io/pub/v/chatview?label=chatview)](https://pub.dev/packages/chatview)
@@ -6,11 +6,11 @@
 A Flutter package that allows you to integrate Chat View with highly customization options such as one on one
 chat, group chat, message reactions, reply messages, link preview and configurations for overall view.
 
-For web demo visit [Chat View Example](https://simformsolutionspvtltd.github.io/flutter_chatview/).
+For web demo visit [Chat View Example](https://simformsolutionspvtltd.github.io/chatview/).
 
 ## Preview
 
-![The example app running in iOS](https://raw.githubusercontent.com/SimformSolutionsPvtLtd/flutter_chatview/main/preview/chatview.gif)
+![The example app running in iOS](https://raw.githubusercontent.com/SimformSolutionsPvtLtd/chatview/main/preview/chatview.gif)
 
 ## Migration guide for release 2.0.0
 
@@ -1044,7 +1044,7 @@ ChatView(
 
 Check out [blog](https://medium.com/simform-engineering/chatview-a-cutting-edge-chat-ui-solution-7367b1f9d772) for better understanding and basic implementation.
 
-Also, for whole example, check out the **example** app in the [example](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/tree/main/example) directory or the 'Example' tab on pub.dartlang.org for a more complete example.
+Also, for whole example, check out the **example** app in the [example](https://github.com/SimformSolutionsPvtLtd/chatview/tree/main/example) directory or the 'Example' tab on pub.dartlang.org for a more complete example.
 
 
 ## Main Contributors

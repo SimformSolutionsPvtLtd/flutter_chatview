@@ -42,5 +42,5 @@ Closes #1234
 !-->
 
 <!-- Links -->
-[Contributor Guide]: https://github.com/SimformSolutionsPvtLtd/flutter_chatview/blob/main/CONTRIBUTING.md
+[Contributor Guide]: https://github.com/SimformSolutionsPvtLtd/chatview/blob/main/CONTRIBUTING.md
 [Conventional Commit]: https://conventionalcommits.org

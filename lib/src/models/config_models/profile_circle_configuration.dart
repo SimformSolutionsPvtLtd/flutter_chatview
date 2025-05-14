@@ -21,8 +21,7 @@
  */
 import 'package:flutter/material.dart';
 
-import '../../../chatview.dart';
-import '../../utils/constants/constants.dart';
+import 'package:chatview_utils/chatview_utils.dart';
 
 class ProfileCircleConfiguration {
   /// Used to give padding to profile circle.
@@ -69,7 +68,7 @@ class ProfileCircleConfiguration {
     this.circleRadius,
     this.onAvatarLongPress,
     this.imageType = ImageType.network,
-    this.defaultAvatarImage = profileImage,
+    this.defaultAvatarImage = Constants.profileImage,
     this.networkImageErrorBuilder,
     this.assetImageErrorBuilder,
     this.networkImageProgressIndicatorBuilder,

@@ -23,9 +23,9 @@
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:chatview_utils/chatview_utils.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../values/enumeration.dart';
 import '../../values/typedefs.dart';
 
 class SendMessageConfiguration {
