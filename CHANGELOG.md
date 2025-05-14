@@ -1,5 +1,7 @@
 ## [2.4.1] (unreleased)
 
+* **Fix**: [289](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/289)
+  ScrollController is disposed when parent widget state changes
 * **Fix**: [317](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues/317) Link Preview
   is attempted even after adding disableLinkPreview: true
 
