@@ -1,14 +1,14 @@
-![Banner](https://raw.githubusercontent.com/SimformSolutionsPvtLtd/flutter_chatview/main/preview/banner.png)
+![Banner](https://raw.githubusercontent.com/SimformSolutionsPvtLtd/chatview/main/preview/banner.png)
 
 # ChatView
 
 [![chatview](https://img.shields.io/pub/v/chatview?label=chatview)](https://pub.dev/packages/chatview)
-[![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/blob/main/LICENSE)
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/SimformSolutionsPvtLtd/chatview/blob/main/LICENSE)
 
 ChatView is a Flutter package that allows you to integrate a highly customizable chat UI in your
 Flutter applications with [Flexible Backend Integration][chatViewConnect].
 
-![Preview](https://raw.githubusercontent.com/SimformSolutionsPvtLtd/flutter_chatview/main/preview/chatview.gif)
+![Preview](https://raw.githubusercontent.com/SimformSolutionsPvtLtd/chatview/main/preview/chatview.gif)
 
 ## Features
 
@@ -27,9 +27,9 @@ Flutter applications with [Flexible Backend Integration][chatViewConnect].
 
 ## Documentation
 
-Visit our [documentation](https://simform-flutter-packages.web.app/chatView) site for detailed guides, API references, and examples.for detailed guides, API references, code examples, and more. All implementation details, usage instructions, and advanced features can be found in the documentation.
+Visit our [documentation](https://simform-flutter-packages.web.app/chatView) site for all
+implementation details, usage instructions, code examples, and advanced features.
 
-We welcome improvements to our documentation! If you find any issues or have suggestions, please [create an issue](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues). To contribute fixes, please create a pull request with your changes to the `doc/documentation.md` file. We appreciate your help in making our documentation better!
 ## Installation
 
 ```yaml
@@ -47,9 +47,15 @@ Make `ChatView` backend-ready with [chatview_connect][chatViewConnect]
 
 ## Support
 
-For issues or feature requests, please [create an issue](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues) on GitHub.
+For questions, issues, or feature
+requests, [create an issue](https://github.com/SimformSolutionsPvtLtd/chatview/issues) on GitHub or
+reach out via the GitHub Discussions tab. We're happy to help and encourage community contributions.
+To contribute documentation updates specifically, please make changes to the doc/documentation.md
+file and submit a pull request.
 
 ## License
-This project is licensed under the MIT License - see the [LICENSE](https://simform-flutter-packages.web.app/chatView/license).
+
+This project is licensed under the MIT License - see
+the [LICENSE](https://simform-flutter-packages.web.app/chatView/license).
 
 [chatViewConnect]: https://pub.dev/packages/chatview_connect

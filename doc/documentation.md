@@ -5,7 +5,7 @@ Flutter applications with [Flexible Backend Integration](https://pub.dev/package
 
 ## Preview
 
-![Preview](https://raw.githubusercontent.com/SimformSolutionsPvtLtd/flutter_chatview/main/preview/chatview.gif)
+![Preview](https://raw.githubusercontent.com/SimformSolutionsPvtLtd/chatview/main/preview/chatview.gif)
 
 ## Features
 
@@ -23,7 +23,7 @@ Flutter applications with [Flexible Backend Integration](https://pub.dev/package
   using [chatview_connect](https://pub.dev/packages/chatview_connect)
 - And a wide range of configuration options to customize your chat.
 
-For a live web demo, visit [Chat View Example](https://simformsolutionspvtltd.github.io/flutter_chatview/).
+For a live web demo, visit [Chat View Example](https://simformsolutionspvtltd.github.io/chatview/).
 
 ## Compatible Message Types
 
@@ -493,6 +493,13 @@ ChatView(
 )
 ```
 
+## Backend Integration
+
+Easily connect Chatview UI to any backend using the [**Chatview Connect**](https://pub.dev/packages/chatview_connect)
+package. It offers ready-to-use solutions for
+real-time messaging with supporting media uploads.
+
+
 # Migration Guide
 
 ## Migration Guide for ChatView 2.0.0
@@ -692,13 +699,13 @@ Contributions are welcome! If you'd like to contribute to this project, please f
 
 ## Report Issues
 
-If you find any bugs or have feature requests, please create an issue in the [issue tracker](https://github.com/SimformSolutionsPvtLtd/flutter_chatview/issues).
+If you find any bugs or have feature requests, please create an issue in the [issue tracker](https://github.com/SimformSolutionsPvtLtd/chatview/issues).
 
 ## Project Resources
 
-- GitHub Repository: [flutter_chatview](https://github.com/SimformSolutionsPvtLtd/flutter_chatview).
+- GitHub Repository: [chatview](https://github.com/SimformSolutionsPvtLtd/chatview).
 - Package on pub.dev: [chatview](https://pub.dev/packages/chatview).
-- Web Demo: [Chat View Example](https://simformsolutionspvtltd.github.io/flutter_chatview/).
+- Web Demo: [Chat View Example](https://simformsolutionspvtltd.github.io/chatview/).
 - Blog Post: [ChatView: A Cutting-Edge Chat UI Solution](https://medium.com/simform-engineering/chatview-a-cutting-edge-chat-ui-solution-7367b1f9d772).
 
 # License
