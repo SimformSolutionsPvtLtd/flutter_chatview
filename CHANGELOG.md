@@ -1,4 +1,4 @@
-## [2.4.1] (unreleased)
+## [2.4.1]
 
 * **Important**: Updated minimum SDK version to `3.4.0`
 * **Refactor**: Use `chatview_utils` for data models & utils
