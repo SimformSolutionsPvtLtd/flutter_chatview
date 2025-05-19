@@ -24,16 +24,13 @@ import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-
-import '../utils/constants/constants.dart';
-import '../values/enumeration.dart';
-import '../values/typedefs.dart';
+import 'package:chatview_utils/chatview_utils.dart';
 
 class ProfileImageWidget extends StatelessWidget {
   const ProfileImageWidget({
     super.key,
     this.imageUrl,
-    this.defaultAvatarImage = profileImage,
+    this.defaultAvatarImage = Constants.profileImage,
     this.circleRadius,
     this.assetImageErrorBuilder,
     this.networkImageErrorBuilder,
@@ -82,7 +79,19 @@ class ProfileImageWidget extends StatelessWidget {
             height: radius,
             width: radius,
             fit: BoxFit.cover,
-            progressIndicatorBuilder: networkImageProgressIndicatorBuilder,
+            progressIndicatorBuilder:
+                networkImageProgressIndicatorBuilder == null
+                    ? null
+                    : (context, url, progress) =>
+                        networkImageProgressIndicatorBuilder!.call(
+                          context,
+                          url,
+                          CacheNetworkImageDownloadProgress(
+                            progress.originalUrl,
+                            progress.totalSize,
+                            progress.downloaded,
+                          ),
+                        ),
             errorWidget: networkImageErrorBuilder ?? _networkImageErrorWidget,
           ),
         ImageType.base64 when (imageUrl?.isNotEmpty ?? false) => Image.memory(

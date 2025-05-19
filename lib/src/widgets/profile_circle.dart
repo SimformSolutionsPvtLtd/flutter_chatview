@@ -21,10 +21,8 @@
  */
 
 import 'package:flutter/material.dart';
+import 'package:chatview_utils/chatview_utils.dart';
 
-import '../utils/constants/constants.dart';
-import '../values/enumeration.dart';
-import '../values/typedefs.dart';
 import 'profile_image_widget.dart';
 
 class ProfileCircle extends StatelessWidget {
@@ -36,7 +34,7 @@ class ProfileCircle extends StatelessWidget {
     this.circleRadius,
     this.onTap,
     this.onLongPress,
-    this.defaultAvatarImage = profileImage,
+    this.defaultAvatarImage = Constants.profileImage,
     this.assetImageErrorBuilder,
     this.networkImageErrorBuilder,
     this.imageType = ImageType.network,

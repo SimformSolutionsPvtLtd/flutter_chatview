@@ -27,17 +27,17 @@ jobs:
       - name: Flutter action
         uses: subosito/flutter-action@v2.13.0
         with:
-          flutter-version: '3.24.3'
+          flutter-version: '3.22.0'
           cache: true
-          cache-key: 'flutter-macos-stable-3.24.3-apple'
-          cache-path: '${{ runner.tool_cache }}/flutter/macos-stable-3.24.3-apple'
-          pub-cache-key: 'flutter-pub-macos-stable-3.24.3-apple'
+          cache-key: 'flutter-macos-stable-3.22.0-apple'
+          cache-path: '${{ runner.tool_cache }}/flutter/macos-stable-3.22.0-apple'
+          pub-cache-key: 'flutter-pub-macos-stable-3.22.0-apple'
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Project Clean Up
         run: flutter clean && flutter pub get
       - name: Build Web App
-        run: cd example && flutter build web --base-href="/flutter_chatview/"
+        run: cd example && flutter build web --base-href="/chatview/"
       - name: Upload Web Artifact
         uses: actions/upload-pages-artifact@v3.0.1
         with:

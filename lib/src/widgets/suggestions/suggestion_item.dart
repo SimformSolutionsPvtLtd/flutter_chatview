@@ -1,6 +1,7 @@
 import 'package:chatview/src/extensions/extensions.dart';
 import 'package:chatview/src/models/models.dart';
 import 'package:flutter/material.dart';
+import 'package:chatview_utils/chatview_utils.dart';
 
 class SuggestionItem extends StatelessWidget {
   const SuggestionItem({

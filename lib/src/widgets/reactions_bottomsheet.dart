@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:chatview_utils/chatview_utils.dart';
 
-import '../controller/chat_controller.dart';
 import '../models/models.dart';
 import 'profile_image_widget.dart';
 

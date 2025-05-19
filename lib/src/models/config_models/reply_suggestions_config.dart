@@ -1,8 +1,7 @@
-import 'package:chatview/src/models/data_models/suggestion_item_data.dart';
 import 'package:flutter/material.dart';
+import 'package:chatview_utils/chatview_utils.dart';
 
 import '../../values/enumeration.dart';
-import 'suggestion_item_config.dart';
 import 'suggestion_list_config.dart';
 
 class ReplySuggestionsConfig {

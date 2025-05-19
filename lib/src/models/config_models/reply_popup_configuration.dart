@@ -20,9 +20,9 @@
  * SOFTWARE.
  */
 import 'package:flutter/material.dart';
+import 'package:chatview_utils/chatview_utils.dart';
 
 import '../../values/typedefs.dart';
-import '../data_models/message.dart';
 
 class ReplyPopupConfiguration {
   /// Used for giving background color to reply snack-bar.
